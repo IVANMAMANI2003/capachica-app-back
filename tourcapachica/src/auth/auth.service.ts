@@ -1,13 +1,13 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from '../users/users.service';
 import { compare } from 'bcrypt';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService,
-    private jwtService: JwtService,
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService,
   ) {}
 
   async validateUser(email: string, password: string): Promise<any> {
@@ -20,10 +20,12 @@ export class AuthService {
   }
 
   async login(user: any) {
+    const roles = user.usuariosRoles?.map(ur => ur.rol.nombre) ?? [];
+    
     const payload = { 
       email: user.email, 
       sub: user.id,
-      roles: user.usuariosRoles?.map(ur => ur.rol.nombre) || [] 
+      roles: roles
     };
     
     return {
@@ -31,7 +33,8 @@ export class AuthService {
       user: {
         id: user.id,
         email: user.email,
-        roles: user.usuariosRoles?.map(ur => ur.rol.nombre) || []
+        roles: roles,
+        persona: user.persona
       }
     };
   }
@@ -40,7 +43,7 @@ export class AuthService {
     const payload = { 
       email: user.email, 
       sub: user.id,
-      roles: user.usuariosRoles?.map(ur => ur.rol.nombre) || [] 
+      roles: user.usuariosRoles?.map(ur => ur.rol.nombre) ?? [] 
     };
     
     return {

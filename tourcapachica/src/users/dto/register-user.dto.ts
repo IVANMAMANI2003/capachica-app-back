@@ -1,0 +1,54 @@
+import { IsString, IsEmail, IsNotEmpty, MinLength, IsInt, IsOptional, IsDate } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
+
+export class RegisterUserDto {
+  // Datos de la persona
+  @ApiProperty({ description: 'Nombre de la persona' })
+  @IsString()
+  @IsNotEmpty()
+  nombre: string;
+
+  @ApiProperty({ description: 'Apellidos de la persona' })
+  @IsString()
+  @IsNotEmpty()
+  apellidos: string;
+
+  @ApiPropertyOptional({ description: 'Teléfono de la persona' })
+  @IsString()
+  @IsOptional()
+  telefono?: string;
+
+  @ApiPropertyOptional({ description: 'Dirección de la persona' })
+  @IsString()
+  @IsOptional()
+  direccion?: string;
+
+  @ApiPropertyOptional({ description: 'URL de la foto de perfil' })
+  @IsString()
+  @IsOptional()
+  fotoPerfilUrl?: string;
+
+  @ApiPropertyOptional({ description: 'Fecha de nacimiento' })
+  @IsDate()
+  @Type(() => Date)
+  @IsOptional()
+  fechaNacimiento?: Date;
+
+  @ApiProperty({ description: 'ID de la subdivisión' })
+  @IsInt()
+  @IsNotEmpty()
+  subdivisionId: number;
+
+  // Datos del usuario
+  @ApiProperty({ description: 'Email del usuario', example: 'usuario@example.com' })
+  @IsEmail({}, { message: 'El email debe ser válido' })
+  @IsNotEmpty({ message: 'El email es requerido' })
+  email: string;
+
+  @ApiProperty({ description: 'Contraseña del usuario', example: 'password123' })
+  @IsString()
+  @IsNotEmpty({ message: 'La contraseña es requerida' })
+  @MinLength(6, { message: 'La contraseña debe tener al menos 6 caracteres' })
+  password: string;
+} 
