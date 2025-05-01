@@ -8,10 +8,10 @@ export declare class ImagesService {
     deleteImage(id: number): Promise<void>;
     getImages(imageableId: number, imageableType: string): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         url: string;
         imageableId: number;
         imageableType: string;
+        createdAt: Date;
+        updatedAt: Date;
     }[]>;
 }

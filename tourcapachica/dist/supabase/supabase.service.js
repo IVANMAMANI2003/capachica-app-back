@@ -11,17 +11,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SupabaseService = void 0;
 const common_1 = require("@nestjs/common");
-const supabase_js_1 = require("@supabase/supabase-js");
 const config_1 = require("@nestjs/config");
+const supabase_config_1 = require("../config/supabase.config");
 let SupabaseService = class SupabaseService {
     constructor(configService) {
         this.configService = configService;
-        const supabaseUrl = this.configService.get('SUPABASE_URL');
-        const supabaseKey = this.configService.get('SUPABASE_SERVICE_ROLE_KEY');
-        if (!supabaseUrl || !supabaseKey) {
-            throw new Error('Supabase URL and Key must be provided');
-        }
-        this.supabase = (0, supabase_js_1.createClient)(supabaseUrl, supabaseKey);
+        this.supabase = (0, supabase_config_1.createSupabaseClient)(this.configService);
     }
     async uploadFile(bucket, file, path) {
         const fileExt = file.originalname.split('.').pop();

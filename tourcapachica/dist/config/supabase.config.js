@@ -1,9 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.supabase = void 0;
+exports.createSupabaseClient = void 0;
 const supabase_js_1 = require("@supabase/supabase-js");
-if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
-    throw new Error('Missing Supabase environment variables');
-}
-exports.supabase = (0, supabase_js_1.createClient)(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+const createSupabaseClient = (configService) => {
+    const supabaseUrl = configService.get('SUPABASE_URL');
+    const supabaseKey = configService.get('SUPABASE_ANON_KEY');
+    if (!supabaseUrl || !supabaseKey) {
+        throw new Error('Missing Supabase environment variables');
+    }
+    return (0, supabase_js_1.createClient)(supabaseUrl, supabaseKey);
+};
+exports.createSupabaseClient = createSupabaseClient;
 //# sourceMappingURL=supabase.config.js.map
