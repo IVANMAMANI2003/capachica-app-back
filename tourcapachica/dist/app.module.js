@@ -44,7 +44,6 @@ exports.AppModule = AppModule = __decorate([
             servicios_module_1.ServiciosModule,
             paquetes_turisticos_module_1.PaquetesTuristicosModule,
             images_module_1.ImagesModule,
-            config_1.ConfigModule,
             supabase_module_1.SupabaseModule,
             payments_module_1.PaymentsModule,
             reservas_module_1.ReservasModule,
