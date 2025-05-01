@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreatePaqueteDto } from './dto/create-paquete.dto';
-import { UpdatePaqueteDto } from './dto/update-paquete.dto';
 import { CreateDisponibilidadDto, EstadoDisponibilidad } from './dto/create-disponibilidad.dto';
 import { UpdateDisponibilidadDto } from './dto/update-disponibilidad.dto';
+import { CreatePaqueteTuristicoDto } from './dto/create-paquete-turistico.dto';
+import { UpdatePaqueteTuristicoDto } from './dto/update-paquete-turistico.dto';
 
 @Injectable()
 export class PaquetesTuristicosService {
@@ -167,5 +167,126 @@ export class PaquetesTuristicosService {
     }
 
     return disponibilidad;
+  }
+
+  async create(createPaqueteTuristicoDto: CreatePaqueteTuristicoDto) {
+    const { imagenes, ...paqueteData } = createPaqueteTuristicoDto;
+    
+    const paquete = await this.prisma.paqueteTuristico.create({
+      data: paqueteData,
+    });
+
+    if (imagenes && imagenes.length > 0) {
+      await this.prisma.image.createMany({
+        data: imagenes.map(img => ({
+          url: img.url,
+          imageableId: paquete.id,
+          imageableType: 'PaqueteTuristico',
+        })),
+      });
+    }
+
+    return this.findOne(paquete.id);
+  }
+
+  async findAll() {
+    const paquetes = await this.prisma.paqueteTuristico.findMany({
+      include: {
+        emprendimiento: true,
+        servicios: {
+          include: {
+            servicio: true,
+          },
+        },
+      },
+    });
+    
+    const paquetesWithImages = await Promise.all(
+      paquetes.map(async (paquete) => {
+        const imagenes = await this.prisma.image.findMany({
+          where: {
+            imageableId: paquete.id,
+            imageableType: 'PaqueteTuristico',
+          },
+        });
+        return { ...paquete, imagenes };
+      })
+    );
+
+    return paquetesWithImages;
+  }
+
+  async findOne(id: number) {
+    const paquete = await this.prisma.paqueteTuristico.findUnique({
+      where: { id },
+      include: {
+        emprendimiento: true,
+        servicios: {
+          include: {
+            servicio: true,
+          },
+        },
+      },
+    });
+
+    if (!paquete) {
+      return null;
+    }
+
+    const imagenes = await this.prisma.image.findMany({
+      where: {
+        imageableId: paquete.id,
+        imageableType: 'PaqueteTuristico',
+      },
+    });
+
+    return { ...paquete, imagenes };
+  }
+
+  async update(id: number, updatePaqueteTuristicoDto: UpdatePaqueteTuristicoDto) {
+    const { imagenes, ...paqueteData } = updatePaqueteTuristicoDto;
+
+    // Actualizar datos del paquete
+    const paquete = await this.prisma.paqueteTuristico.update({
+      where: { id },
+      data: paqueteData,
+    });
+
+    // Si hay nuevas imágenes, eliminar las antiguas y crear las nuevas
+    if (imagenes) {
+      await this.prisma.image.deleteMany({
+        where: {
+          imageableId: id,
+          imageableType: 'PaqueteTuristico',
+        },
+      });
+
+      if (imagenes.length > 0) {
+        await this.prisma.image.createMany({
+          data: imagenes.map(img => ({
+            url: img.url,
+            imageableId: id,
+            imageableType: 'PaqueteTuristico',
+          })),
+        });
+      }
+    }
+
+    return this.findOne(id);
+  }
+
+  async remove(id: number) {
+    // Eliminar imágenes asociadas
+    await this.prisma.image.deleteMany({
+      where: {
+        imageableId: id,
+        imageableType: 'PaqueteTuristico',
+      },
+    });
+
+    // Eliminar el paquete
+    return this.prisma.paqueteTuristico.delete({
+      where: { id },
+    });
   }
 } 

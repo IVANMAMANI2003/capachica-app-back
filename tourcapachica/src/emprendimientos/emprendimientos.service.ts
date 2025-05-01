@@ -9,16 +9,30 @@ export class EmprendimientosService {
   constructor(private prisma: PrismaService) {}
 
   async create(usuarioId: number, createEmprendimientoDto: CreateEmprendimientoDto) {
-    return this.prisma.emprendimiento.create({
+    const { imagenes, ...emprendimientoData } = createEmprendimientoDto;
+    
+    const emprendimiento = await this.prisma.emprendimiento.create({
       data: {
-        ...createEmprendimientoDto,
+        ...emprendimientoData,
         usuarioId,
       },
     });
+
+    if (imagenes && imagenes.length > 0) {
+      await this.prisma.image.createMany({
+        data: imagenes.map(img => ({
+          url: img.url,
+          imageableId: emprendimiento.id,
+          imageableType: 'Emprendimiento',
+        })),
+      });
+    }
+
+    return this.findOne(emprendimiento.id);
   }
 
   async findAll() {
-    return this.prisma.emprendimiento.findMany({
+    const emprendimientos = await this.prisma.emprendimiento.findMany({
       include: {
         usuario: {
           include: {
@@ -27,6 +41,20 @@ export class EmprendimientosService {
         },
       },
     });
+    
+    const emprendimientosWithImages = await Promise.all(
+      emprendimientos.map(async (emprendimiento) => {
+        const imagenes = await this.prisma.image.findMany({
+          where: {
+            imageableId: emprendimiento.id,
+            imageableType: 'Emprendimiento',
+          },
+        });
+        return { ...emprendimiento, imagenes };
+      })
+    );
+
+    return emprendimientosWithImages;
   }
 
   async findOne(id: number) {
@@ -42,10 +70,17 @@ export class EmprendimientosService {
     });
 
     if (!emprendimiento) {
-      throw new NotFoundException(`Emprendimiento con ID ${id} no encontrado`);
+      return null;
     }
 
-    return emprendimiento;
+    const imagenes = await this.prisma.image.findMany({
+      where: {
+        imageableId: emprendimiento.id,
+        imageableType: 'Emprendimiento',
+      },
+    });
+
+    return { ...emprendimiento, imagenes };
   }
 
   async findByUsuario(usuarioId: number) {
@@ -62,24 +97,50 @@ export class EmprendimientosService {
   }
 
   async update(id: number, updateEmprendimientoDto: UpdateEmprendimientoDto) {
-    try {
-      return await this.prisma.emprendimiento.update({
-        where: { id },
-        data: updateEmprendimientoDto,
+    const { imagenes, ...emprendimientoData } = updateEmprendimientoDto;
+
+    // Actualizar datos del emprendimiento
+    const emprendimiento = await this.prisma.emprendimiento.update({
+      where: { id },
+      data: emprendimientoData,
+    });
+
+    // Si hay nuevas imágenes, eliminar las antiguas y crear las nuevas
+    if (imagenes) {
+      await this.prisma.image.deleteMany({
+        where: {
+          imageableId: id,
+          imageableType: 'Emprendimiento',
+        },
       });
-    } catch (error) {
-      throw new NotFoundException(`Emprendimiento con ID ${id} no encontrado`);
+
+      if (imagenes.length > 0) {
+        await this.prisma.image.createMany({
+          data: imagenes.map(img => ({
+            url: img.url,
+            imageableId: id,
+            imageableType: 'Emprendimiento',
+          })),
+        });
+      }
     }
+
+    return this.findOne(id);
   }
 
   async remove(id: number) {
-    try {
-      return await this.prisma.emprendimiento.delete({
-        where: { id },
-      });
-    } catch (error) {
-      throw new NotFoundException(`Emprendimiento con ID ${id} no encontrado`);
-    }
+    // Eliminar imágenes asociadas
+    await this.prisma.image.deleteMany({
+      where: {
+        imageableId: id,
+        imageableType: 'Emprendimiento',
+      },
+    });
+
+    // Eliminar el emprendimiento
+    return this.prisma.emprendimiento.delete({
+      where: { id },
+    });
   }
 
   async updateEstado(id: number, estado: string) {

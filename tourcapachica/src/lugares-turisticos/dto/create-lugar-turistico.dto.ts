@@ -1,5 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsOptional, IsBoolean, IsNumber, IsUrl } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsBoolean, IsNumber, IsUrl, IsEnum, IsArray, MaxLength, IsTimeZone } from 'class-validator';
+
+class ImageDto {
+  @IsUrl()
+  url: string;
+}
 
 export class CreateLugarTuristicoDto {
   @ApiProperty({
@@ -8,6 +13,7 @@ export class CreateLugarTuristicoDto {
   })
   @IsString()
   @IsNotEmpty()
+  @MaxLength(200)
   nombre: string;
 
   @ApiProperty({
@@ -59,5 +65,31 @@ export class CreateLugarTuristicoDto {
   })
   @IsString()
   @IsOptional()
+  @IsEnum(['activo', 'inactivo'])
+  @MaxLength(20)
   estado?: string;
+
+  @IsTimeZone()
+  @IsOptional()
+  horarioApertura?: Date;
+
+  @IsTimeZone()
+  @IsOptional()
+  horarioCierre?: Date;
+
+  @IsNumber()
+  @IsOptional()
+  costoEntrada?: number;
+
+  @IsString()
+  @IsOptional()
+  recomendaciones?: string;
+
+  @IsString()
+  @IsOptional()
+  restricciones?: string;
+
+  @IsArray()
+  @IsOptional()
+  imagenes?: ImageDto[];
 } 

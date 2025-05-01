@@ -15,6 +15,14 @@ async function main() {
       prisma.persona.deleteMany(),
       prisma.subdivision.deleteMany(),
       prisma.country.deleteMany(),
+      prisma.image.deleteMany(),
+      prisma.servicioPaquete.deleteMany(),
+      prisma.paqueteTuristico.deleteMany(),
+      prisma.servicio.deleteMany(),
+      prisma.lugarTuristico.deleteMany(),
+      prisma.emprendimiento.deleteMany(),
+      prisma.slider.deleteMany(),
+      prisma.tipoServicio.deleteMany(),
     ]);
 
     // Crear roles
@@ -103,13 +111,20 @@ async function main() {
     });
 
     // Crear tipos de servicio
-    const tiposServicio = await prisma.tipoServicio.createMany({
-      data: [
-        { nombre: 'Alojamiento', descripcion: 'Servicios de hospedaje', imagenUrl: 'https://example.com/alojamiento.jpg', requiereCupo: true },
-        { nombre: 'Transporte', descripcion: 'Servicios de transporte', imagenUrl: 'https://example.com/transporte.jpg', requiereCupo: true },
-        { nombre: 'Guía', descripcion: 'Servicios de guía turístico', imagenUrl: 'https://example.com/guia.jpg', requiereCupo: true },
-        { nombre: 'Alimentación', descripcion: 'Servicios de alimentación', imagenUrl: 'https://example.com/alimentacion.jpg', requiereCupo: true },
-      ],
+    const tipoServicio1 = await prisma.tipoServicio.create({
+      data: {
+        nombre: 'Transporte',
+        descripcion: 'Servicios de transporte',
+        imagenUrl: 'https://twsevdzjdnwjhdysvecm.supabase.co/storage/v1/object/public/images/tipo-servicio/transporte.jpg',
+      },
+    });
+
+    const tipoServicio2 = await prisma.tipoServicio.create({
+      data: {
+        nombre: 'Alojamiento',
+        descripcion: 'Servicios de alojamiento',
+        imagenUrl: 'https://twsevdzjdnwjhdysvecm.supabase.co/storage/v1/object/public/images/tipo-servicio/alojamiento.jpg',
+      },
     });
 
     // Crear tipos de pago
@@ -208,87 +223,243 @@ async function main() {
     });
 
     // Crear emprendimiento para el emprendedor
-    const emprendimiento = await prisma.emprendimiento.create({
+    const emprendimiento1 = await prisma.emprendimiento.create({
       data: {
         usuarioId: emprendedor.id,
-        nombre: 'Hotel Capachica',
-        descripcion: 'Hotel con vista al lago Titicaca',
-        tipo: 'Hospedaje',
-        direccion: 'Av. Lago Titicaca 123',
-        coordenadas: '-15.6394, -69.8328',
-        contactoTelefono: '987654321',
-        contactoEmail: 'hotel@capachica.com',
+        nombre: 'Restaurante La Casona',
+        descripcion: 'Restaurante tradicional con vista al lago',
+        tipo: 'restaurante',
+        direccion: 'Av. Principal 123',
+        coordenadas: '-15.7667, -69.6833',
+        contactoTelefono: '+51987654321',
+        contactoEmail: 'contacto@lacasona.com',
+        sitioWeb: 'https://lacasona.com',
+        redesSociales: {
+          facebook: 'lacasona',
+          instagram: 'lacasona_restaurant',
+        },
         estado: 'aprobado',
-        fechaAprobacion: new Date(),
       },
+    });
+
+    const emprendimiento2 = await prisma.emprendimiento.create({
+      data: {
+        usuarioId: emprendedor.id,
+        nombre: 'Hotel Titicaca',
+        descripcion: 'Hotel con vista al lago Titicaca',
+        tipo: 'hotel',
+        direccion: 'Calle Principal 456',
+        coordenadas: '-15.7667, -69.6833',
+        contactoTelefono: '+51987654322',
+        contactoEmail: 'contacto@hoteltiticaca.com',
+        sitioWeb: 'https://hoteltiticaca.com',
+        redesSociales: {
+          facebook: 'hoteltiticaca',
+          instagram: 'hotel_titicaca',
+        },
+        estado: 'aprobado',
+      },
+    });
+
+    // Crear imágenes para emprendimientos
+    await prisma.image.createMany({
+      data: [
+        {
+          url: 'https://twsevdzjdnwjhdysvecm.supabase.co/storage/v1/object/public/images/emprendimiento/1/restaurante1.jpg',
+          imageableId: emprendimiento1.id,
+          imageableType: 'Emprendimiento',
+        },
+        {
+          url: 'https://twsevdzjdnwjhdysvecm.supabase.co/storage/v1/object/public/images/emprendimiento/1/restaurante2.jpg',
+          imageableId: emprendimiento1.id,
+          imageableType: 'Emprendimiento',
+        },
+        {
+          url: 'https://twsevdzjdnwjhdysvecm.supabase.co/storage/v1/object/public/images/emprendimiento/2/hotel1.jpg',
+          imageableId: emprendimiento2.id,
+          imageableType: 'Emprendimiento',
+        },
+      ],
+    });
+
+    // Crear lugares turísticos
+    const lugar1 = await prisma.lugarTuristico.create({
+      data: {
+        nombre: 'Isla Taquile',
+        descripcion: 'Isla ubicada en el lago Titicaca, conocida por sus tejidos tradicionales',
+        direccion: 'Isla Taquile, Lago Titicaca',
+        coordenadas: '-15.7667, -69.6833',
+        esDestacado: true,
+        estado: 'activo',
+        horarioApertura: new Date('2024-01-01T08:00:00Z'),
+        horarioCierre: new Date('2024-01-01T17:00:00Z'),
+        costoEntrada: 20,
+        recomendaciones: 'Llevar protector solar y agua',
+        restricciones: 'No se permite el ingreso de mascotas',
+      },
+    });
+
+    const lugar2 = await prisma.lugarTuristico.create({
+      data: {
+        nombre: 'Isla Amantaní',
+        descripcion: 'Isla con hermosas vistas y tradiciones ancestrales',
+        direccion: 'Isla Amantaní, Lago Titicaca',
+        coordenadas: '-15.6667, -69.7833',
+        esDestacado: true,
+        estado: 'activo',
+        horarioApertura: new Date('2024-01-01T08:00:00Z'),
+        horarioCierre: new Date('2024-01-01T17:00:00Z'),
+        costoEntrada: 15,
+        recomendaciones: 'Llevar ropa abrigada',
+        restricciones: 'Respetar las costumbres locales',
+      },
+    });
+
+    // Crear imágenes para lugares turísticos
+    await prisma.image.createMany({
+      data: [
+        {
+          url: 'https://twsevdzjdnwjhdysvecm.supabase.co/storage/v1/object/public/images/lugar-turistico/1/taquile1.jpg',
+          imageableId: lugar1.id,
+          imageableType: 'LugarTuristico',
+        },
+        {
+          url: 'https://twsevdzjdnwjhdysvecm.supabase.co/storage/v1/object/public/images/lugar-turistico/2/amantani1.jpg',
+          imageableId: lugar2.id,
+          imageableType: 'LugarTuristico',
+        },
+      ],
     });
 
     // Crear servicios
-    const servicios = await prisma.servicio.createMany({
-      data: [
-        {
-          tipoServicioId: 1,
-          nombre: 'Habitación Doble',
-          descripcion: 'Habitación con vista al lago',
-          precioBase: 150,
-          moneda: 'PEN',
-          estado: 'activo',
-          imagenUrl: 'https://example.com/habitacion.jpg',
-          detallesServicio: {
-            capacidad: 2,
-            comodidades: ['TV', 'WiFi', 'Baño privado'],
-          },
-        },
-        {
-          tipoServicioId: 1,
-          nombre: 'Habitación Familiar',
-          descripcion: 'Habitación para 4 personas',
-          precioBase: 250,
-          moneda: 'PEN',
-          estado: 'activo',
-          imagenUrl: 'https://example.com/habitacion-familiar.jpg',
-          detallesServicio: {
-            capacidad: 4,
-            comodidades: ['TV', 'WiFi', 'Baño privado', 'Cocina'],
-          },
-        },
-      ],
-    });
-
-    // Asociar servicios al emprendimiento
-    const serviciosEmprendedor = await prisma.servicioEmprendedor.createMany({
-      data: [
-        { servicioId: 1, emprendimientoId: emprendimiento.id },
-        { servicioId: 2, emprendimientoId: emprendimiento.id },
-      ],
-    });
-
-    // Crear paquete turístico
-    const paquete = await prisma.paqueteTuristico.create({
+    const servicio1 = await prisma.servicio.create({
       data: {
-        nombre: 'Tour Completo Capachica',
-        descripcion: 'Tour de 2 días por los principales atractivos de Capachica',
-        precio: 500,
-        duracion: 48,
-        imagenUrl: 'https://example.com/tour-capachica.jpg',
-        activo: true,
-        emprendimientoId: emprendimiento.id,
-        servicios: {
-          create: [
-            { servicioId: 1, orden: 1 },
-            { servicioId: 2, orden: 2 },
-          ],
-        },
-        disponibilidad: {
-          create: {
-            fechaInicio: new Date('2024-05-01'),
-            fechaFin: new Date('2024-12-31'),
-            cuposDisponibles: 20,
-            cuposMaximos: 20,
-            estado: 'activo',
-          },
+        tipoServicioId: tipoServicio1.id,
+        nombre: 'Tour en bote',
+        descripcion: 'Tour en bote por el lago Titicaca',
+        precioBase: 50,
+        moneda: 'PEN',
+        estado: 'activo',
+        detallesServicio: {
+          duracion: '2 horas',
+          incluye: ['Guía', 'Equipo de seguridad'],
         },
       },
+    });
+
+    const servicio2 = await prisma.servicio.create({
+      data: {
+        tipoServicioId: tipoServicio2.id,
+        nombre: 'Habitación Doble',
+        descripcion: 'Habitación con vista al lago',
+        precioBase: 150,
+        moneda: 'PEN',
+        estado: 'activo',
+        detallesServicio: {
+          capacidad: '2 personas',
+          incluye: ['Desayuno', 'WiFi'],
+        },
+      },
+    });
+
+    // Crear imágenes para servicios
+    await prisma.image.createMany({
+      data: [
+        {
+          url: 'https://twsevdzjdnwjhdysvecm.supabase.co/storage/v1/object/public/images/servicio/1/bote1.jpg',
+          imageableId: servicio1.id,
+          imageableType: 'Servicio',
+        },
+        {
+          url: 'https://twsevdzjdnwjhdysvecm.supabase.co/storage/v1/object/public/images/servicio/2/habitacion1.jpg',
+          imageableId: servicio2.id,
+          imageableType: 'Servicio',
+        },
+      ],
+    });
+
+    // Crear paquetes turísticos
+    const paquete1 = await prisma.paqueteTuristico.create({
+      data: {
+        nombre: 'Tour Completo Taquile',
+        descripcion: 'Tour completo a la isla Taquile incluyendo transporte y almuerzo',
+        precio: 200,
+        estado: 'activo',
+        emprendimientoId: emprendimiento1.id,
+      },
+    });
+
+    const paquete2 = await prisma.paqueteTuristico.create({
+      data: {
+        nombre: 'Tour Amantaní + Alojamiento',
+        descripcion: 'Tour a Amantaní con noche de alojamiento incluido',
+        precio: 350,
+        estado: 'activo',
+        emprendimientoId: emprendimiento2.id,
+      },
+    });
+
+    // Crear imágenes para paquetes turísticos
+    await prisma.image.createMany({
+      data: [
+        {
+          url: 'https://twsevdzjdnwjhdysvecm.supabase.co/storage/v1/object/public/images/paquete-turistico/1/paquete1.jpg',
+          imageableId: paquete1.id,
+          imageableType: 'PaqueteTuristico',
+        },
+        {
+          url: 'https://twsevdzjdnwjhdysvecm.supabase.co/storage/v1/object/public/images/paquete-turistico/2/paquete2.jpg',
+          imageableId: paquete2.id,
+          imageableType: 'PaqueteTuristico',
+        },
+      ],
+    });
+
+    // Asociar servicios a paquetes
+    await prisma.servicioPaquete.createMany({
+      data: [
+        {
+          servicioId: servicio1.id,
+          paqueteTuristicoId: paquete1.id,
+        },
+        {
+          servicioId: servicio2.id,
+          paqueteTuristicoId: paquete2.id,
+        },
+      ],
+    });
+
+    // Crear sliders
+    const slider1 = await prisma.slider.create({
+      data: {
+        nombre: 'Descubre Taquile',
+        descripcion: 'Conoce la isla de los tejidos tradicionales',
+        estado: 'activo',
+      },
+    });
+
+    const slider2 = await prisma.slider.create({
+      data: {
+        nombre: 'Vive Amantaní',
+        descripcion: 'Experiencia única en el lago Titicaca',
+        estado: 'activo',
+      },
+    });
+
+    // Crear imágenes para sliders
+    await prisma.image.createMany({
+      data: [
+        {
+          url: 'https://twsevdzjdnwjhdysvecm.supabase.co/storage/v1/object/public/images/slider/taquile.jpg',
+          imageableId: slider1.id,
+          imageableType: 'Slider',
+        },
+        {
+          url: 'https://twsevdzjdnwjhdysvecm.supabase.co/storage/v1/object/public/images/slider/amantani.jpg',
+          imageableId: slider2.id,
+          imageableType: 'Slider',
+        },
+      ],
     });
 
     console.log('Seed completado exitosamente');

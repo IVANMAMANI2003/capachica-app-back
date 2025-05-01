@@ -1,8 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { PaquetesTuristicosService } from './paquetes-turisticos.service';
-import { CreatePaqueteDto } from './dto/create-paquete.dto';
-import { UpdatePaqueteDto } from './dto/update-paquete.dto';
+import { Roles } from '../auth/decorators/roles.decorator';
 import { CreateDisponibilidadDto } from './dto/create-disponibilidad.dto';
 import { UpdateDisponibilidadDto } from './dto/update-disponibilidad.dto';
 
@@ -14,6 +13,7 @@ export class PaquetesTuristicosController {
   // ... otros métodos del controlador ...
 
   @Post(':id/disponibilidad')
+  @Roles('emprendedor', 'SuperAdmin')
   @ApiOperation({ summary: 'Crear disponibilidad para un paquete turístico' })
   @ApiResponse({ status: 201, description: 'Disponibilidad creada exitosamente' })
   @ApiResponse({ status: 400, description: 'Datos de disponibilidad inválidos' })
@@ -54,6 +54,7 @@ export class PaquetesTuristicosController {
   }
 
   @Delete('disponibilidad/:id')
+  @Roles('emprendedor', 'SuperAdmin')
   @ApiOperation({ summary: 'Eliminar una disponibilidad' })
   @ApiResponse({ status: 200, description: 'Disponibilidad eliminada exitosamente' })
   @ApiResponse({ status: 404, description: 'Disponibilidad no encontrada' })

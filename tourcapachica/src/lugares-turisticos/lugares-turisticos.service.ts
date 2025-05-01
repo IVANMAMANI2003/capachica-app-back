@@ -8,19 +8,41 @@ export class LugaresTuristicosService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createLugarTuristicoDto: CreateLugarTuristicoDto) {
-    // Asegurarse de que imagenUrl tenga un valor por defecto si es undefined
-    const data = {
-      ...createLugarTuristicoDto,
-      imagenUrl: createLugarTuristicoDto.imagenUrl || 'https://example.com/default-image.jpg',
-    };
+    const { imagenes, ...lugarData } = createLugarTuristicoDto;
     
-    return this.prisma.lugarTuristico.create({
-      data,
+    const lugar = await this.prisma.lugarTuristico.create({
+      data: lugarData,
     });
+
+    if (imagenes && imagenes.length > 0) {
+      await this.prisma.image.createMany({
+        data: imagenes.map(img => ({
+          url: img.url,
+          imageableId: lugar.id,
+          imageableType: 'LugarTuristico',
+        })),
+      });
+    }
+
+    return this.findOne(lugar.id);
   }
 
   async findAll() {
-    return this.prisma.lugarTuristico.findMany();
+    const lugares = await this.prisma.lugarTuristico.findMany();
+    
+    const lugaresWithImages = await Promise.all(
+      lugares.map(async (lugar) => {
+        const imagenes = await this.prisma.image.findMany({
+          where: {
+            imageableId: lugar.id,
+            imageableType: 'LugarTuristico',
+          },
+        });
+        return { ...lugar, imagenes };
+      })
+    );
+
+    return lugaresWithImages;
   }
 
   async findOne(id: number) {
@@ -29,26 +51,61 @@ export class LugaresTuristicosService {
     });
 
     if (!lugar) {
-      throw new NotFoundException(`Lugar turístico con ID ${id} no encontrado`);
+      return null;
     }
 
-    return lugar;
+    const imagenes = await this.prisma.image.findMany({
+      where: {
+        imageableId: lugar.id,
+        imageableType: 'LugarTuristico',
+      },
+    });
+
+    return { ...lugar, imagenes };
   }
 
   async update(id: number, updateLugarTuristicoDto: UpdateLugarTuristicoDto) {
-    // Verificar que el lugar existe
-    await this.findOne(id);
+    const { imagenes, ...lugarData } = updateLugarTuristicoDto;
 
-    return this.prisma.lugarTuristico.update({
+    // Actualizar datos del lugar
+    const lugar = await this.prisma.lugarTuristico.update({
       where: { id },
-      data: updateLugarTuristicoDto,
+      data: lugarData,
     });
+
+    // Si hay nuevas imágenes, eliminar las antiguas y crear las nuevas
+    if (imagenes) {
+      await this.prisma.image.deleteMany({
+        where: {
+          imageableId: id,
+          imageableType: 'LugarTuristico',
+        },
+      });
+
+      if (imagenes.length > 0) {
+        await this.prisma.image.createMany({
+          data: imagenes.map(img => ({
+            url: img.url,
+            imageableId: id,
+            imageableType: 'LugarTuristico',
+          })),
+        });
+      }
+    }
+
+    return this.findOne(id);
   }
 
   async remove(id: number) {
-    // Verificar que el lugar existe
-    await this.findOne(id);
+    // Eliminar imágenes asociadas
+    await this.prisma.image.deleteMany({
+      where: {
+        imageableId: id,
+        imageableType: 'LugarTuristico',
+      },
+    });
 
+    // Eliminar el lugar
     return this.prisma.lugarTuristico.delete({
       where: { id },
     });

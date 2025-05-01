@@ -1,40 +1,52 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { compare } from 'bcrypt';
-import { UsersService } from '../users/users.service';
+import { PrismaService } from '../prisma/prisma.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly usersService: UsersService,
-    private readonly jwtService: JwtService,
+    private prisma: PrismaService,
+    private jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, password: string): Promise<any> {
-    const user = await this.usersService.findByEmail(email);
-    if (user && await compare(password, user.passwordHash)) {
-      const { passwordHash, ...result } = user;
-      return result;
-    }
-    return null;
-  }
+  async login(email: string, password: string) {
+    const usuario = await this.prisma.usuario.findUnique({
+      where: { email },
+      include: {
+        persona: true,
+        usuariosRoles: {
+          include: {
+            rol: true
+          }
+        }
+      }
+    });
 
-  async login(user: any) {
-    const roles = user.usuariosRoles?.map(ur => ur.rol.nombre) ?? [];
-    
-    const payload = { 
-      email: user.email, 
-      sub: user.id,
-      roles: roles
+    if (!usuario) {
+      throw new UnauthorizedException('Credenciales inválidas');
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, usuario.passwordHash);
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Credenciales inválidas');
+    }
+
+    const payload = {
+      sub: usuario.id,
+      email: usuario.email,
+      roles: usuario.usuariosRoles.map(ur => ur.rol.nombre)
     };
-    
+
     return {
       access_token: this.jwtService.sign(payload),
-      user: {
-        id: user.id,
-        email: user.email,
-        roles: roles,
-        persona: user.persona
+      usuario: {
+        id: usuario.id,
+        email: usuario.email,
+        nombre: usuario.persona.nombre,
+        apellidos: usuario.persona.apellidos,
+        roles: usuario.usuariosRoles.map(ur => ur.rol.nombre)
       }
     };
   }

@@ -57,13 +57,13 @@ model Country {
 }
 
 model Subdivision {
-  id              Int              @id @default(autoincrement())
-  countryId       Int              @map("country_id")
-  name            String           @db.VarChar(255)
-  createdAt       DateTime         @default(now()) @map("created_at")
-  updatedAt       DateTime         @default(now()) @map("updated_at")
-  personas        Persona[]
-  country         Country          @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  id        Int       @id @default(autoincrement())
+  countryId Int       @map("country_id")
+  name      String    @db.VarChar(255)
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @map("updated_at")
+  personas  Persona[]
+  country   Country   @relation(fields: [countryId], references: [id], onDelete: Cascade)
 
   @@unique([countryId, name])
   @@map("subdivisions")
@@ -101,6 +101,7 @@ model Usuario {
   createdAt              DateTime          @default(now()) @map("created_at")
   updatedAt              DateTime          @default(now()) @map("updated_at")
   emprendimientos        Emprendimiento[]
+  favoritos              Favorito[]
   registroAccesos        RegistroAcceso[]
   resenas                Resena[]
   tokensInvalidados      TokenInvalidado[]
@@ -108,7 +109,6 @@ model Usuario {
   turista                Turista?
   persona                Persona           @relation(fields: [personaId], references: [id])
   usuariosRoles          UsuariosRoles[]
-  favoritos              Favorito[]
 
   @@map("usuarios")
 }
@@ -202,7 +202,6 @@ model LugarTuristico {
   restricciones     String?
   esDestacado       Boolean           @default(false) @map("es_destacado")
   estado            String            @default("activo") @db.VarChar(20)
-  imagenUrl         String            @map("imagen_url")
   createdAt         DateTime          @default(now()) @map("created_at")
   updatedAt         DateTime          @default(now()) @map("updated_at")
   itinerarioLugares ItinerarioLugar[]
@@ -223,19 +222,18 @@ model ServicioEmprendedor {
 }
 
 model Servicio {
-  id                     Int                @id @default(autoincrement())
-  tipoServicioId         Int                @map("tipo_servicio_id")
-  nombre                 String             @db.VarChar(200)
+  id                     Int                      @id @default(autoincrement())
+  tipoServicioId         Int                      @map("tipo_servicio_id")
+  nombre                 String                   @db.VarChar(200)
   descripcion            String?
-  precioBase             Decimal            @map("precio_base") @db.Decimal(10, 2)
-  moneda                 String             @default("PEN") @db.VarChar(3)
-  estado                 String             @default("activo") @db.VarChar(20)
-  imagenUrl              String             @map("imagen_url")
-  detallesServicio       Json               @default("{}") @map("detalles_servicio")
-  createdAt              DateTime           @default(now()) @map("created_at")
-  updatedAt              DateTime           @default(now()) @map("updated_at")
+  precioBase             Decimal                  @map("precio_base") @db.Decimal(10, 2)
+  moneda                 String                   @default("PEN") @db.VarChar(3)
+  estado                 String                   @default("activo") @db.VarChar(20)
+  detallesServicio       Json                     @default("{}") @map("detalles_servicio")
+  createdAt              DateTime                 @default(now()) @map("created_at")
+  updatedAt              DateTime                 @default(now()) @map("updated_at")
   itinerariosReserva     ItinerarioReserva[]
-  tipoServicio           TipoServicio       @relation(fields: [tipoServicioId], references: [id])
+  tipoServicio           TipoServicio             @relation(fields: [tipoServicioId], references: [id])
   disponibilidad         ServicioDisponibilidad[]
   serviciosEmprendedores ServicioEmprendedor[]
   serviciosPaquetes      ServicioPaquete[]
@@ -244,19 +242,17 @@ model Servicio {
 }
 
 model PaqueteTuristico {
-  id               Int                 @id @default(autoincrement())
+  id               Int                     @id @default(autoincrement())
   nombre           String
   descripcion      String
   precio           Float
-  duracion         Int                 // Duración en horas
-  imagenUrl        String
-  activo           Boolean             @default(true)
-  createdAt        DateTime            @default(now())
-  updatedAt        DateTime            @updatedAt
-  emprendimientoId Int
-  emprendimiento   Emprendimiento      @relation(fields: [emprendimientoId], references: [id])
-  servicios        ServicioPaquete[]
+  estado           String                  @default("activo") @db.VarChar(20)
+  createdAt        DateTime                @default(now()) @map("created_at")
+  updatedAt        DateTime                @default(now()) @map("updated_at")
+  emprendimientoId Int                     @map("emprendimiento_id")
   disponibilidad   DisponibilidadPaquete[]
+  emprendimiento   Emprendimiento          @relation(fields: [emprendimientoId], references: [id])
+  servicios        ServicioPaquete[]
 
   @@map("paquetes_turisticos")
 }
@@ -265,9 +261,9 @@ model ServicioPaquete {
   id                 Int              @id @default(autoincrement())
   paqueteTuristicoId Int
   servicioId         Int
+  orden              Int              @default(0)
   paqueteTuristico   PaqueteTuristico @relation(fields: [paqueteTuristicoId], references: [id])
   servicio           Servicio         @relation(fields: [servicioId], references: [id])
-  orden              Int              @default(0) // Para mantener el orden de los servicios en el paquete
 
   @@unique([paqueteTuristicoId, servicioId])
   @@map("servicios_paquetes")
@@ -346,28 +342,28 @@ model Favorito {
 }
 
 model Reserva {
-  id               Int                 @id @default(autoincrement())
-  turistaId        Int                 @map("turista_id")
-  codigoReserva    String             @unique @map("codigo_reserva")
-  tipoReserva      String             @map("tipo_reserva")
-  fechaReserva     DateTime           @map("fecha_reserva")
-  fechaInicio      DateTime           @map("fecha_inicio")
-  hora             String?            @db.VarChar(8)
-  fechaFin         DateTime?          @map("fecha_fin")
-  cantidadPersonas Int                @default(1) @map("cantidad_personas")
-  estado           String             @default("pendiente") @db.VarChar(20)
-  precioTotal      Decimal            @map("precio_total") @db.Decimal(12, 2)
-  moneda           String             @default("PEN") @db.VarChar(3)
-  metodoPago       String?            @map("metodo_pago") @db.VarChar(50)
-  datosPago        Json?              @map("datos_pago")
-  notas            String?
-  motivoCancelacion String?           @map("motivo_cancelacion")
-  fechaCancelacion DateTime?          @map("fecha_cancelacion")
-  createdAt        DateTime           @default(now()) @map("created_at")
-  updatedAt        DateTime           @default(now()) @map("updated_at")
-  itinerarios      ItinerarioReserva[]
-  pagos            Pago[]
-  turista          Turista             @relation(fields: [turistaId], references: [id])
+  id                Int                 @id @default(autoincrement())
+  turistaId         Int                 @map("turista_id")
+  codigoReserva     String              @unique @map("codigo_reserva")
+  tipoReserva       String              @map("tipo_reserva")
+  fechaReserva      DateTime            @map("fecha_reserva")
+  fechaInicio       DateTime            @map("fecha_inicio")
+  hora              String?             @db.VarChar(8)
+  fechaFin          DateTime?           @map("fecha_fin")
+  cantidadPersonas  Int                 @default(1) @map("cantidad_personas")
+  estado            String              @default("pendiente") @db.VarChar(20)
+  precioTotal       Decimal             @map("precio_total") @db.Decimal(12, 2)
+  moneda            String              @default("PEN") @db.VarChar(3)
+  metodoPago        String?             @map("metodo_pago") @db.VarChar(50)
+  datosPago         Json?               @map("datos_pago")
+  notas             String?
+  motivoCancelacion String?             @map("motivo_cancelacion")
+  fechaCancelacion  DateTime?           @map("fecha_cancelacion")
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime            @default(now()) @map("updated_at")
+  itinerarios       ItinerarioReserva[]
+  pagos             Pago[]
+  turista           Turista             @relation(fields: [turistaId], references: [id])
 
   @@map("reservas")
 }
@@ -404,19 +400,19 @@ model ItinerarioLugar {
 }
 
 model Pago {
-  id                Int           @id @default(autoincrement())
-  reservaId         Int           @map("reserva_id")
-  montoTotal        Decimal       @map("monto_total") @db.Decimal(12, 2)
-  moneda            String        @default("PEN") @db.VarChar(3)
-  estado            String        @default("pendiente") @db.VarChar(20)
-  fechaPago         DateTime?     @map("fecha_pago")
-  datosMetodoPago   Json?         @map("datos_metodo_pago")
-  metadata          Json?
-  createdAt         DateTime      @default(now()) @map("created_at")
-  updatedAt         DateTime      @default(now()) @map("updated_at")
-  comprobante       Comprobante?
-  detalles          PagoDetalle[]
-  reserva           Reserva       @relation(fields: [reservaId], references: [id])
+  id              Int           @id @default(autoincrement())
+  reservaId       Int           @map("reserva_id")
+  montoTotal      Decimal       @map("monto_total") @db.Decimal(12, 2)
+  moneda          String        @default("PEN") @db.VarChar(3)
+  estado          String        @default("pendiente") @db.VarChar(20)
+  fechaPago       DateTime?     @map("fecha_pago")
+  datosMetodoPago Json?         @map("datos_metodo_pago")
+  metadata        Json?
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @default(now()) @map("updated_at")
+  comprobante     Comprobante?
+  detalles        PagoDetalle[]
+  reserva         Reserva       @relation(fields: [reservaId], references: [id])
 
   @@map("pagos")
 }
@@ -493,4 +489,27 @@ model Tour {
   tourists    Turista[] @relation("TourToTurista")
 
   @@map("tours")
+}
+
+model Image {
+  id            Int      @id @default(autoincrement())
+  url           String
+  imageableId   Int
+  imageableType String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([imageableId, imageableType])
+  @@map("images")
+}
+
+model Slider {
+  id          Int      @id @default(autoincrement())
+  nombre      String   @db.VarChar(100)
+  descripcion String?
+  estado      String   @default("activo") @db.VarChar(20)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("sliders")
 }
