@@ -26,10 +26,10 @@ export declare class ServiciosService {
         updatedAt: Date;
         nombre: string;
         descripcion: string | null;
+        moneda: string;
         estado: string;
         tipoServicioId: number;
         precioBase: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
         detallesServicio: import(".prisma/client/runtime/library").JsonValue;
     }>;
     findAll(): Promise<{
@@ -54,10 +54,10 @@ export declare class ServiciosService {
         updatedAt: Date;
         nombre: string;
         descripcion: string | null;
+        moneda: string;
         estado: string;
         tipoServicioId: number;
         precioBase: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
         detallesServicio: import(".prisma/client/runtime/library").JsonValue;
     }[]>;
     findOne(id: number): Promise<{
@@ -82,10 +82,10 @@ export declare class ServiciosService {
         updatedAt: Date;
         nombre: string;
         descripcion: string | null;
+        moneda: string;
         estado: string;
         tipoServicioId: number;
         precioBase: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
         detallesServicio: import(".prisma/client/runtime/library").JsonValue;
     }>;
     update(id: number, updateServicioDto: UpdateServicioDto): Promise<{
@@ -110,10 +110,10 @@ export declare class ServiciosService {
         updatedAt: Date;
         nombre: string;
         descripcion: string | null;
+        moneda: string;
         estado: string;
         tipoServicioId: number;
         precioBase: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
         detallesServicio: import(".prisma/client/runtime/library").JsonValue;
     }>;
     remove(id: number): Promise<{
@@ -122,10 +122,10 @@ export declare class ServiciosService {
         updatedAt: Date;
         nombre: string;
         descripcion: string | null;
+        moneda: string;
         estado: string;
         tipoServicioId: number;
         precioBase: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
         detallesServicio: import(".prisma/client/runtime/library").JsonValue;
     }>;
 }

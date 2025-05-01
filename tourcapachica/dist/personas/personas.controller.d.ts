@@ -5,13 +5,6 @@ export declare class PersonasController {
     private readonly personasService;
     constructor(personasService: PersonasService);
     create(createPersonaDto: CreatePersonaDto): Promise<{
-        subdivision: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            name: string;
-            countryId: number;
-        };
         usuario: {
             id: number;
             personaId: number;
@@ -26,6 +19,13 @@ export declare class PersonasController {
             preferencias: import(".prisma/client/runtime/library").JsonValue;
             createdAt: Date;
             updatedAt: Date;
+        };
+        subdivision: {
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
+            name: string;
+            countryId: number;
         };
     } & {
         id: number;
@@ -40,13 +40,6 @@ export declare class PersonasController {
         subdivisionId: number;
     }>;
     findAll(): Promise<({
-        subdivision: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            name: string;
-            countryId: number;
-        };
         usuario: {
             id: number;
             personaId: number;
@@ -61,6 +54,13 @@ export declare class PersonasController {
             preferencias: import(".prisma/client/runtime/library").JsonValue;
             createdAt: Date;
             updatedAt: Date;
+        };
+        subdivision: {
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
+            name: string;
+            countryId: number;
         };
     } & {
         id: number;
@@ -75,13 +75,6 @@ export declare class PersonasController {
         subdivisionId: number;
     })[]>;
     findOne(id: string): Promise<{
-        subdivision: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            name: string;
-            countryId: number;
-        };
         usuario: {
             id: number;
             personaId: number;
@@ -96,6 +89,13 @@ export declare class PersonasController {
             preferencias: import(".prisma/client/runtime/library").JsonValue;
             createdAt: Date;
             updatedAt: Date;
+        };
+        subdivision: {
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
+            name: string;
+            countryId: number;
         };
     } & {
         id: number;
@@ -110,13 +110,6 @@ export declare class PersonasController {
         subdivisionId: number;
     }>;
     update(id: string, updatePersonaDto: UpdatePersonaDto): Promise<{
-        subdivision: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            name: string;
-            countryId: number;
-        };
         usuario: {
             id: number;
             personaId: number;
@@ -131,6 +124,13 @@ export declare class PersonasController {
             preferencias: import(".prisma/client/runtime/library").JsonValue;
             createdAt: Date;
             updatedAt: Date;
+        };
+        subdivision: {
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
+            name: string;
+            countryId: number;
         };
     } & {
         id: number;

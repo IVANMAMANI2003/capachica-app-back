@@ -73,14 +73,14 @@ export declare class RolesService {
         descripcion: string | null;
     }>;
     assignPermission(id: number, assignPermissionDto: AssignPermissionDto): Promise<{
-        permiso: {
+        rol: {
             id: number;
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
             descripcion: string | null;
         };
-        rol: {
+        permiso: {
             id: number;
             createdAt: Date;
             updatedAt: Date;

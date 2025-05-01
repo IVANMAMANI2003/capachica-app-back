@@ -20,12 +20,12 @@ export declare class TipoPagoController {
             createdAt: Date;
             updatedAt: Date;
             descripcion: string | null;
+            pagoId: number;
             tipoPagoId: number;
             concepto: string;
             monto: import(".prisma/client/runtime/library").Decimal;
             porcentajeImpuesto: import(".prisma/client/runtime/library").Decimal;
             cantidad: number;
-            pagoId: number;
         }[];
     } & {
         id: number;
@@ -43,12 +43,12 @@ export declare class TipoPagoController {
             createdAt: Date;
             updatedAt: Date;
             descripcion: string | null;
+            pagoId: number;
             tipoPagoId: number;
             concepto: string;
             monto: import(".prisma/client/runtime/library").Decimal;
             porcentajeImpuesto: import(".prisma/client/runtime/library").Decimal;
             cantidad: number;
-            pagoId: number;
         }[];
     } & {
         id: number;

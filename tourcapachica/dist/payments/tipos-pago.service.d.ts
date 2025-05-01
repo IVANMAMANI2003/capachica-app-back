@@ -10,9 +10,9 @@ export declare class TipoPagoService {
         updatedAt: Date;
         nombre: string;
         descripcion: string | null;
-        activo: boolean;
         requiereVerificacion: boolean;
         comisionPorcentaje: import(".prisma/client/runtime/library").Decimal;
+        activo: boolean;
     }>;
     findAll(): Promise<({
         pagoDetalles: {
@@ -20,12 +20,12 @@ export declare class TipoPagoService {
             createdAt: Date;
             updatedAt: Date;
             descripcion: string | null;
+            pagoId: number;
             tipoPagoId: number;
             concepto: string;
             monto: import(".prisma/client/runtime/library").Decimal;
             porcentajeImpuesto: import(".prisma/client/runtime/library").Decimal;
             cantidad: number;
-            pagoId: number;
         }[];
     } & {
         id: number;
@@ -33,9 +33,9 @@ export declare class TipoPagoService {
         updatedAt: Date;
         nombre: string;
         descripcion: string | null;
-        activo: boolean;
         requiereVerificacion: boolean;
         comisionPorcentaje: import(".prisma/client/runtime/library").Decimal;
+        activo: boolean;
     })[]>;
     findOne(id: number): Promise<{
         pagoDetalles: {
@@ -43,12 +43,12 @@ export declare class TipoPagoService {
             createdAt: Date;
             updatedAt: Date;
             descripcion: string | null;
+            pagoId: number;
             tipoPagoId: number;
             concepto: string;
             monto: import(".prisma/client/runtime/library").Decimal;
             porcentajeImpuesto: import(".prisma/client/runtime/library").Decimal;
             cantidad: number;
-            pagoId: number;
         }[];
     } & {
         id: number;
@@ -56,9 +56,9 @@ export declare class TipoPagoService {
         updatedAt: Date;
         nombre: string;
         descripcion: string | null;
-        activo: boolean;
         requiereVerificacion: boolean;
         comisionPorcentaje: import(".prisma/client/runtime/library").Decimal;
+        activo: boolean;
     }>;
     update(id: number, updateTipoPagoDto: UpdateTipoPagoDto): Promise<{
         id: number;
@@ -66,9 +66,9 @@ export declare class TipoPagoService {
         updatedAt: Date;
         nombre: string;
         descripcion: string | null;
-        activo: boolean;
         requiereVerificacion: boolean;
         comisionPorcentaje: import(".prisma/client/runtime/library").Decimal;
+        activo: boolean;
     }>;
     remove(id: number): Promise<{
         id: number;
@@ -76,8 +76,8 @@ export declare class TipoPagoService {
         updatedAt: Date;
         nombre: string;
         descripcion: string | null;
-        activo: boolean;
         requiereVerificacion: boolean;
         comisionPorcentaje: import(".prisma/client/runtime/library").Decimal;
+        activo: boolean;
     }>;
 }

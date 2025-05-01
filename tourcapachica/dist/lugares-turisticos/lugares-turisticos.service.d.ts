@@ -17,16 +17,16 @@ export declare class LugaresTuristicosService {
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        descripcion: string;
         direccion: string;
+        descripcion: string;
         estado: string;
         coordenadas: string;
-        esDestacado: boolean;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
+        esDestacado: boolean;
     }>;
     findAll(): Promise<{
         imagenes: {
@@ -41,16 +41,16 @@ export declare class LugaresTuristicosService {
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        descripcion: string;
         direccion: string;
+        descripcion: string;
         estado: string;
         coordenadas: string;
-        esDestacado: boolean;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
+        esDestacado: boolean;
     }[]>;
     findOne(id: number): Promise<{
         imagenes: {
@@ -65,16 +65,16 @@ export declare class LugaresTuristicosService {
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        descripcion: string;
         direccion: string;
+        descripcion: string;
         estado: string;
         coordenadas: string;
-        esDestacado: boolean;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
+        esDestacado: boolean;
     }>;
     update(id: number, updateLugarTuristicoDto: UpdateLugarTuristicoDto): Promise<{
         imagenes: {
@@ -89,47 +89,47 @@ export declare class LugaresTuristicosService {
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        descripcion: string;
         direccion: string;
+        descripcion: string;
         estado: string;
         coordenadas: string;
-        esDestacado: boolean;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
+        esDestacado: boolean;
     }>;
     remove(id: number): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        descripcion: string;
         direccion: string;
+        descripcion: string;
         estado: string;
         coordenadas: string;
-        esDestacado: boolean;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
+        esDestacado: boolean;
     }>;
     findDestacados(): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        descripcion: string;
         direccion: string;
+        descripcion: string;
         estado: string;
         coordenadas: string;
-        esDestacado: boolean;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
+        esDestacado: boolean;
     }[]>;
 }

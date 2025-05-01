@@ -22,22 +22,22 @@ export declare class ComprobantesController {
         createdAt: Date;
         updatedAt: Date;
         estado: string;
-        moneda: string;
         pagoId: number;
+        tipoComprobante: string;
         serie: string;
         numero: number;
+        fechaEmision: Date;
         rucCliente: string | null;
         razonSocial: string | null;
         direccionCliente: string | null;
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
+        moneda: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
         pdfUrl: string | null;
-        tipoComprobante: string;
-        fechaEmision: Date;
     }>;
     findAll(): Promise<({
         pago: {
@@ -57,22 +57,22 @@ export declare class ComprobantesController {
         createdAt: Date;
         updatedAt: Date;
         estado: string;
-        moneda: string;
         pagoId: number;
+        tipoComprobante: string;
         serie: string;
         numero: number;
+        fechaEmision: Date;
         rucCliente: string | null;
         razonSocial: string | null;
         direccionCliente: string | null;
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
+        moneda: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
         pdfUrl: string | null;
-        tipoComprobante: string;
-        fechaEmision: Date;
     })[]>;
     findOne(id: string): Promise<{
         pago: {
@@ -92,22 +92,22 @@ export declare class ComprobantesController {
         createdAt: Date;
         updatedAt: Date;
         estado: string;
-        moneda: string;
         pagoId: number;
+        tipoComprobante: string;
         serie: string;
         numero: number;
+        fechaEmision: Date;
         rucCliente: string | null;
         razonSocial: string | null;
         direccionCliente: string | null;
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
+        moneda: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
         pdfUrl: string | null;
-        tipoComprobante: string;
-        fechaEmision: Date;
     }>;
     findByPagoId(pagoId: string): Promise<{
         pago: {
@@ -127,22 +127,22 @@ export declare class ComprobantesController {
         createdAt: Date;
         updatedAt: Date;
         estado: string;
-        moneda: string;
         pagoId: number;
+        tipoComprobante: string;
         serie: string;
         numero: number;
+        fechaEmision: Date;
         rucCliente: string | null;
         razonSocial: string | null;
         direccionCliente: string | null;
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
+        moneda: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
         pdfUrl: string | null;
-        tipoComprobante: string;
-        fechaEmision: Date;
     }>;
     update(id: string, updateComprobanteDto: UpdateComprobanteDto): Promise<{
         pago: {
@@ -162,44 +162,44 @@ export declare class ComprobantesController {
         createdAt: Date;
         updatedAt: Date;
         estado: string;
-        moneda: string;
         pagoId: number;
+        tipoComprobante: string;
         serie: string;
         numero: number;
+        fechaEmision: Date;
         rucCliente: string | null;
         razonSocial: string | null;
         direccionCliente: string | null;
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
+        moneda: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
         pdfUrl: string | null;
-        tipoComprobante: string;
-        fechaEmision: Date;
     }>;
     remove(id: string): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
         estado: string;
-        moneda: string;
         pagoId: number;
+        tipoComprobante: string;
         serie: string;
         numero: number;
+        fechaEmision: Date;
         rucCliente: string | null;
         razonSocial: string | null;
         direccionCliente: string | null;
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
+        moneda: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
         pdfUrl: string | null;
-        tipoComprobante: string;
-        fechaEmision: Date;
     }>;
     updateEstado(id: string, estado: string): Promise<{
         pago: {
@@ -219,21 +219,21 @@ export declare class ComprobantesController {
         createdAt: Date;
         updatedAt: Date;
         estado: string;
-        moneda: string;
         pagoId: number;
+        tipoComprobante: string;
         serie: string;
         numero: number;
+        fechaEmision: Date;
         rucCliente: string | null;
         razonSocial: string | null;
         direccionCliente: string | null;
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
+        moneda: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
         pdfUrl: string | null;
-        tipoComprobante: string;
-        fechaEmision: Date;
     }>;
 }

@@ -23,13 +23,12 @@ let LocalStrategy = class LocalStrategy extends (0, passport_1.PassportStrategy)
         this.authService = authService;
     }
     async validate(email, password) {
-        try {
-            const result = await this.authService.login(email, password);
-            return result.usuario;
+        const loginDto = { email, password };
+        const result = await this.authService.login(loginDto);
+        if (!result) {
+            throw new common_1.UnauthorizedException();
         }
-        catch (error) {
-            throw new common_1.UnauthorizedException('Credenciales inválidas');
-        }
+        return result.usuario;
     }
 };
 exports.LocalStrategy = LocalStrategy;

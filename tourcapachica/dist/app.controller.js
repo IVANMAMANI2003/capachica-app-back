@@ -12,23 +12,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
+const public_decorator_1 = require("./auth/decorators/public.decorator");
 let AppController = class AppController {
     getHello() {
         return {
             status: 'ok',
-            message: 'Tour Capachica API is running',
-            timestamp: new Date().toISOString(),
-            docs: '/api/docs'
+            message: 'API is running. Check /api/docs for documentation',
         };
     }
 };
 exports.AppController = AppController;
 __decorate([
+    (0, public_decorator_1.Public)(),
     (0, common_1.Get)(),
     (0, swagger_1.ApiOperation)({ summary: 'Health check endpoint' }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Object)
 ], AppController.prototype, "getHello", null);
 exports.AppController = AppController = __decorate([
     (0, swagger_1.ApiTags)('Health Check'),

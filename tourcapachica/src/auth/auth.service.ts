@@ -12,23 +12,43 @@ export class AuthService {
   ) {}
 
   async login(loginDto: LoginDto) {
-    const user = await this.prisma.user.findUnique({
+    const usuario = await this.prisma.usuario.findUnique({
       where: { email: loginDto.email },
+      include: {
+        persona: true,
+        usuariosRoles: {
+          include: {
+            rol: true
+          }
+        }
+      }
     });
 
-    if (!user) {
+    if (!usuario) {
       throw new UnauthorizedException('Credenciales inválidas');
     }
 
-    const isPasswordValid = await bcrypt.compare(loginDto.password, user.password);
+    const isPasswordValid = await bcrypt.compare(loginDto.password, usuario.passwordHash);
 
     if (!isPasswordValid) {
       throw new UnauthorizedException('Credenciales inválidas');
     }
 
-    const payload = { sub: user.id, email: user.email };
+    const payload = {
+      sub: usuario.id,
+      email: usuario.email,
+      roles: usuario.usuariosRoles.map(ur => ur.rol.nombre)
+    };
+
     return {
       access_token: await this.jwtService.signAsync(payload),
+      usuario: {
+        id: usuario.id,
+        email: usuario.email,
+        nombre: usuario.persona.nombre,
+        apellidos: usuario.persona.apellidos,
+        roles: usuario.usuariosRoles.map(ur => ur.rol.nombre)
+      }
     };
   }
 

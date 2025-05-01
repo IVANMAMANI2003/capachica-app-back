@@ -19,14 +19,14 @@ export declare class LugaresTuristicosController {
         nombre: string;
         descripcion: string;
         direccion: string;
-        estado: string;
         coordenadas: string;
-        esDestacado: boolean;
+        estado: string;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
+        esDestacado: boolean;
     }>;
     findAll(): Promise<{
         imagenes: {
@@ -43,14 +43,14 @@ export declare class LugaresTuristicosController {
         nombre: string;
         descripcion: string;
         direccion: string;
-        estado: string;
         coordenadas: string;
-        esDestacado: boolean;
+        estado: string;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
+        esDestacado: boolean;
     }[]>;
     findDestacados(): Promise<{
         id: number;
@@ -59,14 +59,14 @@ export declare class LugaresTuristicosController {
         nombre: string;
         descripcion: string;
         direccion: string;
-        estado: string;
         coordenadas: string;
-        esDestacado: boolean;
+        estado: string;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
+        esDestacado: boolean;
     }[]>;
     findOne(id: string): Promise<{
         imagenes: {
@@ -83,14 +83,14 @@ export declare class LugaresTuristicosController {
         nombre: string;
         descripcion: string;
         direccion: string;
-        estado: string;
         coordenadas: string;
-        esDestacado: boolean;
+        estado: string;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
+        esDestacado: boolean;
     }>;
     update(id: string, updateLugarTuristicoDto: UpdateLugarTuristicoDto): Promise<{
         imagenes: {
@@ -107,14 +107,14 @@ export declare class LugaresTuristicosController {
         nombre: string;
         descripcion: string;
         direccion: string;
-        estado: string;
         coordenadas: string;
-        esDestacado: boolean;
+        estado: string;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
+        esDestacado: boolean;
     }>;
     remove(id: string): Promise<{
         id: number;
@@ -123,13 +123,13 @@ export declare class LugaresTuristicosController {
         nombre: string;
         descripcion: string;
         direccion: string;
-        estado: string;
         coordenadas: string;
-        esDestacado: boolean;
+        estado: string;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
+        esDestacado: boolean;
     }>;
 }

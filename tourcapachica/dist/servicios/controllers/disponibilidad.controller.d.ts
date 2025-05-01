@@ -18,9 +18,9 @@ export declare class DisponibilidadController {
             nombre: string;
             descripcion: string | null;
             estado: string;
+            moneda: string;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
-            moneda: string;
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
         };
     } & {
@@ -38,9 +38,9 @@ export declare class DisponibilidadController {
             nombre: string;
             descripcion: string | null;
             estado: string;
+            moneda: string;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
-            moneda: string;
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
         };
     } & {
@@ -58,9 +58,9 @@ export declare class DisponibilidadController {
             nombre: string;
             descripcion: string | null;
             estado: string;
+            moneda: string;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
-            moneda: string;
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
         };
     } & {
@@ -78,9 +78,9 @@ export declare class DisponibilidadController {
             nombre: string;
             descripcion: string | null;
             estado: string;
+            moneda: string;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
-            moneda: string;
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
         };
     } & {

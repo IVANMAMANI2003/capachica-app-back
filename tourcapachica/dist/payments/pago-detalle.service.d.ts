@@ -9,8 +9,8 @@ export declare class PagoDetalleService {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            estado: string;
             moneda: string;
+            estado: string;
             reservaId: number;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
             fechaPago: Date | null;
@@ -23,29 +23,29 @@ export declare class PagoDetalleService {
             updatedAt: Date;
             nombre: string;
             descripcion: string | null;
-            activo: boolean;
             requiereVerificacion: boolean;
             comisionPorcentaje: import(".prisma/client/runtime/library").Decimal;
+            activo: boolean;
         };
     } & {
         id: number;
         createdAt: Date;
         updatedAt: Date;
         descripcion: string | null;
+        pagoId: number;
         tipoPagoId: number;
         concepto: string;
         monto: import(".prisma/client/runtime/library").Decimal;
         porcentajeImpuesto: import(".prisma/client/runtime/library").Decimal;
         cantidad: number;
-        pagoId: number;
     }>;
     findAll(): Promise<({
         pago: {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            estado: string;
             moneda: string;
+            estado: string;
             reservaId: number;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
             fechaPago: Date | null;
@@ -58,29 +58,29 @@ export declare class PagoDetalleService {
             updatedAt: Date;
             nombre: string;
             descripcion: string | null;
-            activo: boolean;
             requiereVerificacion: boolean;
             comisionPorcentaje: import(".prisma/client/runtime/library").Decimal;
+            activo: boolean;
         };
     } & {
         id: number;
         createdAt: Date;
         updatedAt: Date;
         descripcion: string | null;
+        pagoId: number;
         tipoPagoId: number;
         concepto: string;
         monto: import(".prisma/client/runtime/library").Decimal;
         porcentajeImpuesto: import(".prisma/client/runtime/library").Decimal;
         cantidad: number;
-        pagoId: number;
     })[]>;
     findOne(id: number): Promise<{
         pago: {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            estado: string;
             moneda: string;
+            estado: string;
             reservaId: number;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
             fechaPago: Date | null;
@@ -93,21 +93,21 @@ export declare class PagoDetalleService {
             updatedAt: Date;
             nombre: string;
             descripcion: string | null;
-            activo: boolean;
             requiereVerificacion: boolean;
             comisionPorcentaje: import(".prisma/client/runtime/library").Decimal;
+            activo: boolean;
         };
     } & {
         id: number;
         createdAt: Date;
         updatedAt: Date;
         descripcion: string | null;
+        pagoId: number;
         tipoPagoId: number;
         concepto: string;
         monto: import(".prisma/client/runtime/library").Decimal;
         porcentajeImpuesto: import(".prisma/client/runtime/library").Decimal;
         cantidad: number;
-        pagoId: number;
     }>;
     findByPagoId(pagoId: number): Promise<({
         tipoPago: {
@@ -116,29 +116,29 @@ export declare class PagoDetalleService {
             updatedAt: Date;
             nombre: string;
             descripcion: string | null;
-            activo: boolean;
             requiereVerificacion: boolean;
             comisionPorcentaje: import(".prisma/client/runtime/library").Decimal;
+            activo: boolean;
         };
     } & {
         id: number;
         createdAt: Date;
         updatedAt: Date;
         descripcion: string | null;
+        pagoId: number;
         tipoPagoId: number;
         concepto: string;
         monto: import(".prisma/client/runtime/library").Decimal;
         porcentajeImpuesto: import(".prisma/client/runtime/library").Decimal;
         cantidad: number;
-        pagoId: number;
     })[]>;
     update(id: number, updatePagoDetalleDto: UpdatePagoDetalleDto): Promise<{
         pago: {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            estado: string;
             moneda: string;
+            estado: string;
             reservaId: number;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
             fechaPago: Date | null;
@@ -151,32 +151,32 @@ export declare class PagoDetalleService {
             updatedAt: Date;
             nombre: string;
             descripcion: string | null;
-            activo: boolean;
             requiereVerificacion: boolean;
             comisionPorcentaje: import(".prisma/client/runtime/library").Decimal;
+            activo: boolean;
         };
     } & {
         id: number;
         createdAt: Date;
         updatedAt: Date;
         descripcion: string | null;
+        pagoId: number;
         tipoPagoId: number;
         concepto: string;
         monto: import(".prisma/client/runtime/library").Decimal;
         porcentajeImpuesto: import(".prisma/client/runtime/library").Decimal;
         cantidad: number;
-        pagoId: number;
     }>;
     remove(id: number): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
         descripcion: string | null;
+        pagoId: number;
         tipoPagoId: number;
         concepto: string;
         monto: import(".prisma/client/runtime/library").Decimal;
         porcentajeImpuesto: import(".prisma/client/runtime/library").Decimal;
         cantidad: number;
-        pagoId: number;
     }>;
 }

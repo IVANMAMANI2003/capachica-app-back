@@ -17,10 +17,10 @@ export declare class DisponibilidadService {
             updatedAt: Date;
             nombre: string;
             descripcion: string | null;
+            moneda: string;
             estado: string;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
-            moneda: string;
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
         };
     } & {
@@ -37,10 +37,10 @@ export declare class DisponibilidadService {
             updatedAt: Date;
             nombre: string;
             descripcion: string | null;
+            moneda: string;
             estado: string;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
-            moneda: string;
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
         };
     } & {
@@ -57,10 +57,10 @@ export declare class DisponibilidadService {
             updatedAt: Date;
             nombre: string;
             descripcion: string | null;
+            moneda: string;
             estado: string;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
-            moneda: string;
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
         };
     } & {
@@ -77,10 +77,10 @@ export declare class DisponibilidadService {
             updatedAt: Date;
             nombre: string;
             descripcion: string | null;
+            moneda: string;
             estado: string;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
-            moneda: string;
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
         };
     } & {

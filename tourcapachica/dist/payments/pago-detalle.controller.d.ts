@@ -32,12 +32,12 @@ export declare class PagoDetalleController {
         createdAt: Date;
         updatedAt: Date;
         descripcion: string | null;
+        pagoId: number;
         tipoPagoId: number;
         concepto: string;
         monto: import(".prisma/client/runtime/library").Decimal;
         porcentajeImpuesto: import(".prisma/client/runtime/library").Decimal;
         cantidad: number;
-        pagoId: number;
     }>;
     findAll(): Promise<({
         pago: {
@@ -67,12 +67,12 @@ export declare class PagoDetalleController {
         createdAt: Date;
         updatedAt: Date;
         descripcion: string | null;
+        pagoId: number;
         tipoPagoId: number;
         concepto: string;
         monto: import(".prisma/client/runtime/library").Decimal;
         porcentajeImpuesto: import(".prisma/client/runtime/library").Decimal;
         cantidad: number;
-        pagoId: number;
     })[]>;
     findOne(id: string): Promise<{
         pago: {
@@ -102,12 +102,12 @@ export declare class PagoDetalleController {
         createdAt: Date;
         updatedAt: Date;
         descripcion: string | null;
+        pagoId: number;
         tipoPagoId: number;
         concepto: string;
         monto: import(".prisma/client/runtime/library").Decimal;
         porcentajeImpuesto: import(".prisma/client/runtime/library").Decimal;
         cantidad: number;
-        pagoId: number;
     }>;
     findByPagoId(pagoId: string): Promise<({
         tipoPago: {
@@ -125,12 +125,12 @@ export declare class PagoDetalleController {
         createdAt: Date;
         updatedAt: Date;
         descripcion: string | null;
+        pagoId: number;
         tipoPagoId: number;
         concepto: string;
         monto: import(".prisma/client/runtime/library").Decimal;
         porcentajeImpuesto: import(".prisma/client/runtime/library").Decimal;
         cantidad: number;
-        pagoId: number;
     })[]>;
     update(id: string, updatePagoDetalleDto: UpdatePagoDetalleDto): Promise<{
         pago: {
@@ -160,23 +160,23 @@ export declare class PagoDetalleController {
         createdAt: Date;
         updatedAt: Date;
         descripcion: string | null;
+        pagoId: number;
         tipoPagoId: number;
         concepto: string;
         monto: import(".prisma/client/runtime/library").Decimal;
         porcentajeImpuesto: import(".prisma/client/runtime/library").Decimal;
         cantidad: number;
-        pagoId: number;
     }>;
     remove(id: string): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
         descripcion: string | null;
+        pagoId: number;
         tipoPagoId: number;
         concepto: string;
         monto: import(".prisma/client/runtime/library").Decimal;
         porcentajeImpuesto: import(".prisma/client/runtime/library").Decimal;
         cantidad: number;
-        pagoId: number;
     }>;
 }
