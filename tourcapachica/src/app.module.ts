@@ -32,6 +32,7 @@ import { AppController } from './app.controller';
     ServiciosModule,
     PaquetesTuristicosModule,
     ImagesModule,
+    ConfigModule,
     SupabaseModule,
     PaymentsModule,
     ReservasModule,

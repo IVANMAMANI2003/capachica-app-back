@@ -1,10 +1,13 @@
 import { createClient } from '@supabase/supabase-js';
+import { ConfigService } from '@nestjs/config';
 
-if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
-  throw new Error('Missing Supabase environment variables');
-}
+export const createSupabaseClient = (configService: ConfigService) => {
+  const supabaseUrl = configService.get<string>('SUPABASE_URL');
+  const supabaseKey = configService.get<string>('SUPABASE_ANON_KEY');
 
-export const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_ANON_KEY
-);
+  if (!supabaseUrl || !supabaseKey) {
+    throw new Error('Missing Supabase environment variables');
+  }
+
+  return createClient(supabaseUrl, supabaseKey);
+};
