@@ -46,6 +46,7 @@ let DisponibilidadController = class DisponibilidadController {
 exports.DisponibilidadController = DisponibilidadController;
 __decorate([
     (0, common_1.Post)(),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiOperation)({ summary: 'Crear disponibilidad para un servicio' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Disponibilidad creada exitosamente' }),
@@ -86,6 +87,7 @@ __decorate([
 ], DisponibilidadController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Patch)(':id'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiOperation)({ summary: 'Actualizar una disponibilidad' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Disponibilidad actualizada' }),
@@ -98,6 +100,7 @@ __decorate([
 ], DisponibilidadController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiOperation)({ summary: 'Eliminar una disponibilidad' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Disponibilidad eliminada' }),
@@ -110,7 +113,6 @@ __decorate([
 exports.DisponibilidadController = DisponibilidadController = __decorate([
     (0, swagger_1.ApiTags)('disponibilidad'),
     (0, common_1.Controller)('disponibilidad'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, swagger_1.ApiBearerAuth)(),
     __metadata("design:paramtypes", [disponibilidad_service_1.DisponibilidadService])
 ], DisponibilidadController);

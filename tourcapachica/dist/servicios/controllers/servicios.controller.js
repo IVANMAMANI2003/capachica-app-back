@@ -51,6 +51,7 @@ let ServiciosController = class ServiciosController {
 exports.ServiciosController = ServiciosController;
 __decorate([
     (0, common_1.Post)('emprendimiento/:emprendimientoId'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiOperation)({ summary: 'Crear un nuevo servicio para un emprendimiento' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Servicio creado exitosamente', type: servicio_entity_1.ServicioEntity }),
@@ -92,6 +93,7 @@ __decorate([
 ], ServiciosController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Patch)(':id'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiOperation)({ summary: 'Actualizar un servicio' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Servicio actualizado', type: servicio_entity_1.ServicioEntity }),
@@ -104,6 +106,7 @@ __decorate([
 ], ServiciosController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiOperation)({ summary: 'Eliminar un servicio' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Servicio eliminado' }),
@@ -115,6 +118,7 @@ __decorate([
 ], ServiciosController.prototype, "remove", null);
 __decorate([
     (0, common_1.Patch)(':id/estado'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiOperation)({ summary: 'Actualizar el estado de un servicio' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Estado actualizado', type: servicio_entity_1.ServicioEntity }),
@@ -129,7 +133,6 @@ __decorate([
 exports.ServiciosController = ServiciosController = __decorate([
     (0, swagger_1.ApiTags)('servicios'),
     (0, common_1.Controller)('servicios'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, swagger_1.ApiBearerAuth)(),
     __metadata("design:paramtypes", [servicios_service_1.ServiciosService])
 ], ServiciosController);

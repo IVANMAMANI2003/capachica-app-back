@@ -40,6 +40,7 @@ let TiposServicioController = class TiposServicioController {
 exports.TiposServicioController = TiposServicioController;
 __decorate([
     (0, common_1.Post)(),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('SuperAdmin'),
     (0, swagger_1.ApiOperation)({ summary: 'Crear un nuevo tipo de servicio' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Tipo de servicio creado exitosamente' }),
@@ -70,6 +71,7 @@ __decorate([
 ], TiposServicioController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Delete)(':id'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('SuperAdmin'),
     (0, swagger_1.ApiOperation)({ summary: 'Eliminar un tipo de servicio' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Tipo de servicio eliminado' }),
@@ -82,7 +84,6 @@ __decorate([
 exports.TiposServicioController = TiposServicioController = __decorate([
     (0, swagger_1.ApiTags)('tipos-servicio'),
     (0, common_1.Controller)('tipos-servicio'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, swagger_1.ApiBearerAuth)(),
     __metadata("design:paramtypes", [tipos_servicio_service_1.TiposServicioService])
 ], TiposServicioController);
