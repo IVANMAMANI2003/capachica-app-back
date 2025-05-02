@@ -19,13 +19,13 @@ interface RequestWithUser extends ExpressRequest {
 
 @ApiTags('emprendimientos')
 @Controller('emprendimientos')
-@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiBearerAuth()
 export class EmprendimientosController {
   constructor(private readonly emprendimientosService: EmprendimientosService) {}
 
   @Post()
   @Roles('emprendedor', 'SuperAdmin')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiOperation({ summary: 'Crear un nuevo emprendimiento' })
   @ApiResponse({ status: 201, description: 'Emprendimiento creado exitosamente', type: EmprendimientoEntity })
   @ApiResponse({ status: 400, description: 'Datos inválidos' })
@@ -42,6 +42,7 @@ export class EmprendimientosController {
   }
 
   @Get('mis-emprendimientos')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('emprendedor') 
   @ApiOperation({ summary: 'Obtener los emprendimientos del usuario autenticado' })
   @ApiResponse({ status: 200, description: 'Lista de emprendimientos del usuario', type: [EmprendimientoEntity] })
@@ -58,6 +59,7 @@ export class EmprendimientosController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('emprendedor', 'SuperAdmin')
   @ApiOperation({ summary: 'Actualizar un emprendimiento' })
   @ApiResponse({ status: 200, description: 'Emprendimiento actualizado', type: EmprendimientoEntity })
@@ -67,6 +69,7 @@ export class EmprendimientosController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('emprendedor', 'SuperAdmin')
   @ApiOperation({ summary: 'Eliminar un emprendimiento' })
   @ApiResponse({ status: 200, description: 'Emprendimiento eliminado' })
@@ -76,6 +79,7 @@ export class EmprendimientosController {
   }
 
   @Patch(':id/estado')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('SuperAdmin')
   @ApiOperation({ summary: 'Actualizar el estado de un emprendimiento' })
   @ApiResponse({ status: 200, description: 'Estado actualizado', type: EmprendimientoEntity })

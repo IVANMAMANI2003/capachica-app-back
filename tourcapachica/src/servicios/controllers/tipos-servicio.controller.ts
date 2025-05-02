@@ -8,12 +8,12 @@ import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagg
 
 @ApiTags('tipos-servicio')
 @Controller('tipos-servicio')
-@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiBearerAuth()
 export class TiposServicioController {
   constructor(private readonly tiposServicioService: TiposServicioService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('SuperAdmin')
   @ApiOperation({ summary: 'Crear un nuevo tipo de servicio' })
   @ApiResponse({ status: 201, description: 'Tipo de servicio creado exitosamente' })
@@ -39,6 +39,7 @@ export class TiposServicioController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('SuperAdmin')
   @ApiOperation({ summary: 'Eliminar un tipo de servicio' })
   @ApiResponse({ status: 200, description: 'Tipo de servicio eliminado' })

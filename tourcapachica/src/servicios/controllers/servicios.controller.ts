@@ -10,12 +10,12 @@ import { ServicioEntity } from '../entities/servicio.entity';
 
 @ApiTags('servicios')
 @Controller('servicios')
-@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiBearerAuth()
 export class ServiciosController {
   constructor(private readonly serviciosService: ServiciosService) {}
 
   @Post('emprendimiento/:emprendimientoId')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('emprendedor', 'SuperAdmin')
   @ApiOperation({ summary: 'Crear un nuevo servicio para un emprendimiento' })
   @ApiResponse({ status: 201, description: 'Servicio creado exitosamente', type: ServicioEntity })
@@ -52,6 +52,7 @@ export class ServiciosController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('emprendedor', 'SuperAdmin')
   @ApiOperation({ summary: 'Actualizar un servicio' })
   @ApiResponse({ status: 200, description: 'Servicio actualizado', type: ServicioEntity })
@@ -61,6 +62,7 @@ export class ServiciosController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('emprendedor', 'SuperAdmin')
   @ApiOperation({ summary: 'Eliminar un servicio' })
   @ApiResponse({ status: 200, description: 'Servicio eliminado' })
@@ -70,6 +72,7 @@ export class ServiciosController {
   }
 
   @Patch(':id/estado')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('emprendedor', 'SuperAdmin')
   @ApiOperation({ summary: 'Actualizar el estado de un servicio' })
   @ApiResponse({ status: 200, description: 'Estado actualizado', type: ServicioEntity })

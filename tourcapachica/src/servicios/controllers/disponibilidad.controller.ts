@@ -8,12 +8,12 @@ import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagg
 
 @ApiTags('disponibilidad')
 @Controller('disponibilidad')
-@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiBearerAuth()
 export class DisponibilidadController {
   constructor(private readonly disponibilidadService: DisponibilidadService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('emprendedor', 'SuperAdmin')
   @ApiOperation({ summary: 'Crear disponibilidad para un servicio' })
   @ApiResponse({ status: 201, description: 'Disponibilidad creada exitosamente' })
@@ -47,6 +47,7 @@ export class DisponibilidadController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('emprendedor', 'SuperAdmin')
   @ApiOperation({ summary: 'Actualizar una disponibilidad' })
   @ApiResponse({ status: 200, description: 'Disponibilidad actualizada' })
@@ -59,6 +60,7 @@ export class DisponibilidadController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('emprendedor', 'SuperAdmin')
   @ApiOperation({ summary: 'Eliminar una disponibilidad' })
   @ApiResponse({ status: 200, description: 'Disponibilidad eliminada' })
