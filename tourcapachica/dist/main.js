@@ -6,14 +6,11 @@ const swagger_1 = require("@nestjs/swagger");
 const app_module_1 = require("./app.module");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
-    const isProduction = process.env.NODE_ENV === 'production';
-    const allowedOrigins = isProduction
-        ? [process.env.CLIENT_URL_PROD, 'https://capachicaweb-eta.vercel.app']
-        : [process.env.CLIENT_URL_DEV, 'http://localhost:4200'];
     app.enableCors({
-        origin: allowedOrigins,
+        origin: ['http://localhost:4200', 'https://capachicaweb-eta.vercel.app'],
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
         credentials: true,
+        allowedHeaders: ['Content-Type', 'Authorization'],
     });
     app.useGlobalPipes(new common_1.ValidationPipe({
         whitelist: true,
