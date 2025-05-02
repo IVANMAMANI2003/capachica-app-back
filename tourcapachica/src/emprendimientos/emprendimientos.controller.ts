@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
+import { Request as ExpressRequest } from 'express';
 import { EmprendimientosService } from './emprendimientos.service';
 import { CreateEmprendimientoDto } from './dto/create-emprendimiento.dto';
 import { UpdateEmprendimientoDto } from './dto/update-emprendimiento.dto';
@@ -9,6 +10,12 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { EmprendimientoEntity } from './entities/emprendimiento.entity';
 import { FavoritoEntity } from './entities/favorito.entity';
+
+interface RequestWithUser extends ExpressRequest {
+  user: {
+    id: number;
+  };
+}
 
 @ApiTags('emprendimientos')
 @Controller('emprendimientos')
@@ -23,7 +30,7 @@ export class EmprendimientosController {
   @ApiResponse({ status: 201, description: 'Emprendimiento creado exitosamente', type: EmprendimientoEntity })
   @ApiResponse({ status: 400, description: 'Datos inválidos' })
   @ApiResponse({ status: 401, description: 'No autorizado' })
-  create(@Request() req, @Body() createEmprendimientoDto: CreateEmprendimientoDto) {
+  create(@Request() req: RequestWithUser, @Body() createEmprendimientoDto: CreateEmprendimientoDto) {
     return this.emprendimientosService.create(req.user.id, createEmprendimientoDto);
   }
 
@@ -38,7 +45,7 @@ export class EmprendimientosController {
   @Roles('emprendedor') 
   @ApiOperation({ summary: 'Obtener los emprendimientos del usuario autenticado' })
   @ApiResponse({ status: 200, description: 'Lista de emprendimientos del usuario', type: [EmprendimientoEntity] })
-  findMyEmprendimientos(@Request() req) {
+  findMyEmprendimientos(@Request() req: RequestWithUser) {
     return this.emprendimientosService.findByUsuario(req.user.id);
   }
 
@@ -83,7 +90,7 @@ export class EmprendimientosController {
   @ApiResponse({ status: 201, description: 'Emprendimiento marcado como favorito', type: FavoritoEntity })
   @ApiResponse({ status: 400, description: 'Datos inválidos o emprendimiento ya marcado como favorito' })
   @ApiResponse({ status: 404, description: 'Emprendimiento no encontrado' })
-  addFavorito(@Request() req, @Body() createFavoritoDto: CreateFavoritoDto) {
+  addFavorito(@Request() req: RequestWithUser, @Body() createFavoritoDto: CreateFavoritoDto) {
     return this.emprendimientosService.addFavorito(req.user.id, createFavoritoDto);
   }
 
@@ -91,21 +98,21 @@ export class EmprendimientosController {
   @ApiOperation({ summary: 'Eliminar un emprendimiento de favoritos' })
   @ApiResponse({ status: 200, description: 'Emprendimiento eliminado de favoritos' })
   @ApiResponse({ status: 404, description: 'Favorito no encontrado' })
-  removeFavorito(@Request() req, @Param('id') id: string) {
+  removeFavorito(@Request() req: RequestWithUser, @Param('id') id: string) {
     return this.emprendimientosService.removeFavorito(req.user.id, +id);
   }
 
   @Get('favoritos')
   @ApiOperation({ summary: 'Obtener los emprendimientos favoritos del usuario' })
   @ApiResponse({ status: 200, description: 'Lista de emprendimientos favoritos', type: [FavoritoEntity] })
-  getFavoritos(@Request() req) {
+  getFavoritos(@Request() req: RequestWithUser) {
     return this.emprendimientosService.getFavoritos(req.user.id);
   }
 
   @Get('favoritos/:id/check')
   @ApiOperation({ summary: 'Verificar si un emprendimiento está marcado como favorito' })
   @ApiResponse({ status: 200, description: 'Estado del favorito', type: Boolean })
-  isFavorito(@Request() req, @Param('id') id: string) {
+  isFavorito(@Request() req: RequestWithUser, @Param('id') id: string) {
     return this.emprendimientosService.isFavorito(req.user.id, +id);
   }
 } 

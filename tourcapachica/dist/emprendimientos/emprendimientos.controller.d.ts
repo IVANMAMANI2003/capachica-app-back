@@ -1,11 +1,17 @@
+import { Request as ExpressRequest } from 'express';
 import { EmprendimientosService } from './emprendimientos.service';
 import { CreateEmprendimientoDto } from './dto/create-emprendimiento.dto';
 import { UpdateEmprendimientoDto } from './dto/update-emprendimiento.dto';
 import { CreateFavoritoDto } from './dto/create-favorito.dto';
+interface RequestWithUser extends ExpressRequest {
+    user: {
+        id: number;
+    };
+}
 export declare class EmprendimientosController {
     private readonly emprendimientosService;
     constructor(emprendimientosService: EmprendimientosService);
-    create(req: any, createEmprendimientoDto: CreateEmprendimientoDto): Promise<{
+    create(req: RequestWithUser, createEmprendimientoDto: CreateEmprendimientoDto): Promise<{
         imagenes: {
             id: number;
             createdAt: Date;
@@ -111,7 +117,7 @@ export declare class EmprendimientosController {
         estado: string;
         fechaAprobacion: Date | null;
     }[]>;
-    findMyEmprendimientos(req: any): Promise<({
+    findMyEmprendimientos(req: RequestWithUser): Promise<({
         usuario: {
             persona: {
                 id: number;
@@ -297,7 +303,7 @@ export declare class EmprendimientosController {
         estado: string;
         fechaAprobacion: Date | null;
     }>;
-    addFavorito(req: any, createFavoritoDto: CreateFavoritoDto): Promise<{
+    addFavorito(req: RequestWithUser, createFavoritoDto: CreateFavoritoDto): Promise<{
         emprendimiento: {
             id: number;
             createdAt: Date;
@@ -322,14 +328,14 @@ export declare class EmprendimientosController {
         estado: string;
         emprendimientoId: number;
     }>;
-    removeFavorito(req: any, id: string): Promise<{
+    removeFavorito(req: RequestWithUser, id: string): Promise<{
         id: number;
         createdAt: Date;
         usuarioId: number;
         estado: string;
         emprendimientoId: number;
     }>;
-    getFavoritos(req: any): Promise<({
+    getFavoritos(req: RequestWithUser): Promise<({
         emprendimiento: {
             usuario: {
                 persona: {
@@ -383,5 +389,6 @@ export declare class EmprendimientosController {
         estado: string;
         emprendimientoId: number;
     })[]>;
-    isFavorito(req: any, id: string): Promise<boolean>;
+    isFavorito(req: RequestWithUser, id: string): Promise<boolean>;
 }
+export {};

@@ -1,14 +1,20 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
   // Configuración de CORS
+  const isProduction = process.env.NODE_ENV === 'production';
+
+  const allowedOrigin = isProduction
+    ? process.env.CLIENT_URL_PROD
+    : process.env.CLIENT_URL_DEV;
+  
   app.enableCors({
-    origin: process.env.CLIENT_URL || '*',
+    origin: allowedOrigin,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
