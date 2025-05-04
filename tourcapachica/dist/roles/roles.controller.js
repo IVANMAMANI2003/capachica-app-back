@@ -19,6 +19,9 @@ const create_role_dto_1 = require("./dto/create-role.dto");
 const update_role_dto_1 = require("./dto/update-role.dto");
 const swagger_1 = require("@nestjs/swagger");
 const assing_permission_dto_1 = require("../permissions/dto/assing-permission.dto");
+const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
+const roles_guard_1 = require("../auth/guards/roles.guard");
+const roles_decorator_1 = require("../auth/decorators/roles.decorator");
 let RolesController = class RolesController {
     constructor(rolesService) {
         this.rolesService = rolesService;
@@ -45,6 +48,9 @@ let RolesController = class RolesController {
 exports.RolesController = RolesController;
 __decorate([
     (0, common_1.Post)(),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('SuperAdmin'),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Crear un nuevo rol' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Rol creado exitosamente' }),
     __param(0, (0, common_1.Body)()),
@@ -72,6 +78,9 @@ __decorate([
 ], RolesController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Patch)(':id'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('SuperAdmin'),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Actualizar un rol' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Rol actualizado exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Rol no encontrado' }),
@@ -83,6 +92,9 @@ __decorate([
 ], RolesController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('SuperAdmin'),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Eliminar un rol' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Rol eliminado exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Rol no encontrado' }),
@@ -93,6 +105,9 @@ __decorate([
 ], RolesController.prototype, "remove", null);
 __decorate([
     (0, common_1.Post)(':id/permissions'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('SuperAdmin'),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Asignar un permiso a un rol' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Permiso asignado exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Rol no encontrado' }),

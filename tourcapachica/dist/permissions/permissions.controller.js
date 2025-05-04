@@ -18,6 +18,9 @@ const permissions_service_1 = require("./permissions.service");
 const create_permission_dto_1 = require("./dto/create-permission.dto");
 const update_permission_dto_1 = require("./dto/update-permission.dto");
 const swagger_1 = require("@nestjs/swagger");
+const roles_decorator_1 = require("../auth/decorators/roles.decorator");
+const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
+const roles_guard_1 = require("../auth/guards/roles.guard");
 let PermissionsController = class PermissionsController {
     constructor(permissionsService) {
         this.permissionsService = permissionsService;
@@ -41,6 +44,9 @@ let PermissionsController = class PermissionsController {
 exports.PermissionsController = PermissionsController;
 __decorate([
     (0, common_1.Post)(),
+    (0, roles_decorator_1.Roles)('SuperAdmin'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Crear un nuevo permiso' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Permiso creado exitosamente' }),
     __param(0, (0, common_1.Body)()),
@@ -68,6 +74,9 @@ __decorate([
 ], PermissionsController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Patch)(':id'),
+    (0, roles_decorator_1.Roles)('SuperAdmin'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Actualizar un permiso' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Permiso actualizado exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Permiso no encontrado' }),
@@ -79,6 +88,9 @@ __decorate([
 ], PermissionsController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
+    (0, roles_decorator_1.Roles)('SuperAdmin'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Eliminar un permiso' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Permiso eliminado exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Permiso no encontrado' }),

@@ -1,8 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { PermissionsService } from './permissions.service';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { Roles } from '@/auth/decorators/roles.decorator';
+import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
+import { RolesGuard } from '@/auth/guards/roles.guard';
 
 @ApiTags('permissions')
 @Controller('permissions')
@@ -10,6 +13,9 @@ export class PermissionsController {
   constructor(private readonly permissionsService: PermissionsService) {}
 
   @Post()
+  @Roles('SuperAdmin')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Crear un nuevo permiso' })
   @ApiResponse({ status: 201, description: 'Permiso creado exitosamente' })
   create(@Body() createPermissionDto: CreatePermissionDto) {
@@ -32,6 +38,9 @@ export class PermissionsController {
   }
 
   @Patch(':id')
+  @Roles('SuperAdmin')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar un permiso' })
   @ApiResponse({ status: 200, description: 'Permiso actualizado exitosamente' })
   @ApiResponse({ status: 404, description: 'Permiso no encontrado' })
@@ -40,6 +49,9 @@ export class PermissionsController {
   }
 
   @Delete(':id')
+  @Roles('SuperAdmin')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Eliminar un permiso' })
   @ApiResponse({ status: 200, description: 'Permiso eliminado exitosamente' })
   @ApiResponse({ status: 404, description: 'Permiso no encontrado' })

@@ -1,9 +1,11 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateDisponibilidadDto, EstadoDisponibilidad } from './dto/create-disponibilidad.dto';
 import { UpdateDisponibilidadDto } from './dto/update-disponibilidad.dto';
 import { CreatePaqueteTuristicoDto } from './dto/create-paquete-turistico.dto';
 import { UpdatePaqueteTuristicoDto } from './dto/update-paquete-turistico.dto';
+import { AddServiciosDto } from './dto/add-servicios.dto';
+import { EstadisticasPaqueteDto } from './dto/estadisticas.dto';
 
 @Injectable()
 export class PaquetesTuristicosService {
@@ -288,5 +290,207 @@ export class PaquetesTuristicosService {
     return this.prisma.paqueteTuristico.delete({
       where: { id },
     });
+  }
+
+  async verificarPropiedad(paqueteId: number, usuarioId: number) {
+    const paquete = await this.prisma.paqueteTuristico.findUnique({
+      where: { id: paqueteId },
+      include: { emprendimiento: true }
+    });
+    
+    if (!paquete) {
+      throw new NotFoundException(`Paquete turístico con ID ${paqueteId} no encontrado`);
+    }
+
+    if (paquete.emprendimiento.usuarioId !== usuarioId) {
+      throw new ForbiddenException('No tienes permiso para modificar este paquete');
+    }
+  }
+
+  async addServicios(paqueteId: number, addServiciosDto: AddServiciosDto, usuarioId: number) {
+    await this.verificarPropiedad(paqueteId, usuarioId);
+
+    // Verificar que los servicios existen
+    const serviciosIds = addServiciosDto.servicios.map(s => s.servicioId);
+    const servicios = await this.prisma.servicio.findMany({
+      where: { id: { in: serviciosIds } }
+    });
+
+    if (servicios.length !== serviciosIds.length) {
+      throw new NotFoundException('Uno o más servicios no existen');
+    }
+
+    // Eliminar servicios existentes
+    await this.prisma.servicioPaquete.deleteMany({
+      where: { paqueteTuristicoId: paqueteId }
+    });
+
+    // Agregar nuevos servicios
+    const serviciosPaquete = await this.prisma.servicioPaquete.createMany({
+      data: addServiciosDto.servicios.map(s => ({
+        paqueteTuristicoId: paqueteId,
+        servicioId: s.servicioId,
+        orden: s.orden
+      }))
+    });
+
+    return this.findOne(paqueteId);
+  }
+
+  async removeServicio(paqueteId: number, servicioId: number, usuarioId: number) {
+    await this.verificarPropiedad(paqueteId, usuarioId);
+
+    const servicioPaquete = await this.prisma.servicioPaquete.findFirst({
+      where: {
+        paqueteTuristicoId: paqueteId,
+        servicioId: servicioId
+      }
+    });
+
+    if (!servicioPaquete) {
+      throw new NotFoundException('El servicio no está asociado a este paquete');
+    }
+
+    await this.prisma.servicioPaquete.delete({
+      where: { id: servicioPaquete.id }
+    });
+
+    return this.findOne(paqueteId);
+  }
+
+  async getEstadisticas(paqueteId: number, usuarioId: number): Promise<EstadisticasPaqueteDto> {
+    await this.verificarPropiedad(paqueteId, usuarioId);
+
+    const [servicios, resenas] = await Promise.all([
+      this.prisma.servicioPaquete.findMany({
+        where: { paqueteTuristicoId: paqueteId },
+        include: { 
+          servicio: {
+            include: {
+              itinerariosReserva: {
+                include: {
+                  reserva: {
+                    include: { pagos: true }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }),
+      this.prisma.resena.findMany({
+        where: { 
+          tipoObjeto: 'PAQUETE_TURISTICO'
+        }
+      })
+    ]);
+
+    const reservas = servicios.flatMap(sp => 
+      sp.servicio.itinerariosReserva.map(ir => ir.reserva)
+    );
+
+    const totalReservas = reservas.length;
+    const totalIngresos = reservas.reduce((sum, r) => 
+      sum + (r.pagos?.reduce((pSum, p) => pSum + Number(p.montoTotal), 0) || 0), 0);
+    
+    const promedioCalificacion = resenas.length > 0
+      ? resenas.reduce((sum, r) => sum + r.calificacion, 0) / resenas.length
+      : 0;
+
+    const serviciosPopulares = await this.prisma.servicioPaquete.groupBy({
+      by: ['servicioId'],
+      where: { paqueteTuristicoId: paqueteId },
+      _count: true,
+      orderBy: { _count: { servicioId: 'desc' } },
+      take: 5
+    });
+
+    const estadisticasMensuales = await this.prisma.reserva.groupBy({
+      by: ['fechaReserva'],
+      where: { 
+        itinerarios: {
+          some: {
+            servicio: {
+              serviciosPaquetes: {
+                some: {
+                  paqueteTuristicoId: paqueteId
+                }
+              }
+            }
+          }
+        }
+      },
+      _count: true,
+      _sum: { precioTotal: true }
+    });
+
+    return {
+      totalReservas,
+      totalIngresos,
+      promedioCalificacion,
+      totalResenas: resenas.length,
+      tasaOcupacion: totalReservas / (servicios.length * 30), // Aproximación
+      serviciosPopulares: await Promise.all(serviciosPopulares.map(async (sp) => {
+        const servicio = await this.prisma.servicio.findUnique({
+          where: { id: sp.servicioId }
+        });
+        return {
+          servicioId: sp.servicioId,
+          nombre: servicio.nombre,
+          totalReservas: sp._count
+        };
+      })),
+      estadisticasMensuales: estadisticasMensuales.map(em => ({
+        mes: em.fechaReserva.toISOString().slice(0, 7),
+        totalReservas: em._count,
+        totalIngresos: Number(em._sum.precioTotal || 0)
+      }))
+    };
+  }
+
+  async exportarDatos(paqueteId: number, usuarioId: number) {
+    await this.verificarPropiedad(paqueteId, usuarioId);
+
+    const [paquete, servicios, disponibilidades] = await Promise.all([
+      this.findOne(paqueteId),
+      this.prisma.servicioPaquete.findMany({
+        where: { paqueteTuristicoId: paqueteId },
+        include: {
+          servicio: {
+            include: {
+              itinerariosReserva: {
+                include: {
+                  reserva: {
+                    include: {
+                      pagos: true,
+                      turista: {
+                        include: {
+                          usuario: {
+                            include: { persona: true }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }),
+      this.prisma.disponibilidadPaquete.findMany({
+        where: { paqueteId }
+      })
+    ]);
+
+    const reservas = servicios.flatMap(sp => 
+      sp.servicio.itinerariosReserva.map(ir => ir.reserva)
+    );
+
+    return {
+      paquete,
+      reservas,
+      disponibilidades
+    };
   }
 } 

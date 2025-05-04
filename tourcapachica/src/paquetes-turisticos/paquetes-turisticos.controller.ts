@@ -1,12 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, UseGuards, Req } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { PaquetesTuristicosService } from './paquetes-turisticos.service';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { CreateDisponibilidadDto } from './dto/create-disponibilidad.dto';
 import { UpdateDisponibilidadDto } from './dto/update-disponibilidad.dto';
+import { CreatePaqueteTuristicoDto } from './dto/create-paquete-turistico.dto';
+import { UpdatePaqueteTuristicoDto } from './dto/update-paquete-turistico.dto';
+import { AddServiciosDto } from './dto/add-servicios.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Role } from '../auth/enums/role.enum';
 
 @ApiTags('paquetes-turisticos')
 @Controller('paquetes-turisticos')
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class PaquetesTuristicosController {
   constructor(private readonly paquetesTuristicosService: PaquetesTuristicosService) {}
 
@@ -60,5 +67,77 @@ export class PaquetesTuristicosController {
   @ApiResponse({ status: 404, description: 'Disponibilidad no encontrada' })
   deleteDisponibilidad(@Param('id', ParseIntPipe) id: number) {
     return this.paquetesTuristicosService.deleteDisponibilidad(id);
+  }
+
+  @Post(':id/servicios')
+  @Roles(Role.EMPRENDEDOR)
+  @ApiOperation({ summary: 'Agregar servicios a un paquete turístico' })
+  @ApiResponse({ status: 200, description: 'Servicios agregados exitosamente' })
+  @ApiResponse({ status: 404, description: 'Paquete o servicios no encontrados' })
+  @ApiResponse({ status: 403, description: 'No autorizado' })
+  @ApiBearerAuth()
+  async addServicios(
+    @Param('id') id: string,
+    @Body() addServiciosDto: AddServiciosDto,
+    @Req() req: any
+  ) {
+    return this.paquetesTuristicosService.addServicios(
+      parseInt(id),
+      addServiciosDto,
+      req.user.id
+    );
+  }
+
+  @Delete(':id/servicios/:servicioId')
+  @Roles(Role.EMPRENDEDOR)
+  @ApiOperation({ summary: 'Eliminar un servicio de un paquete turístico' })
+  @ApiResponse({ status: 200, description: 'Servicio eliminado exitosamente' })
+  @ApiResponse({ status: 404, description: 'Paquete o servicio no encontrado' })
+  @ApiResponse({ status: 403, description: 'No autorizado' })
+  @ApiBearerAuth()
+  async removeServicio(
+    @Param('id') id: string,
+    @Param('servicioId') servicioId: string,
+    @Req() req: any
+  ) {
+    return this.paquetesTuristicosService.removeServicio(
+      parseInt(id),
+      parseInt(servicioId),
+      req.user.id
+    );
+  }
+
+  @Get(':id/estadisticas')
+  @Roles(Role.EMPRENDEDOR)
+  @ApiOperation({ summary: 'Obtener estadísticas de un paquete turístico' })
+  @ApiResponse({ status: 200, description: 'Estadísticas obtenidas exitosamente' })
+  @ApiResponse({ status: 404, description: 'Paquete no encontrado' })
+  @ApiResponse({ status: 403, description: 'No autorizado' })
+  @ApiBearerAuth()
+  async getEstadisticas(
+    @Param('id') id: string,
+    @Req() req: any
+  ) {
+    return this.paquetesTuristicosService.getEstadisticas(
+      parseInt(id),
+      req.user.id
+    );
+  }
+
+  @Get(':id/exportar')
+  @Roles(Role.EMPRENDEDOR)
+  @ApiOperation({ summary: 'Exportar datos de un paquete turístico' })
+  @ApiResponse({ status: 200, description: 'Datos exportados exitosamente' })
+  @ApiResponse({ status: 404, description: 'Paquete no encontrado' })
+  @ApiResponse({ status: 403, description: 'No autorizado' })
+  @ApiBearerAuth()
+  async exportarDatos(
+    @Param('id') id: string,
+    @Req() req: any
+  ) {
+    return this.paquetesTuristicosService.exportarDatos(
+      parseInt(id),
+      req.user.id
+    );
   }
 } 

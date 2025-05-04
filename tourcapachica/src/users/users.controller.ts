@@ -12,7 +12,7 @@ import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @ApiTags('users')
 @Controller('users')
-@ApiBearerAuth()
+
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -70,6 +70,7 @@ export class UsersController {
   @Post(':id/reset-password')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('SuperAdmin', 'Admin')
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Restablecer contraseña de un usuario (solo Admin)' })
   @ApiResponse({ status: 200, description: 'Contraseña restablecida exitosamente' })
   @ApiResponse({ status: 404, description: 'Usuario no encontrado' })
@@ -92,6 +93,7 @@ export class UsersController {
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('SuperAdmin')
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Crear un nuevo usuario (solo SuperAdmin)' })
   @ApiResponse({ status: 201, description: 'Usuario creado exitosamente' })
   @ApiResponse({ status: 400, description: 'Datos inválidos o usuario ya existe' })
@@ -112,6 +114,7 @@ export class UsersController {
   @Get()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('SuperAdmin')
+  @ApiBearerAuth()
   findAll() {
     return this.usersService.findAll();
   }
@@ -119,6 +122,7 @@ export class UsersController {
   @Get(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('SuperAdmin')
+  @ApiBearerAuth()
   findOne(@Param('id') id: string) {
     return this.usersService.findById(+id);
   }
@@ -126,6 +130,7 @@ export class UsersController {
   @Patch(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
+  @ApiBearerAuth()
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
   }
@@ -133,6 +138,7 @@ export class UsersController {
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('SuperAdmin')
+  @ApiBearerAuth()
   remove(@Param('id') id: string) {
     return this.usersService.delete(+id);
   }
@@ -140,6 +146,7 @@ export class UsersController {
   @Post(':userId/roles/:roleId')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('SuperAdmin')
+  @ApiBearerAuth()
   assignRole(@Param('userId') userId: string, @Param('roleId') roleId: string) {
     return this.usersService.assignRole(+userId, +roleId);
   }
@@ -147,6 +154,7 @@ export class UsersController {
   @Delete(':userId/roles/:roleId')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('SuperAdmin')
+  @ApiBearerAuth()
   removeRole(@Param('userId') userId: string, @Param('roleId') roleId: string) {
     return this.usersService.removeRole(+userId, +roleId);
   }

@@ -67,6 +67,7 @@ __decorate([
     (0, common_1.Post)(),
     (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Crear un nuevo emprendimiento' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Emprendimiento creado exitosamente', type: emprendimiento_entity_1.EmprendimientoEntity }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
@@ -87,8 +88,9 @@ __decorate([
 ], EmprendimientosController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)('mis-emprendimientos'),
+    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('emprendedor'),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Obtener los emprendimientos del usuario autenticado' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Lista de emprendimientos del usuario', type: [emprendimiento_entity_1.EmprendimientoEntity] }),
     __param(0, (0, common_1.Request)()),
@@ -108,8 +110,9 @@ __decorate([
 ], EmprendimientosController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Patch)(':id'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Actualizar un emprendimiento' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Emprendimiento actualizado', type: emprendimiento_entity_1.EmprendimientoEntity }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Emprendimiento no encontrado' }),
@@ -121,8 +124,9 @@ __decorate([
 ], EmprendimientosController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Eliminar un emprendimiento' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Emprendimiento eliminado' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Emprendimiento no encontrado' }),
@@ -133,8 +137,9 @@ __decorate([
 ], EmprendimientosController.prototype, "remove", null);
 __decorate([
     (0, common_1.Patch)(':id/estado'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('SuperAdmin'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Actualizar el estado de un emprendimiento' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Estado actualizado', type: emprendimiento_entity_1.EmprendimientoEntity }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Emprendimiento no encontrado' }),
@@ -189,7 +194,6 @@ __decorate([
 exports.EmprendimientosController = EmprendimientosController = __decorate([
     (0, swagger_1.ApiTags)('emprendimientos'),
     (0, common_1.Controller)('emprendimientos'),
-    (0, swagger_1.ApiBearerAuth)(),
     __metadata("design:paramtypes", [emprendimientos_service_1.EmprendimientosService])
 ], EmprendimientosController);
 //# sourceMappingURL=emprendimientos.controller.js.map

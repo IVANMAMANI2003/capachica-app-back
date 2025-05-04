@@ -9,6 +9,8 @@ export declare class UsersController {
     constructor(usersService: UsersService);
     register(registerUserDto: RegisterUserDto): Promise<{
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -19,8 +21,6 @@ export declare class UsersController {
         estaActivo: boolean;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     requestPasswordReset(requestPasswordResetDto: RequestPasswordResetDto): Promise<{
         message: string;
@@ -37,6 +37,8 @@ export declare class UsersController {
     }>;
     create(createUserDto: CreateUserDto): Promise<{
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -47,8 +49,6 @@ export declare class UsersController {
         estaActivo: boolean;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     findAll(): Promise<({
         usuariosRoles: ({
@@ -63,11 +63,13 @@ export declare class UsersController {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            rolId: number;
             usuarioId: number;
+            rolId: number;
         })[];
     } & {
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -78,8 +80,6 @@ export declare class UsersController {
         estaActivo: boolean;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue;
-        createdAt: Date;
-        updatedAt: Date;
     })[]>;
     findOne(id: string): Promise<{
         usuariosRoles: ({
@@ -94,11 +94,13 @@ export declare class UsersController {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            rolId: number;
             usuarioId: number;
+            rolId: number;
         })[];
     } & {
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -109,11 +111,11 @@ export declare class UsersController {
         estaActivo: boolean;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     update(id: string, updateUserDto: UpdateUserDto): Promise<{
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -124,11 +126,11 @@ export declare class UsersController {
         estaActivo: boolean;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     remove(id: string): Promise<{
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -139,15 +141,13 @@ export declare class UsersController {
         estaActivo: boolean;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     assignRole(userId: string, roleId: string): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        rolId: number;
         usuarioId: number;
+        rolId: number;
     }>;
     removeRole(userId: string, roleId: string): Promise<import(".prisma/client").Prisma.BatchPayload>;
 }
