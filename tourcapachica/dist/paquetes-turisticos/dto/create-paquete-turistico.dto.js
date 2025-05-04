@@ -13,6 +13,18 @@ exports.CreatePaqueteTuristicoDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const estado_paquete_enum_1 = require("../enums/estado-paquete.enum");
+class ImageDto {
+}
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'URL de la imagen',
+        example: 'https://example.com/imagen.jpg',
+        required: true,
+    }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], ImageDto.prototype, "url", void 0);
 class CreatePaqueteTuristicoDto {
 }
 exports.CreatePaqueteTuristicoDto = CreatePaqueteTuristicoDto;
@@ -42,12 +54,6 @@ __decorate([
     __metadata("design:type", Number)
 ], CreatePaqueteTuristicoDto.prototype, "emprendimientoId", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'URL de la imagen principal', required: false }),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], CreatePaqueteTuristicoDto.prototype, "imagenUrl", void 0);
-__decorate([
     (0, swagger_1.ApiProperty)({ description: 'Cupos máximos del paquete', required: false }),
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsOptional)(),
@@ -60,9 +66,8 @@ __decorate([
     __metadata("design:type", Number)
 ], CreatePaqueteTuristicoDto.prototype, "duracion", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'URLs de imágenes adicionales', required: false, type: [String] }),
+    (0, swagger_1.ApiProperty)({ description: 'Imágenes del paquete', type: [ImageDto], required: false }),
     (0, class_validator_1.IsArray)(),
-    (0, class_validator_1.IsString)({ each: true }),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Array)
 ], CreatePaqueteTuristicoDto.prototype, "imagenes", void 0);

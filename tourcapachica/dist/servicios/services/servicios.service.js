@@ -60,7 +60,7 @@ let ServiciosService = class ServiciosService {
                 });
                 await Promise.all(imagenesPromises);
             }
-            return this.prisma.servicio.findUnique({
+            const servicioConImagenes = await this.prisma.servicio.findUnique({
                 where: { id: servicio.id },
                 include: {
                     tipoServicio: true,
@@ -71,6 +71,13 @@ let ServiciosService = class ServiciosService {
                     },
                 },
             });
+            const imagenes = await this.prisma.image.findMany({
+                where: {
+                    imageableId: servicio.id,
+                    imageableType: 'Servicio',
+                },
+            });
+            return Object.assign(Object.assign({}, servicioConImagenes), { imagenes });
         }
         catch (error) {
             if (error instanceof common_1.NotFoundException) {

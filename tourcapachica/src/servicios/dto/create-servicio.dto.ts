@@ -2,6 +2,11 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsOptional, IsEnum, IsNumber, IsJSON, MaxLength, Min, IsArray } from 'class-validator';
 
 class ImageDto {
+  @ApiProperty({
+    description: 'URL de la imagen',
+    example: 'https://example.com/imagen.jpg',
+    required: true,
+  })
   @IsString()
   @IsNotEmpty()
   url: string;
@@ -84,8 +89,8 @@ export class CreateServicioDto {
 
   @ApiProperty({
     description: 'Imágenes del servicio',
+    type: [ImageDto],
     required: false,
-    type: [ImageDto]
   })
   @IsArray()
   @IsOptional()

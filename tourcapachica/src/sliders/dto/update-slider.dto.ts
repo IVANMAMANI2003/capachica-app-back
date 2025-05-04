@@ -6,7 +6,7 @@ class ImageDto {
   @IsNotEmpty()
   url: string;
 }
-
+ 
 export class UpdateSliderDto {
   @ApiProperty({
     description: 'Nombre del slider',

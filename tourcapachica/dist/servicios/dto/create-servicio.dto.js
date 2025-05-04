@@ -15,6 +15,11 @@ const class_validator_1 = require("class-validator");
 class ImageDto {
 }
 __decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'URL de la imagen',
+        example: 'https://example.com/imagen.jpg',
+        required: true,
+    }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
@@ -110,8 +115,8 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Imágenes del servicio',
+        type: [ImageDto],
         required: false,
-        type: [ImageDto]
     }),
     (0, class_validator_1.IsArray)(),
     (0, class_validator_1.IsOptional)(),

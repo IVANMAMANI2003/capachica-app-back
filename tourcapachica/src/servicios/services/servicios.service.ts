@@ -63,7 +63,7 @@ export class ServiciosService {
       }
 
       // Obtener el servicio con sus imágenes
-      return this.prisma.servicio.findUnique({
+      const servicioConImagenes = await this.prisma.servicio.findUnique({
         where: { id: servicio.id },
         include: {
           tipoServicio: true,
@@ -74,6 +74,19 @@ export class ServiciosService {
           },
         },
       });
+
+      // Obtener las imágenes asociadas
+      const imagenes = await this.prisma.image.findMany({
+        where: {
+          imageableId: servicio.id,
+          imageableType: 'Servicio',
+        },
+      });
+
+      return {
+        ...servicioConImagenes,
+        imagenes,
+      };
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw error;

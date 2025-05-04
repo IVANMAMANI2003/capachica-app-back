@@ -1,6 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNumber, IsBoolean, IsOptional, IsArray, IsEnum } from 'class-validator';
+import { IsString, IsNumber, IsBoolean, IsOptional, IsArray, IsEnum, IsNotEmpty } from 'class-validator';
 import { EstadoPaquete } from '../enums/estado-paquete.enum';
+
+class ImageDto {
+  @ApiProperty({
+    description: 'URL de la imagen',
+    example: 'https://example.com/imagen.jpg',
+    required: true,
+  })
+  @IsString()
+  @IsNotEmpty()
+  url: string;
+}
 
 export class CreatePaqueteTuristicoDto {
   @ApiProperty({ description: 'Nombre del paquete turístico' })
@@ -23,11 +34,6 @@ export class CreatePaqueteTuristicoDto {
   @IsNumber()
   emprendimientoId: number;
 
-  @ApiProperty({ description: 'URL de la imagen principal', required: false })
-  @IsString()
-  @IsOptional()
-  imagenUrl?: string;
-
   @ApiProperty({ description: 'Cupos máximos del paquete', required: false })
   @IsNumber()
   @IsOptional()
@@ -38,9 +44,8 @@ export class CreatePaqueteTuristicoDto {
   @IsOptional()
   duracion?: number;
 
-  @ApiProperty({ description: 'URLs de imágenes adicionales', required: false, type: [String] })
+  @ApiProperty({ description: 'Imágenes del paquete', type: [ImageDto], required: false })
   @IsArray()
-  @IsString({ each: true })
   @IsOptional()
-  imagenes?: string[];
+  imagenes?: ImageDto[];
 } 
