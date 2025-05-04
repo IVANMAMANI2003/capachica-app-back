@@ -16,9 +16,6 @@ export declare class LugaresTuristicosService {
         id: number;
         nombre: string;
         descripcion: string;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
         direccion: string;
         coordenadas: string;
         horarioApertura: Date | null;
@@ -27,6 +24,9 @@ export declare class LugaresTuristicosService {
         recomendaciones: string | null;
         restricciones: string | null;
         esDestacado: boolean;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     findAll(): Promise<{
         imagenes: {
@@ -40,9 +40,6 @@ export declare class LugaresTuristicosService {
         id: number;
         nombre: string;
         descripcion: string;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
         direccion: string;
         coordenadas: string;
         horarioApertura: Date | null;
@@ -51,6 +48,9 @@ export declare class LugaresTuristicosService {
         recomendaciones: string | null;
         restricciones: string | null;
         esDestacado: boolean;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
     }[]>;
     findOne(id: number): Promise<{
         imagenes: {
@@ -64,9 +64,6 @@ export declare class LugaresTuristicosService {
         id: number;
         nombre: string;
         descripcion: string;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
         direccion: string;
         coordenadas: string;
         horarioApertura: Date | null;
@@ -75,6 +72,9 @@ export declare class LugaresTuristicosService {
         recomendaciones: string | null;
         restricciones: string | null;
         esDestacado: boolean;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     update(id: number, updateLugarTuristicoDto: UpdateLugarTuristicoDto): Promise<{
         imagenes: {
@@ -88,9 +88,6 @@ export declare class LugaresTuristicosService {
         id: number;
         nombre: string;
         descripcion: string;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
         direccion: string;
         coordenadas: string;
         horarioApertura: Date | null;
@@ -99,14 +96,14 @@ export declare class LugaresTuristicosService {
         recomendaciones: string | null;
         restricciones: string | null;
         esDestacado: boolean;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     remove(id: number): Promise<{
         id: number;
         nombre: string;
         descripcion: string;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
         direccion: string;
         coordenadas: string;
         horarioApertura: Date | null;
@@ -115,14 +112,14 @@ export declare class LugaresTuristicosService {
         recomendaciones: string | null;
         restricciones: string | null;
         esDestacado: boolean;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     findDestacados(): Promise<{
         id: number;
         nombre: string;
         descripcion: string;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
         direccion: string;
         coordenadas: string;
         horarioApertura: Date | null;
@@ -131,5 +128,8 @@ export declare class LugaresTuristicosService {
         recomendaciones: string | null;
         restricciones: string | null;
         esDestacado: boolean;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
     }[]>;
 }

@@ -10,21 +10,30 @@ export class LugaresTuristicosService {
   async create(createLugarTuristicoDto: CreateLugarTuristicoDto) {
     const { imagenes, ...lugarData } = createLugarTuristicoDto;
     
-    const lugar = await this.prisma.lugarTuristico.create({
-      data: lugarData,
-    });
-
-    if (imagenes && imagenes.length > 0) {
-      await this.prisma.image.createMany({
-        data: imagenes.map(img => ({
-          url: img.url,
-          imageableId: lugar.id,
-          imageableType: 'LugarTuristico',
-        })),
+    try {
+      const lugar = await this.prisma.lugarTuristico.create({
+        data: {
+          ...lugarData,
+          estado: lugarData.estado || 'activo',
+          esDestacado: lugarData.esDestacado || false,
+        },
       });
-    }
 
-    return this.findOne(lugar.id);
+      if (imagenes && imagenes.length > 0) {
+        await this.prisma.image.createMany({
+          data: imagenes.map(img => ({
+            url: img.url,
+            imageableId: lugar.id,
+            imageableType: 'LugarTuristico',
+          })),
+        });
+      }
+
+      return this.findOne(lugar.id);
+    } catch (error) {
+      console.error('Error al crear lugar turístico:', error);
+      throw error;
+    }
   }
 
   async findAll() {
