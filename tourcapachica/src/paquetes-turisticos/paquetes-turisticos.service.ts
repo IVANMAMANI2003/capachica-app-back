@@ -13,14 +13,14 @@ export class PaquetesTuristicosService {
 
   async create(createPaqueteTuristicoDto: CreatePaqueteTuristicoDto) {
     try {
-      // Convertir el estado a minúsculas para coincidir con el schema
-      const data = {
-        ...createPaqueteTuristicoDto,
-        estado: createPaqueteTuristicoDto.estado.toLowerCase(),
-      };
-
+      // Extraer solo los campos que existen en el schema
+      const { imagenes, ...paqueteData } = createPaqueteTuristicoDto;
+      
       const paquete = await this.prisma.paqueteTuristico.create({
-        data,
+        data: {
+          ...paqueteData,
+          estado: paqueteData.estado.toLowerCase(),
+        },
         include: {
           servicios: {
             include: {
@@ -31,8 +31,8 @@ export class PaquetesTuristicosService {
       });
 
       // Crear las imágenes si existen
-      if (createPaqueteTuristicoDto.imagenes && createPaqueteTuristicoDto.imagenes.length > 0) {
-        const imagenesPromises = createPaqueteTuristicoDto.imagenes.map(async (imagen) => {
+      if (imagenes && imagenes.length > 0) {
+        const imagenesPromises = imagenes.map(async (imagen) => {
           return this.prisma.image.create({
             data: {
               url: imagen.url,
@@ -58,7 +58,7 @@ export class PaquetesTuristicosService {
       });
 
       // Obtener las imágenes asociadas
-      const imagenes = await this.prisma.image.findMany({
+      const imagenesAsociadas = await this.prisma.image.findMany({
         where: {
           imageableId: paquete.id,
           imageableType: 'PaqueteTuristico',
@@ -67,7 +67,7 @@ export class PaquetesTuristicosService {
 
       return {
         ...paqueteConImagenes,
-        imagenes,
+        imagenes: imagenesAsociadas,
       };
     } catch (error) {
       throw new BadRequestException('Error al crear el paquete turístico: ' + error.message);

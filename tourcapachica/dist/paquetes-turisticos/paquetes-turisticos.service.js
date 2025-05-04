@@ -8,6 +8,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PaquetesTuristicosService = void 0;
 const common_1 = require("@nestjs/common");
@@ -18,9 +29,9 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
     }
     async create(createPaqueteTuristicoDto) {
         try {
-            const data = Object.assign(Object.assign({}, createPaqueteTuristicoDto), { estado: createPaqueteTuristicoDto.estado.toLowerCase() });
+            const { imagenes } = createPaqueteTuristicoDto, paqueteData = __rest(createPaqueteTuristicoDto, ["imagenes"]);
             const paquete = await this.prisma.paqueteTuristico.create({
-                data,
+                data: Object.assign(Object.assign({}, paqueteData), { estado: paqueteData.estado.toLowerCase() }),
                 include: {
                     servicios: {
                         include: {
@@ -29,8 +40,8 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
                     },
                 },
             });
-            if (createPaqueteTuristicoDto.imagenes && createPaqueteTuristicoDto.imagenes.length > 0) {
-                const imagenesPromises = createPaqueteTuristicoDto.imagenes.map(async (imagen) => {
+            if (imagenes && imagenes.length > 0) {
+                const imagenesPromises = imagenes.map(async (imagen) => {
                     return this.prisma.image.create({
                         data: {
                             url: imagen.url,
@@ -51,13 +62,13 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
                     },
                 },
             });
-            const imagenes = await this.prisma.image.findMany({
+            const imagenesAsociadas = await this.prisma.image.findMany({
                 where: {
                     imageableId: paquete.id,
                     imageableType: 'PaqueteTuristico',
                 },
             });
-            return Object.assign(Object.assign({}, paqueteConImagenes), { imagenes });
+            return Object.assign(Object.assign({}, paqueteConImagenes), { imagenes: imagenesAsociadas });
         }
         catch (error) {
             throw new common_1.BadRequestException('Error al crear el paquete turístico: ' + error.message);
