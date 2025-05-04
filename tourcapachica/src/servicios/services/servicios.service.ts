@@ -6,39 +6,80 @@ import { CreateServicioDisponibilidadDto } from '../dto/create-servicio-disponib
 
 @Injectable()
 export class ServiciosService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+  ) {}
 
   async create(emprendimientoId: number, createServicioDto: CreateServicioDto) {
-    // Verificar si existe el tipo de servicio
-    const tipoServicio = await this.prisma.tipoServicio.findUnique({
-      where: { id: createServicioDto.tipoServicioId },
-    });
+    try {
+      // Verificar si existe el tipo de servicio
+      const tipoServicio = await this.prisma.tipoServicio.findUnique({
+        where: { id: createServicioDto.tipoServicioId },
+      });
 
-    if (!tipoServicio) {
-      throw new NotFoundException(`Tipo de servicio con ID ${createServicioDto.tipoServicioId} no encontrado`);
+      if (!tipoServicio) {
+        throw new NotFoundException(`Tipo de servicio con ID ${createServicioDto.tipoServicioId} no encontrado`);
+      }
+
+      // Crear el servicio
+      const servicio = await this.prisma.servicio.create({
+        data: {
+          tipoServicioId: createServicioDto.tipoServicioId,
+          nombre: createServicioDto.nombre,
+          descripcion: createServicioDto.descripcion,
+          precioBase: createServicioDto.precioBase,
+          moneda: createServicioDto.moneda,
+          estado: createServicioDto.estado || 'activo',
+          detallesServicio: createServicioDto.detallesServicio || '{}',
+          serviciosEmprendedores: {
+            create: {
+              emprendimientoId,
+            },
+          },
+        },
+        include: {
+          tipoServicio: true,
+          serviciosEmprendedores: {
+            include: {
+              emprendimiento: true,
+            },
+          },
+        },
+      });
+
+      // Crear las imágenes si existen
+      if (createServicioDto.imagenes && createServicioDto.imagenes.length > 0) {
+        const imagenesPromises = createServicioDto.imagenes.map(async (imagen) => {
+          return this.prisma.image.create({
+            data: {
+              url: imagen.url,
+              imageableId: servicio.id,
+              imageableType: 'Servicio',
+            },
+          });
+        });
+
+        await Promise.all(imagenesPromises);
+      }
+
+      // Obtener el servicio con sus imágenes
+      return this.prisma.servicio.findUnique({
+        where: { id: servicio.id },
+        include: {
+          tipoServicio: true,
+          serviciosEmprendedores: {
+            include: {
+              emprendimiento: true,
+            },
+          },
+        },
+      });
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new BadRequestException('Error al crear el servicio: ' + error.message);
     }
-
-    // Crear el servicio
-    const servicio = await this.prisma.servicio.create({
-      data: {
-        ...createServicioDto,
-        serviciosEmprendedores: {
-          create: {
-            emprendimientoId,
-          },
-        },
-      },
-      include: {
-        tipoServicio: true,
-        serviciosEmprendedores: {
-          include: {
-            emprendimiento: true,
-          },
-        },
-      },
-    });
-
-    return servicio;
   }
 
   async findAll() {

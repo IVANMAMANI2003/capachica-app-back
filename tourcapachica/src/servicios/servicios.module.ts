@@ -8,7 +8,9 @@ import { DisponibilidadController } from './controllers/disponibilidad.controlle
 import { PrismaModule } from '../prisma/prisma.module';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [
+    PrismaModule,
+  ],
   controllers: [
     ServiciosController,
     TiposServicioController,

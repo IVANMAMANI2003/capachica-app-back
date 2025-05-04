@@ -21,13 +21,17 @@ const jwt_auth_guard_1 = require("../../auth/guards/jwt-auth.guard");
 const roles_guard_1 = require("../../auth/guards/roles.guard");
 const roles_decorator_1 = require("../../auth/decorators/roles.decorator");
 const swagger_1 = require("@nestjs/swagger");
+const platform_express_1 = require("@nestjs/platform-express");
 const servicio_entity_1 = require("../entities/servicio.entity");
 let ServiciosController = class ServiciosController {
     constructor(serviciosService) {
         this.serviciosService = serviciosService;
     }
-    create(emprendimientoId, createServicioDto) {
-        return this.serviciosService.create(+emprendimientoId, createServicioDto);
+    async create(emprendimientoId, createServicioDto, imagenes) {
+        if (imagenes) {
+            createServicioDto.imagenes = imagenes.map(file => ({ url: file.path }));
+        }
+        return this.serviciosService.create(emprendimientoId, createServicioDto);
     }
     findAll() {
         return this.serviciosService.findAll();
@@ -51,18 +55,42 @@ let ServiciosController = class ServiciosController {
 exports.ServiciosController = ServiciosController;
 __decorate([
     (0, common_1.Post)('emprendimiento/:emprendimientoId'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
-    (0, swagger_1.ApiOperation)({ summary: 'Crear un nuevo servicio para un emprendimiento' }),
-    (0, swagger_1.ApiResponse)({ status: 201, description: 'Servicio creado exitosamente', type: servicio_entity_1.ServicioEntity }),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Crear un nuevo servicio' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Servicio creado exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
-    (0, swagger_1.ApiResponse)({ status: 401, description: 'No autorizado' }),
-    (0, swagger_1.ApiResponse)({ status: 404, description: 'Tipo de servicio no encontrado' }),
-    __param(0, (0, common_1.Param)('emprendimientoId')),
+    (0, swagger_1.ApiResponse)({ status: 403, description: 'No autorizado' }),
+    (0, swagger_1.ApiConsumes)('multipart/form-data'),
+    (0, swagger_1.ApiBody)({
+        schema: {
+            type: 'object',
+            properties: {
+                tipoServicioId: { type: 'number' },
+                nombre: { type: 'string' },
+                descripcion: { type: 'string' },
+                precioBase: { type: 'number' },
+                moneda: { type: 'string' },
+                estado: { type: 'string' },
+                detallesServicio: { type: 'string' },
+                imagenes: {
+                    type: 'array',
+                    items: {
+                        type: 'string',
+                        format: 'binary',
+                    },
+                },
+            },
+        },
+    }),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('imagenes', 10)),
+    __param(0, (0, common_1.Param)('emprendimientoId', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.UploadedFiles)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, create_servicio_dto_1.CreateServicioDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [Number, create_servicio_dto_1.CreateServicioDto, Array]),
+    __metadata("design:returntype", Promise)
 ], ServiciosController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
@@ -93,8 +121,9 @@ __decorate([
 ], ServiciosController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Patch)(':id'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Actualizar un servicio' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Servicio actualizado', type: servicio_entity_1.ServicioEntity }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Servicio no encontrado' }),
@@ -106,8 +135,9 @@ __decorate([
 ], ServiciosController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Eliminar un servicio' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Servicio eliminado' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Servicio no encontrado' }),
@@ -118,8 +148,9 @@ __decorate([
 ], ServiciosController.prototype, "remove", null);
 __decorate([
     (0, common_1.Patch)(':id/estado'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Actualizar el estado de un servicio' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Estado actualizado', type: servicio_entity_1.ServicioEntity }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Estado inválido' }),
@@ -133,7 +164,6 @@ __decorate([
 exports.ServiciosController = ServiciosController = __decorate([
     (0, swagger_1.ApiTags)('servicios'),
     (0, common_1.Controller)('servicios'),
-    (0, swagger_1.ApiBearerAuth)(),
     __metadata("design:paramtypes", [servicios_service_1.ServiciosService])
 ], ServiciosController);
 //# sourceMappingURL=servicios.controller.js.map

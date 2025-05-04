@@ -12,6 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateServicioDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
+class ImageDto {
+}
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], ImageDto.prototype, "url", void 0);
 class CreateServicioDto {
     constructor() {
         this.estado = 'activo';
@@ -91,16 +98,6 @@ __decorate([
 ], CreateServicioDto.prototype, "estado", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'URL de la imagen del servicio',
-        example: 'https://example.com/imagen.jpg',
-        required: true,
-    }),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], CreateServicioDto.prototype, "imagenUrl", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({
         description: 'Detalles del servicio en formato JSON',
         example: '{"duracion": "12 horas", "incluye": ["camas", "papayas"]}',
         required: false,
@@ -110,4 +107,14 @@ __decorate([
     (0, class_validator_1.IsJSON)(),
     __metadata("design:type", String)
 ], CreateServicioDto.prototype, "detallesServicio", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Imágenes del servicio',
+        required: false,
+        type: [ImageDto]
+    }),
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", Array)
+], CreateServicioDto.prototype, "imagenes", void 0);
 //# sourceMappingURL=create-servicio.dto.js.map

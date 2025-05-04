@@ -1,3 +1,6 @@
+declare class ImageDto {
+    url: string;
+}
 export declare class CreateServicioDto {
     tipoServicioId: number;
     nombre: string;
@@ -5,6 +8,7 @@ export declare class CreateServicioDto {
     precioBase: number;
     moneda: string;
     estado?: string;
-    imagenUrl: string;
     detallesServicio?: string;
+    imagenes?: ImageDto[];
 }
+export {};

@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsOptional, IsEnum, IsNumber, IsJSON, MaxLength, Min, IsUrl } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsEnum, IsNumber, IsJSON, MaxLength, Min, IsArray } from 'class-validator';
+
+class ImageDto {
+  @IsString()
+  @IsNotEmpty()
+  url: string;
+}
 
 export class CreateServicioDto {
   @ApiProperty({
@@ -67,15 +73,6 @@ export class CreateServicioDto {
   estado?: string = 'activo';
 
   @ApiProperty({
-    description: 'URL de la imagen del servicio',
-    example: 'https://example.com/imagen.jpg',
-    required: true,
-  })
-  @IsString()
-  @IsNotEmpty()
-  imagenUrl: string;
-
-  @ApiProperty({
     description: 'Detalles del servicio en formato JSON',
     example: '{"duracion": "12 horas", "incluye": ["camas", "papayas"]}',
     required: false,
@@ -84,4 +81,13 @@ export class CreateServicioDto {
   @IsOptional()
   @IsJSON()
   detallesServicio?: string = '{}';
+
+  @ApiProperty({
+    description: 'Imágenes del servicio',
+    required: false,
+    type: [ImageDto]
+  })
+  @IsArray()
+  @IsOptional()
+  imagenes?: ImageDto[];
 } 
