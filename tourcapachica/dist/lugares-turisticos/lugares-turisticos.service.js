@@ -28,10 +28,10 @@ let LugaresTuristicosService = class LugaresTuristicosService {
         this.prisma = prisma;
     }
     async create(createLugarTuristicoDto) {
-        const { imagenes } = createLugarTuristicoDto, lugarData = __rest(createLugarTuristicoDto, ["imagenes"]);
+        const { imagenes, horarioApertura, horarioCierre } = createLugarTuristicoDto, lugarData = __rest(createLugarTuristicoDto, ["imagenes", "horarioApertura", "horarioCierre"]);
         try {
             const lugar = await this.prisma.lugarTuristico.create({
-                data: Object.assign(Object.assign({}, lugarData), { estado: lugarData.estado || 'activo', esDestacado: lugarData.esDestacado || false }),
+                data: Object.assign(Object.assign({}, lugarData), { estado: lugarData.estado || 'activo', esDestacado: lugarData.esDestacado || false, horarioApertura: horarioApertura ? new Date(`1970-01-01T${horarioApertura}`) : null, horarioCierre: horarioCierre ? new Date(`1970-01-01T${horarioCierre}`) : null }),
             });
             if (imagenes && imagenes.length > 0) {
                 await this.prisma.image.createMany({

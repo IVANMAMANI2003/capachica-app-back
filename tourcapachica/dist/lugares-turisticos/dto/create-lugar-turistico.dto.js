@@ -98,22 +98,28 @@ __decorate([
 ], CreateLugarTuristicoDto.prototype, "esDestacado", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Horario de apertura',
+        description: 'Horario de apertura en formato HH:mm',
         example: '08:00',
         required: false,
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.Matches)(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, {
+        message: 'El horario debe estar en formato HH:mm',
+    }),
     __metadata("design:type", String)
 ], CreateLugarTuristicoDto.prototype, "horarioApertura", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Horario de cierre',
+        description: 'Horario de cierre en formato HH:mm',
         example: '17:00',
         required: false,
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.Matches)(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, {
+        message: 'El horario debe estar en formato HH:mm',
+    }),
     __metadata("design:type", String)
 ], CreateLugarTuristicoDto.prototype, "horarioCierre", void 0);
 __decorate([
@@ -124,6 +130,7 @@ __decorate([
     }),
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.Min)(0),
     __metadata("design:type", Number)
 ], CreateLugarTuristicoDto.prototype, "costoEntrada", void 0);
 __decorate([

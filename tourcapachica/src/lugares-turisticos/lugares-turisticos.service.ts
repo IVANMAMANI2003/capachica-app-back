@@ -8,7 +8,7 @@ export class LugaresTuristicosService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createLugarTuristicoDto: CreateLugarTuristicoDto) {
-    const { imagenes, ...lugarData } = createLugarTuristicoDto;
+    const { imagenes, horarioApertura, horarioCierre, ...lugarData } = createLugarTuristicoDto;
     
     try {
       const lugar = await this.prisma.lugarTuristico.create({
@@ -16,6 +16,8 @@ export class LugaresTuristicosService {
           ...lugarData,
           estado: lugarData.estado || 'activo',
           esDestacado: lugarData.esDestacado || false,
+          horarioApertura: horarioApertura ? new Date(`1970-01-01T${horarioApertura}`) : null,
+          horarioCierre: horarioCierre ? new Date(`1970-01-01T${horarioCierre}`) : null,
         },
       });
 
