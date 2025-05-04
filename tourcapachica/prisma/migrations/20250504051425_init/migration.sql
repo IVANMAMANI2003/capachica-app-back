@@ -250,7 +250,6 @@ CREATE TABLE "tipos_servicio" (
     "id" SERIAL NOT NULL,
     "nombre" VARCHAR(100) NOT NULL,
     "descripcion" TEXT,
-    "imagen_url" TEXT NOT NULL,
     "requiere_cupo" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 

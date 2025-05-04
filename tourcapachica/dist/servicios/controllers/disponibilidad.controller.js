@@ -15,17 +15,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DisponibilidadController = void 0;
 const common_1 = require("@nestjs/common");
 const disponibilidad_service_1 = require("../services/disponibilidad.service");
-const create_disponibilidad_dto_1 = require("../dto/create-disponibilidad.dto");
 const jwt_auth_guard_1 = require("../../auth/guards/jwt-auth.guard");
 const roles_guard_1 = require("../../auth/guards/roles.guard");
 const roles_decorator_1 = require("../../auth/decorators/roles.decorator");
 const swagger_1 = require("@nestjs/swagger");
+const create_servicio_disponibilidad_dto_1 = require("../dto/create-servicio-disponibilidad.dto");
 let DisponibilidadController = class DisponibilidadController {
     constructor(disponibilidadService) {
         this.disponibilidadService = disponibilidadService;
     }
     create(createDisponibilidadDto) {
-        return this.disponibilidadService.create(createDisponibilidadDto);
+        return this.disponibilidadService.createDisponibilidad(createDisponibilidadDto);
     }
     findAll() {
         return this.disponibilidadService.findAll();
@@ -55,7 +55,7 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Servicio no encontrado' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_disponibilidad_dto_1.CreateDisponibilidadDto]),
+    __metadata("design:paramtypes", [create_servicio_disponibilidad_dto_1.CreateServicioDisponibilidadDto]),
     __metadata("design:returntype", void 0)
 ], DisponibilidadController.prototype, "create", null);
 __decorate([

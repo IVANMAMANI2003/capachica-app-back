@@ -6,74 +6,74 @@ export declare class SlidersController {
     constructor(slidersService: SlidersService);
     create(createSliderDto: CreateSliderDto): Promise<{
         imagenes: {
+            id: number;
             createdAt: Date;
             updatedAt: Date;
-            id: number;
             url: string;
             imageableId: number;
             imageableType: string;
         }[];
+        id: number;
         nombre: string;
         descripcion: string | null;
         estado: string;
         createdAt: Date;
         updatedAt: Date;
-        id: number;
     }>;
     findAll(): Promise<{
         imagenes: {
+            id: number;
             createdAt: Date;
             updatedAt: Date;
-            id: number;
             url: string;
             imageableId: number;
             imageableType: string;
         }[];
+        id: number;
         nombre: string;
         descripcion: string | null;
         estado: string;
         createdAt: Date;
         updatedAt: Date;
-        id: number;
     }[]>;
     findOne(id: string): Promise<{
         imagenes: {
+            id: number;
             createdAt: Date;
             updatedAt: Date;
-            id: number;
             url: string;
             imageableId: number;
             imageableType: string;
         }[];
+        id: number;
         nombre: string;
         descripcion: string | null;
         estado: string;
         createdAt: Date;
         updatedAt: Date;
-        id: number;
     }>;
     update(id: string, updateSliderDto: UpdateSliderDto): Promise<{
         imagenes: {
+            id: number;
             createdAt: Date;
             updatedAt: Date;
-            id: number;
             url: string;
             imageableId: number;
             imageableType: string;
         }[];
+        id: number;
         nombre: string;
         descripcion: string | null;
         estado: string;
         createdAt: Date;
         updatedAt: Date;
-        id: number;
     }>;
     remove(id: string): Promise<{
+        id: number;
         nombre: string;
         descripcion: string | null;
         estado: string;
         createdAt: Date;
         updatedAt: Date;
-        id: number;
     }>;
 }

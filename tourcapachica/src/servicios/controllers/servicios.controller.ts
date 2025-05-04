@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request }
 import { ServiciosService } from '../services/servicios.service';
 import { CreateServicioDto } from '../dto/create-servicio.dto';
 import { UpdateServicioDto } from '../dto/update-servicio.dto';
+import { CreateServicioDisponibilidadDto } from '../dto/create-servicio-disponibilidad.dto';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../../auth/guards/roles.guard';
 import { Roles } from '../../auth/decorators/roles.decorator';
@@ -80,5 +81,48 @@ export class ServiciosController {
   @ApiResponse({ status: 404, description: 'Servicio no encontrado' })
   updateEstado(@Param('id') id: string, @Body('estado') estado: string) {
     return this.serviciosService.updateEstado(+id, estado);
+  }
+
+  @Post('disponibilidad')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('emprendedor', 'SuperAdmin')
+  @ApiOperation({ summary: 'Crear disponibilidad para un servicio' })
+  @ApiResponse({ status: 201, description: 'Disponibilidad creada exitosamente' })
+  @ApiResponse({ status: 400, description: 'Datos inválidos' })
+  @ApiResponse({ status: 401, description: 'No autorizado' })
+  @ApiResponse({ status: 404, description: 'Servicio no encontrado' })
+  createDisponibilidad(@Body() createDisponibilidadDto: CreateServicioDisponibilidadDto) {
+    return this.serviciosService.createDisponibilidad(createDisponibilidadDto);
+  }
+
+  @Post('disponibilidad/batch')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('emprendedor', 'SuperAdmin')
+  @ApiOperation({ summary: 'Crear múltiples disponibilidades para un servicio' })
+  @ApiResponse({ status: 201, description: 'Disponibilidades creadas exitosamente' })
+  @ApiResponse({ status: 400, description: 'Datos inválidos' })
+  @ApiResponse({ status: 401, description: 'No autorizado' })
+  @ApiResponse({ status: 404, description: 'Servicio no encontrado' })
+  createDisponibilidades(@Body() disponibilidades: CreateServicioDisponibilidadDto[]) {
+    return this.serviciosService.createDisponibilidades(disponibilidades);
+  }
+
+  @Get('disponibilidad/:servicioId')
+  @ApiOperation({ summary: 'Obtener disponibilidad de un servicio' })
+  @ApiResponse({ status: 200, description: 'Lista de disponibilidades del servicio' })
+  @ApiResponse({ status: 404, description: 'Servicio no encontrado' })
+  getDisponibilidad(@Param('servicioId') servicioId: string) {
+    return this.serviciosService.getDisponibilidad(+servicioId);
+  }
+
+  @Get('disponibilidad/:servicioId/:fecha')
+  @ApiOperation({ summary: 'Obtener disponibilidad de un servicio para una fecha específica' })
+  @ApiResponse({ status: 200, description: 'Disponibilidad encontrada' })
+  @ApiResponse({ status: 404, description: 'Disponibilidad no encontrada' })
+  getDisponibilidadByFecha(
+    @Param('servicioId') servicioId: string,
+    @Param('fecha') fecha: string,
+  ) {
+    return this.serviciosService.getDisponibilidadByFecha(+servicioId, fecha);
   }
 } 

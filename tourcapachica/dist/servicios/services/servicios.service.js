@@ -112,8 +112,6 @@ let ServiciosService = class ServiciosService {
             });
         }
         catch (error) {
-            if (error instanceof common_1.NotFoundException)
-                throw error;
             throw new common_1.NotFoundException(`Servicio con ID ${id} no encontrado`);
         }
     }
@@ -148,6 +146,71 @@ let ServiciosService = class ServiciosService {
         catch (error) {
             throw new common_1.NotFoundException(`Servicio con ID ${id} no encontrado`);
         }
+    }
+    async createDisponibilidad(createDisponibilidadDto) {
+        const servicio = await this.prisma.servicio.findUnique({
+            where: { id: createDisponibilidadDto.servicioId },
+        });
+        if (!servicio) {
+            throw new common_1.NotFoundException(`Servicio con ID ${createDisponibilidadDto.servicioId} no encontrado`);
+        }
+        return this.prisma.servicioDisponibilidad.create({
+            data: {
+                servicioId: createDisponibilidadDto.servicioId,
+                fecha: new Date(createDisponibilidadDto.fecha),
+                cuposDisponibles: createDisponibilidadDto.cuposDisponibles,
+                precioEspecial: createDisponibilidadDto.precioEspecial,
+            },
+        });
+    }
+    async createDisponibilidades(disponibilidades) {
+        const servicioIds = [...new Set(disponibilidades.map(d => d.servicioId))];
+        const servicios = await this.prisma.servicio.findMany({
+            where: { id: { in: servicioIds } },
+        });
+        if (servicios.length !== servicioIds.length) {
+            const serviciosEncontrados = servicios.map(s => s.id);
+            const serviciosNoEncontrados = servicioIds.filter(id => !serviciosEncontrados.includes(id));
+            throw new common_1.NotFoundException(`Servicios con IDs ${serviciosNoEncontrados.join(', ')} no encontrados`);
+        }
+        return this.prisma.servicioDisponibilidad.createMany({
+            data: disponibilidades.map(d => ({
+                servicioId: d.servicioId,
+                fecha: new Date(d.fecha),
+                cuposDisponibles: d.cuposDisponibles,
+                precioEspecial: d.precioEspecial,
+            })),
+        });
+    }
+    async getDisponibilidad(servicioId) {
+        const servicio = await this.prisma.servicio.findUnique({
+            where: { id: servicioId },
+        });
+        if (!servicio) {
+            throw new common_1.NotFoundException(`Servicio con ID ${servicioId} no encontrado`);
+        }
+        return this.prisma.servicioDisponibilidad.findMany({
+            where: { servicioId },
+            orderBy: { fecha: 'asc' },
+        });
+    }
+    async getDisponibilidadByFecha(servicioId, fecha) {
+        const servicio = await this.prisma.servicio.findUnique({
+            where: { id: servicioId },
+        });
+        if (!servicio) {
+            throw new common_1.NotFoundException(`Servicio con ID ${servicioId} no encontrado`);
+        }
+        const disponibilidad = await this.prisma.servicioDisponibilidad.findFirst({
+            where: {
+                servicioId,
+                fecha: new Date(fecha),
+            },
+        });
+        if (!disponibilidad) {
+            throw new common_1.NotFoundException(`No hay disponibilidad para el servicio ${servicioId} en la fecha ${fecha}`);
+        }
+        return disponibilidad;
     }
 };
 exports.ServiciosService = ServiciosService;

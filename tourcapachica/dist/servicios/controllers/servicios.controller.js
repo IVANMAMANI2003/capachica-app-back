@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const servicios_service_1 = require("../services/servicios.service");
 const create_servicio_dto_1 = require("../dto/create-servicio.dto");
 const update_servicio_dto_1 = require("../dto/update-servicio.dto");
+const create_servicio_disponibilidad_dto_1 = require("../dto/create-servicio-disponibilidad.dto");
 const jwt_auth_guard_1 = require("../../auth/guards/jwt-auth.guard");
 const roles_guard_1 = require("../../auth/guards/roles.guard");
 const roles_decorator_1 = require("../../auth/decorators/roles.decorator");
@@ -46,6 +47,18 @@ let ServiciosController = class ServiciosController {
     }
     updateEstado(id, estado) {
         return this.serviciosService.updateEstado(+id, estado);
+    }
+    createDisponibilidad(createDisponibilidadDto) {
+        return this.serviciosService.createDisponibilidad(createDisponibilidadDto);
+    }
+    createDisponibilidades(disponibilidades) {
+        return this.serviciosService.createDisponibilidades(disponibilidades);
+    }
+    getDisponibilidad(servicioId) {
+        return this.serviciosService.getDisponibilidad(+servicioId);
+    }
+    getDisponibilidadByFecha(servicioId, fecha) {
+        return this.serviciosService.getDisponibilidadByFecha(+servicioId, fecha);
     }
 };
 exports.ServiciosController = ServiciosController;
@@ -130,6 +143,55 @@ __decorate([
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", void 0)
 ], ServiciosController.prototype, "updateEstado", null);
+__decorate([
+    (0, common_1.Post)('disponibilidad'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, swagger_1.ApiOperation)({ summary: 'Crear disponibilidad para un servicio' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Disponibilidad creada exitosamente' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'No autorizado' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Servicio no encontrado' }),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [create_servicio_disponibilidad_dto_1.CreateServicioDisponibilidadDto]),
+    __metadata("design:returntype", void 0)
+], ServiciosController.prototype, "createDisponibilidad", null);
+__decorate([
+    (0, common_1.Post)('disponibilidad/batch'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, swagger_1.ApiOperation)({ summary: 'Crear múltiples disponibilidades para un servicio' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Disponibilidades creadas exitosamente' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'No autorizado' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Servicio no encontrado' }),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Array]),
+    __metadata("design:returntype", void 0)
+], ServiciosController.prototype, "createDisponibilidades", null);
+__decorate([
+    (0, common_1.Get)('disponibilidad/:servicioId'),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener disponibilidad de un servicio' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Lista de disponibilidades del servicio' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Servicio no encontrado' }),
+    __param(0, (0, common_1.Param)('servicioId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], ServiciosController.prototype, "getDisponibilidad", null);
+__decorate([
+    (0, common_1.Get)('disponibilidad/:servicioId/:fecha'),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener disponibilidad de un servicio para una fecha específica' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Disponibilidad encontrada' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Disponibilidad no encontrada' }),
+    __param(0, (0, common_1.Param)('servicioId')),
+    __param(1, (0, common_1.Param)('fecha')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", void 0)
+], ServiciosController.prototype, "getDisponibilidadByFecha", null);
 exports.ServiciosController = ServiciosController = __decorate([
     (0, swagger_1.ApiTags)('servicios'),
     (0, common_1.Controller)('servicios'),

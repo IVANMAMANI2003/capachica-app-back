@@ -8,7 +8,11 @@ export class TiposServicioService {
 
   async create(createTipoServicioDto: CreateTipoServicioDto) {
     return this.prisma.tipoServicio.create({
-      data: createTipoServicioDto,
+      data: {
+        nombre: createTipoServicioDto.nombre,
+        descripcion: createTipoServicioDto.descripcion,
+        requiereCupo: createTipoServicioDto.requiereCupo,
+      },
     });
   }
 

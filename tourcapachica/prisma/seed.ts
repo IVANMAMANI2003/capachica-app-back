@@ -241,29 +241,26 @@ async function main() {
     ]);
 
     // Crear tipos de servicio
-    const tiposServicio = await Promise.all([
+    const [transporteServicio, alojamientoServicio, guiaServicio] = await Promise.all([
       prisma.tipoServicio.create({
         data: {
           nombre: 'Transporte',
-          descripcion: 'Servicios de transporte',
-          imagenUrl: 'https://example.com/transporte.jpg',
+          descripcion: 'Servicios de transporte terrestre y lacustre',
           requiereCupo: true,
         },
       }),
       prisma.tipoServicio.create({
         data: {
           nombre: 'Alojamiento',
-          descripcion: 'Servicios de alojamiento',
-          imagenUrl: 'https://example.com/alojamiento.jpg',
+          descripcion: 'Servicios de hospedaje y alojamiento',
           requiereCupo: true,
         },
       }),
       prisma.tipoServicio.create({
         data: {
-          nombre: 'Guía',
-          descripcion: 'Servicios de guía turístico',
-          imagenUrl: 'https://example.com/guia.jpg',
-          requiereCupo: false,
+          nombre: 'Guía Turístico',
+          descripcion: 'Servicios de guiado turístico',
+          requiereCupo: true,
         },
       }),
     ]);
@@ -295,7 +292,7 @@ async function main() {
     const servicios = await Promise.all([
       prisma.servicio.create({
         data: {
-          tipoServicioId: tiposServicio[0].id,
+          tipoServicioId: transporteServicio.id,
           nombre: 'Transporte a Islas Uros',
           descripcion: 'Transporte en bote a las Islas Uros',
           precioBase: 50.00,
@@ -309,7 +306,7 @@ async function main() {
       }),
       prisma.servicio.create({
         data: {
-          tipoServicioId: tiposServicio[1].id,
+          tipoServicioId: alojamientoServicio.id,
           nombre: 'Hospedaje en Capachica',
           descripcion: 'Hospedaje en cabañas tradicionales',
           precioBase: 100.00,
@@ -323,7 +320,7 @@ async function main() {
       }),
       prisma.servicio.create({
         data: {
-          tipoServicioId: tiposServicio[2].id,
+          tipoServicioId: guiaServicio.id,
           nombre: 'Guía Turístico',
           descripcion: 'Guía especializado en la zona',
           precioBase: 80.00,

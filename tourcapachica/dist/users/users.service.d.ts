@@ -44,9 +44,9 @@ export declare class UsersService {
             nombre: string;
             createdAt: Date;
             updatedAt: Date;
-            telefono: string | null;
-            apellidos: string;
             direccion: string | null;
+            apellidos: string;
+            telefono: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;

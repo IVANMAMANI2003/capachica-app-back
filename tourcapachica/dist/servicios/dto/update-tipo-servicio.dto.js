@@ -9,27 +9,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateTipoServicioDto = void 0;
+exports.UpdateTipoServicioDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
-class CreateTipoServicioDto {
+class UpdateTipoServicioDto {
 }
-exports.CreateTipoServicioDto = CreateTipoServicioDto;
+exports.UpdateTipoServicioDto = UpdateTipoServicioDto;
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Nombre del tipo de servicio', example: 'Tour' }),
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
-], CreateTipoServicioDto.prototype, "nombre", void 0);
+], UpdateTipoServicioDto.prototype, "nombre", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Descripción del tipo de servicio', example: 'Tours guiados por la zona' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
-], CreateTipoServicioDto.prototype, "descripcion", void 0);
+], UpdateTipoServicioDto.prototype, "descripcion", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Indica si el servicio requiere control de cupos', example: true }),
     (0, class_validator_1.IsBoolean)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Boolean)
-], CreateTipoServicioDto.prototype, "requiereCupo", void 0);
-//# sourceMappingURL=create-tipo-servicio.dto.js.map
+], UpdateTipoServicioDto.prototype, "requiereCupo", void 0);
+//# sourceMappingURL=update-tipo-servicio.dto.js.map

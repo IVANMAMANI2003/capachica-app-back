@@ -1,10 +1,10 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { DisponibilidadService } from '../services/disponibilidad.service';
-import { CreateDisponibilidadDto } from '../dto/create-disponibilidad.dto';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../../auth/guards/roles.guard';
 import { Roles } from '../../auth/decorators/roles.decorator';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { CreateServicioDisponibilidadDto } from '../dto/create-servicio-disponibilidad.dto';
 
 @ApiTags('disponibilidad')
 @Controller('disponibilidad')
@@ -20,8 +20,8 @@ export class DisponibilidadController {
   @ApiResponse({ status: 400, description: 'Datos inválidos o fecha ya registrada' })
   @ApiResponse({ status: 401, description: 'No autorizado' })
   @ApiResponse({ status: 404, description: 'Servicio no encontrado' })
-  create(@Body() createDisponibilidadDto: CreateDisponibilidadDto) {
-    return this.disponibilidadService.create(createDisponibilidadDto);
+  create(@Body() createDisponibilidadDto: CreateServicioDisponibilidadDto) {
+    return this.disponibilidadService.createDisponibilidad(createDisponibilidadDto);
   }
 
   @Get()
@@ -54,7 +54,7 @@ export class DisponibilidadController {
   @ApiResponse({ status: 404, description: 'Disponibilidad no encontrada' })
   update(
     @Param('id') id: string,
-    @Body() updateData: Partial<CreateDisponibilidadDto>,
+    @Body() updateData: Partial<CreateServicioDisponibilidadDto>,
   ) {
     return this.disponibilidadService.update(+id, updateData);
   }

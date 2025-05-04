@@ -1,13 +1,12 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { CreateDisponibilidadDto } from '../dto/create-disponibilidad.dto';
+import { CreateServicioDisponibilidadDto } from '../dto/create-servicio-disponibilidad.dto';
 
 @Injectable()
 export class DisponibilidadService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createDisponibilidadDto: CreateDisponibilidadDto) {
-    // Verificar si existe el servicio
+  async createDisponibilidad(createDisponibilidadDto: CreateServicioDisponibilidadDto) {
     const servicio = await this.prisma.servicio.findUnique({
       where: { id: createDisponibilidadDto.servicioId },
     });
@@ -16,23 +15,52 @@ export class DisponibilidadService {
       throw new NotFoundException(`Servicio con ID ${createDisponibilidadDto.servicioId} no encontrado`);
     }
 
-    // Verificar si ya existe disponibilidad para esa fecha
-    const disponibilidadExistente = await this.prisma.servicioDisponibilidad.findUnique({
+    return this.prisma.servicioDisponibilidad.create({
+      data: {
+        servicioId: createDisponibilidadDto.servicioId,
+        fecha: new Date(createDisponibilidadDto.fecha),
+        cuposDisponibles: createDisponibilidadDto.cuposDisponibles,
+        precioEspecial: createDisponibilidadDto.precioEspecial,
+      },
+    });
+  }
+
+  async getDisponibilidad(servicioId: number) {
+    const servicio = await this.prisma.servicio.findUnique({
+      where: { id: servicioId },
+    });
+
+    if (!servicio) {
+      throw new NotFoundException(`Servicio con ID ${servicioId} no encontrado`);
+    }
+
+    return this.prisma.servicioDisponibilidad.findMany({
+      where: { servicioId },
+      orderBy: { fecha: 'asc' },
+    });
+  }
+
+  async getDisponibilidadByFecha(servicioId: number, fecha: string) {
+    const servicio = await this.prisma.servicio.findUnique({
+      where: { id: servicioId },
+    });
+
+    if (!servicio) {
+      throw new NotFoundException(`Servicio con ID ${servicioId} no encontrado`);
+    }
+
+    const disponibilidad = await this.prisma.servicioDisponibilidad.findFirst({
       where: {
-        servicioId_fecha: {
-          servicioId: createDisponibilidadDto.servicioId,
-          fecha: createDisponibilidadDto.fecha,
-        },
+        servicioId,
+        fecha: new Date(fecha),
       },
     });
 
-    if (disponibilidadExistente) {
-      throw new BadRequestException('Ya existe disponibilidad registrada para esta fecha');
+    if (!disponibilidad) {
+      throw new NotFoundException(`No hay disponibilidad para el servicio ${servicioId} en la fecha ${fecha}`);
     }
 
-    return this.prisma.servicioDisponibilidad.create({
-      data: createDisponibilidadDto,
-    });
+    return disponibilidad;
   }
 
   async findAll() {
@@ -67,7 +95,7 @@ export class DisponibilidadService {
     return disponibilidad;
   }
 
-  async update(id: number, updateData: Partial<CreateDisponibilidadDto>) {
+  async update(id: number, updateData: Partial<CreateServicioDisponibilidadDto>) {
     try {
       return await this.prisma.servicioDisponibilidad.update({
         where: { id },

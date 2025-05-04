@@ -16,27 +16,51 @@ let DisponibilidadService = class DisponibilidadService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async create(createDisponibilidadDto) {
+    async createDisponibilidad(createDisponibilidadDto) {
         const servicio = await this.prisma.servicio.findUnique({
             where: { id: createDisponibilidadDto.servicioId },
         });
         if (!servicio) {
             throw new common_1.NotFoundException(`Servicio con ID ${createDisponibilidadDto.servicioId} no encontrado`);
         }
-        const disponibilidadExistente = await this.prisma.servicioDisponibilidad.findUnique({
-            where: {
-                servicioId_fecha: {
-                    servicioId: createDisponibilidadDto.servicioId,
-                    fecha: createDisponibilidadDto.fecha,
-                },
+        return this.prisma.servicioDisponibilidad.create({
+            data: {
+                servicioId: createDisponibilidadDto.servicioId,
+                fecha: new Date(createDisponibilidadDto.fecha),
+                cuposDisponibles: createDisponibilidadDto.cuposDisponibles,
+                precioEspecial: createDisponibilidadDto.precioEspecial,
             },
         });
-        if (disponibilidadExistente) {
-            throw new common_1.BadRequestException('Ya existe disponibilidad registrada para esta fecha');
-        }
-        return this.prisma.servicioDisponibilidad.create({
-            data: createDisponibilidadDto,
+    }
+    async getDisponibilidad(servicioId) {
+        const servicio = await this.prisma.servicio.findUnique({
+            where: { id: servicioId },
         });
+        if (!servicio) {
+            throw new common_1.NotFoundException(`Servicio con ID ${servicioId} no encontrado`);
+        }
+        return this.prisma.servicioDisponibilidad.findMany({
+            where: { servicioId },
+            orderBy: { fecha: 'asc' },
+        });
+    }
+    async getDisponibilidadByFecha(servicioId, fecha) {
+        const servicio = await this.prisma.servicio.findUnique({
+            where: { id: servicioId },
+        });
+        if (!servicio) {
+            throw new common_1.NotFoundException(`Servicio con ID ${servicioId} no encontrado`);
+        }
+        const disponibilidad = await this.prisma.servicioDisponibilidad.findFirst({
+            where: {
+                servicioId,
+                fecha: new Date(fecha),
+            },
+        });
+        if (!disponibilidad) {
+            throw new common_1.NotFoundException(`No hay disponibilidad para el servicio ${servicioId} en la fecha ${fecha}`);
+        }
+        return disponibilidad;
     }
     async findAll() {
         return this.prisma.servicioDisponibilidad.findMany({

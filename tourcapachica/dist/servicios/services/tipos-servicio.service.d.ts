@@ -7,58 +7,54 @@ export declare class TiposServicioService {
         id: number;
         nombre: string;
         descripcion: string | null;
-        createdAt: Date;
-        imagenUrl: string;
         requiereCupo: boolean;
+        createdAt: Date;
     }>;
     findAll(): Promise<({
         servicios: {
             id: number;
             nombre: string;
             descripcion: string | null;
-            estado: string;
             createdAt: Date;
-            updatedAt: Date;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
+            estado: string;
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
+            updatedAt: Date;
         }[];
     } & {
         id: number;
         nombre: string;
         descripcion: string | null;
-        createdAt: Date;
-        imagenUrl: string;
         requiereCupo: boolean;
+        createdAt: Date;
     })[]>;
     findOne(id: number): Promise<{
         servicios: {
             id: number;
             nombre: string;
             descripcion: string | null;
-            estado: string;
             createdAt: Date;
-            updatedAt: Date;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
+            estado: string;
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
+            updatedAt: Date;
         }[];
     } & {
         id: number;
         nombre: string;
         descripcion: string | null;
-        createdAt: Date;
-        imagenUrl: string;
         requiereCupo: boolean;
+        createdAt: Date;
     }>;
     remove(id: number): Promise<{
         id: number;
         nombre: string;
         descripcion: string | null;
-        createdAt: Date;
-        imagenUrl: string;
         requiereCupo: boolean;
+        createdAt: Date;
     }>;
 }

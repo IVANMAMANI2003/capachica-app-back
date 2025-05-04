@@ -1,10 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsBoolean, IsOptional } from 'class-validator';
 
-export class CreateTipoServicioDto {
+export class UpdateTipoServicioDto {
   @ApiProperty({ description: 'Nombre del tipo de servicio', example: 'Tour' })
   @IsString()
-  nombre: string;
+  @IsOptional()
+  nombre?: string;
 
   @ApiProperty({ description: 'Descripción del tipo de servicio', example: 'Tours guiados por la zona' })
   @IsString()
