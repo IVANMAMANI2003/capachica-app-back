@@ -2,6 +2,7 @@ declare class ImageDto {
     url: string;
 }
 export declare class CreateEmprendimientoDto {
+    usuarioId: number;
     nombre: string;
     descripcion?: string;
     tipo: string;
@@ -10,7 +11,7 @@ export declare class CreateEmprendimientoDto {
     contactoTelefono?: string;
     contactoEmail?: string;
     sitioWeb?: string;
-    redesSociales?: any;
+    redesSociales?: string;
     estado?: string;
     imagenes?: ImageDto[];
 }

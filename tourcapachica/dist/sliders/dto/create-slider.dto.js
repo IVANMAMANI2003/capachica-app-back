@@ -10,34 +10,62 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateSliderDto = void 0;
+const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class ImageDto {
 }
 __decorate([
-    (0, class_validator_1.IsUrl)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], ImageDto.prototype, "url", void 0);
 class CreateSliderDto {
+    constructor() {
+        this.estado = 'activo';
+    }
 }
 exports.CreateSliderDto = CreateSliderDto;
 __decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Nombre del slider',
+        example: 'Banner Principal',
+        required: true,
+        maxLength: 100,
+    }),
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.MaxLength)(100),
     __metadata("design:type", String)
 ], CreateSliderDto.prototype, "nombre", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Descripción del slider',
+        example: 'Banner promocional para la temporada de verano',
+        required: false,
+    }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateSliderDto.prototype, "descripcion", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Estado del slider',
+        example: 'activo',
+        enum: ['activo', 'inactivo', 'pendiente'],
+        default: 'activo',
+        required: false,
+    }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsEnum)(['activo', 'inactivo']),
-    (0, class_validator_1.MaxLength)(20),
+    (0, class_validator_1.IsEnum)(['activo', 'inactivo', 'pendiente']),
     __metadata("design:type", String)
 ], CreateSliderDto.prototype, "estado", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Imágenes del slider',
+        required: false,
+        type: [ImageDto]
+    }),
     (0, class_validator_1.IsArray)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Array)
