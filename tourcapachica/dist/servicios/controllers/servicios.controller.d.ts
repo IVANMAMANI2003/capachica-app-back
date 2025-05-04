@@ -4,7 +4,7 @@ import { UpdateServicioDto } from '../dto/update-servicio.dto';
 export declare class ServiciosController {
     private readonly serviciosService;
     constructor(serviciosService: ServiciosService);
-    create(emprendimientoId: number, createServicioDto: CreateServicioDto, imagenes?: Express.Multer.File[]): Promise<{
+    create(emprendimientoId: number, createServicioDto: CreateServicioDto): Promise<{
         tipoServicio: {
             id: number;
             nombre: string;

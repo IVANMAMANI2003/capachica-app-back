@@ -21,16 +21,12 @@ const jwt_auth_guard_1 = require("../../auth/guards/jwt-auth.guard");
 const roles_guard_1 = require("../../auth/guards/roles.guard");
 const roles_decorator_1 = require("../../auth/decorators/roles.decorator");
 const swagger_1 = require("@nestjs/swagger");
-const platform_express_1 = require("@nestjs/platform-express");
 const servicio_entity_1 = require("../entities/servicio.entity");
 let ServiciosController = class ServiciosController {
     constructor(serviciosService) {
         this.serviciosService = serviciosService;
     }
-    async create(emprendimientoId, createServicioDto, imagenes) {
-        if (imagenes) {
-            createServicioDto.imagenes = imagenes.map(file => ({ url: file.path }));
-        }
+    async create(emprendimientoId, createServicioDto) {
         return this.serviciosService.create(emprendimientoId, createServicioDto);
     }
     findAll() {
@@ -62,34 +58,10 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Servicio creado exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
     (0, swagger_1.ApiResponse)({ status: 403, description: 'No autorizado' }),
-    (0, swagger_1.ApiConsumes)('multipart/form-data'),
-    (0, swagger_1.ApiBody)({
-        schema: {
-            type: 'object',
-            properties: {
-                tipoServicioId: { type: 'number' },
-                nombre: { type: 'string' },
-                descripcion: { type: 'string' },
-                precioBase: { type: 'number' },
-                moneda: { type: 'string' },
-                estado: { type: 'string' },
-                detallesServicio: { type: 'string' },
-                imagenes: {
-                    type: 'array',
-                    items: {
-                        type: 'string',
-                        format: 'binary',
-                    },
-                },
-            },
-        },
-    }),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('imagenes', 10)),
     __param(0, (0, common_1.Param)('emprendimientoId', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Body)()),
-    __param(2, (0, common_1.UploadedFiles)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, create_servicio_dto_1.CreateServicioDto, Array]),
+    __metadata("design:paramtypes", [Number, create_servicio_dto_1.CreateServicioDto]),
     __metadata("design:returntype", Promise)
 ], ServiciosController.prototype, "create", null);
 __decorate([
