@@ -7,19 +7,19 @@ export declare class RolesService {
     constructor(prisma: PrismaService);
     create(createRoleDto: CreateRoleDto): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     findAll(): Promise<({
         rolesPermisos: ({
             permiso: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
                 descripcion: string | null;
+                createdAt: Date;
+                updatedAt: Date;
             };
         } & {
             id: number;
@@ -30,19 +30,19 @@ export declare class RolesService {
         })[];
     } & {
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     })[]>;
     findOne(id: number): Promise<{
         rolesPermisos: ({
             permiso: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
                 descripcion: string | null;
+                createdAt: Date;
+                updatedAt: Date;
             };
         } & {
             id: number;
@@ -53,39 +53,39 @@ export declare class RolesService {
         })[];
     } & {
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     update(id: number, updateRoleDto: UpdateRoleDto): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     remove(id: number): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     assignPermission(id: number, assignPermissionDto: AssignPermissionDto): Promise<{
         rol: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             nombre: string;
             descripcion: string | null;
+            createdAt: Date;
+            updatedAt: Date;
         };
         permiso: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             nombre: string;
             descripcion: string | null;
+            createdAt: Date;
+            updatedAt: Date;
         };
     } & {
         id: number;

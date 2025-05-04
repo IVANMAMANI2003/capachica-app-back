@@ -1,12 +1,12 @@
-declare class ImageDto {
-    url: string;
-}
+import { EstadoPaquete } from '../enums/estado-paquete.enum';
 export declare class CreatePaqueteTuristicoDto {
     nombre: string;
     descripcion: string;
     precio: number;
-    estado?: string;
+    estado: EstadoPaquete;
     emprendimientoId: number;
-    imagenes?: ImageDto[];
+    imagenUrl?: string;
+    cuposMaximos?: number;
+    duracion?: number;
+    imagenes?: string[];
 }
-export {};

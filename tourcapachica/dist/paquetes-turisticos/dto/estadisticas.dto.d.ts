@@ -1,17 +1,19 @@
+export declare class ServicioPopularDto {
+    servicioId: number;
+    nombre: string;
+    cantidadReservas: number;
+}
+export declare class EstadisticaMensualDto {
+    mes: Date;
+    totalReservas: number;
+    totalIngresos: number;
+}
 export declare class EstadisticasPaqueteDto {
     totalReservas: number;
     totalIngresos: number;
     promedioCalificacion: number;
     totalResenas: number;
     tasaOcupacion: number;
-    serviciosPopulares: {
-        servicioId: number;
-        nombre: string;
-        totalReservas: number;
-    }[];
-    estadisticasMensuales: {
-        mes: string;
-        totalReservas: number;
-        totalIngresos: number;
-    }[];
+    serviciosPopulares: ServicioPopularDto[];
+    estadisticasMensuales: EstadisticaMensualDto[];
 }

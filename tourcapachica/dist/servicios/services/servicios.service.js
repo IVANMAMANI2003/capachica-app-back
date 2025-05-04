@@ -24,14 +24,11 @@ let ServiciosService = class ServiciosService {
             throw new common_1.NotFoundException(`Tipo de servicio con ID ${createServicioDto.tipoServicioId} no encontrado`);
         }
         const servicio = await this.prisma.servicio.create({
-            data: {
-                ...createServicioDto,
-                serviciosEmprendedores: {
+            data: Object.assign(Object.assign({}, createServicioDto), { serviciosEmprendedores: {
                     create: {
                         emprendimientoId,
                     },
-                },
-            },
+                } }),
             include: {
                 tipoServicio: true,
                 serviciosEmprendedores: {

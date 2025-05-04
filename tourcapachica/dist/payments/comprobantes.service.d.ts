@@ -7,10 +7,10 @@ export declare class ComprobantesService {
     create(createComprobanteDto: CreateComprobanteDto): Promise<{
         pago: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
             moneda: string;
-            estado: string;
             reservaId: number;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
             fechaPago: Date | null;
@@ -19,8 +19,10 @@ export declare class ComprobantesService {
         };
     } & {
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -32,8 +34,6 @@ export declare class ComprobantesService {
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
-        estado: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
@@ -42,10 +42,10 @@ export declare class ComprobantesService {
     findAll(): Promise<({
         pago: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
             moneda: string;
-            estado: string;
             reservaId: number;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
             fechaPago: Date | null;
@@ -54,8 +54,10 @@ export declare class ComprobantesService {
         };
     } & {
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -67,8 +69,6 @@ export declare class ComprobantesService {
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
-        estado: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
@@ -77,10 +77,10 @@ export declare class ComprobantesService {
     findOne(id: number): Promise<{
         pago: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
             moneda: string;
-            estado: string;
             reservaId: number;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
             fechaPago: Date | null;
@@ -89,8 +89,10 @@ export declare class ComprobantesService {
         };
     } & {
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -102,8 +104,6 @@ export declare class ComprobantesService {
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
-        estado: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
@@ -112,10 +112,10 @@ export declare class ComprobantesService {
     findByPagoId(pagoId: number): Promise<{
         pago: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
             moneda: string;
-            estado: string;
             reservaId: number;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
             fechaPago: Date | null;
@@ -124,8 +124,10 @@ export declare class ComprobantesService {
         };
     } & {
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -137,8 +139,6 @@ export declare class ComprobantesService {
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
-        estado: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
@@ -147,10 +147,10 @@ export declare class ComprobantesService {
     update(id: number, updateComprobanteDto: UpdateComprobanteDto): Promise<{
         pago: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
             moneda: string;
-            estado: string;
             reservaId: number;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
             fechaPago: Date | null;
@@ -159,8 +159,10 @@ export declare class ComprobantesService {
         };
     } & {
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -172,8 +174,6 @@ export declare class ComprobantesService {
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
-        estado: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
@@ -181,8 +181,10 @@ export declare class ComprobantesService {
     }>;
     remove(id: number): Promise<{
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -194,8 +196,6 @@ export declare class ComprobantesService {
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
-        estado: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
@@ -204,10 +204,10 @@ export declare class ComprobantesService {
     updateEstado(id: number, estado: string): Promise<{
         pago: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
             moneda: string;
-            estado: string;
             reservaId: number;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
             fechaPago: Date | null;
@@ -216,8 +216,10 @@ export declare class ComprobantesService {
         };
     } & {
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -229,8 +231,6 @@ export declare class ComprobantesService {
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
-        estado: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;

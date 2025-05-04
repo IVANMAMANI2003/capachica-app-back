@@ -1,17 +1,16 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
-import { Public } from './auth/decorators/public.decorator';
+import { AppService } from './app.service';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
-@ApiTags('Health Check')
+@ApiTags('app')
 @Controller()
 export class AppController {
-  @Public()
+  constructor(private readonly appService: AppService) {}
+
   @Get()
-  @ApiOperation({ summary: 'Health check endpoint' })
-  getHello(): { status: string; message: string } {
-    return {
-      status: 'ok',
-      message: 'API is running. Check /api/docs for documentation',
-    };
+  @ApiOperation({ summary: 'Obtener mensaje de bienvenida' })
+  @ApiResponse({ status: 200, description: 'Mensaje de bienvenida' })
+  getHello(): string {
+    return this.appService.getHello();
   }
 } 

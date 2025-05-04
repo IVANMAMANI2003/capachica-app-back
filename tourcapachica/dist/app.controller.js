@@ -11,27 +11,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
+const app_service_1 = require("./app.service");
 const swagger_1 = require("@nestjs/swagger");
-const public_decorator_1 = require("./auth/decorators/public.decorator");
 let AppController = class AppController {
+    constructor(appService) {
+        this.appService = appService;
+    }
     getHello() {
-        return {
-            status: 'ok',
-            message: 'API is running. Check /api/docs for documentation',
-        };
+        return this.appService.getHello();
     }
 };
 exports.AppController = AppController;
 __decorate([
-    (0, public_decorator_1.Public)(),
     (0, common_1.Get)(),
-    (0, swagger_1.ApiOperation)({ summary: 'Health check endpoint' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener mensaje de bienvenida' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Mensaje de bienvenida' }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Object)
+    __metadata("design:returntype", String)
 ], AppController.prototype, "getHello", null);
 exports.AppController = AppController = __decorate([
-    (0, swagger_1.ApiTags)('Health Check'),
-    (0, common_1.Controller)()
+    (0, swagger_1.ApiTags)('app'),
+    (0, common_1.Controller)(),
+    __metadata("design:paramtypes", [app_service_1.AppService])
 ], AppController);
 //# sourceMappingURL=app.controller.js.map

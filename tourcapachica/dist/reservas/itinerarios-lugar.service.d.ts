@@ -3,14 +3,27 @@ export declare class ItinerariosLugarService {
     private readonly prisma;
     constructor(prisma: PrismaService);
     create(itinerarioId: number, lugarTuristicoId: number): Promise<{
-        lugarTuristico: {
+        itinerarioReserva: {
             id: number;
+            descripcion: string;
             createdAt: Date;
             updatedAt: Date;
+            servicioId: number | null;
+            notas: string | null;
+            hora: Date | null;
+            fecha: Date;
+            tipoEvento: string;
+            duracion: number | null;
+            reservaId: number;
+        };
+        lugarTuristico: {
+            id: number;
             nombre: string;
-            direccion: string;
             descripcion: string;
             estado: string;
+            createdAt: Date;
+            updatedAt: Date;
+            direccion: string;
             coordenadas: string;
             horarioApertura: Date | null;
             horarioCierre: Date | null;
@@ -18,19 +31,6 @@ export declare class ItinerariosLugarService {
             recomendaciones: string | null;
             restricciones: string | null;
             esDestacado: boolean;
-        };
-        itinerarioReserva: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            descripcion: string;
-            reservaId: number;
-            notas: string | null;
-            hora: Date | null;
-            servicioId: number | null;
-            fecha: Date;
-            tipoEvento: string;
-            duracion: number | null;
         };
     } & {
         id: number;
@@ -40,14 +40,27 @@ export declare class ItinerariosLugarService {
         lugarTuristicoId: number;
     }>;
     findAll(): Promise<({
-        lugarTuristico: {
+        itinerarioReserva: {
             id: number;
+            descripcion: string;
             createdAt: Date;
             updatedAt: Date;
+            servicioId: number | null;
+            notas: string | null;
+            hora: Date | null;
+            fecha: Date;
+            tipoEvento: string;
+            duracion: number | null;
+            reservaId: number;
+        };
+        lugarTuristico: {
+            id: number;
             nombre: string;
-            direccion: string;
             descripcion: string;
             estado: string;
+            createdAt: Date;
+            updatedAt: Date;
+            direccion: string;
             coordenadas: string;
             horarioApertura: Date | null;
             horarioCierre: Date | null;
@@ -55,19 +68,6 @@ export declare class ItinerariosLugarService {
             recomendaciones: string | null;
             restricciones: string | null;
             esDestacado: boolean;
-        };
-        itinerarioReserva: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            descripcion: string;
-            reservaId: number;
-            notas: string | null;
-            hora: Date | null;
-            servicioId: number | null;
-            fecha: Date;
-            tipoEvento: string;
-            duracion: number | null;
         };
     } & {
         id: number;
@@ -77,14 +77,27 @@ export declare class ItinerariosLugarService {
         lugarTuristicoId: number;
     })[]>;
     findByItinerario(itinerarioId: number): Promise<({
-        lugarTuristico: {
+        itinerarioReserva: {
             id: number;
+            descripcion: string;
             createdAt: Date;
             updatedAt: Date;
+            servicioId: number | null;
+            notas: string | null;
+            hora: Date | null;
+            fecha: Date;
+            tipoEvento: string;
+            duracion: number | null;
+            reservaId: number;
+        };
+        lugarTuristico: {
+            id: number;
             nombre: string;
-            direccion: string;
             descripcion: string;
             estado: string;
+            createdAt: Date;
+            updatedAt: Date;
+            direccion: string;
             coordenadas: string;
             horarioApertura: Date | null;
             horarioCierre: Date | null;
@@ -92,19 +105,6 @@ export declare class ItinerariosLugarService {
             recomendaciones: string | null;
             restricciones: string | null;
             esDestacado: boolean;
-        };
-        itinerarioReserva: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            descripcion: string;
-            reservaId: number;
-            notas: string | null;
-            hora: Date | null;
-            servicioId: number | null;
-            fecha: Date;
-            tipoEvento: string;
-            duracion: number | null;
         };
     } & {
         id: number;
@@ -114,14 +114,27 @@ export declare class ItinerariosLugarService {
         lugarTuristicoId: number;
     })[]>;
     findByLugarTuristico(lugarTuristicoId: number): Promise<({
-        lugarTuristico: {
+        itinerarioReserva: {
             id: number;
+            descripcion: string;
             createdAt: Date;
             updatedAt: Date;
+            servicioId: number | null;
+            notas: string | null;
+            hora: Date | null;
+            fecha: Date;
+            tipoEvento: string;
+            duracion: number | null;
+            reservaId: number;
+        };
+        lugarTuristico: {
+            id: number;
             nombre: string;
-            direccion: string;
             descripcion: string;
             estado: string;
+            createdAt: Date;
+            updatedAt: Date;
+            direccion: string;
             coordenadas: string;
             horarioApertura: Date | null;
             horarioCierre: Date | null;
@@ -129,19 +142,6 @@ export declare class ItinerariosLugarService {
             recomendaciones: string | null;
             restricciones: string | null;
             esDestacado: boolean;
-        };
-        itinerarioReserva: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            descripcion: string;
-            reservaId: number;
-            notas: string | null;
-            hora: Date | null;
-            servicioId: number | null;
-            fecha: Date;
-            tipoEvento: string;
-            duracion: number | null;
         };
     } & {
         id: number;

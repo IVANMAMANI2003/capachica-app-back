@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { PaquetesTuristicosService } from './paquetes-turisticos.service';
 import { PaquetesTuristicosController } from './paquetes-turisticos.controller';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaModule } from '../prisma/prisma.module';
 
 @Module({
+  imports: [PrismaModule],
   controllers: [PaquetesTuristicosController],
-  providers: [PaquetesTuristicosService, PrismaService],
+  providers: [PaquetesTuristicosService],
   exports: [PaquetesTuristicosService],
 })
 export class PaquetesTuristicosModule {} 

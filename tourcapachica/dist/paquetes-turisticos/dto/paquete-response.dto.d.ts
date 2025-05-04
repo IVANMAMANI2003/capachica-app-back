@@ -4,10 +4,14 @@ export declare class PaqueteResponseDto {
     nombre: string;
     descripcion: string;
     precio: number;
-    duracion: number;
+    estado: string;
+    emprendimientoId: number;
     imagenUrl: string;
     activo: boolean;
+    cuposMaximos: number;
+    duracion: number;
+    imagenes: string[];
+    servicios: ServicioResponseDto[];
     createdAt: Date;
     updatedAt: Date;
-    servicios: ServicioResponseDto[];
 }

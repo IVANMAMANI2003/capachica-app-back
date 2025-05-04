@@ -5,20 +5,32 @@ export declare class ItinerariosReservaController {
     private readonly itinerariosReservaService;
     constructor(itinerariosReservaService: ItinerariosReservaService);
     create(createItinerarioReservaDto: CreateItinerarioReservaDto): Promise<{
+        servicio: {
+            id: number;
+            nombre: string;
+            descripcion: string | null;
+            estado: string;
+            createdAt: Date;
+            updatedAt: Date;
+            tipoServicioId: number;
+            precioBase: import(".prisma/client/runtime/library").Decimal;
+            moneda: string;
+            detallesServicio: import(".prisma/client/runtime/library").JsonValue;
+        };
         reserva: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
             moneda: string;
-            estado: string;
+            fechaInicio: Date;
+            fechaFin: Date | null;
             notas: string | null;
             turistaId: number;
             codigoReserva: string;
             tipoReserva: string;
             fechaReserva: Date;
-            fechaInicio: Date;
             hora: string | null;
-            fechaFin: Date | null;
             cantidadPersonas: number;
             precioTotal: import(".prisma/client/runtime/library").Decimal;
             metodoPago: string | null;
@@ -26,27 +38,15 @@ export declare class ItinerariosReservaController {
             motivoCancelacion: string | null;
             fechaCancelacion: Date | null;
         };
-        servicio: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            nombre: string;
-            descripcion: string | null;
-            moneda: string;
-            estado: string;
-            tipoServicioId: number;
-            precioBase: import(".prisma/client/runtime/library").Decimal;
-            detallesServicio: import(".prisma/client/runtime/library").JsonValue;
-        };
         itinerarioLugares: ({
             lugarTuristico: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
-                direccion: string;
                 descripcion: string;
                 estado: string;
+                createdAt: Date;
+                updatedAt: Date;
+                direccion: string;
                 coordenadas: string;
                 horarioApertura: Date | null;
                 horarioCierre: Date | null;
@@ -64,32 +64,44 @@ export declare class ItinerariosReservaController {
         })[];
     } & {
         id: number;
+        descripcion: string;
         createdAt: Date;
         updatedAt: Date;
-        descripcion: string;
-        reservaId: number;
+        servicioId: number | null;
         notas: string | null;
         hora: Date | null;
-        servicioId: number | null;
         fecha: Date;
         tipoEvento: string;
         duracion: number | null;
+        reservaId: number;
     }>;
     findAll(): Promise<({
+        servicio: {
+            id: number;
+            nombre: string;
+            descripcion: string | null;
+            estado: string;
+            createdAt: Date;
+            updatedAt: Date;
+            tipoServicioId: number;
+            precioBase: import(".prisma/client/runtime/library").Decimal;
+            moneda: string;
+            detallesServicio: import(".prisma/client/runtime/library").JsonValue;
+        };
         reserva: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
             moneda: string;
-            estado: string;
+            fechaInicio: Date;
+            fechaFin: Date | null;
             notas: string | null;
             turistaId: number;
             codigoReserva: string;
             tipoReserva: string;
             fechaReserva: Date;
-            fechaInicio: Date;
             hora: string | null;
-            fechaFin: Date | null;
             cantidadPersonas: number;
             precioTotal: import(".prisma/client/runtime/library").Decimal;
             metodoPago: string | null;
@@ -97,27 +109,15 @@ export declare class ItinerariosReservaController {
             motivoCancelacion: string | null;
             fechaCancelacion: Date | null;
         };
-        servicio: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            nombre: string;
-            descripcion: string | null;
-            moneda: string;
-            estado: string;
-            tipoServicioId: number;
-            precioBase: import(".prisma/client/runtime/library").Decimal;
-            detallesServicio: import(".prisma/client/runtime/library").JsonValue;
-        };
         itinerarioLugares: ({
             lugarTuristico: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
-                direccion: string;
                 descripcion: string;
                 estado: string;
+                createdAt: Date;
+                updatedAt: Date;
+                direccion: string;
                 coordenadas: string;
                 horarioApertura: Date | null;
                 horarioCierre: Date | null;
@@ -135,32 +135,44 @@ export declare class ItinerariosReservaController {
         })[];
     } & {
         id: number;
+        descripcion: string;
         createdAt: Date;
         updatedAt: Date;
-        descripcion: string;
-        reservaId: number;
+        servicioId: number | null;
         notas: string | null;
         hora: Date | null;
-        servicioId: number | null;
         fecha: Date;
         tipoEvento: string;
         duracion: number | null;
+        reservaId: number;
     })[]>;
     findOne(id: number): Promise<{
+        servicio: {
+            id: number;
+            nombre: string;
+            descripcion: string | null;
+            estado: string;
+            createdAt: Date;
+            updatedAt: Date;
+            tipoServicioId: number;
+            precioBase: import(".prisma/client/runtime/library").Decimal;
+            moneda: string;
+            detallesServicio: import(".prisma/client/runtime/library").JsonValue;
+        };
         reserva: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
             moneda: string;
-            estado: string;
+            fechaInicio: Date;
+            fechaFin: Date | null;
             notas: string | null;
             turistaId: number;
             codigoReserva: string;
             tipoReserva: string;
             fechaReserva: Date;
-            fechaInicio: Date;
             hora: string | null;
-            fechaFin: Date | null;
             cantidadPersonas: number;
             precioTotal: import(".prisma/client/runtime/library").Decimal;
             metodoPago: string | null;
@@ -168,27 +180,15 @@ export declare class ItinerariosReservaController {
             motivoCancelacion: string | null;
             fechaCancelacion: Date | null;
         };
-        servicio: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            nombre: string;
-            descripcion: string | null;
-            moneda: string;
-            estado: string;
-            tipoServicioId: number;
-            precioBase: import(".prisma/client/runtime/library").Decimal;
-            detallesServicio: import(".prisma/client/runtime/library").JsonValue;
-        };
         itinerarioLugares: ({
             lugarTuristico: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
-                direccion: string;
                 descripcion: string;
                 estado: string;
+                createdAt: Date;
+                updatedAt: Date;
+                direccion: string;
                 coordenadas: string;
                 horarioApertura: Date | null;
                 horarioCierre: Date | null;
@@ -206,32 +206,44 @@ export declare class ItinerariosReservaController {
         })[];
     } & {
         id: number;
+        descripcion: string;
         createdAt: Date;
         updatedAt: Date;
-        descripcion: string;
-        reservaId: number;
+        servicioId: number | null;
         notas: string | null;
         hora: Date | null;
-        servicioId: number | null;
         fecha: Date;
         tipoEvento: string;
         duracion: number | null;
+        reservaId: number;
     }>;
     update(id: number, updateItinerarioReservaDto: UpdateItinerarioReservaDto): Promise<{
+        servicio: {
+            id: number;
+            nombre: string;
+            descripcion: string | null;
+            estado: string;
+            createdAt: Date;
+            updatedAt: Date;
+            tipoServicioId: number;
+            precioBase: import(".prisma/client/runtime/library").Decimal;
+            moneda: string;
+            detallesServicio: import(".prisma/client/runtime/library").JsonValue;
+        };
         reserva: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
             moneda: string;
-            estado: string;
+            fechaInicio: Date;
+            fechaFin: Date | null;
             notas: string | null;
             turistaId: number;
             codigoReserva: string;
             tipoReserva: string;
             fechaReserva: Date;
-            fechaInicio: Date;
             hora: string | null;
-            fechaFin: Date | null;
             cantidadPersonas: number;
             precioTotal: import(".prisma/client/runtime/library").Decimal;
             metodoPago: string | null;
@@ -239,27 +251,15 @@ export declare class ItinerariosReservaController {
             motivoCancelacion: string | null;
             fechaCancelacion: Date | null;
         };
-        servicio: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            nombre: string;
-            descripcion: string | null;
-            moneda: string;
-            estado: string;
-            tipoServicioId: number;
-            precioBase: import(".prisma/client/runtime/library").Decimal;
-            detallesServicio: import(".prisma/client/runtime/library").JsonValue;
-        };
         itinerarioLugares: ({
             lugarTuristico: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
-                direccion: string;
                 descripcion: string;
                 estado: string;
+                createdAt: Date;
+                updatedAt: Date;
+                direccion: string;
                 coordenadas: string;
                 horarioApertura: Date | null;
                 horarioCierre: Date | null;
@@ -277,45 +277,57 @@ export declare class ItinerariosReservaController {
         })[];
     } & {
         id: number;
+        descripcion: string;
         createdAt: Date;
         updatedAt: Date;
-        descripcion: string;
-        reservaId: number;
+        servicioId: number | null;
         notas: string | null;
         hora: Date | null;
-        servicioId: number | null;
         fecha: Date;
         tipoEvento: string;
         duracion: number | null;
+        reservaId: number;
     }>;
     remove(id: number): Promise<{
         id: number;
+        descripcion: string;
         createdAt: Date;
         updatedAt: Date;
-        descripcion: string;
-        reservaId: number;
+        servicioId: number | null;
         notas: string | null;
         hora: Date | null;
-        servicioId: number | null;
         fecha: Date;
         tipoEvento: string;
         duracion: number | null;
+        reservaId: number;
     }>;
     findByReserva(reservaId: number): Promise<({
+        servicio: {
+            id: number;
+            nombre: string;
+            descripcion: string | null;
+            estado: string;
+            createdAt: Date;
+            updatedAt: Date;
+            tipoServicioId: number;
+            precioBase: import(".prisma/client/runtime/library").Decimal;
+            moneda: string;
+            detallesServicio: import(".prisma/client/runtime/library").JsonValue;
+        };
         reserva: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
             moneda: string;
-            estado: string;
+            fechaInicio: Date;
+            fechaFin: Date | null;
             notas: string | null;
             turistaId: number;
             codigoReserva: string;
             tipoReserva: string;
             fechaReserva: Date;
-            fechaInicio: Date;
             hora: string | null;
-            fechaFin: Date | null;
             cantidadPersonas: number;
             precioTotal: import(".prisma/client/runtime/library").Decimal;
             metodoPago: string | null;
@@ -323,27 +335,15 @@ export declare class ItinerariosReservaController {
             motivoCancelacion: string | null;
             fechaCancelacion: Date | null;
         };
-        servicio: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            nombre: string;
-            descripcion: string | null;
-            moneda: string;
-            estado: string;
-            tipoServicioId: number;
-            precioBase: import(".prisma/client/runtime/library").Decimal;
-            detallesServicio: import(".prisma/client/runtime/library").JsonValue;
-        };
         itinerarioLugares: ({
             lugarTuristico: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
-                direccion: string;
                 descripcion: string;
                 estado: string;
+                createdAt: Date;
+                updatedAt: Date;
+                direccion: string;
                 coordenadas: string;
                 horarioApertura: Date | null;
                 horarioCierre: Date | null;
@@ -361,15 +361,15 @@ export declare class ItinerariosReservaController {
         })[];
     } & {
         id: number;
+        descripcion: string;
         createdAt: Date;
         updatedAt: Date;
-        descripcion: string;
-        reservaId: number;
+        servicioId: number | null;
         notas: string | null;
         hora: Date | null;
-        servicioId: number | null;
         fecha: Date;
         tipoEvento: string;
         duracion: number | null;
+        reservaId: number;
     })[]>;
 }

@@ -16,20 +16,20 @@ export declare class ServiciosController {
         serviciosEmprendedores: ({
             emprendimiento: {
                 id: number;
-                usuarioId: number;
                 nombre: string;
                 descripcion: string | null;
-                tipo: string;
+                estado: string;
+                createdAt: Date;
+                updatedAt: Date;
+                usuarioId: number;
                 direccion: string | null;
                 coordenadas: string | null;
+                tipo: string;
                 contactoTelefono: string | null;
                 contactoEmail: string | null;
                 sitioWeb: string | null;
                 redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
-                estado: string;
                 fechaAprobacion: Date | null;
-                createdAt: Date;
-                updatedAt: Date;
             };
         } & {
             id: number;
@@ -62,20 +62,20 @@ export declare class ServiciosController {
         serviciosEmprendedores: ({
             emprendimiento: {
                 id: number;
-                usuarioId: number;
                 nombre: string;
                 descripcion: string | null;
-                tipo: string;
+                estado: string;
+                createdAt: Date;
+                updatedAt: Date;
+                usuarioId: number;
                 direccion: string | null;
                 coordenadas: string | null;
+                tipo: string;
                 contactoTelefono: string | null;
                 contactoEmail: string | null;
                 sitioWeb: string | null;
                 redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
-                estado: string;
                 fechaAprobacion: Date | null;
-                createdAt: Date;
-                updatedAt: Date;
             };
         } & {
             id: number;
@@ -108,20 +108,20 @@ export declare class ServiciosController {
         serviciosEmprendedores: ({
             emprendimiento: {
                 id: number;
-                usuarioId: number;
                 nombre: string;
                 descripcion: string | null;
-                tipo: string;
+                estado: string;
+                createdAt: Date;
+                updatedAt: Date;
+                usuarioId: number;
                 direccion: string | null;
                 coordenadas: string | null;
+                tipo: string;
                 contactoTelefono: string | null;
                 contactoEmail: string | null;
                 sitioWeb: string | null;
                 redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
-                estado: string;
                 fechaAprobacion: Date | null;
-                createdAt: Date;
-                updatedAt: Date;
             };
         } & {
             id: number;
@@ -154,20 +154,20 @@ export declare class ServiciosController {
         serviciosEmprendedores: ({
             emprendimiento: {
                 id: number;
-                usuarioId: number;
                 nombre: string;
                 descripcion: string | null;
-                tipo: string;
+                estado: string;
+                createdAt: Date;
+                updatedAt: Date;
+                usuarioId: number;
                 direccion: string | null;
                 coordenadas: string | null;
+                tipo: string;
                 contactoTelefono: string | null;
                 contactoEmail: string | null;
                 sitioWeb: string | null;
                 redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
-                estado: string;
                 fechaAprobacion: Date | null;
-                createdAt: Date;
-                updatedAt: Date;
             };
         } & {
             id: number;
@@ -200,20 +200,20 @@ export declare class ServiciosController {
         serviciosEmprendedores: ({
             emprendimiento: {
                 id: number;
-                usuarioId: number;
                 nombre: string;
                 descripcion: string | null;
-                tipo: string;
+                estado: string;
+                createdAt: Date;
+                updatedAt: Date;
+                usuarioId: number;
                 direccion: string | null;
                 coordenadas: string | null;
+                tipo: string;
                 contactoTelefono: string | null;
                 contactoEmail: string | null;
                 sitioWeb: string | null;
                 redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
-                estado: string;
                 fechaAprobacion: Date | null;
-                createdAt: Date;
-                updatedAt: Date;
             };
         } & {
             id: number;
@@ -258,20 +258,20 @@ export declare class ServiciosController {
         serviciosEmprendedores: ({
             emprendimiento: {
                 id: number;
-                usuarioId: number;
                 nombre: string;
                 descripcion: string | null;
-                tipo: string;
+                estado: string;
+                createdAt: Date;
+                updatedAt: Date;
+                usuarioId: number;
                 direccion: string | null;
                 coordenadas: string | null;
+                tipo: string;
                 contactoTelefono: string | null;
                 contactoEmail: string | null;
                 sitioWeb: string | null;
                 redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
-                estado: string;
                 fechaAprobacion: Date | null;
-                createdAt: Date;
-                updatedAt: Date;
             };
         } & {
             id: number;

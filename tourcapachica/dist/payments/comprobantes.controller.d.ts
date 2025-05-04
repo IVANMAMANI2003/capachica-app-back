@@ -7,9 +7,9 @@ export declare class ComprobantesController {
     create(createComprobanteDto: CreateComprobanteDto): Promise<{
         pago: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
-            estado: string;
             moneda: string;
             reservaId: number;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
@@ -19,9 +19,10 @@ export declare class ComprobantesController {
         };
     } & {
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        estado: string;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -33,7 +34,6 @@ export declare class ComprobantesController {
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
@@ -42,9 +42,9 @@ export declare class ComprobantesController {
     findAll(): Promise<({
         pago: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
-            estado: string;
             moneda: string;
             reservaId: number;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
@@ -54,9 +54,10 @@ export declare class ComprobantesController {
         };
     } & {
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        estado: string;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -68,7 +69,6 @@ export declare class ComprobantesController {
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
@@ -77,9 +77,9 @@ export declare class ComprobantesController {
     findOne(id: string): Promise<{
         pago: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
-            estado: string;
             moneda: string;
             reservaId: number;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
@@ -89,9 +89,10 @@ export declare class ComprobantesController {
         };
     } & {
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        estado: string;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -103,7 +104,6 @@ export declare class ComprobantesController {
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
@@ -112,9 +112,9 @@ export declare class ComprobantesController {
     findByPagoId(pagoId: string): Promise<{
         pago: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
-            estado: string;
             moneda: string;
             reservaId: number;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
@@ -124,9 +124,10 @@ export declare class ComprobantesController {
         };
     } & {
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        estado: string;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -138,7 +139,6 @@ export declare class ComprobantesController {
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
@@ -147,9 +147,9 @@ export declare class ComprobantesController {
     update(id: string, updateComprobanteDto: UpdateComprobanteDto): Promise<{
         pago: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
-            estado: string;
             moneda: string;
             reservaId: number;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
@@ -159,9 +159,10 @@ export declare class ComprobantesController {
         };
     } & {
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        estado: string;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -173,7 +174,6 @@ export declare class ComprobantesController {
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
@@ -181,9 +181,10 @@ export declare class ComprobantesController {
     }>;
     remove(id: string): Promise<{
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        estado: string;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -195,7 +196,6 @@ export declare class ComprobantesController {
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
@@ -204,9 +204,9 @@ export declare class ComprobantesController {
     updateEstado(id: string, estado: string): Promise<{
         pago: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
-            estado: string;
             moneda: string;
             reservaId: number;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
@@ -216,9 +216,10 @@ export declare class ComprobantesController {
         };
     } & {
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        estado: string;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -230,7 +231,6 @@ export declare class ComprobantesController {
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;

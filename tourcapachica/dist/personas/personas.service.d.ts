@@ -7,6 +7,8 @@ export declare class PersonasService {
     create(createPersonaDto: CreatePersonaDto): Promise<{
         usuario: {
             id: number;
+            createdAt: Date;
+            updatedAt: Date;
             personaId: number;
             email: string;
             passwordHash: string;
@@ -17,8 +19,6 @@ export declare class PersonasService {
             estaActivo: boolean;
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue;
-            createdAt: Date;
-            updatedAt: Date;
         };
         subdivision: {
             id: number;
@@ -29,11 +29,11 @@ export declare class PersonasService {
         };
     } & {
         id: number;
+        nombre: string;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
-        apellidos: string;
         telefono: string | null;
+        apellidos: string;
         direccion: string | null;
         fotoPerfilUrl: string | null;
         fechaNacimiento: Date | null;
@@ -42,6 +42,8 @@ export declare class PersonasService {
     findAll(): Promise<({
         usuario: {
             id: number;
+            createdAt: Date;
+            updatedAt: Date;
             personaId: number;
             email: string;
             passwordHash: string;
@@ -52,8 +54,6 @@ export declare class PersonasService {
             estaActivo: boolean;
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue;
-            createdAt: Date;
-            updatedAt: Date;
         };
         subdivision: {
             id: number;
@@ -64,11 +64,11 @@ export declare class PersonasService {
         };
     } & {
         id: number;
+        nombre: string;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
-        apellidos: string;
         telefono: string | null;
+        apellidos: string;
         direccion: string | null;
         fotoPerfilUrl: string | null;
         fechaNacimiento: Date | null;
@@ -77,6 +77,8 @@ export declare class PersonasService {
     findOne(id: number): Promise<{
         usuario: {
             id: number;
+            createdAt: Date;
+            updatedAt: Date;
             personaId: number;
             email: string;
             passwordHash: string;
@@ -87,8 +89,6 @@ export declare class PersonasService {
             estaActivo: boolean;
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue;
-            createdAt: Date;
-            updatedAt: Date;
         };
         subdivision: {
             id: number;
@@ -99,11 +99,11 @@ export declare class PersonasService {
         };
     } & {
         id: number;
+        nombre: string;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
-        apellidos: string;
         telefono: string | null;
+        apellidos: string;
         direccion: string | null;
         fotoPerfilUrl: string | null;
         fechaNacimiento: Date | null;
@@ -112,6 +112,8 @@ export declare class PersonasService {
     update(id: number, updatePersonaDto: UpdatePersonaDto): Promise<{
         usuario: {
             id: number;
+            createdAt: Date;
+            updatedAt: Date;
             personaId: number;
             email: string;
             passwordHash: string;
@@ -122,8 +124,6 @@ export declare class PersonasService {
             estaActivo: boolean;
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue;
-            createdAt: Date;
-            updatedAt: Date;
         };
         subdivision: {
             id: number;
@@ -134,11 +134,11 @@ export declare class PersonasService {
         };
     } & {
         id: number;
+        nombre: string;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
-        apellidos: string;
         telefono: string | null;
+        apellidos: string;
         direccion: string | null;
         fotoPerfilUrl: string | null;
         fechaNacimiento: Date | null;
@@ -146,11 +146,11 @@ export declare class PersonasService {
     }>;
     remove(id: number): Promise<{
         id: number;
+        nombre: string;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
-        apellidos: string;
         telefono: string | null;
+        apellidos: string;
         direccion: string | null;
         fotoPerfilUrl: string | null;
         fechaNacimiento: Date | null;

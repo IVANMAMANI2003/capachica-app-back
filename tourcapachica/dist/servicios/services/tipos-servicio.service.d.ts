@@ -5,59 +5,59 @@ export declare class TiposServicioService {
     constructor(prisma: PrismaService);
     create(createTipoServicioDto: CreateTipoServicioDto): Promise<{
         id: number;
-        createdAt: Date;
         nombre: string;
         descripcion: string | null;
+        createdAt: Date;
         imagenUrl: string;
         requiereCupo: boolean;
     }>;
     findAll(): Promise<({
         servicios: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             nombre: string;
             descripcion: string | null;
-            moneda: string;
             estado: string;
+            createdAt: Date;
+            updatedAt: Date;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
+            moneda: string;
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
         }[];
     } & {
         id: number;
-        createdAt: Date;
         nombre: string;
         descripcion: string | null;
+        createdAt: Date;
         imagenUrl: string;
         requiereCupo: boolean;
     })[]>;
     findOne(id: number): Promise<{
         servicios: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             nombre: string;
             descripcion: string | null;
-            moneda: string;
             estado: string;
+            createdAt: Date;
+            updatedAt: Date;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
+            moneda: string;
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
         }[];
     } & {
         id: number;
-        createdAt: Date;
         nombre: string;
         descripcion: string | null;
+        createdAt: Date;
         imagenUrl: string;
         requiereCupo: boolean;
     }>;
     remove(id: number): Promise<{
         id: number;
-        createdAt: Date;
         nombre: string;
         descripcion: string | null;
+        createdAt: Date;
         imagenUrl: string;
         requiereCupo: boolean;
     }>;

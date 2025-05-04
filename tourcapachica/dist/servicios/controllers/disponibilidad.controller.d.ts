@@ -6,9 +6,9 @@ export declare class DisponibilidadController {
     create(createDisponibilidadDto: CreateDisponibilidadDto): Promise<{
         id: number;
         servicioId: number;
-        fecha: Date;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
+        fecha: Date;
     }>;
     findAll(): Promise<({
         servicio: {
@@ -26,9 +26,9 @@ export declare class DisponibilidadController {
     } & {
         id: number;
         servicioId: number;
-        fecha: Date;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
+        fecha: Date;
     })[]>;
     findByServicio(servicioId: string): Promise<({
         servicio: {
@@ -46,9 +46,9 @@ export declare class DisponibilidadController {
     } & {
         id: number;
         servicioId: number;
-        fecha: Date;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
+        fecha: Date;
     })[]>;
     findOne(id: string): Promise<{
         servicio: {
@@ -66,9 +66,9 @@ export declare class DisponibilidadController {
     } & {
         id: number;
         servicioId: number;
-        fecha: Date;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
+        fecha: Date;
     }>;
     update(id: string, updateData: Partial<CreateDisponibilidadDto>): Promise<{
         servicio: {
@@ -86,15 +86,15 @@ export declare class DisponibilidadController {
     } & {
         id: number;
         servicioId: number;
-        fecha: Date;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
+        fecha: Date;
     }>;
     remove(id: string): Promise<{
         id: number;
         servicioId: number;
-        fecha: Date;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
+        fecha: Date;
     }>;
 }

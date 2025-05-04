@@ -8,6 +8,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EmprendimientosService = void 0;
 const common_1 = require("@nestjs/common");
@@ -17,12 +28,9 @@ let EmprendimientosService = class EmprendimientosService {
         this.prisma = prisma;
     }
     async create(usuarioId, createEmprendimientoDto) {
-        const { imagenes, ...emprendimientoData } = createEmprendimientoDto;
+        const { imagenes } = createEmprendimientoDto, emprendimientoData = __rest(createEmprendimientoDto, ["imagenes"]);
         const emprendimiento = await this.prisma.emprendimiento.create({
-            data: {
-                ...emprendimientoData,
-                usuarioId,
-            },
+            data: Object.assign(Object.assign({}, emprendimientoData), { usuarioId }),
         });
         if (imagenes && imagenes.length > 0) {
             await this.prisma.image.createMany({
@@ -52,7 +60,7 @@ let EmprendimientosService = class EmprendimientosService {
                     imageableType: 'Emprendimiento',
                 },
             });
-            return { ...emprendimiento, imagenes };
+            return Object.assign(Object.assign({}, emprendimiento), { imagenes });
         }));
         return emprendimientosWithImages;
     }
@@ -76,7 +84,7 @@ let EmprendimientosService = class EmprendimientosService {
                 imageableType: 'Emprendimiento',
             },
         });
-        return { ...emprendimiento, imagenes };
+        return Object.assign(Object.assign({}, emprendimiento), { imagenes });
     }
     async findByUsuario(usuarioId) {
         return this.prisma.emprendimiento.findMany({
@@ -91,7 +99,7 @@ let EmprendimientosService = class EmprendimientosService {
         });
     }
     async update(id, updateEmprendimientoDto) {
-        const { imagenes, ...emprendimientoData } = updateEmprendimientoDto;
+        const { imagenes } = updateEmprendimientoDto, emprendimientoData = __rest(updateEmprendimientoDto, ["imagenes"]);
         const emprendimiento = await this.prisma.emprendimiento.update({
             where: { id },
             data: emprendimientoData,

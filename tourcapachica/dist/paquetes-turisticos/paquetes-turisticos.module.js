@@ -10,14 +10,15 @@ exports.PaquetesTuristicosModule = void 0;
 const common_1 = require("@nestjs/common");
 const paquetes_turisticos_service_1 = require("./paquetes-turisticos.service");
 const paquetes_turisticos_controller_1 = require("./paquetes-turisticos.controller");
-const prisma_service_1 = require("../prisma/prisma.service");
+const prisma_module_1 = require("../prisma/prisma.module");
 let PaquetesTuristicosModule = class PaquetesTuristicosModule {
 };
 exports.PaquetesTuristicosModule = PaquetesTuristicosModule;
 exports.PaquetesTuristicosModule = PaquetesTuristicosModule = __decorate([
     (0, common_1.Module)({
+        imports: [prisma_module_1.PrismaModule],
         controllers: [paquetes_turisticos_controller_1.PaquetesTuristicosController],
-        providers: [paquetes_turisticos_service_1.PaquetesTuristicosService, prisma_service_1.PrismaService],
+        providers: [paquetes_turisticos_service_1.PaquetesTuristicosService],
         exports: [paquetes_turisticos_service_1.PaquetesTuristicosService],
     })
 ], PaquetesTuristicosModule);

@@ -1,0 +1,7 @@
+export enum EstadoDisponibilidad {
+  ACTIVO = 'ACTIVO',
+  INACTIVO = 'INACTIVO',
+  COMPLETO = 'COMPLETO',
+  CANCELADO = 'CANCELADO',
+  EN_REVISION = 'EN_REVISION',
+} 

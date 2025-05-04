@@ -54,10 +54,10 @@ export declare class UsersController {
         usuariosRoles: ({
             rol: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
                 descripcion: string | null;
+                createdAt: Date;
+                updatedAt: Date;
             };
         } & {
             id: number;
@@ -85,10 +85,10 @@ export declare class UsersController {
         usuariosRoles: ({
             rol: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
                 descripcion: string | null;
+                createdAt: Date;
+                updatedAt: Date;
             };
         } & {
             id: number;

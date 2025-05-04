@@ -8,6 +8,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SlidersService = void 0;
 const common_1 = require("@nestjs/common");
@@ -17,7 +28,7 @@ let SlidersService = class SlidersService {
         this.prisma = prisma;
     }
     async create(createSliderDto) {
-        const { imagenes, ...sliderData } = createSliderDto;
+        const { imagenes } = createSliderDto, sliderData = __rest(createSliderDto, ["imagenes"]);
         const slider = await this.prisma.slider.create({
             data: sliderData,
         });
@@ -41,7 +52,7 @@ let SlidersService = class SlidersService {
                     imageableType: 'Slider',
                 },
             });
-            return { ...slider, imagenes };
+            return Object.assign(Object.assign({}, slider), { imagenes });
         }));
         return slidersWithImages;
     }
@@ -58,10 +69,10 @@ let SlidersService = class SlidersService {
                 imageableType: 'Slider',
             },
         });
-        return { ...slider, imagenes };
+        return Object.assign(Object.assign({}, slider), { imagenes });
     }
     async update(id, updateSliderDto) {
-        const { imagenes, ...sliderData } = updateSliderDto;
+        const { imagenes } = updateSliderDto, sliderData = __rest(updateSliderDto, ["imagenes"]);
         const slider = await this.prisma.slider.update({
             where: { id },
             data: sliderData,

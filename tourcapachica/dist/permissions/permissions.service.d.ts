@@ -6,19 +6,19 @@ export declare class PermissionsService {
     constructor(prisma: PrismaService);
     create(createPermissionDto: CreatePermissionDto): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     findAll(): Promise<({
         rolesPermisos: ({
             rol: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
                 descripcion: string | null;
+                createdAt: Date;
+                updatedAt: Date;
             };
         } & {
             id: number;
@@ -29,19 +29,19 @@ export declare class PermissionsService {
         })[];
     } & {
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     })[]>;
     findOne(id: number): Promise<{
         rolesPermisos: ({
             rol: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
                 descripcion: string | null;
+                createdAt: Date;
+                updatedAt: Date;
             };
         } & {
             id: number;
@@ -52,23 +52,23 @@ export declare class PermissionsService {
         })[];
     } & {
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     update(id: number, updatePermissionDto: UpdatePermissionDto): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     remove(id: number): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
 }

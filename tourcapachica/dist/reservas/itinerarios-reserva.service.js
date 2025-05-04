@@ -17,6 +17,7 @@ let ItinerariosReservaService = class ItinerariosReservaService {
         this.prisma = prisma;
     }
     async create(createItinerarioReservaDto) {
+        var _a, _b;
         const reserva = await this.prisma.reserva.findUnique({
             where: { id: createItinerarioReservaDto.reservaId },
         });
@@ -31,7 +32,7 @@ let ItinerariosReservaService = class ItinerariosReservaService {
                 throw new common_1.NotFoundException(`Servicio con ID ${createItinerarioReservaDto.servicioId} no encontrado`);
             }
         }
-        if (createItinerarioReservaDto.lugaresTuristicosIds?.length) {
+        if ((_a = createItinerarioReservaDto.lugaresTuristicosIds) === null || _a === void 0 ? void 0 : _a.length) {
             for (const lugarId of createItinerarioReservaDto.lugaresTuristicosIds) {
                 const lugar = await this.prisma.lugarTuristico.findUnique({
                     where: { id: lugarId },
@@ -62,7 +63,7 @@ let ItinerariosReservaService = class ItinerariosReservaService {
                 },
             },
         });
-        if (createItinerarioReservaDto.lugaresTuristicosIds?.length) {
+        if ((_b = createItinerarioReservaDto.lugaresTuristicosIds) === null || _b === void 0 ? void 0 : _b.length) {
             await Promise.all(createItinerarioReservaDto.lugaresTuristicosIds.map((lugarId) => this.prisma.itinerarioLugar.create({
                 data: {
                     itinerarioReservaId: itinerario.id,

@@ -15,39 +15,43 @@ class ServicioResponseDto {
 }
 exports.ServicioResponseDto = ServicioResponseDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'ID del servicio turístico' }),
+    (0, swagger_1.ApiProperty)({ description: 'ID del servicio' }),
     __metadata("design:type", Number)
 ], ServicioResponseDto.prototype, "id", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Nombre del servicio turístico' }),
+    (0, swagger_1.ApiProperty)({ description: 'Nombre del servicio' }),
     __metadata("design:type", String)
 ], ServicioResponseDto.prototype, "nombre", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Descripción del servicio turístico' }),
+    (0, swagger_1.ApiProperty)({ description: 'Descripción del servicio' }),
     __metadata("design:type", String)
 ], ServicioResponseDto.prototype, "descripcion", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Precio del servicio turístico' }),
+    (0, swagger_1.ApiProperty)({ description: 'Precio del servicio' }),
     __metadata("design:type", Number)
 ], ServicioResponseDto.prototype, "precio", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Duración del servicio turístico en horas' }),
+    (0, swagger_1.ApiProperty)({ description: 'Duración del servicio en horas' }),
     __metadata("design:type", Number)
 ], ServicioResponseDto.prototype, "duracion", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'URL de la imagen del servicio turístico' }),
+    (0, swagger_1.ApiProperty)({ description: 'URL de la imagen del servicio' }),
     __metadata("design:type", String)
 ], ServicioResponseDto.prototype, "imagenUrl", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Estado del servicio turístico' }),
+    (0, swagger_1.ApiProperty)({ description: 'Indica si el servicio está activo' }),
     __metadata("design:type", Boolean)
 ], ServicioResponseDto.prototype, "activo", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Fecha de creación del servicio turístico' }),
+    (0, swagger_1.ApiProperty)({ description: 'Orden del servicio en el paquete' }),
+    __metadata("design:type", Number)
+], ServicioResponseDto.prototype, "orden", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Fecha de creación del servicio' }),
     __metadata("design:type", Date)
 ], ServicioResponseDto.prototype, "createdAt", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Fecha de actualización del servicio turístico' }),
+    (0, swagger_1.ApiProperty)({ description: 'Fecha de última actualización del servicio' }),
     __metadata("design:type", Date)
 ], ServicioResponseDto.prototype, "updatedAt", void 0);
 //# sourceMappingURL=servicio-response.dto.js.map

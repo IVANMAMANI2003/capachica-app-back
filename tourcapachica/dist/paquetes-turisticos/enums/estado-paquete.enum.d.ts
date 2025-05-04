@@ -1,0 +1,7 @@
+export declare enum EstadoPaquete {
+    ACTIVO = "ACTIVO",
+    INACTIVO = "INACTIVO",
+    EN_REVISION = "EN_REVISION",
+    RECHAZADO = "RECHAZADO",
+    AGOTADO = "AGOTADO"
+}

@@ -6,6 +6,7 @@ export declare class ServicioResponseDto {
     duracion: number;
     imagenUrl: string;
     activo: boolean;
+    orden: number;
     createdAt: Date;
     updatedAt: Date;
 }

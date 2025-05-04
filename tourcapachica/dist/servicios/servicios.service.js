@@ -8,6 +8,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ServiciosService = void 0;
 const common_1 = require("@nestjs/common");
@@ -17,7 +28,7 @@ let ServiciosService = class ServiciosService {
         this.prisma = prisma;
     }
     async create(createServicioDto) {
-        const { imagenes, ...servicioData } = createServicioDto;
+        const { imagenes } = createServicioDto, servicioData = __rest(createServicioDto, ["imagenes"]);
         const servicio = await this.prisma.servicio.create({
             data: servicioData,
         });
@@ -45,7 +56,7 @@ let ServiciosService = class ServiciosService {
                     imageableType: 'Servicio',
                 },
             });
-            return { ...servicio, imagenes };
+            return Object.assign(Object.assign({}, servicio), { imagenes });
         }));
         return serviciosWithImages;
     }
@@ -65,10 +76,10 @@ let ServiciosService = class ServiciosService {
                 imageableType: 'Servicio',
             },
         });
-        return { ...servicio, imagenes };
+        return Object.assign(Object.assign({}, servicio), { imagenes });
     }
     async update(id, updateServicioDto) {
-        const { imagenes, ...servicioData } = updateServicioDto;
+        const { imagenes } = updateServicioDto, servicioData = __rest(updateServicioDto, ["imagenes"]);
         const servicio = await this.prisma.servicio.update({
             where: { id },
             data: servicioData,

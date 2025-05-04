@@ -9,8 +9,38 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.EstadisticasPaqueteDto = void 0;
+exports.EstadisticasPaqueteDto = exports.EstadisticaMensualDto = exports.ServicioPopularDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
+class ServicioPopularDto {
+}
+exports.ServicioPopularDto = ServicioPopularDto;
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'ID del servicio' }),
+    __metadata("design:type", Number)
+], ServicioPopularDto.prototype, "servicioId", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Nombre del servicio' }),
+    __metadata("design:type", String)
+], ServicioPopularDto.prototype, "nombre", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Cantidad de reservas para este servicio' }),
+    __metadata("design:type", Number)
+], ServicioPopularDto.prototype, "cantidadReservas", void 0);
+class EstadisticaMensualDto {
+}
+exports.EstadisticaMensualDto = EstadisticaMensualDto;
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Mes de la estadística' }),
+    __metadata("design:type", Date)
+], EstadisticaMensualDto.prototype, "mes", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Total de reservas en el mes' }),
+    __metadata("design:type", Number)
+], EstadisticaMensualDto.prototype, "totalReservas", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Total de ingresos en el mes' }),
+    __metadata("design:type", Number)
+], EstadisticaMensualDto.prototype, "totalIngresos", void 0);
 class EstadisticasPaqueteDto {
 }
 exports.EstadisticasPaqueteDto = EstadisticasPaqueteDto;
@@ -27,19 +57,19 @@ __decorate([
     __metadata("design:type", Number)
 ], EstadisticasPaqueteDto.prototype, "promedioCalificacion", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Total de reseñas' }),
+    (0, swagger_1.ApiProperty)({ description: 'Total de reseñas recibidas' }),
     __metadata("design:type", Number)
 ], EstadisticasPaqueteDto.prototype, "totalResenas", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Tasa de ocupación promedio' }),
+    (0, swagger_1.ApiProperty)({ description: 'Tasa de ocupación del paquete (porcentaje)' }),
     __metadata("design:type", Number)
 ], EstadisticasPaqueteDto.prototype, "tasaOcupacion", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Servicios más populares', type: [Object] }),
+    (0, swagger_1.ApiProperty)({ description: 'Servicios más populares del paquete', type: [ServicioPopularDto] }),
     __metadata("design:type", Array)
 ], EstadisticasPaqueteDto.prototype, "serviciosPopulares", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Estadísticas por mes', type: [Object] }),
+    (0, swagger_1.ApiProperty)({ description: 'Estadísticas mensuales', type: [EstadisticaMensualDto] }),
     __metadata("design:type", Array)
 ], EstadisticasPaqueteDto.prototype, "estadisticasMensuales", void 0);
 //# sourceMappingURL=estadisticas.dto.js.map

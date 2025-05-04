@@ -1,15 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsNumber, ValidateNested } from 'class-validator';
+import { IsArray, IsNumber, IsOptional, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
-class ServicioPaqueteDto {
+export class ServicioPaqueteDto {
   @ApiProperty({ description: 'ID del servicio a agregar' })
   @IsNumber()
   servicioId: number;
 
-  @ApiProperty({ description: 'Orden del servicio en el paquete' })
+  @ApiProperty({ description: 'Orden del servicio en el paquete', required: false })
   @IsNumber()
-  orden: number;
+  @IsOptional()
+  orden?: number;
 }
 
 export class AddServiciosDto {

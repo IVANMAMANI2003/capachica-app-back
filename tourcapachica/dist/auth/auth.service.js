@@ -55,10 +55,11 @@ let AuthService = class AuthService {
         };
     }
     async refreshToken(user) {
+        var _a, _b;
         const payload = {
             email: user.email,
             sub: user.id,
-            roles: user.usuariosRoles?.map((ur) => ur.rol.nombre) ?? []
+            roles: (_b = (_a = user.usuariosRoles) === null || _a === void 0 ? void 0 : _a.map((ur) => ur.rol.nombre)) !== null && _b !== void 0 ? _b : []
         };
         return {
             access_token: this.jwtService.sign(payload)

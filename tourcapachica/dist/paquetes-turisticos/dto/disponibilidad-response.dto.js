@@ -75,6 +75,23 @@ __decorate([
 ], DisponibilidadResponseDto.prototype, "notas", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
+        description: 'Estado de la disponibilidad',
+        example: 'Disponible',
+        required: false,
+    }),
+    __metadata("design:type", String)
+], DisponibilidadResponseDto.prototype, "estado", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Días de la semana disponibles',
+        example: ['Lunes', 'Miércoles', 'Viernes'],
+        type: [String],
+        required: false,
+    }),
+    __metadata("design:type", Array)
+], DisponibilidadResponseDto.prototype, "diasSemana", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
         description: 'Fecha de creación del registro',
         example: '2024-03-15T00:00:00.000Z',
     }),

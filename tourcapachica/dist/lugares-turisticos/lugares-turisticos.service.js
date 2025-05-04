@@ -8,6 +8,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LugaresTuristicosService = void 0;
 const common_1 = require("@nestjs/common");
@@ -17,7 +28,7 @@ let LugaresTuristicosService = class LugaresTuristicosService {
         this.prisma = prisma;
     }
     async create(createLugarTuristicoDto) {
-        const { imagenes, ...lugarData } = createLugarTuristicoDto;
+        const { imagenes } = createLugarTuristicoDto, lugarData = __rest(createLugarTuristicoDto, ["imagenes"]);
         const lugar = await this.prisma.lugarTuristico.create({
             data: lugarData,
         });
@@ -41,7 +52,7 @@ let LugaresTuristicosService = class LugaresTuristicosService {
                     imageableType: 'LugarTuristico',
                 },
             });
-            return { ...lugar, imagenes };
+            return Object.assign(Object.assign({}, lugar), { imagenes });
         }));
         return lugaresWithImages;
     }
@@ -58,10 +69,10 @@ let LugaresTuristicosService = class LugaresTuristicosService {
                 imageableType: 'LugarTuristico',
             },
         });
-        return { ...lugar, imagenes };
+        return Object.assign(Object.assign({}, lugar), { imagenes });
     }
     async update(id, updateLugarTuristicoDto) {
-        const { imagenes, ...lugarData } = updateLugarTuristicoDto;
+        const { imagenes } = updateLugarTuristicoDto, lugarData = __rest(updateLugarTuristicoDto, ["imagenes"]);
         const lugar = await this.prisma.lugarTuristico.update({
             where: { id },
             data: lugarData,

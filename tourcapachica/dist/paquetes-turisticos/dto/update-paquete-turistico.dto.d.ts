@@ -1,5 +1,9 @@
-import { CreatePaqueteTuristicoDto } from './create-paquete-turistico.dto';
-declare const UpdatePaqueteTuristicoDto_base: import("@nestjs/mapped-types").MappedType<Partial<CreatePaqueteTuristicoDto>>;
-export declare class UpdatePaqueteTuristicoDto extends UpdatePaqueteTuristicoDto_base {
+export declare class UpdatePaqueteTuristicoDto {
+    nombre?: string;
+    descripcion?: string;
+    precio?: number;
+    estado?: string;
+    imagenUrl?: string;
+    activo?: boolean;
+    imagenes?: string[];
 }
-export {};

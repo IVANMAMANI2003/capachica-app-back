@@ -11,24 +11,36 @@ export class PaqueteResponseDto {
   @ApiProperty({ description: 'Descripción del paquete turístico' })
   descripcion: string;
 
-  @ApiProperty({ description: 'Precio del paquete turístico' })
+  @ApiProperty({ description: 'Precio base del paquete turístico' })
   precio: number;
 
-  @ApiProperty({ description: 'Duración del paquete turístico en horas' })
-  duracion: number;
+  @ApiProperty({ description: 'Estado del paquete turístico' })
+  estado: string;
 
-  @ApiProperty({ description: 'URL de la imagen del paquete turístico' })
+  @ApiProperty({ description: 'ID del emprendimiento al que pertenece el paquete' })
+  emprendimientoId: number;
+
+  @ApiProperty({ description: 'URL de la imagen principal' })
   imagenUrl: string;
 
-  @ApiProperty({ description: 'Estado del paquete turístico' })
+  @ApiProperty({ description: 'Indica si el paquete está activo' })
   activo: boolean;
 
-  @ApiProperty({ description: 'Fecha de creación del paquete turístico' })
+  @ApiProperty({ description: 'Cupos máximos del paquete' })
+  cuposMaximos: number;
+
+  @ApiProperty({ description: 'Duración del paquete en días' })
+  duracion: number;
+
+  @ApiProperty({ description: 'URLs de imágenes adicionales', type: [String] })
+  imagenes: string[];
+
+  @ApiProperty({ description: 'Servicios incluidos en el paquete', type: [ServicioResponseDto] })
+  servicios: ServicioResponseDto[];
+
+  @ApiProperty({ description: 'Fecha de creación del paquete' })
   createdAt: Date;
 
-  @ApiProperty({ description: 'Fecha de actualización del paquete turístico' })
+  @ApiProperty({ description: 'Fecha de última actualización del paquete' })
   updatedAt: Date;
-
-  @ApiProperty({ description: 'Lista de servicios incluidos en el paquete', type: [ServicioResponseDto] })
-  servicios: ServicioResponseDto[];
 } 

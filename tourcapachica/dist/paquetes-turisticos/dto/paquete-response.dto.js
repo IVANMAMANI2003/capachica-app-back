@@ -28,31 +28,47 @@ __decorate([
     __metadata("design:type", String)
 ], PaqueteResponseDto.prototype, "descripcion", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Precio del paquete turístico' }),
+    (0, swagger_1.ApiProperty)({ description: 'Precio base del paquete turístico' }),
     __metadata("design:type", Number)
 ], PaqueteResponseDto.prototype, "precio", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Duración del paquete turístico en horas' }),
-    __metadata("design:type", Number)
-], PaqueteResponseDto.prototype, "duracion", void 0);
+    (0, swagger_1.ApiProperty)({ description: 'Estado del paquete turístico' }),
+    __metadata("design:type", String)
+], PaqueteResponseDto.prototype, "estado", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'URL de la imagen del paquete turístico' }),
+    (0, swagger_1.ApiProperty)({ description: 'ID del emprendimiento al que pertenece el paquete' }),
+    __metadata("design:type", Number)
+], PaqueteResponseDto.prototype, "emprendimientoId", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'URL de la imagen principal' }),
     __metadata("design:type", String)
 ], PaqueteResponseDto.prototype, "imagenUrl", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Estado del paquete turístico' }),
+    (0, swagger_1.ApiProperty)({ description: 'Indica si el paquete está activo' }),
     __metadata("design:type", Boolean)
 ], PaqueteResponseDto.prototype, "activo", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Fecha de creación del paquete turístico' }),
+    (0, swagger_1.ApiProperty)({ description: 'Cupos máximos del paquete' }),
+    __metadata("design:type", Number)
+], PaqueteResponseDto.prototype, "cuposMaximos", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Duración del paquete en días' }),
+    __metadata("design:type", Number)
+], PaqueteResponseDto.prototype, "duracion", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'URLs de imágenes adicionales', type: [String] }),
+    __metadata("design:type", Array)
+], PaqueteResponseDto.prototype, "imagenes", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Servicios incluidos en el paquete', type: [servicio_response_dto_1.ServicioResponseDto] }),
+    __metadata("design:type", Array)
+], PaqueteResponseDto.prototype, "servicios", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Fecha de creación del paquete' }),
     __metadata("design:type", Date)
 ], PaqueteResponseDto.prototype, "createdAt", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Fecha de actualización del paquete turístico' }),
+    (0, swagger_1.ApiProperty)({ description: 'Fecha de última actualización del paquete' }),
     __metadata("design:type", Date)
 ], PaqueteResponseDto.prototype, "updatedAt", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Lista de servicios incluidos en el paquete', type: [servicio_response_dto_1.ServicioResponseDto] }),
-    __metadata("design:type", Array)
-], PaqueteResponseDto.prototype, "servicios", void 0);
 //# sourceMappingURL=paquete-response.dto.js.map
