@@ -23,8 +23,6 @@ const reservas_module_1 = require("./reservas/reservas.module");
 const users_module_1 = require("./users/users.module");
 const roles_module_1 = require("./roles/roles.module");
 const permissions_module_1 = require("./permissions/permissions.module");
-const app_controller_1 = require("./app.controller");
-const app_service_1 = require("./app.service");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -49,8 +47,6 @@ exports.AppModule = AppModule = __decorate([
             payments_module_1.PaymentsModule,
             reservas_module_1.ReservasModule,
         ],
-        controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

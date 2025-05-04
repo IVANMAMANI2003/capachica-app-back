@@ -110,9 +110,45 @@ async function main() {
       },
     });
 
+    // Obtener la subdivisión de Puno
+    const puno = await prisma.subdivision.findFirst({
+      where: { name: 'Puno' },
+    });
+
+    if (!puno) {
+      throw new Error('No se pudo encontrar la subdivisión de Puno');
+    }
+
+    // Crear lugares turísticos
+    await prisma.lugarTuristico.createMany({
+      data: [
+        {
+          nombre: 'Islas Uros',
+          descripcion: 'Islas flotantes hechas de totora en el Lago Titicaca',
+          direccion: 'Lago Titicaca, Puno',
+          coordenadas: '-15.8200,-70.0200',
+          estado: 'activo',
+        },
+        {
+          nombre: 'Taquile',
+          descripcion: 'Isla conocida por su cultura textil y tradiciones',
+          direccion: 'Lago Titicaca, Puno',
+          coordenadas: '-15.7700,-69.6800',
+          estado: 'activo',
+        },
+        {
+          nombre: 'Capachica',
+          descripcion: 'Península con hermosas playas y miradores naturales',
+          direccion: 'Península de Capachica, Puno',
+          coordenadas: '-15.6000,-69.9000',
+          estado: 'activo',
+        }
+      ],
+    });
+
     // Obtener la primera subdivisión (Lima)
     const lima = await prisma.subdivision.findFirst({
-      where: { countryId: peru.id },
+      where: { name: 'Lima' },
     });
 
     if (!lima) {
