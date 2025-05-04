@@ -17,16 +17,51 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
         this.prisma = prisma;
     }
     async create(createPaqueteTuristicoDto) {
-        return this.prisma.paqueteTuristico.create({
-            data: createPaqueteTuristicoDto,
-            include: {
-                servicios: {
-                    include: {
-                        servicio: true,
+        try {
+            const data = Object.assign(Object.assign({}, createPaqueteTuristicoDto), { estado: createPaqueteTuristicoDto.estado.toLowerCase() });
+            const paquete = await this.prisma.paqueteTuristico.create({
+                data,
+                include: {
+                    servicios: {
+                        include: {
+                            servicio: true,
+                        },
                     },
                 },
-            },
-        });
+            });
+            if (createPaqueteTuristicoDto.imagenes && createPaqueteTuristicoDto.imagenes.length > 0) {
+                const imagenesPromises = createPaqueteTuristicoDto.imagenes.map(async (imagen) => {
+                    return this.prisma.image.create({
+                        data: {
+                            url: imagen.url,
+                            imageableId: paquete.id,
+                            imageableType: 'PaqueteTuristico',
+                        },
+                    });
+                });
+                await Promise.all(imagenesPromises);
+            }
+            const paqueteConImagenes = await this.prisma.paqueteTuristico.findUnique({
+                where: { id: paquete.id },
+                include: {
+                    servicios: {
+                        include: {
+                            servicio: true,
+                        },
+                    },
+                },
+            });
+            const imagenes = await this.prisma.image.findMany({
+                where: {
+                    imageableId: paquete.id,
+                    imageableType: 'PaqueteTuristico',
+                },
+            });
+            return Object.assign(Object.assign({}, paqueteConImagenes), { imagenes });
+        }
+        catch (error) {
+            throw new common_1.BadRequestException('Error al crear el paquete turístico: ' + error.message);
+        }
     }
     async findAll() {
         return this.prisma.paqueteTuristico.findMany({

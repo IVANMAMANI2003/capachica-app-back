@@ -12,16 +12,66 @@ export class PaquetesTuristicosService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createPaqueteTuristicoDto: CreatePaqueteTuristicoDto) {
-    return this.prisma.paqueteTuristico.create({
-      data: createPaqueteTuristicoDto,
-      include: {
-        servicios: {
-          include: {
-            servicio: true,
+    try {
+      // Convertir el estado a minúsculas para coincidir con el schema
+      const data = {
+        ...createPaqueteTuristicoDto,
+        estado: createPaqueteTuristicoDto.estado.toLowerCase(),
+      };
+
+      const paquete = await this.prisma.paqueteTuristico.create({
+        data,
+        include: {
+          servicios: {
+            include: {
+              servicio: true,
+            },
           },
         },
-      },
-    });
+      });
+
+      // Crear las imágenes si existen
+      if (createPaqueteTuristicoDto.imagenes && createPaqueteTuristicoDto.imagenes.length > 0) {
+        const imagenesPromises = createPaqueteTuristicoDto.imagenes.map(async (imagen) => {
+          return this.prisma.image.create({
+            data: {
+              url: imagen.url,
+              imageableId: paquete.id,
+              imageableType: 'PaqueteTuristico',
+            },
+          });
+        });
+
+        await Promise.all(imagenesPromises);
+      }
+
+      // Obtener el paquete con sus imágenes
+      const paqueteConImagenes = await this.prisma.paqueteTuristico.findUnique({
+        where: { id: paquete.id },
+        include: {
+          servicios: {
+            include: {
+              servicio: true,
+            },
+          },
+        },
+      });
+
+      // Obtener las imágenes asociadas
+      const imagenes = await this.prisma.image.findMany({
+        where: {
+          imageableId: paquete.id,
+          imageableType: 'PaqueteTuristico',
+        },
+      });
+
+      return {
+        ...paqueteConImagenes,
+        imagenes,
+      };
+    } catch (error) {
+      throw new BadRequestException('Error al crear el paquete turístico: ' + error.message);
+    }
   }
 
   async findAll() {
