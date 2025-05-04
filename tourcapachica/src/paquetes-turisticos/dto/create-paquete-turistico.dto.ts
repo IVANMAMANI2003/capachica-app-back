@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNumber, IsBoolean, IsOptional, IsArray, IsEnum, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsNumber, IsEnum, IsArray, MaxLength } from 'class-validator';
 import { EstadoPaquete } from '../enums/estado-paquete.enum';
 
 class ImageDto {
@@ -14,27 +14,60 @@ class ImageDto {
 }
 
 export class CreatePaqueteTuristicoDto {
-  @ApiProperty({ description: 'Nombre del paquete turístico' })
+  @ApiProperty({
+    description: 'Nombre del paquete turístico',
+    example: 'Turismo vivencial',
+    required: true,
+    maxLength: 200,
+  })
   @IsString()
+  @IsNotEmpty()
+  @MaxLength(200)
   nombre: string;
 
-  @ApiProperty({ description: 'Descripción del paquete turístico' })
+  @ApiProperty({
+    description: 'Descripción del paquete turístico',
+    example: 'Tour completo por los principales atractivos de Capachica',
+    required: true,
+  })
   @IsString()
+  @IsNotEmpty()
   descripcion: string;
 
-  @ApiProperty({ description: 'Precio base del paquete turístico' })
+  @ApiProperty({
+    description: 'Precio del paquete turístico',
+    example: 150.00,
+    required: true,
+  })
   @IsNumber()
+  @IsNotEmpty()
   precio: number;
 
-  @ApiProperty({ description: 'Estado del paquete turístico', enum: EstadoPaquete })
+  @ApiProperty({
+    description: 'Estado del paquete turístico',
+    example: 'ACTIVO',
+    enum: EstadoPaquete,
+    default: EstadoPaquete.ACTIVO,
+    required: true,
+  })
   @IsEnum(EstadoPaquete)
+  @IsNotEmpty()
   estado: EstadoPaquete;
 
-  @ApiProperty({ description: 'ID del emprendimiento al que pertenece el paquete' })
+  @ApiProperty({
+    description: 'ID del emprendimiento al que pertenece el paquete',
+    example: 1,
+    required: true,
+  })
   @IsNumber()
+  @IsNotEmpty()
   emprendimientoId: number;
 
-  @ApiProperty({ description: 'Imágenes del paquete', type: [ImageDto], required: false })
+  @ApiProperty({ 
+    description: 'Imágenes del paquete turístico', 
+    required: false,
+    type: [ImageDto]
+  })
   @IsArray()
   @IsOptional()
   imagenes?: ImageDto[];

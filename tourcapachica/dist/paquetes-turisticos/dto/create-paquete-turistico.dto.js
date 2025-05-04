@@ -29,32 +29,65 @@ class CreatePaqueteTuristicoDto {
 }
 exports.CreatePaqueteTuristicoDto = CreatePaqueteTuristicoDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Nombre del paquete turístico' }),
+    (0, swagger_1.ApiProperty)({
+        description: 'Nombre del paquete turístico',
+        example: 'Turismo vivencial',
+        required: true,
+        maxLength: 200,
+    }),
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.MaxLength)(200),
     __metadata("design:type", String)
 ], CreatePaqueteTuristicoDto.prototype, "nombre", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Descripción del paquete turístico' }),
+    (0, swagger_1.ApiProperty)({
+        description: 'Descripción del paquete turístico',
+        example: 'Tour completo por los principales atractivos de Capachica',
+        required: true,
+    }),
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreatePaqueteTuristicoDto.prototype, "descripcion", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Precio base del paquete turístico' }),
+    (0, swagger_1.ApiProperty)({
+        description: 'Precio del paquete turístico',
+        example: 150.00,
+        required: true,
+    }),
     (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
 ], CreatePaqueteTuristicoDto.prototype, "precio", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Estado del paquete turístico', enum: estado_paquete_enum_1.EstadoPaquete }),
+    (0, swagger_1.ApiProperty)({
+        description: 'Estado del paquete turístico',
+        example: 'ACTIVO',
+        enum: estado_paquete_enum_1.EstadoPaquete,
+        default: estado_paquete_enum_1.EstadoPaquete.ACTIVO,
+        required: true,
+    }),
     (0, class_validator_1.IsEnum)(estado_paquete_enum_1.EstadoPaquete),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreatePaqueteTuristicoDto.prototype, "estado", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'ID del emprendimiento al que pertenece el paquete' }),
+    (0, swagger_1.ApiProperty)({
+        description: 'ID del emprendimiento al que pertenece el paquete',
+        example: 1,
+        required: true,
+    }),
     (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
 ], CreatePaqueteTuristicoDto.prototype, "emprendimientoId", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Imágenes del paquete', type: [ImageDto], required: false }),
+    (0, swagger_1.ApiProperty)({
+        description: 'Imágenes del paquete turístico',
+        required: false,
+        type: [ImageDto]
+    }),
     (0, class_validator_1.IsArray)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Array)
