@@ -54,18 +54,6 @@ __decorate([
     __metadata("design:type", Number)
 ], CreatePaqueteTuristicoDto.prototype, "emprendimientoId", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Cupos máximos del paquete', required: false }),
-    (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", Number)
-], CreatePaqueteTuristicoDto.prototype, "cuposMaximos", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Duración del paquete en días', required: false }),
-    (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", Number)
-], CreatePaqueteTuristicoDto.prototype, "duracion", void 0);
-__decorate([
     (0, swagger_1.ApiProperty)({ description: 'Imágenes del paquete', type: [ImageDto], required: false }),
     (0, class_validator_1.IsArray)(),
     (0, class_validator_1.IsOptional)(),

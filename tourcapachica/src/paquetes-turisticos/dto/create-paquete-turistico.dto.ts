@@ -34,16 +34,6 @@ export class CreatePaqueteTuristicoDto {
   @IsNumber()
   emprendimientoId: number;
 
-  @ApiProperty({ description: 'Cupos máximos del paquete', required: false })
-  @IsNumber()
-  @IsOptional()
-  cuposMaximos?: number;
-
-  @ApiProperty({ description: 'Duración del paquete en días', required: false })
-  @IsNumber()
-  @IsOptional()
-  duracion?: number;
-
   @ApiProperty({ description: 'Imágenes del paquete', type: [ImageDto], required: false })
   @IsArray()
   @IsOptional()

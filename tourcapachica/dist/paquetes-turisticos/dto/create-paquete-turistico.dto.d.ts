@@ -8,8 +8,6 @@ export declare class CreatePaqueteTuristicoDto {
     precio: number;
     estado: EstadoPaquete;
     emprendimientoId: number;
-    cuposMaximos?: number;
-    duracion?: number;
     imagenes?: ImageDto[];
 }
 export {};

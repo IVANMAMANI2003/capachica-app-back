@@ -9,71 +9,78 @@ import { UpdatePaqueteTuristicoDto } from './dto/update-paquete-turistico.dto';
 import { AddServiciosDto } from './dto/add-servicios.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
+import { PaqueteTuristicoEntity } from './entities/paquete-turistico.entity';
 
 @ApiTags('paquetes-turisticos')
 @Controller('paquetes-turisticos')
-
 export class PaquetesTuristicosController {
   constructor(private readonly paquetesTuristicosService: PaquetesTuristicosService) {}
 
   @Post()
-  @Roles('emprendedor', 'SuperAdmin')
+  @Roles('SuperAdmin', 'emprendedor')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Crear un nuevo paquete turístico' })
-  @ApiResponse({ status: 201, description: 'Paquete turístico creado exitosamente' })
+  @ApiResponse({ 
+    status: 201, 
+    description: 'Paquete turístico creado exitosamente',
+    type: PaqueteTuristicoEntity
+  })
   @ApiResponse({ status: 400, description: 'Datos inválidos' })
   @ApiResponse({ status: 403, description: 'No autorizado' })
- 
-  async create(
-    @Body() createPaqueteTuristicoDto: CreatePaqueteTuristicoDto
-  ) {
+  create(@Body() createPaqueteTuristicoDto: CreatePaqueteTuristicoDto) {
     return this.paquetesTuristicosService.create(createPaqueteTuristicoDto);
   }
 
   @Get()
   @ApiOperation({ summary: 'Obtener todos los paquetes turísticos' })
-  @ApiResponse({ status: 200, description: 'Lista de paquetes turísticos' })
-  async findAll() {
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Lista de paquetes turísticos',
+    type: [PaqueteTuristicoEntity]
+  })
+  findAll() {
     return this.paquetesTuristicosService.findAll();
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Obtener un paquete turístico por ID' })
-  @ApiResponse({ status: 200, description: 'Paquete turístico encontrado' })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Paquete turístico encontrado',
+    type: PaqueteTuristicoEntity
+  })
   @ApiResponse({ status: 404, description: 'Paquete turístico no encontrado' })
-  async findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.paquetesTuristicosService.findOne(id);
   }
 
   @Patch(':id')
-  @Roles('emprendedor', 'SuperAdmin')
+  @Roles('SuperAdmin', 'emprendedor')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar un paquete turístico' })
-  @ApiResponse({ status: 200, description: 'Paquete turístico actualizado exitosamente' })
-  @ApiResponse({ status: 400, description: 'Datos inválidos' })
-  @ApiResponse({ status: 403, description: 'No autorizado' })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Paquete turístico actualizado',
+    type: PaqueteTuristicoEntity
+  })
   @ApiResponse({ status: 404, description: 'Paquete turístico no encontrado' })
-
-  async update(
+  update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updatePaqueteTuristicoDto: UpdatePaqueteTuristicoDto
+    @Body() updatePaqueteTuristicoDto: UpdatePaqueteTuristicoDto,
   ) {
     return this.paquetesTuristicosService.update(id, updatePaqueteTuristicoDto);
   }
 
   @Delete(':id')
-  @Roles('emprendedor', 'SuperAdmin')
+  @Roles('SuperAdmin', 'emprendedor')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Eliminar un paquete turístico' })
-  @ApiResponse({ status: 200, description: 'Paquete turístico eliminado exitosamente' })
-  @ApiResponse({ status: 403, description: 'No autorizado' })
+  @ApiResponse({ status: 200, description: 'Paquete turístico eliminado' })
   @ApiResponse({ status: 404, description: 'Paquete turístico no encontrado' })
-  async remove(
-    @Param('id', ParseIntPipe) id: number
-  ) {
+  remove(@Param('id', ParseIntPipe) id: number) {
     return this.paquetesTuristicosService.remove(id);
   }
 
