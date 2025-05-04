@@ -10,6 +10,13 @@ export declare class DisponibilidadService {
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
     }>;
+    createDisponibilidades(disponibilidades: CreateServicioDisponibilidadDto[]): Promise<{
+        id: number;
+        servicioId: number;
+        fecha: Date;
+        cuposDisponibles: number;
+        precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
+    }[]>;
     getDisponibilidad(servicioId: number): Promise<{
         id: number;
         servicioId: number;

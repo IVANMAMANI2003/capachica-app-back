@@ -27,6 +27,9 @@ let DisponibilidadController = class DisponibilidadController {
     create(createDisponibilidadDto) {
         return this.disponibilidadService.createDisponibilidad(createDisponibilidadDto);
     }
+    createBatch(disponibilidades) {
+        return this.disponibilidadService.createDisponibilidades(disponibilidades);
+    }
     findAll() {
         return this.disponibilidadService.findAll();
     }
@@ -58,6 +61,20 @@ __decorate([
     __metadata("design:paramtypes", [create_servicio_disponibilidad_dto_1.CreateServicioDisponibilidadDto]),
     __metadata("design:returntype", void 0)
 ], DisponibilidadController.prototype, "create", null);
+__decorate([
+    (0, common_1.Post)('batch'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, swagger_1.ApiOperation)({ summary: 'Crear múltiples disponibilidades para un servicio' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Disponibilidades creadas exitosamente' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'No autorizado' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Servicio no encontrado' }),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Array]),
+    __metadata("design:returntype", void 0)
+], DisponibilidadController.prototype, "createBatch", null);
 __decorate([
     (0, common_1.Get)(),
     (0, swagger_1.ApiOperation)({ summary: 'Obtener todas las disponibilidades' }),

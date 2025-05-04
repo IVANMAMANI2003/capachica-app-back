@@ -32,6 +32,24 @@ let DisponibilidadService = class DisponibilidadService {
             },
         });
     }
+    async createDisponibilidades(disponibilidades) {
+        const servicioIds = [...new Set(disponibilidades.map(d => d.servicioId))];
+        const servicios = await this.prisma.servicio.findMany({
+            where: { id: { in: servicioIds } },
+        });
+        if (servicios.length !== servicioIds.length) {
+            const serviciosNoEncontrados = servicioIds.filter(id => !servicios.some(s => s.id === id));
+            throw new common_1.NotFoundException(`Los siguientes servicios no fueron encontrados: ${serviciosNoEncontrados.join(', ')}`);
+        }
+        return this.prisma.$transaction(disponibilidades.map(disponibilidad => this.prisma.servicioDisponibilidad.create({
+            data: {
+                servicioId: disponibilidad.servicioId,
+                fecha: new Date(disponibilidad.fecha),
+                cuposDisponibles: disponibilidad.cuposDisponibles,
+                precioEspecial: disponibilidad.precioEspecial,
+            },
+        })));
+    }
     async getDisponibilidad(servicioId) {
         const servicio = await this.prisma.servicio.findUnique({
             where: { id: servicioId },

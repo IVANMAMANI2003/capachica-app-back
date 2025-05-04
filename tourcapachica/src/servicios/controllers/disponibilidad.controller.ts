@@ -24,6 +24,18 @@ export class DisponibilidadController {
     return this.disponibilidadService.createDisponibilidad(createDisponibilidadDto);
   }
 
+  @Post('batch')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('emprendedor', 'SuperAdmin')
+  @ApiOperation({ summary: 'Crear múltiples disponibilidades para un servicio' })
+  @ApiResponse({ status: 201, description: 'Disponibilidades creadas exitosamente' })
+  @ApiResponse({ status: 400, description: 'Datos inválidos' })
+  @ApiResponse({ status: 401, description: 'No autorizado' })
+  @ApiResponse({ status: 404, description: 'Servicio no encontrado' })
+  createBatch(@Body() disponibilidades: CreateServicioDisponibilidadDto[]) {
+    return this.disponibilidadService.createDisponibilidades(disponibilidades);
+  }
+
   @Get()
   @ApiOperation({ summary: 'Obtener todas las disponibilidades' })
   @ApiResponse({ status: 200, description: 'Lista de disponibilidades' })
