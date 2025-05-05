@@ -2,11 +2,12 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsOptional, IsNumber, IsEnum, IsArray, Min } from 'class-validator';
 import { Type } from 'class-transformer';
 
-class ImageDto {
+export class ImageDto {
   @ApiProperty({
     description: 'URL de la imagen',
     example: 'https://example.com/image.jpg',
     required: true,
+    type: String
   })
   @IsString()
   @IsNotEmpty()
@@ -18,6 +19,7 @@ export class CreatePaqueteTuristicoDto {
     description: 'ID del emprendimiento',
     example: 1,
     required: true,
+    type: Number
   })
   @IsNumber()
   @IsNotEmpty()
@@ -27,6 +29,7 @@ export class CreatePaqueteTuristicoDto {
     description: 'Nombre del paquete turístico',
     example: 'Tour por la isla de Capachica',
     required: true,
+    type: String
   })
   @IsString()
   @IsNotEmpty()
@@ -36,6 +39,7 @@ export class CreatePaqueteTuristicoDto {
     description: 'Descripción del paquete turístico',
     example: 'Recorrido completo por los principales atractivos de la isla',
     required: true,
+    type: String
   })
   @IsString()
   @IsNotEmpty()
@@ -45,6 +49,7 @@ export class CreatePaqueteTuristicoDto {
     description: 'Precio del paquete turístico',
     example: 150.00,
     required: true,
+    type: Number
   })
   @IsNumber()
   @Min(0)
@@ -56,6 +61,8 @@ export class CreatePaqueteTuristicoDto {
     example: 'activo',
     default: 'activo',
     required: false,
+    enum: ['activo', 'inactivo'],
+    type: String
   })
   @IsString()
   @IsOptional()
@@ -66,6 +73,7 @@ export class CreatePaqueteTuristicoDto {
     description: 'IDs de los servicios incluidos en el paquete',
     type: [Number],
     required: false,
+    example: [1, 2, 3]
   })
   @IsArray()
   @IsOptional()
@@ -76,6 +84,14 @@ export class CreatePaqueteTuristicoDto {
     description: 'Lista de imágenes del paquete turístico',
     type: [ImageDto],
     required: false,
+    example: [
+      {
+        url: 'https://example.com/image1.jpg'
+      },
+      {
+        url: 'https://example.com/image2.jpg'
+      }
+    ]
   })
   @IsOptional()
   imagenes?: ImageDto[];

@@ -9,17 +9,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateLugarTuristicoDto = void 0;
+exports.CreateLugarTuristicoDto = exports.ImageDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
 class ImageDto {
 }
+exports.ImageDto = ImageDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'URL de la imagen',
         example: 'https://example.com/image.jpg',
         required: true,
+        type: String
     }),
     (0, class_validator_1.IsUrl)(),
     (0, class_validator_1.IsNotEmpty)(),
@@ -37,6 +39,8 @@ __decorate([
         description: 'Nombre del lugar turístico',
         example: 'Isla Taquile',
         required: true,
+        maxLength: 200,
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
@@ -48,6 +52,7 @@ __decorate([
         description: 'Descripción del lugar turístico',
         example: 'Isla ubicada en el lago Titicaca, conocida por sus tejidos tradicionales.',
         required: true,
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
@@ -58,6 +63,7 @@ __decorate([
         description: 'Dirección del lugar turístico',
         example: 'Isla Taquile, Lago Titicaca, Puno',
         required: true,
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
@@ -68,6 +74,7 @@ __decorate([
         description: 'Coordenadas geográficas del lugar',
         example: '-15.7667, -69.6833',
         required: true,
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
@@ -79,6 +86,8 @@ __decorate([
         example: 'activo',
         default: 'activo',
         required: false,
+        enum: ['activo', 'inactivo'],
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
@@ -92,6 +101,7 @@ __decorate([
         example: true,
         default: false,
         required: false,
+        type: Boolean
     }),
     (0, class_validator_1.IsBoolean)(),
     (0, class_validator_1.IsOptional)(),
@@ -100,7 +110,9 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Horario de apertura',
+        example: '2024-03-20T08:00:00.000Z',
         required: false,
+        type: Date
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsDate)(),
@@ -110,7 +122,9 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Horario de cierre',
+        example: '2024-03-20T17:00:00.000Z',
         required: false,
+        type: Date
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsDate)(),
@@ -122,6 +136,7 @@ __decorate([
         description: 'Costo de entrada',
         example: 20.00,
         required: false,
+        type: Number
     }),
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsOptional)(),
@@ -133,6 +148,7 @@ __decorate([
         description: 'Recomendaciones para visitar el lugar',
         example: 'Llevar protector solar y agua',
         required: false,
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
@@ -143,6 +159,7 @@ __decorate([
         description: 'Restricciones del lugar',
         example: 'No se permite el ingreso con mascotas',
         required: false,
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
@@ -153,6 +170,14 @@ __decorate([
         description: 'Lista de imágenes del lugar',
         type: [ImageDto],
         required: false,
+        example: [
+            {
+                url: 'https://example.com/image1.jpg'
+            },
+            {
+                url: 'https://example.com/image2.jpg'
+            }
+        ]
     }),
     (0, class_validator_1.IsArray)(),
     (0, class_validator_1.IsOptional)(),

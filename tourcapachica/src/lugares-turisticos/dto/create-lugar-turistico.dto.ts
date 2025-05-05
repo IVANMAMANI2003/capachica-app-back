@@ -2,11 +2,12 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsOptional, IsBoolean, IsNumber, IsUrl, IsEnum, IsArray, MaxLength, IsTimeZone, Matches, Min, IsDate } from 'class-validator';
 import { Type } from 'class-transformer';
 
-class ImageDto {
+export class ImageDto {
   @ApiProperty({
     description: 'URL de la imagen',
     example: 'https://example.com/image.jpg',
     required: true,
+    type: String
   })
   @IsUrl()
   @IsNotEmpty()
@@ -18,6 +19,8 @@ export class CreateLugarTuristicoDto {
     description: 'Nombre del lugar turístico',
     example: 'Isla Taquile',
     required: true,
+    maxLength: 200,
+    type: String
   })
   @IsString()
   @IsNotEmpty()
@@ -28,6 +31,7 @@ export class CreateLugarTuristicoDto {
     description: 'Descripción del lugar turístico',
     example: 'Isla ubicada en el lago Titicaca, conocida por sus tejidos tradicionales.',
     required: true,
+    type: String
   })
   @IsString()
   @IsNotEmpty()
@@ -37,6 +41,7 @@ export class CreateLugarTuristicoDto {
     description: 'Dirección del lugar turístico',
     example: 'Isla Taquile, Lago Titicaca, Puno',
     required: true,
+    type: String
   })
   @IsString()
   @IsNotEmpty()
@@ -46,6 +51,7 @@ export class CreateLugarTuristicoDto {
     description: 'Coordenadas geográficas del lugar',
     example: '-15.7667, -69.6833',
     required: true,
+    type: String
   })
   @IsString()
   @IsNotEmpty()
@@ -56,6 +62,8 @@ export class CreateLugarTuristicoDto {
     example: 'activo',
     default: 'activo',
     required: false,
+    enum: ['activo', 'inactivo'],
+    type: String
   })
   @IsString()
   @IsOptional()
@@ -68,6 +76,7 @@ export class CreateLugarTuristicoDto {
     example: true,
     default: false,
     required: false,
+    type: Boolean
   })
   @IsBoolean()
   @IsOptional()
@@ -75,7 +84,9 @@ export class CreateLugarTuristicoDto {
 
   @ApiProperty({
     description: 'Horario de apertura',
+    example: '2024-03-20T08:00:00.000Z',
     required: false,
+    type: Date
   })
   @IsOptional()
   @IsDate()
@@ -84,7 +95,9 @@ export class CreateLugarTuristicoDto {
 
   @ApiProperty({
     description: 'Horario de cierre',
+    example: '2024-03-20T17:00:00.000Z',
     required: false,
+    type: Date
   })
   @IsOptional()
   @IsDate()
@@ -95,6 +108,7 @@ export class CreateLugarTuristicoDto {
     description: 'Costo de entrada',
     example: 20.00,
     required: false,
+    type: Number
   })
   @IsNumber()
   @IsOptional()
@@ -105,6 +119,7 @@ export class CreateLugarTuristicoDto {
     description: 'Recomendaciones para visitar el lugar',
     example: 'Llevar protector solar y agua',
     required: false,
+    type: String
   })
   @IsString()
   @IsOptional()
@@ -114,6 +129,7 @@ export class CreateLugarTuristicoDto {
     description: 'Restricciones del lugar',
     example: 'No se permite el ingreso con mascotas',
     required: false,
+    type: String
   })
   @IsString()
   @IsOptional()
@@ -123,6 +139,14 @@ export class CreateLugarTuristicoDto {
     description: 'Lista de imágenes del lugar',
     type: [ImageDto],
     required: false,
+    example: [
+      {
+        url: 'https://example.com/image1.jpg'
+      },
+      {
+        url: 'https://example.com/image2.jpg'
+      }
+    ]
   })
   @IsArray()
   @IsOptional()

@@ -1,4 +1,4 @@
-declare class ImageDto {
+export declare class ImageDto {
     url: string;
 }
 export declare class CreateLugarTuristicoDto {
@@ -15,4 +15,3 @@ export declare class CreateLugarTuristicoDto {
     restricciones?: string;
     imagenes?: ImageDto[];
 }
-export {};

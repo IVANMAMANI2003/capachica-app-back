@@ -9,16 +9,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateServicioDto = void 0;
+exports.CreateServicioDto = exports.ImageDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class ImageDto {
 }
+exports.ImageDto = ImageDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'URL de la imagen',
         example: 'https://example.com/image.jpg',
         required: true,
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
@@ -36,6 +38,7 @@ __decorate([
         description: 'ID del tipo de servicio',
         example: 1,
         required: true,
+        type: Number
     }),
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsNotEmpty)(),
@@ -46,6 +49,7 @@ __decorate([
         description: 'Nombre del servicio',
         example: 'Tour guiado por la isla',
         required: true,
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
@@ -56,6 +60,7 @@ __decorate([
         description: 'Descripción del servicio',
         example: 'Tour guiado por los principales atractivos de la isla',
         required: false,
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
@@ -66,6 +71,7 @@ __decorate([
         description: 'Precio base del servicio',
         example: 50.00,
         required: true,
+        type: Number
     }),
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.Min)(0),
@@ -78,6 +84,8 @@ __decorate([
         example: 'PEN',
         default: 'PEN',
         required: false,
+        enum: ['PEN', 'USD'],
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
@@ -90,6 +98,8 @@ __decorate([
         example: 'activo',
         default: 'activo',
         required: false,
+        enum: ['activo', 'inactivo'],
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
@@ -99,8 +109,14 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Detalles adicionales del servicio',
-        example: { duracion: '2 horas', capacidad: 10 },
+        example: {
+            duracion: '2 horas',
+            capacidad: 10,
+            incluye: ['Guía local', 'Transporte', 'Refrigerio'],
+            requisitos: ['Ropa cómoda', 'Zapatillas']
+        },
         required: false,
+        type: Object
     }),
     (0, class_validator_1.IsObject)(),
     (0, class_validator_1.IsOptional)(),
@@ -111,6 +127,14 @@ __decorate([
         description: 'Lista de imágenes del servicio',
         type: [ImageDto],
         required: false,
+        example: [
+            {
+                url: 'https://example.com/image1.jpg'
+            },
+            {
+                url: 'https://example.com/image2.jpg'
+            }
+        ]
     }),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Array)

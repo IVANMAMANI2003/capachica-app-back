@@ -1,4 +1,4 @@
-declare class ImageDto {
+export declare class ImageDto {
     url: string;
 }
 export declare class CreateEmprendimientoDto {
@@ -16,4 +16,3 @@ export declare class CreateEmprendimientoDto {
     fechaAprobacion?: Date;
     imagenes?: ImageDto[];
 }
-export {};

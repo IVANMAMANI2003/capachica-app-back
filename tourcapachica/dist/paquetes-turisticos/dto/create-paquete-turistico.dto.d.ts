@@ -1,4 +1,4 @@
-declare class ImageDto {
+export declare class ImageDto {
     url: string;
 }
 export declare class CreatePaqueteTuristicoDto {
@@ -10,4 +10,3 @@ export declare class CreatePaqueteTuristicoDto {
     servicios?: number[];
     imagenes?: ImageDto[];
 }
-export {};

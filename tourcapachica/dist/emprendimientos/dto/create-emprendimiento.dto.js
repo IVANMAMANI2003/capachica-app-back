@@ -9,17 +9,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateEmprendimientoDto = void 0;
+exports.CreateEmprendimientoDto = exports.ImageDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
 class ImageDto {
 }
+exports.ImageDto = ImageDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'URL de la imagen',
         example: 'https://example.com/image.jpg',
         required: true,
+        type: String
     }),
     (0, class_validator_1.IsUrl)(),
     (0, class_validator_1.IsNotEmpty)(),
@@ -36,6 +38,7 @@ __decorate([
         description: 'ID del usuario propietario del emprendimiento',
         example: 1,
         required: true,
+        type: Number
     }),
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsNotEmpty)(),
@@ -46,6 +49,8 @@ __decorate([
         description: 'Nombre del emprendimiento',
         example: 'Restaurante La Isla',
         required: true,
+        maxLength: 200,
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
@@ -57,6 +62,7 @@ __decorate([
         description: 'Descripción del emprendimiento',
         example: 'Restaurante especializado en comida local',
         required: false,
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
@@ -67,6 +73,8 @@ __decorate([
         description: 'Tipo de emprendimiento',
         example: 'restaurante',
         required: true,
+        enum: ['restaurante', 'hospedaje', 'artesania', 'otro'],
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
@@ -78,6 +86,7 @@ __decorate([
         description: 'Dirección del emprendimiento',
         example: 'Av. Principal 123, Capachica',
         required: false,
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
@@ -88,6 +97,7 @@ __decorate([
         description: 'Coordenadas geográficas del emprendimiento',
         example: '-15.7667, -69.6833',
         required: false,
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
@@ -98,6 +108,7 @@ __decorate([
         description: 'Teléfono de contacto',
         example: '+51 987654321',
         required: false,
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
@@ -108,6 +119,7 @@ __decorate([
         description: 'Correo electrónico de contacto',
         example: 'contacto@restaurante.com',
         required: false,
+        type: String
     }),
     (0, class_validator_1.IsEmail)(),
     (0, class_validator_1.IsOptional)(),
@@ -118,6 +130,7 @@ __decorate([
         description: 'Sitio web del emprendimiento',
         example: 'https://restaurante.com',
         required: false,
+        type: String
     }),
     (0, class_validator_1.IsUrl)(),
     (0, class_validator_1.IsOptional)(),
@@ -126,8 +139,12 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Redes sociales del emprendimiento',
-        example: '{"facebook": "https://facebook.com/restaurante", "instagram": "https://instagram.com/restaurante"}',
+        example: {
+            facebook: 'https://facebook.com/restaurante',
+            instagram: 'https://instagram.com/restaurante'
+        },
         required: false,
+        type: Object
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
@@ -139,6 +156,8 @@ __decorate([
         example: 'pendiente',
         default: 'pendiente',
         required: false,
+        enum: ['pendiente', 'aprobado', 'rechazado'],
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
@@ -148,7 +167,9 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Fecha de aprobación del emprendimiento',
+        example: '2024-03-20T00:00:00.000Z',
         required: false,
+        type: Date
     }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsDate)(),
@@ -160,6 +181,14 @@ __decorate([
         description: 'Lista de imágenes del emprendimiento',
         type: [ImageDto],
         required: false,
+        example: [
+            {
+                url: 'https://example.com/image1.jpg'
+            },
+            {
+                url: 'https://example.com/image2.jpg'
+            }
+        ]
     }),
     (0, class_validator_1.IsArray)(),
     (0, class_validator_1.IsOptional)(),

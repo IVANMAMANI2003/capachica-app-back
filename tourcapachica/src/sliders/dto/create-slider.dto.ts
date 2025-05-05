@@ -5,6 +5,7 @@ export class ImageDto {
   @ApiProperty({
     description: 'URL de la imagen',
     example: 'https://example.com/image.jpg',
+    type: String
   })
   @IsString()
   @IsNotEmpty()
@@ -17,6 +18,7 @@ export class CreateSliderDto {
     example: 'Banner Principal',
     required: true,
     maxLength: 100,
+    type: String
   })
   @IsString()
   @IsNotEmpty()
@@ -27,6 +29,7 @@ export class CreateSliderDto {
     description: 'Descripción del slider',
     example: 'Banner promocional para la temporada de verano',
     required: false,
+    type: String
   })
   @IsString()
   @IsOptional()
@@ -38,6 +41,7 @@ export class CreateSliderDto {
     enum: ['activo', 'inactivo', 'pendiente'],
     default: 'activo',
     required: false,
+    type: String
   })
   @IsString()
   @IsOptional()
@@ -47,7 +51,15 @@ export class CreateSliderDto {
   @ApiProperty({
     description: 'Imágenes del slider',
     required: false,
-    type: [ImageDto]
+    type: [ImageDto],
+    example: [
+      {
+        url: 'https://example.com/image1.jpg'
+      },
+      {
+        url: 'https://example.com/image2.jpg'
+      }
+    ]
   })
   @IsArray()
   @IsOptional()

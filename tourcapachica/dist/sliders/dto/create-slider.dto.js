@@ -19,6 +19,7 @@ __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'URL de la imagen',
         example: 'https://example.com/image.jpg',
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
@@ -36,6 +37,7 @@ __decorate([
         example: 'Banner Principal',
         required: true,
         maxLength: 100,
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
@@ -47,6 +49,7 @@ __decorate([
         description: 'Descripción del slider',
         example: 'Banner promocional para la temporada de verano',
         required: false,
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
@@ -59,6 +62,7 @@ __decorate([
         enum: ['activo', 'inactivo', 'pendiente'],
         default: 'activo',
         required: false,
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
@@ -69,7 +73,15 @@ __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Imágenes del slider',
         required: false,
-        type: [ImageDto]
+        type: [ImageDto],
+        example: [
+            {
+                url: 'https://example.com/image1.jpg'
+            },
+            {
+                url: 'https://example.com/image2.jpg'
+            }
+        ]
     }),
     (0, class_validator_1.IsArray)(),
     (0, class_validator_1.IsOptional)(),

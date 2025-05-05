@@ -9,6 +9,7 @@ export class UpdateSliderDto extends PartialType(CreateSliderDto) {
     example: 'Banner Principal',
     required: false,
     maxLength: 100,
+    type: String
   })
   @IsString()
   @IsOptional()
@@ -19,6 +20,7 @@ export class UpdateSliderDto extends PartialType(CreateSliderDto) {
     description: 'Descripción del slider',
     example: 'Banner promocional para la temporada de verano',
     required: false,
+    type: String
   })
   @IsString()
   @IsOptional()
@@ -29,6 +31,7 @@ export class UpdateSliderDto extends PartialType(CreateSliderDto) {
     example: 'activo',
     enum: ['activo', 'inactivo', 'pendiente'],
     required: false,
+    type: String
   })
   @IsString()
   @IsOptional()
@@ -38,7 +41,15 @@ export class UpdateSliderDto extends PartialType(CreateSliderDto) {
   @ApiProperty({
     description: 'Imágenes del slider',
     required: false,
-    type: [ImageDto]
+    type: [ImageDto],
+    example: [
+      {
+        url: 'https://example.com/image1.jpg'
+      },
+      {
+        url: 'https://example.com/image2.jpg'
+      }
+    ]
   })
   @IsArray()
   @IsOptional()

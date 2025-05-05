@@ -9,16 +9,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreatePaqueteTuristicoDto = void 0;
+exports.CreatePaqueteTuristicoDto = exports.ImageDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class ImageDto {
 }
+exports.ImageDto = ImageDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'URL de la imagen',
         example: 'https://example.com/image.jpg',
         required: true,
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
@@ -35,6 +37,7 @@ __decorate([
         description: 'ID del emprendimiento',
         example: 1,
         required: true,
+        type: Number
     }),
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsNotEmpty)(),
@@ -45,6 +48,7 @@ __decorate([
         description: 'Nombre del paquete turístico',
         example: 'Tour por la isla de Capachica',
         required: true,
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
@@ -55,6 +59,7 @@ __decorate([
         description: 'Descripción del paquete turístico',
         example: 'Recorrido completo por los principales atractivos de la isla',
         required: true,
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
@@ -65,6 +70,7 @@ __decorate([
         description: 'Precio del paquete turístico',
         example: 150.00,
         required: true,
+        type: Number
     }),
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.Min)(0),
@@ -77,6 +83,8 @@ __decorate([
         example: 'activo',
         default: 'activo',
         required: false,
+        enum: ['activo', 'inactivo'],
+        type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
@@ -88,6 +96,7 @@ __decorate([
         description: 'IDs de los servicios incluidos en el paquete',
         type: [Number],
         required: false,
+        example: [1, 2, 3]
     }),
     (0, class_validator_1.IsArray)(),
     (0, class_validator_1.IsOptional)(),
@@ -99,6 +108,14 @@ __decorate([
         description: 'Lista de imágenes del paquete turístico',
         type: [ImageDto],
         required: false,
+        example: [
+            {
+                url: 'https://example.com/image1.jpg'
+            },
+            {
+                url: 'https://example.com/image2.jpg'
+            }
+        ]
     }),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Array)

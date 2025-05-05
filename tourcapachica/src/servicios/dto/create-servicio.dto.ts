@@ -2,11 +2,12 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsOptional, IsEnum, IsNumber, IsJSON, MaxLength, Min, IsArray, IsObject } from 'class-validator';
 import { Type } from 'class-transformer';
 
-class ImageDto {
+export class ImageDto {
   @ApiProperty({
     description: 'URL de la imagen',
     example: 'https://example.com/image.jpg',
     required: true,
+    type: String
   })
   @IsString()
   @IsNotEmpty()
@@ -18,6 +19,7 @@ export class CreateServicioDto {
     description: 'ID del tipo de servicio',
     example: 1,
     required: true,
+    type: Number
   })
   @IsNumber()
   @IsNotEmpty()
@@ -27,6 +29,7 @@ export class CreateServicioDto {
     description: 'Nombre del servicio',
     example: 'Tour guiado por la isla',
     required: true,
+    type: String
   })
   @IsString()
   @IsNotEmpty()
@@ -36,6 +39,7 @@ export class CreateServicioDto {
     description: 'Descripción del servicio',
     example: 'Tour guiado por los principales atractivos de la isla',
     required: false,
+    type: String
   })
   @IsString()
   @IsOptional()
@@ -45,6 +49,7 @@ export class CreateServicioDto {
     description: 'Precio base del servicio',
     example: 50.00,
     required: true,
+    type: Number
   })
   @IsNumber()
   @Min(0)
@@ -56,6 +61,8 @@ export class CreateServicioDto {
     example: 'PEN',
     default: 'PEN',
     required: false,
+    enum: ['PEN', 'USD'],
+    type: String
   })
   @IsString()
   @IsOptional()
@@ -67,6 +74,8 @@ export class CreateServicioDto {
     example: 'activo',
     default: 'activo',
     required: false,
+    enum: ['activo', 'inactivo'],
+    type: String
   })
   @IsString()
   @IsOptional()
@@ -75,8 +84,14 @@ export class CreateServicioDto {
 
   @ApiProperty({
     description: 'Detalles adicionales del servicio',
-    example: { duracion: '2 horas', capacidad: 10 },
+    example: {
+      duracion: '2 horas',
+      capacidad: 10,
+      incluye: ['Guía local', 'Transporte', 'Refrigerio'],
+      requisitos: ['Ropa cómoda', 'Zapatillas']
+    },
     required: false,
+    type: Object
   })
   @IsObject()
   @IsOptional()
@@ -86,6 +101,14 @@ export class CreateServicioDto {
     description: 'Lista de imágenes del servicio',
     type: [ImageDto],
     required: false,
+    example: [
+      {
+        url: 'https://example.com/image1.jpg'
+      },
+      {
+        url: 'https://example.com/image2.jpg'
+      }
+    ]
   })
   @IsOptional()
   imagenes?: ImageDto[];
