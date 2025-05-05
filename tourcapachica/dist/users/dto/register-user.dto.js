@@ -17,56 +17,91 @@ class RegisterUserDto {
 }
 exports.RegisterUserDto = RegisterUserDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Nombre de la persona' }),
+    (0, swagger_1.ApiProperty)({
+        description: 'Nombre de la persona',
+        example: 'Juan Carlos',
+        minLength: 2
+    }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], RegisterUserDto.prototype, "nombre", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Apellidos de la persona' }),
+    (0, swagger_1.ApiProperty)({
+        description: 'Apellidos de la persona',
+        example: 'García Pérez',
+        minLength: 2
+    }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], RegisterUserDto.prototype, "apellidos", void 0);
 __decorate([
-    (0, swagger_1.ApiPropertyOptional)({ description: 'Teléfono de la persona' }),
+    (0, swagger_1.ApiPropertyOptional)({
+        description: 'Teléfono de la persona',
+        example: '987654321',
+        pattern: '^[0-9]{9}$'
+    }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], RegisterUserDto.prototype, "telefono", void 0);
 __decorate([
-    (0, swagger_1.ApiPropertyOptional)({ description: 'Dirección de la persona' }),
+    (0, swagger_1.ApiPropertyOptional)({
+        description: 'Dirección de la persona',
+        example: 'Av. Los Incas 123, Puno'
+    }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], RegisterUserDto.prototype, "direccion", void 0);
 __decorate([
-    (0, swagger_1.ApiPropertyOptional)({ description: 'URL de la foto de perfil' }),
+    (0, swagger_1.ApiPropertyOptional)({
+        description: 'URL de la foto de perfil',
+        example: 'https://tourcapachica.com/images/profiles/user123.jpg'
+    }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], RegisterUserDto.prototype, "fotoPerfilUrl", void 0);
 __decorate([
-    (0, swagger_1.ApiPropertyOptional)({ description: 'Fecha de nacimiento' }),
+    (0, swagger_1.ApiPropertyOptional)({
+        description: 'Fecha de nacimiento',
+        example: '1990-01-15T00:00:00.000Z',
+        type: Date
+    }),
     (0, class_validator_1.IsDate)(),
     (0, class_transformer_1.Type)(() => Date),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Date)
 ], RegisterUserDto.prototype, "fechaNacimiento", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'ID de la subdivisión' }),
+    (0, swagger_1.ApiProperty)({
+        description: 'ID de la subdivisión (departamento)',
+        example: 1,
+        minimum: 1
+    }),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
 ], RegisterUserDto.prototype, "subdivisionId", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Email del usuario', example: 'usuario@example.com' }),
+    (0, swagger_1.ApiProperty)({
+        description: 'Email del usuario',
+        example: 'juan.garcia@example.com',
+        format: 'email'
+    }),
     (0, class_validator_1.IsEmail)({}, { message: 'El email debe ser válido' }),
     (0, class_validator_1.IsNotEmpty)({ message: 'El email es requerido' }),
     __metadata("design:type", String)
 ], RegisterUserDto.prototype, "email", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Contraseña del usuario', example: 'password123' }),
+    (0, swagger_1.ApiProperty)({
+        description: 'Contraseña del usuario',
+        example: 'SecurePass123!',
+        minLength: 6,
+        format: 'password'
+    }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)({ message: 'La contraseña es requerida' }),
     (0, class_validator_1.MinLength)(6, { message: 'La contraseña debe tener al menos 6 caracteres' }),
