@@ -19,42 +19,37 @@ let SupabaseService = class SupabaseService {
         this.BUCKET_NAME = 'images';
         this.supabase = (0, supabase_config_1.createSupabaseClient)(this.configService);
     }
-    async uploadFile(file, imageableType, imageableId) {
+    async uploadFile(bucketName, filePath, fileUrl) {
         try {
-            const folderPath = this.getFolderPath(imageableType, imageableId);
-            const fileExt = file.originalname.split('.').pop();
-            const fileName = `${folderPath}/${Date.now()}.${fileExt}`;
-            const { error } = await this.supabase.storage
-                .from(this.BUCKET_NAME)
-                .upload(fileName, file.buffer, {
-                contentType: file.mimetype,
+            const response = await fetch(fileUrl);
+            const buffer = await response.arrayBuffer();
+            const { data, error } = await this.supabase.storage
+                .from(bucketName)
+                .upload(filePath, buffer, {
+                contentType: response.headers.get('content-type'),
                 upsert: true
             });
             if (error) {
                 throw new Error(`Error uploading file to Supabase: ${error.message}`);
             }
-            const { data: { publicUrl } } = this.supabase.storage
-                .from(this.BUCKET_NAME)
-                .getPublicUrl(fileName);
-            return publicUrl;
+            return { data, error: null };
         }
         catch (error) {
-            throw new Error(`Error in uploadFile: ${error.message}`);
+            return { data: null, error };
         }
     }
-    async deleteFile(imageableType, imageableId, fileName) {
+    async deleteFile(bucketName, filePath) {
         try {
-            const folderPath = this.getFolderPath(imageableType, imageableId);
-            const filePath = `${folderPath}/${fileName}`;
             const { error } = await this.supabase.storage
-                .from(this.BUCKET_NAME)
+                .from(bucketName)
                 .remove([filePath]);
             if (error) {
                 throw new Error(`Error deleting file from Supabase: ${error.message}`);
             }
+            return { error: null };
         }
         catch (error) {
-            throw new Error(`Error in deleteFile: ${error.message}`);
+            return { error };
         }
     }
     getFolderPath(imageableType, imageableId) {

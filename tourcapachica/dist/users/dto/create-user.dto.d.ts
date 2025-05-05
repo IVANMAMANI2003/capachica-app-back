@@ -8,5 +8,5 @@ export declare class CreateUserDto {
     direccion?: string;
     fechaNacimiento?: Date;
     subdivisionId: number;
-    fotoPerfil?: Express.Multer.File;
+    fotoPerfil?: string;
 }

@@ -29,8 +29,9 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
         this.prisma = prisma;
         this.supabaseService = supabaseService;
         this.IMAGEABLE_TYPE = 'PaqueteTuristico';
+        this.BUCKET_NAME = 'paquetes-turisticos';
     }
-    async create(createPaqueteTuristicoDto, files) {
+    async create(createPaqueteTuristicoDto) {
         const { imagenes, servicios } = createPaqueteTuristicoDto, paqueteData = __rest(createPaqueteTuristicoDto, ["imagenes", "servicios"]);
         const paquete = await this.prisma.paqueteTuristico.create({
             data: {
@@ -50,17 +51,21 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
                 })),
             });
         }
-        if (files && files.length > 0) {
-            for (const file of files) {
-                const imageUrl = await this.supabaseService.uploadFile(file, this.IMAGEABLE_TYPE, paquete.id);
-                const imagen = await this.prisma.image.create({
+        if (imagenes && imagenes.length > 0) {
+            for (const imageUrl of imagenes) {
+                const filePath = `${paquete.id}/${Date.now()}-${imageUrl.split('/').pop()}`;
+                const { data, error } = await this.supabaseService.uploadFile(this.BUCKET_NAME, filePath, imageUrl);
+                if (error) {
+                    throw new common_1.BadRequestException(`Error al subir la imagen: ${error.message}`);
+                }
+                const imagenDb = await this.prisma.image.create({
                     data: {
-                        url: imageUrl
+                        url: data.path
                     }
                 });
                 await this.prisma.imageable.create({
                     data: {
-                        image_id: imagen.id,
+                        image_id: imagenDb.id,
                         imageable_id: paquete.id,
                         imageable_type: this.IMAGEABLE_TYPE
                     }
@@ -157,7 +162,7 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
         }));
         return paquetesWithImages;
     }
-    async update(id, updatePaqueteTuristicoDto, files) {
+    async update(id, updatePaqueteTuristicoDto) {
         const { imagenes, servicios } = updatePaqueteTuristicoDto, paqueteData = __rest(updatePaqueteTuristicoDto, ["imagenes", "servicios"]);
         await this.prisma.paqueteTuristico.update({
             where: { id },
@@ -182,7 +187,7 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
                 });
             }
         }
-        if (files && files.length > 0) {
+        if (imagenes) {
             const imageables = await this.prisma.imageable.findMany({
                 where: {
                     imageable_type: this.IMAGEABLE_TYPE,
@@ -193,8 +198,10 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
                 }
             });
             for (const imageable of imageables) {
-                const fileName = imageable.image.url.split('/').pop();
-                await this.supabaseService.deleteFile(this.IMAGEABLE_TYPE, id, fileName);
+                const { error } = await this.supabaseService.deleteFile(this.BUCKET_NAME, imageable.image.url);
+                if (error) {
+                    console.error(`Error al eliminar la imagen de Supabase: ${error.message}`);
+                }
                 await this.prisma.imageable.delete({
                     where: { id: imageable.id }
                 });
@@ -202,16 +209,20 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
                     where: { id: imageable.image.id }
                 });
             }
-            for (const file of files) {
-                const imageUrl = await this.supabaseService.uploadFile(file, this.IMAGEABLE_TYPE, id);
-                const imagen = await this.prisma.image.create({
+            for (const imageUrl of imagenes) {
+                const filePath = `${id}/${Date.now()}-${imageUrl.split('/').pop()}`;
+                const { data, error } = await this.supabaseService.uploadFile(this.BUCKET_NAME, filePath, imageUrl);
+                if (error) {
+                    throw new common_1.BadRequestException(`Error al subir la imagen: ${error.message}`);
+                }
+                const imagenDb = await this.prisma.image.create({
                     data: {
-                        url: imageUrl
+                        url: data.path
                     }
                 });
                 await this.prisma.imageable.create({
                     data: {
-                        image_id: imagen.id,
+                        image_id: imagenDb.id,
                         imageable_id: id,
                         imageable_type: this.IMAGEABLE_TYPE
                     }
@@ -231,8 +242,10 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
             }
         });
         for (const imageable of imageables) {
-            const fileName = imageable.image.url.split('/').pop();
-            await this.supabaseService.deleteFile(this.IMAGEABLE_TYPE, id, fileName);
+            const { error } = await this.supabaseService.deleteFile(this.BUCKET_NAME, imageable.image.url);
+            if (error) {
+                console.error(`Error al eliminar la imagen de Supabase: ${error.message}`);
+            }
             await this.prisma.imageable.delete({
                 where: { id: imageable.id }
             });
@@ -274,20 +287,20 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
         const servicios = await this.prisma.servicio.findMany({
             where: {
                 id: {
-                    in: addServiciosDto.servicios.map(s => s.servicioId),
+                    in: addServiciosDto.servicioIds,
                 },
             },
         });
-        if (servicios.length !== addServiciosDto.servicios.length) {
+        if (servicios.length !== addServiciosDto.servicioIds.length) {
             throw new common_1.BadRequestException('Uno o más servicios no existen');
         }
         return this.prisma.paqueteTuristico.update({
             where: { id },
             data: {
                 servicios: {
-                    create: addServiciosDto.servicios.map(s => ({
-                        servicioId: s.servicioId,
-                        orden: s.orden,
+                    create: addServiciosDto.servicioIds.map((servicioId, index) => ({
+                        servicioId,
+                        orden: index + 1,
                     })),
                 },
             },

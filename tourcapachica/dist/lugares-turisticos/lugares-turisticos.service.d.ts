@@ -1,25 +1,26 @@
 import { PrismaService } from '../prisma/prisma.service';
-import { SupabaseService } from '../supabase/supabase.service';
 import { CreateLugarTuristicoDto } from './dto/create-lugar-turistico.dto';
 import { UpdateLugarTuristicoDto } from './dto/update-lugar-turistico.dto';
+import { SupabaseService } from '../supabase/supabase.service';
 export declare class LugaresTuristicosService {
     private prisma;
     private supabaseService;
     private readonly IMAGEABLE_TYPE;
+    private readonly BUCKET_NAME;
     constructor(prisma: PrismaService, supabaseService: SupabaseService);
-    create(createLugarTuristicoDto: CreateLugarTuristicoDto, files?: Express.Multer.File[]): Promise<{
+    create(createLugarTuristicoDto: CreateLugarTuristicoDto): Promise<{
         imagenes: {
             id: number;
             url: string;
         }[];
-        nombre: string;
-        descripcion: string;
-        estado: string;
         id: number;
-        direccion: string;
-        coordenadas: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        direccion: string;
+        descripcion: string;
+        estado: string;
+        coordenadas: string;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
@@ -32,14 +33,14 @@ export declare class LugaresTuristicosService {
             id: number;
             url: string;
         }[];
-        nombre: string;
-        descripcion: string;
-        estado: string;
         id: number;
-        direccion: string;
-        coordenadas: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        direccion: string;
+        descripcion: string;
+        estado: string;
+        coordenadas: string;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
@@ -52,14 +53,14 @@ export declare class LugaresTuristicosService {
             id: number;
             url: string;
         }[];
-        nombre: string;
-        descripcion: string;
-        estado: string;
         id: number;
-        direccion: string;
-        coordenadas: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        direccion: string;
+        descripcion: string;
+        estado: string;
+        coordenadas: string;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
@@ -67,19 +68,19 @@ export declare class LugaresTuristicosService {
         restricciones: string | null;
         esDestacado: boolean;
     }>;
-    update(id: number, updateLugarTuristicoDto: UpdateLugarTuristicoDto, files?: Express.Multer.File[]): Promise<{
+    update(id: number, updateLugarTuristicoDto: UpdateLugarTuristicoDto): Promise<{
         imagenes: {
             id: number;
             url: string;
         }[];
-        nombre: string;
-        descripcion: string;
-        estado: string;
         id: number;
-        direccion: string;
-        coordenadas: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        direccion: string;
+        descripcion: string;
+        estado: string;
+        coordenadas: string;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
@@ -88,14 +89,14 @@ export declare class LugaresTuristicosService {
         esDestacado: boolean;
     }>;
     remove(id: number): Promise<{
-        nombre: string;
-        descripcion: string;
-        estado: string;
         id: number;
-        direccion: string;
-        coordenadas: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        direccion: string;
+        descripcion: string;
+        estado: string;
+        coordenadas: string;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
@@ -104,14 +105,14 @@ export declare class LugaresTuristicosService {
         esDestacado: boolean;
     }>;
     findDestacados(): Promise<{
-        nombre: string;
-        descripcion: string;
-        estado: string;
         id: number;
-        direccion: string;
-        coordenadas: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        direccion: string;
+        descripcion: string;
+        estado: string;
+        coordenadas: string;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;

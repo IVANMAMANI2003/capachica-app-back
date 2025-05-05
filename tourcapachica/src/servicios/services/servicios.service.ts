@@ -8,13 +8,14 @@ import { CreateServicioDisponibilidadDto } from '../dto/create-servicio-disponib
 @Injectable()
 export class ServiciosService {
   private readonly IMAGEABLE_TYPE = 'Servicio';
+  private readonly BUCKET_NAME = 'servicios';
 
   constructor(
     private prisma: PrismaService,
     private supabaseService: SupabaseService
   ) {}
 
-  async create(createServicioDto: CreateServicioDto, files?: Express.Multer.File[]) {
+  async create(createServicioDto: CreateServicioDto) {
     const { imagenes, ...servicioData } = createServicioDto;
     
     // Crear el servicio
@@ -31,26 +32,32 @@ export class ServiciosService {
     });
 
     // Crear las imágenes si existen
-    if (files && files.length > 0) {
-      for (const file of files) {
+    if (imagenes && imagenes.length > 0) {
+      for (const imagen of imagenes) {
+        const filePath = `${servicio.id}/${Date.now()}-${imagen.url.split('/').pop()}`;
+        
         // Subir la imagen a Supabase
-        const imageUrl = await this.supabaseService.uploadFile(
-          file,
-          this.IMAGEABLE_TYPE,
-          servicio.id
+        const { data, error } = await this.supabaseService.uploadFile(
+          this.BUCKET_NAME,
+          filePath,
+          imagen.url
         );
 
-        // Crear la imagen en la base de datos
-        const imagen = await this.prisma.image.create({
+        if (error) {
+          throw new BadRequestException(`Error al subir la imagen: ${error.message}`);
+        }
+
+        // Crear la imagen en la base de datos con la URL de Supabase
+        const imagenDb = await this.prisma.image.create({
           data: {
-            url: imageUrl
+            url: data.path
           }
         });
 
         // Crear la relación imageable
         await this.prisma.imageable.create({
           data: {
-            image_id: imagen.id,
+            image_id: imagenDb.id,
             imageable_id: servicio.id,
             imageable_type: this.IMAGEABLE_TYPE
           }
@@ -143,7 +150,7 @@ export class ServiciosService {
     });
   }
 
-  async update(id: number, updateServicioDto: UpdateServicioDto, files?: Express.Multer.File[]) {
+  async update(id: number, updateServicioDto: UpdateServicioDto) {
     const { imagenes, ...servicioData } = updateServicioDto;
 
     // Actualizar datos del servicio
@@ -161,7 +168,7 @@ export class ServiciosService {
     });
 
     // Si hay nuevas imágenes, eliminar las antiguas y crear las nuevas
-    if (files && files.length > 0) {
+    if (imagenes) {
       // Obtener las relaciones imageables existentes
       const imageables = await this.prisma.imageable.findMany({
         where: {
@@ -175,15 +182,15 @@ export class ServiciosService {
 
       // Eliminar las relaciones y las imágenes
       for (const imageable of imageables) {
-        // Extraer el nombre del archivo de la URL
-        const fileName = imageable.image.url.split('/').pop();
-        
-        // Eliminar el archivo de Supabase
-        await this.supabaseService.deleteFile(
-          this.IMAGEABLE_TYPE,
-          id,
-          fileName
+        // Eliminar la imagen de Supabase
+        const { error } = await this.supabaseService.deleteFile(
+          this.BUCKET_NAME,
+          imageable.image.url
         );
+
+        if (error) {
+          console.error(`Error al eliminar la imagen de Supabase: ${error.message}`);
+        }
 
         // Eliminar la relación y la imagen de la base de datos
         await this.prisma.imageable.delete({
@@ -195,25 +202,31 @@ export class ServiciosService {
       }
 
       // Crear las nuevas imágenes y relaciones
-      for (const file of files) {
-        // Subir la nueva imagen a Supabase
-        const imageUrl = await this.supabaseService.uploadFile(
-          file,
-          this.IMAGEABLE_TYPE,
-          id
+      for (const imagen of imagenes) {
+        const filePath = `${id}/${Date.now()}-${imagen.url.split('/').pop()}`;
+        
+        // Subir la imagen a Supabase
+        const { data, error } = await this.supabaseService.uploadFile(
+          this.BUCKET_NAME,
+          filePath,
+          imagen.url
         );
 
-        // Crear la imagen en la base de datos
-        const imagen = await this.prisma.image.create({
+        if (error) {
+          throw new BadRequestException(`Error al subir la imagen: ${error.message}`);
+        }
+
+        // Crear la imagen en la base de datos con la URL de Supabase
+        const imagenDb = await this.prisma.image.create({
           data: {
-            url: imageUrl
+            url: data.path
           }
         });
 
         // Crear la relación imageable
         await this.prisma.imageable.create({
           data: {
-            image_id: imagen.id,
+            image_id: imagenDb.id,
             imageable_id: id,
             imageable_type: this.IMAGEABLE_TYPE
           }
@@ -238,15 +251,15 @@ export class ServiciosService {
 
     // Eliminar las relaciones y las imágenes
     for (const imageable of imageables) {
-      // Extraer el nombre del archivo de la URL
-      const fileName = imageable.image.url.split('/').pop();
-      
-      // Eliminar el archivo de Supabase
-      await this.supabaseService.deleteFile(
-        this.IMAGEABLE_TYPE,
-        id,
-        fileName
+      // Eliminar la imagen de Supabase
+      const { error } = await this.supabaseService.deleteFile(
+        this.BUCKET_NAME,
+        imageable.image.url
       );
+
+      if (error) {
+        console.error(`Error al eliminar la imagen de Supabase: ${error.message}`);
+      }
 
       // Eliminar la relación y la imagen de la base de datos
       await this.prisma.imageable.delete({

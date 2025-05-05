@@ -12,28 +12,27 @@ export class SupabaseService {
   }
 
   /**
-   * Sube un archivo a Supabase Storage y retorna la URL pública
-   * @param file Archivo a subir
-   * @param imageableType Tipo de entidad (ej: 'Slider', 'LugarTuristico', etc.)
-   * @param imageableId ID de la entidad
-   * @returns URL pública del archivo
+   * Sube un archivo a Supabase Storage desde una URL
+   * @param bucketName Nombre del bucket
+   * @param filePath Ruta donde se guardará el archivo
+   * @param fileUrl URL del archivo a subir
+   * @returns Objeto con la ruta del archivo y posibles errores
    */
   async uploadFile(
-    file: Express.Multer.File, 
-    imageableType: string, 
-    imageableId: number
-  ): Promise<string> {
+    bucketName: string,
+    filePath: string,
+    fileUrl: string
+  ): Promise<{ data: { path: string }, error: any }> {
     try {
-      // Crear el path basado en el tipo y ID
-      const folderPath = this.getFolderPath(imageableType, imageableId);
-      const fileExt = file.originalname.split('.').pop();
-      const fileName = `${folderPath}/${Date.now()}.${fileExt}`;
+      // Descargar el archivo desde la URL
+      const response = await fetch(fileUrl);
+      const buffer = await response.arrayBuffer();
 
       // Subir el archivo
-      const { error } = await this.supabase.storage
-        .from(this.BUCKET_NAME)
-        .upload(fileName, file.buffer, {
-          contentType: file.mimetype,
+      const { data, error } = await this.supabase.storage
+        .from(bucketName)
+        .upload(filePath, buffer, {
+          contentType: response.headers.get('content-type'),
           upsert: true
         });
 
@@ -41,41 +40,34 @@ export class SupabaseService {
         throw new Error(`Error uploading file to Supabase: ${error.message}`);
       }
 
-      // Obtener la URL pública
-      const { data: { publicUrl } } = this.supabase.storage
-        .from(this.BUCKET_NAME)
-        .getPublicUrl(fileName);
-
-      return publicUrl;
+      return { data, error: null };
     } catch (error) {
-      throw new Error(`Error in uploadFile: ${error.message}`);
+      return { data: null, error };
     }
   }
 
   /**
    * Elimina un archivo de Supabase Storage
-   * @param imageableType Tipo de entidad
-   * @param imageableId ID de la entidad
-   * @param fileName Nombre del archivo
+   * @param bucketName Nombre del bucket
+   * @param filePath Ruta del archivo a eliminar
+   * @returns Objeto con posibles errores
    */
   async deleteFile(
-    imageableType: string,
-    imageableId: number,
-    fileName: string
-  ): Promise<void> {
+    bucketName: string,
+    filePath: string
+  ): Promise<{ error: any }> {
     try {
-      const folderPath = this.getFolderPath(imageableType, imageableId);
-      const filePath = `${folderPath}/${fileName}`;
-
       const { error } = await this.supabase.storage
-        .from(this.BUCKET_NAME)
+        .from(bucketName)
         .remove([filePath]);
 
       if (error) {
         throw new Error(`Error deleting file from Supabase: ${error.message}`);
       }
+
+      return { error: null };
     } catch (error) {
-      throw new Error(`Error in deleteFile: ${error.message}`);
+      return { error };
     }
   }
 

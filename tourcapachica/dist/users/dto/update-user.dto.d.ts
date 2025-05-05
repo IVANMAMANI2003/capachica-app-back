@@ -1,8 +1,10 @@
-import { CreateUserDto } from './create-user.dto';
-declare const UpdateUserDto_base: import("@nestjs/common").Type<Partial<CreateUserDto>>;
-export declare class UpdateUserDto extends UpdateUserDto_base {
+export declare class UpdateUserDto {
+    nombre?: string;
+    apellidos?: string;
     email?: string;
-    password?: string;
-    esta_activo?: boolean;
+    telefono?: string;
+    direccion?: string;
+    fechaNacimiento?: Date;
+    subdivisionId?: number;
+    fotoPerfil?: string;
 }
-export {};

@@ -29,8 +29,9 @@ let EmprendimientosService = class EmprendimientosService {
         this.prisma = prisma;
         this.supabaseService = supabaseService;
         this.IMAGEABLE_TYPE = 'Emprendimiento';
+        this.BUCKET_NAME = 'emprendimientos';
     }
-    async create(createEmprendimientoDto, files) {
+    async create(createEmprendimientoDto) {
         const { imagenes } = createEmprendimientoDto, emprendimientoData = __rest(createEmprendimientoDto, ["imagenes"]);
         const emprendimiento = await this.prisma.emprendimiento.create({
             data: {
@@ -48,17 +49,21 @@ let EmprendimientosService = class EmprendimientosService {
                 fechaAprobacion: emprendimientoData.fechaAprobacion,
             },
         });
-        if (files && files.length > 0) {
-            for (const file of files) {
-                const imageUrl = await this.supabaseService.uploadFile(file, this.IMAGEABLE_TYPE, emprendimiento.id);
-                const imagen = await this.prisma.image.create({
+        if (imagenes && imagenes.length > 0) {
+            for (const imagen of imagenes) {
+                const filePath = `${emprendimiento.id}/${Date.now()}-${imagen.url.split('/').pop()}`;
+                const { data, error } = await this.supabaseService.uploadFile(this.BUCKET_NAME, filePath, imagen.url);
+                if (error) {
+                    throw new common_1.BadRequestException(`Error al subir la imagen: ${error.message}`);
+                }
+                const image = await this.prisma.image.create({
                     data: {
-                        url: imageUrl
+                        url: data.path
                     }
                 });
                 await this.prisma.imageable.create({
                     data: {
-                        image_id: imagen.id,
+                        image_id: image.id,
                         imageable_id: emprendimiento.id,
                         imageable_type: this.IMAGEABLE_TYPE
                     }
@@ -150,7 +155,7 @@ let EmprendimientosService = class EmprendimientosService {
         }));
         return emprendimientosWithImages;
     }
-    async update(id, updateEmprendimientoDto, files) {
+    async update(id, updateEmprendimientoDto) {
         const { imagenes } = updateEmprendimientoDto, emprendimientoData = __rest(updateEmprendimientoDto, ["imagenes"]);
         await this.prisma.emprendimiento.update({
             where: { id },
@@ -168,7 +173,7 @@ let EmprendimientosService = class EmprendimientosService {
                 fechaAprobacion: emprendimientoData.fechaAprobacion,
             },
         });
-        if (files && files.length > 0) {
+        if (imagenes && imagenes.length > 0) {
             const imageables = await this.prisma.imageable.findMany({
                 where: {
                     imageable_type: this.IMAGEABLE_TYPE,
@@ -179,8 +184,10 @@ let EmprendimientosService = class EmprendimientosService {
                 }
             });
             for (const imageable of imageables) {
-                const fileName = imageable.image.url.split('/').pop();
-                await this.supabaseService.deleteFile(this.IMAGEABLE_TYPE, id, fileName);
+                const { error } = await this.supabaseService.deleteFile(this.BUCKET_NAME, imageable.image.url);
+                if (error) {
+                    console.error(`Error al eliminar la imagen de Supabase: ${error.message}`);
+                }
                 await this.prisma.imageable.delete({
                     where: { id: imageable.id }
                 });
@@ -188,16 +195,20 @@ let EmprendimientosService = class EmprendimientosService {
                     where: { id: imageable.image.id }
                 });
             }
-            for (const file of files) {
-                const imageUrl = await this.supabaseService.uploadFile(file, this.IMAGEABLE_TYPE, id);
-                const imagen = await this.prisma.image.create({
+            for (const imagen of imagenes) {
+                const filePath = `${id}/${Date.now()}-${imagen.url.split('/').pop()}`;
+                const { data, error } = await this.supabaseService.uploadFile(this.BUCKET_NAME, filePath, imagen.url);
+                if (error) {
+                    throw new common_1.BadRequestException(`Error al subir la imagen: ${error.message}`);
+                }
+                const image = await this.prisma.image.create({
                     data: {
-                        url: imageUrl
+                        url: data.path
                     }
                 });
                 await this.prisma.imageable.create({
                     data: {
-                        image_id: imagen.id,
+                        image_id: image.id,
                         imageable_id: id,
                         imageable_type: this.IMAGEABLE_TYPE
                     }
@@ -217,8 +228,10 @@ let EmprendimientosService = class EmprendimientosService {
             }
         });
         for (const imageable of imageables) {
-            const fileName = imageable.image.url.split('/').pop();
-            await this.supabaseService.deleteFile(this.IMAGEABLE_TYPE, id, fileName);
+            const { error } = await this.supabaseService.deleteFile(this.BUCKET_NAME, imageable.image.url);
+            if (error) {
+                console.error(`Error al eliminar la imagen de Supabase: ${error.message}`);
+            }
             await this.prisma.imageable.delete({
                 where: { id: imageable.id }
             });
@@ -226,91 +239,105 @@ let EmprendimientosService = class EmprendimientosService {
                 where: { id: imageable.image.id }
             });
         }
-        return this.prisma.emprendimiento.delete({
-            where: { id },
+        await this.prisma.emprendimiento.delete({
+            where: { id }
         });
+        return { message: 'Emprendimiento eliminado exitosamente' };
     }
     async updateEstado(id, estado) {
-        try {
-            return await this.prisma.emprendimiento.update({
-                where: { id },
-                data: {
-                    estado,
-                    fechaAprobacion: estado === 'aprobado' ? new Date() : null,
-                },
-            });
-        }
-        catch (error) {
-            throw new common_1.NotFoundException(`Emprendimiento con ID ${id} no encontrado`);
-        }
-    }
-    async addFavorito(usuarioId, createFavoritoDto) {
-        const emprendimiento = await this.prisma.emprendimiento.findUnique({
-            where: { id: createFavoritoDto.emprendimientoId },
+        const emprendimiento = await this.prisma.emprendimiento.update({
+            where: { id },
+            data: {
+                estado,
+                fechaAprobacion: estado === 'aprobado' ? new Date() : null
+            }
         });
         if (!emprendimiento) {
-            throw new common_1.NotFoundException(`Emprendimiento con ID ${createFavoritoDto.emprendimientoId} no encontrado`);
+            throw new common_1.NotFoundException(`Emprendimiento con ID ${id} no encontrado`);
+        }
+        return emprendimiento;
+    }
+    async addFavorito(usuarioId, createFavoritoDto) {
+        const { emprendimientoId } = createFavoritoDto;
+        const emprendimiento = await this.prisma.emprendimiento.findUnique({
+            where: { id: emprendimientoId }
+        });
+        if (!emprendimiento) {
+            throw new common_1.NotFoundException(`Emprendimiento con ID ${emprendimientoId} no encontrado`);
         }
         const favoritoExistente = await this.prisma.favorito.findFirst({
             where: {
-                emprendimientoId: createFavoritoDto.emprendimientoId,
-                usuarioId: usuarioId,
-            },
+                usuarioId,
+                emprendimientoId
+            }
         });
         if (favoritoExistente) {
-            throw new common_1.BadRequestException('Este emprendimiento ya está marcado como favorito');
+            throw new common_1.BadRequestException('El emprendimiento ya está marcado como favorito');
         }
-        return this.prisma.favorito.create({
+        const favorito = await this.prisma.favorito.create({
             data: {
-                emprendimientoId: createFavoritoDto.emprendimientoId,
-                usuarioId: usuarioId,
-                estado: 'activo',
+                usuarioId,
+                emprendimientoId
             },
             include: {
-                emprendimiento: true,
-            },
+                emprendimiento: true
+            }
         });
+        return favorito;
     }
     async removeFavorito(usuarioId, emprendimientoId) {
         const favorito = await this.prisma.favorito.findFirst({
             where: {
-                emprendimientoId,
-                usuarioId: usuarioId,
-            },
+                usuarioId,
+                emprendimientoId
+            }
         });
         if (!favorito) {
-            throw new common_1.NotFoundException(`No se encontró un favorito para el emprendimiento con ID ${emprendimientoId}`);
+            throw new common_1.NotFoundException('Favorito no encontrado');
         }
-        return this.prisma.favorito.delete({
-            where: {
-                id: favorito.id,
-            },
+        await this.prisma.favorito.delete({
+            where: { id: favorito.id }
         });
+        return { message: 'Favorito eliminado exitosamente' };
     }
     async getFavoritos(usuarioId) {
-        return this.prisma.favorito.findMany({
-            where: {
-                usuarioId: usuarioId,
-            },
+        const favoritos = await this.prisma.favorito.findMany({
+            where: { usuarioId },
             include: {
                 emprendimiento: {
                     include: {
                         usuario: {
                             include: {
-                                persona: true,
-                            },
-                        },
-                    },
-                },
-            },
+                                persona: true
+                            }
+                        }
+                    }
+                }
+            }
         });
+        const favoritosWithImages = await Promise.all(favoritos.map(async (favorito) => {
+            const imageables = await this.prisma.imageable.findMany({
+                where: {
+                    imageable_type: this.IMAGEABLE_TYPE,
+                    imageable_id: favorito.emprendimiento.id,
+                },
+                include: {
+                    image: true
+                }
+            });
+            return Object.assign(Object.assign({}, favorito.emprendimiento), { imagenes: imageables.map(imageable => ({
+                    id: imageable.image.id,
+                    url: imageable.image.url
+                })) });
+        }));
+        return favoritosWithImages;
     }
     async isFavorito(usuarioId, emprendimientoId) {
         const favorito = await this.prisma.favorito.findFirst({
             where: {
-                emprendimientoId,
-                usuarioId: usuarioId,
-            },
+                usuarioId,
+                emprendimientoId
+            }
         });
         return !!favorito;
     }

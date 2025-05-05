@@ -14,7 +14,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ServiciosController = void 0;
 const common_1 = require("@nestjs/common");
-const platform_express_1 = require("@nestjs/platform-express");
 const servicios_service_1 = require("../services/servicios.service");
 const create_servicio_dto_1 = require("../dto/create-servicio.dto");
 const update_servicio_dto_1 = require("../dto/update-servicio.dto");
@@ -27,8 +26,8 @@ let ServiciosController = class ServiciosController {
     constructor(serviciosService) {
         this.serviciosService = serviciosService;
     }
-    create(createServicioDto, files) {
-        return this.serviciosService.create(createServicioDto, files === null || files === void 0 ? void 0 : files.files);
+    create(createServicioDto) {
+        return this.serviciosService.create(createServicioDto);
     }
     findAll() {
         return this.serviciosService.findAll();
@@ -39,8 +38,8 @@ let ServiciosController = class ServiciosController {
     findOne(id) {
         return this.serviciosService.findOne(+id);
     }
-    update(id, updateServicioDto, files) {
-        return this.serviciosService.update(+id, updateServicioDto, files === null || files === void 0 ? void 0 : files.files);
+    update(id, updateServicioDto) {
+        return this.serviciosService.update(+id, updateServicioDto);
     }
     remove(id) {
         return this.serviciosService.remove(+id);
@@ -55,17 +54,12 @@ let ServiciosController = class ServiciosController {
 exports.ServiciosController = ServiciosController;
 __decorate([
     (0, common_1.Post)(),
-    (0, swagger_1.ApiConsumes)('multipart/form-data'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileFieldsInterceptor)([
-        { name: 'files', maxCount: 5 }
-    ])),
     (0, swagger_1.ApiOperation)({ summary: 'Crear un nuevo servicio' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Servicio creado exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.UploadedFiles)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_servicio_dto_1.CreateServicioDto, Object]),
+    __metadata("design:paramtypes", [create_servicio_dto_1.CreateServicioDto]),
     __metadata("design:returntype", void 0)
 ], ServiciosController.prototype, "create", null);
 __decorate([
@@ -97,19 +91,14 @@ __decorate([
 ], ServiciosController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Patch)(':id'),
-    (0, swagger_1.ApiConsumes)('multipart/form-data'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileFieldsInterceptor)([
-        { name: 'files', maxCount: 5 }
-    ])),
     (0, swagger_1.ApiOperation)({ summary: 'Actualizar un servicio por ID' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Servicio actualizado exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Servicio no encontrado' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
-    __param(2, (0, common_1.UploadedFiles)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_servicio_dto_1.UpdateServicioDto, Object]),
+    __metadata("design:paramtypes", [String, update_servicio_dto_1.UpdateServicioDto]),
     __metadata("design:returntype", void 0)
 ], ServiciosController.prototype, "update", null);
 __decorate([

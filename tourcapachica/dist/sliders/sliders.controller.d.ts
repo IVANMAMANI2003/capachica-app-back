@@ -4,9 +4,7 @@ import { UpdateSliderDto } from './dto/update-slider.dto';
 export declare class SlidersController {
     private readonly slidersService;
     constructor(slidersService: SlidersService);
-    create(createSliderDto: CreateSliderDto, files: {
-        files?: Express.Multer.File[];
-    }): Promise<{
+    create(createSliderDto: CreateSliderDto): Promise<{
         imagenes: {
             id: number;
             url: string;
@@ -42,9 +40,7 @@ export declare class SlidersController {
         estado: string;
         description: string | null;
     }>;
-    update(id: string, updateSliderDto: UpdateSliderDto, files: {
-        files?: Express.Multer.File[];
-    }): Promise<{
+    update(id: string, updateSliderDto: UpdateSliderDto): Promise<{
         imagenes: {
             id: number;
             url: string;

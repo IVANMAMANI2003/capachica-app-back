@@ -4,7 +4,14 @@ export declare class SupabaseService {
     private supabase;
     private readonly BUCKET_NAME;
     constructor(configService: ConfigService);
-    uploadFile(file: Express.Multer.File, imageableType: string, imageableId: number): Promise<string>;
-    deleteFile(imageableType: string, imageableId: number, fileName: string): Promise<void>;
+    uploadFile(bucketName: string, filePath: string, fileUrl: string): Promise<{
+        data: {
+            path: string;
+        };
+        error: any;
+    }>;
+    deleteFile(bucketName: string, filePath: string): Promise<{
+        error: any;
+    }>;
     private getFolderPath;
 }

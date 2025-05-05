@@ -1,19 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { SupabaseService } from '../supabase/supabase.service';
-import { CreateLugarTuristicoDto } from './dto/create-lugar-turistico.dto';
+import { CreateLugarTuristicoDto, ImageDto } from './dto/create-lugar-turistico.dto';
 import { UpdateLugarTuristicoDto } from './dto/update-lugar-turistico.dto';
+import { SupabaseService } from '../supabase/supabase.service';
 
 @Injectable()
 export class LugaresTuristicosService {
   private readonly IMAGEABLE_TYPE = 'LugarTuristico';
+  private readonly BUCKET_NAME = 'lugares-turisticos';
 
   constructor(
     private prisma: PrismaService,
     private supabaseService: SupabaseService
   ) {}
 
-  async create(createLugarTuristicoDto: CreateLugarTuristicoDto, files?: Express.Multer.File[]) {
+  async create(createLugarTuristicoDto: CreateLugarTuristicoDto) {
     const { imagenes, ...lugarData } = createLugarTuristicoDto;
     
     // Crear el lugar turístico
@@ -34,26 +35,32 @@ export class LugaresTuristicosService {
     });
 
     // Crear las imágenes si existen
-    if (files && files.length > 0) {
-      for (const file of files) {
+    if (imagenes && imagenes.length > 0) {
+      for (const imagen of imagenes) {
+        const filePath = `${lugarTuristico.id}/${Date.now()}-${imagen.url.split('/').pop()}`;
+        
         // Subir la imagen a Supabase
-        const imageUrl = await this.supabaseService.uploadFile(
-          file,
-          this.IMAGEABLE_TYPE,
-          lugarTuristico.id
+        const { data, error } = await this.supabaseService.uploadFile(
+          this.BUCKET_NAME,
+          filePath,
+          imagen.url
         );
 
-        // Crear la imagen en la base de datos
-        const imagen = await this.prisma.image.create({
+        if (error) {
+          throw new BadRequestException(`Error al subir la imagen: ${error.message}`);
+        }
+
+        // Crear la imagen en la base de datos con la URL de Supabase
+        const imagenDb = await this.prisma.image.create({
           data: {
-            url: imageUrl
+            url: data.path
           }
         });
 
         // Crear la relación imageable
         await this.prisma.imageable.create({
           data: {
-            image_id: imagen.id,
+            image_id: imagenDb.id,
             imageable_id: lugarTuristico.id,
             imageable_type: this.IMAGEABLE_TYPE
           }
@@ -119,7 +126,7 @@ export class LugaresTuristicosService {
     };
   }
 
-  async update(id: number, updateLugarTuristicoDto: UpdateLugarTuristicoDto, files?: Express.Multer.File[]) {
+  async update(id: number, updateLugarTuristicoDto: UpdateLugarTuristicoDto) {
     const { imagenes, ...lugarData } = updateLugarTuristicoDto;
 
     // Actualizar datos del lugar turístico
@@ -141,7 +148,7 @@ export class LugaresTuristicosService {
     });
 
     // Si hay nuevas imágenes, eliminar las antiguas y crear las nuevas
-    if (files && files.length > 0) {
+    if (imagenes) {
       // Obtener las relaciones imageables existentes
       const imageables = await this.prisma.imageable.findMany({
         where: {
@@ -155,15 +162,15 @@ export class LugaresTuristicosService {
 
       // Eliminar las relaciones y las imágenes
       for (const imageable of imageables) {
-        // Extraer el nombre del archivo de la URL
-        const fileName = imageable.image.url.split('/').pop();
-        
-        // Eliminar el archivo de Supabase
-        await this.supabaseService.deleteFile(
-          this.IMAGEABLE_TYPE,
-          id,
-          fileName
+        // Eliminar la imagen de Supabase
+        const { error } = await this.supabaseService.deleteFile(
+          this.BUCKET_NAME,
+          imageable.image.url
         );
+
+        if (error) {
+          console.error(`Error al eliminar la imagen de Supabase: ${error.message}`);
+        }
 
         // Eliminar la relación y la imagen de la base de datos
         await this.prisma.imageable.delete({
@@ -175,25 +182,31 @@ export class LugaresTuristicosService {
       }
 
       // Crear las nuevas imágenes y relaciones
-      for (const file of files) {
-        // Subir la nueva imagen a Supabase
-        const imageUrl = await this.supabaseService.uploadFile(
-          file,
-          this.IMAGEABLE_TYPE,
-          id
+      for (const imagen of imagenes) {
+        const filePath = `${id}/${Date.now()}-${imagen.url.split('/').pop()}`;
+        
+        // Subir la imagen a Supabase
+        const { data, error } = await this.supabaseService.uploadFile(
+          this.BUCKET_NAME,
+          filePath,
+          imagen.url
         );
 
-        // Crear la imagen en la base de datos
-        const imagen = await this.prisma.image.create({
+        if (error) {
+          throw new BadRequestException(`Error al subir la imagen: ${error.message}`);
+        }
+
+        // Crear la imagen en la base de datos con la URL de Supabase
+        const imagenDb = await this.prisma.image.create({
           data: {
-            url: imageUrl
+            url: data.path
           }
         });
 
         // Crear la relación imageable
         await this.prisma.imageable.create({
           data: {
-            image_id: imagen.id,
+            image_id: imagenDb.id,
             imageable_id: id,
             imageable_type: this.IMAGEABLE_TYPE
           }
@@ -218,15 +231,15 @@ export class LugaresTuristicosService {
 
     // Eliminar las relaciones y las imágenes
     for (const imageable of imageables) {
-      // Extraer el nombre del archivo de la URL
-      const fileName = imageable.image.url.split('/').pop();
-      
-      // Eliminar el archivo de Supabase
-      await this.supabaseService.deleteFile(
-        this.IMAGEABLE_TYPE,
-        id,
-        fileName
+      // Eliminar la imagen de Supabase
+      const { error } = await this.supabaseService.deleteFile(
+        this.BUCKET_NAME,
+        imageable.image.url
       );
+
+      if (error) {
+        console.error(`Error al eliminar la imagen de Supabase: ${error.message}`);
+      }
 
       // Eliminar la relación y la imagen de la base de datos
       await this.prisma.imageable.delete({

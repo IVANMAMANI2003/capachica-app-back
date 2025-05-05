@@ -1,18 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsOptional, IsNumber, IsEnum, IsArray, Min } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsNumber, IsEnum, IsArray, Min, IsUrl } from 'class-validator';
 import { Type } from 'class-transformer';
-
-export class ImageDto {
-  @ApiProperty({
-    description: 'URL de la imagen',
-    example: 'https://example.com/image.jpg',
-    required: true,
-    type: String
-  })
-  @IsString()
-  @IsNotEmpty()
-  url: string;
-}
 
 export class CreatePaqueteTuristicoDto {
   @ApiProperty({
@@ -36,8 +24,8 @@ export class CreatePaqueteTuristicoDto {
   nombre: string;
 
   @ApiProperty({
-    description: 'Descripción del paquete turístico',
-    example: 'Recorrido completo por los principales atractivos de la isla',
+    description: 'Descripción detallada del paquete turístico',
+    example: 'Recorrido completo por los principales atractivos de la isla, incluyendo playas, miradores y sitios históricos',
     required: true,
     type: String
   })
@@ -46,10 +34,11 @@ export class CreatePaqueteTuristicoDto {
   descripcion: string;
 
   @ApiProperty({
-    description: 'Precio del paquete turístico',
+    description: 'Precio del paquete turístico en la moneda especificada',
     example: 150.00,
     required: true,
-    type: Number
+    type: Number,
+    minimum: 0
   })
   @IsNumber()
   @Min(0)
@@ -57,7 +46,7 @@ export class CreatePaqueteTuristicoDto {
   precio: number;
 
   @ApiProperty({
-    description: 'Estado del paquete turístico',
+    description: 'Estado actual del paquete turístico',
     example: 'activo',
     default: 'activo',
     required: false,
@@ -70,10 +59,11 @@ export class CreatePaqueteTuristicoDto {
   estado?: string = 'activo';
 
   @ApiProperty({
-    description: 'IDs de los servicios incluidos en el paquete',
+    description: 'IDs de los servicios incluidos en el paquete turístico',
     type: [Number],
     required: false,
-    example: [1, 2, 3]
+    example: [1, 2, 3],
+    isArray: true
   })
   @IsArray()
   @IsOptional()
@@ -81,18 +71,17 @@ export class CreatePaqueteTuristicoDto {
   servicios?: number[];
 
   @ApiProperty({
-    description: 'Lista de imágenes del paquete turístico',
-    type: [ImageDto],
+    description: 'Lista de URLs de imágenes del paquete turístico',
+    type: [String],
     required: false,
     example: [
-      {
-        url: 'https://example.com/image1.jpg'
-      },
-      {
-        url: 'https://example.com/image2.jpg'
-      }
-    ]
+      'https://example.com/image1.jpg',
+      'https://example.com/image2.jpg'
+    ],
+    isArray: true
   })
   @IsOptional()
-  imagenes?: ImageDto[];
+  @IsArray()
+  @IsUrl({}, { each: true })
+  imagenes?: string[];
 } 

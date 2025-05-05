@@ -9,23 +9,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreatePaqueteTuristicoDto = exports.ImageDto = void 0;
+exports.CreatePaqueteTuristicoDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
-class ImageDto {
-}
-exports.ImageDto = ImageDto;
-__decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'URL de la imagen',
-        example: 'https://example.com/image.jpg',
-        required: true,
-        type: String
-    }),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], ImageDto.prototype, "url", void 0);
 class CreatePaqueteTuristicoDto {
     constructor() {
         this.estado = 'activo';
@@ -56,8 +42,8 @@ __decorate([
 ], CreatePaqueteTuristicoDto.prototype, "nombre", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Descripción del paquete turístico',
-        example: 'Recorrido completo por los principales atractivos de la isla',
+        description: 'Descripción detallada del paquete turístico',
+        example: 'Recorrido completo por los principales atractivos de la isla, incluyendo playas, miradores y sitios históricos',
         required: true,
         type: String
     }),
@@ -67,10 +53,11 @@ __decorate([
 ], CreatePaqueteTuristicoDto.prototype, "descripcion", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Precio del paquete turístico',
+        description: 'Precio del paquete turístico en la moneda especificada',
         example: 150.00,
         required: true,
-        type: Number
+        type: Number,
+        minimum: 0
     }),
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.Min)(0),
@@ -79,7 +66,7 @@ __decorate([
 ], CreatePaqueteTuristicoDto.prototype, "precio", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Estado del paquete turístico',
+        description: 'Estado actual del paquete turístico',
         example: 'activo',
         default: 'activo',
         required: false,
@@ -93,10 +80,11 @@ __decorate([
 ], CreatePaqueteTuristicoDto.prototype, "estado", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'IDs de los servicios incluidos en el paquete',
+        description: 'IDs de los servicios incluidos en el paquete turístico',
         type: [Number],
         required: false,
-        example: [1, 2, 3]
+        example: [1, 2, 3],
+        isArray: true
     }),
     (0, class_validator_1.IsArray)(),
     (0, class_validator_1.IsOptional)(),
@@ -105,19 +93,18 @@ __decorate([
 ], CreatePaqueteTuristicoDto.prototype, "servicios", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Lista de imágenes del paquete turístico',
-        type: [ImageDto],
+        description: 'Lista de URLs de imágenes del paquete turístico',
+        type: [String],
         required: false,
         example: [
-            {
-                url: 'https://example.com/image1.jpg'
-            },
-            {
-                url: 'https://example.com/image2.jpg'
-            }
-        ]
+            'https://example.com/image1.jpg',
+            'https://example.com/image2.jpg'
+        ],
+        isArray: true
     }),
     (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.IsUrl)({}, { each: true }),
     __metadata("design:type", Array)
 ], CreatePaqueteTuristicoDto.prototype, "imagenes", void 0);
 //# sourceMappingURL=create-paquete-turistico.dto.js.map

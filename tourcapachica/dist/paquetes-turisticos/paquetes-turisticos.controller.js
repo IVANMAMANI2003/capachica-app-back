@@ -14,7 +14,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PaquetesTuristicosController = void 0;
 const common_1 = require("@nestjs/common");
-const platform_express_1 = require("@nestjs/platform-express");
 const swagger_1 = require("@nestjs/swagger");
 const paquetes_turisticos_service_1 = require("./paquetes-turisticos.service");
 const roles_decorator_1 = require("../auth/decorators/roles.decorator");
@@ -29,8 +28,8 @@ let PaquetesTuristicosController = class PaquetesTuristicosController {
     constructor(paquetesTuristicosService) {
         this.paquetesTuristicosService = paquetesTuristicosService;
     }
-    create(createPaqueteTuristicoDto, files) {
-        return this.paquetesTuristicosService.create(createPaqueteTuristicoDto, files === null || files === void 0 ? void 0 : files.files);
+    create(createPaqueteTuristicoDto) {
+        return this.paquetesTuristicosService.create(createPaqueteTuristicoDto);
     }
     findAll() {
         return this.paquetesTuristicosService.findAll();
@@ -41,8 +40,8 @@ let PaquetesTuristicosController = class PaquetesTuristicosController {
     findOne(id) {
         return this.paquetesTuristicosService.findOne(+id);
     }
-    update(id, updatePaqueteTuristicoDto, files) {
-        return this.paquetesTuristicosService.update(+id, updatePaqueteTuristicoDto, files === null || files === void 0 ? void 0 : files.files);
+    update(id, updatePaqueteTuristicoDto) {
+        return this.paquetesTuristicosService.update(+id, updatePaqueteTuristicoDto);
     }
     remove(id) {
         return this.paquetesTuristicosService.remove(+id);
@@ -84,17 +83,12 @@ __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiBearerAuth)(),
-    (0, swagger_1.ApiConsumes)('multipart/form-data'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileFieldsInterceptor)([
-        { name: 'files', maxCount: 5 }
-    ])),
     (0, swagger_1.ApiOperation)({ summary: 'Crear un nuevo paquete turístico' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Paquete turístico creado exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.UploadedFiles)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_paquete_turistico_dto_1.CreatePaqueteTuristicoDto, Object]),
+    __metadata("design:paramtypes", [create_paquete_turistico_dto_1.CreatePaqueteTuristicoDto]),
     __metadata("design:returntype", void 0)
 ], PaquetesTuristicosController.prototype, "create", null);
 __decorate([
@@ -129,19 +123,14 @@ __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiBearerAuth)(),
-    (0, swagger_1.ApiConsumes)('multipart/form-data'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileFieldsInterceptor)([
-        { name: 'files', maxCount: 5 }
-    ])),
     (0, swagger_1.ApiOperation)({ summary: 'Actualizar un paquete turístico por ID' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Paquete turístico actualizado exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Paquete turístico no encontrado' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
-    __param(2, (0, common_1.UploadedFiles)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_paquete_turistico_dto_1.UpdatePaqueteTuristicoDto, Object]),
+    __metadata("design:paramtypes", [String, update_paquete_turistico_dto_1.UpdatePaqueteTuristicoDto]),
     __metadata("design:returntype", void 0)
 ], PaquetesTuristicosController.prototype, "update", null);
 __decorate([

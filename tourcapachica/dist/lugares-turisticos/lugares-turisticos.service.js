@@ -29,8 +29,9 @@ let LugaresTuristicosService = class LugaresTuristicosService {
         this.prisma = prisma;
         this.supabaseService = supabaseService;
         this.IMAGEABLE_TYPE = 'LugarTuristico';
+        this.BUCKET_NAME = 'lugares-turisticos';
     }
-    async create(createLugarTuristicoDto, files) {
+    async create(createLugarTuristicoDto) {
         const { imagenes } = createLugarTuristicoDto, lugarData = __rest(createLugarTuristicoDto, ["imagenes"]);
         const lugarTuristico = await this.prisma.lugarTuristico.create({
             data: {
@@ -47,17 +48,21 @@ let LugaresTuristicosService = class LugaresTuristicosService {
                 estado: lugarData.estado,
             },
         });
-        if (files && files.length > 0) {
-            for (const file of files) {
-                const imageUrl = await this.supabaseService.uploadFile(file, this.IMAGEABLE_TYPE, lugarTuristico.id);
-                const imagen = await this.prisma.image.create({
+        if (imagenes && imagenes.length > 0) {
+            for (const imagen of imagenes) {
+                const filePath = `${lugarTuristico.id}/${Date.now()}-${imagen.url.split('/').pop()}`;
+                const { data, error } = await this.supabaseService.uploadFile(this.BUCKET_NAME, filePath, imagen.url);
+                if (error) {
+                    throw new common_1.BadRequestException(`Error al subir la imagen: ${error.message}`);
+                }
+                const imagenDb = await this.prisma.image.create({
                     data: {
-                        url: imageUrl
+                        url: data.path
                     }
                 });
                 await this.prisma.imageable.create({
                     data: {
-                        image_id: imagen.id,
+                        image_id: imagenDb.id,
                         imageable_id: lugarTuristico.id,
                         imageable_type: this.IMAGEABLE_TYPE
                     }
@@ -106,7 +111,7 @@ let LugaresTuristicosService = class LugaresTuristicosService {
                 url: imageable.image.url
             })) });
     }
-    async update(id, updateLugarTuristicoDto, files) {
+    async update(id, updateLugarTuristicoDto) {
         const { imagenes } = updateLugarTuristicoDto, lugarData = __rest(updateLugarTuristicoDto, ["imagenes"]);
         await this.prisma.lugarTuristico.update({
             where: { id },
@@ -124,7 +129,7 @@ let LugaresTuristicosService = class LugaresTuristicosService {
                 estado: lugarData.estado,
             },
         });
-        if (files && files.length > 0) {
+        if (imagenes) {
             const imageables = await this.prisma.imageable.findMany({
                 where: {
                     imageable_type: this.IMAGEABLE_TYPE,
@@ -135,8 +140,10 @@ let LugaresTuristicosService = class LugaresTuristicosService {
                 }
             });
             for (const imageable of imageables) {
-                const fileName = imageable.image.url.split('/').pop();
-                await this.supabaseService.deleteFile(this.IMAGEABLE_TYPE, id, fileName);
+                const { error } = await this.supabaseService.deleteFile(this.BUCKET_NAME, imageable.image.url);
+                if (error) {
+                    console.error(`Error al eliminar la imagen de Supabase: ${error.message}`);
+                }
                 await this.prisma.imageable.delete({
                     where: { id: imageable.id }
                 });
@@ -144,16 +151,20 @@ let LugaresTuristicosService = class LugaresTuristicosService {
                     where: { id: imageable.image.id }
                 });
             }
-            for (const file of files) {
-                const imageUrl = await this.supabaseService.uploadFile(file, this.IMAGEABLE_TYPE, id);
-                const imagen = await this.prisma.image.create({
+            for (const imagen of imagenes) {
+                const filePath = `${id}/${Date.now()}-${imagen.url.split('/').pop()}`;
+                const { data, error } = await this.supabaseService.uploadFile(this.BUCKET_NAME, filePath, imagen.url);
+                if (error) {
+                    throw new common_1.BadRequestException(`Error al subir la imagen: ${error.message}`);
+                }
+                const imagenDb = await this.prisma.image.create({
                     data: {
-                        url: imageUrl
+                        url: data.path
                     }
                 });
                 await this.prisma.imageable.create({
                     data: {
-                        image_id: imagen.id,
+                        image_id: imagenDb.id,
                         imageable_id: id,
                         imageable_type: this.IMAGEABLE_TYPE
                     }
@@ -173,8 +184,10 @@ let LugaresTuristicosService = class LugaresTuristicosService {
             }
         });
         for (const imageable of imageables) {
-            const fileName = imageable.image.url.split('/').pop();
-            await this.supabaseService.deleteFile(this.IMAGEABLE_TYPE, id, fileName);
+            const { error } = await this.supabaseService.deleteFile(this.BUCKET_NAME, imageable.image.url);
+            if (error) {
+                console.error(`Error al eliminar la imagen de Supabase: ${error.message}`);
+            }
             await this.prisma.imageable.delete({
                 where: { id: imageable.id }
             });

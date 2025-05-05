@@ -1,6 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, HttpException, HttpStatus, UseInterceptors, UploadedFile } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, HttpException, HttpStatus, UseInterceptors, UploadedFile, Request } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -10,6 +9,13 @@ import { RegisterUserDto } from './dto/register-user.dto';
 import { RequestPasswordResetDto } from './dto/request-password-reset.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { UsersService } from './users.service';
+import { Request as ExpressRequest } from 'express';
+
+interface RequestWithUser extends ExpressRequest {
+  user: {
+    id: number;
+  };
+}
 
 @ApiTags('users')
 @Controller('users')
@@ -91,60 +97,76 @@ export class UsersController {
   }
 
   @Post()
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('fotoPerfil'))
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('SuperAdmin')
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Crear un nuevo usuario' })
   @ApiResponse({ status: 201, description: 'Usuario creado exitosamente' })
-  @ApiResponse({ status: 400, description: 'Datos inválidos o usuario ya existe' })
-  @ApiResponse({ status: 404, description: 'Persona no encontrada' })
-  @ApiResponse({ status: 500, description: 'Error interno del servidor' })
-  async create(
-    @Body() createUserDto: CreateUserDto,
-    @UploadedFile() file: Express.Multer.File
-  ) {
-    try {
-      return await this.usersService.create(createUserDto, file);
-    } catch (error) {
-      if (error instanceof HttpException) {
-        throw error;
-      }
-      console.error('Error en el controlador al crear usuario:', error);
-      throw new HttpException('Error al crear el usuario', HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+  @ApiResponse({ status: 400, description: 'Datos inválidos' })
+  @ApiResponse({ status: 401, description: 'No autorizado' })
+  @ApiResponse({ status: 403, description: 'No tiene permisos' })
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.create(createUserDto);
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('SuperAdmin')
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Obtener todos los usuarios' })
-  @ApiResponse({ status: 200, description: 'Lista de usuarios' })
+  @ApiResponse({ status: 200, description: 'Lista de usuarios obtenida exitosamente' })
+  @ApiResponse({ status: 401, description: 'No autorizado' })
+  @ApiResponse({ status: 403, description: 'No tiene permisos' })
   findAll() {
     return this.usersService.findAll();
   }
 
+  @Get('profile')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('SuperAdmin')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Obtener el perfil del usuario actual' })
+  @ApiResponse({ status: 200, description: 'Perfil obtenido exitosamente' })
+  @ApiResponse({ status: 401, description: 'No autorizado' })
+  getProfile(@Request() req: RequestWithUser) {
+    return this.usersService.findOne(req.user.id);
+  }
+
   @Get(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('SuperAdmin')
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Obtener un usuario por ID' })
-  @ApiResponse({ status: 200, description: 'Usuario encontrado' })
+  @ApiResponse({ status: 200, description: 'Usuario obtenido exitosamente' })
+  @ApiResponse({ status: 401, description: 'No autorizado' })
+  @ApiResponse({ status: 403, description: 'No tiene permisos' })
   @ApiResponse({ status: 404, description: 'Usuario no encontrado' })
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
   }
 
   @Patch(':id')
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('fotoPerfil'))
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('emprendedor', 'SuperAdmin')
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar un usuario' })
   @ApiResponse({ status: 200, description: 'Usuario actualizado exitosamente' })
+  @ApiResponse({ status: 400, description: 'Datos inválidos' })
+  @ApiResponse({ status: 401, description: 'No autorizado' })
+  @ApiResponse({ status: 403, description: 'No tiene permisos' })
   @ApiResponse({ status: 404, description: 'Usuario no encontrado' })
-  update(
-    @Param('id') id: string,
-    @Body() updateUserDto: UpdateUserDto,
-    @UploadedFile() file: Express.Multer.File
-  ) {
-    return this.usersService.update(+id, updateUserDto, file);
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.usersService.update(+id, updateUserDto);
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('SuperAdmin') 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Eliminar un usuario' })
   @ApiResponse({ status: 200, description: 'Usuario eliminado exitosamente' })
+  @ApiResponse({ status: 401, description: 'No autorizado' })
+  @ApiResponse({ status: 403, description: 'No tiene permisos' })
   @ApiResponse({ status: 404, description: 'Usuario no encontrado' })
   remove(@Param('id') id: string) {
     return this.usersService.delete(+id);

@@ -1,21 +1,44 @@
-import { IsString, IsEmail, IsOptional, MinLength, IsBoolean } from 'class-validator';
-import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
-import { CreateUserDto } from './create-user.dto';
+import { IsString, IsEmail, IsOptional, IsDate, IsNumber, IsUrl } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
-export class UpdateUserDto extends PartialType(CreateUserDto) {
-  @ApiPropertyOptional({ description: 'Email del usuario', example: 'usuario@example.com' })
-  @IsEmail({}, { message: 'El email debe ser válido' })
+export class UpdateUserDto {
+  @ApiProperty({ description: 'Nombre del usuario', required: false })
   @IsOptional()
+  @IsString()
+  nombre?: string;
+
+  @ApiProperty({ description: 'Apellidos del usuario', required: false })
+  @IsOptional()
+  @IsString()
+  apellidos?: string;
+
+  @ApiProperty({ description: 'Correo electrónico del usuario', required: false })
+  @IsOptional()
+  @IsEmail()
   email?: string;
 
-  @ApiPropertyOptional({ description: 'Contraseña del usuario', example: 'password123' })
+  @ApiProperty({ description: 'Teléfono del usuario', required: false })
+  @IsOptional()
   @IsString()
-  @IsOptional()
-  @MinLength(6, { message: 'La contraseña debe tener al menos 6 caracteres' })
-  password?: string;
+  telefono?: string;
 
-  @ApiPropertyOptional({ description: 'Indica si el usuario está activo', example: true })
-  @IsBoolean({ message: 'El estado debe ser un valor booleano' })
+  @ApiProperty({ description: 'Dirección del usuario', required: false })
   @IsOptional()
-  esta_activo?: boolean;
+  @IsString()
+  direccion?: string;
+
+  @ApiProperty({ description: 'Fecha de nacimiento del usuario', required: false })
+  @IsOptional()
+  @IsDate()
+  fechaNacimiento?: Date;
+
+  @ApiProperty({ description: 'ID de la subdivisión', required: false })
+  @IsOptional()
+  @IsNumber()
+  subdivisionId?: number;
+
+  @ApiProperty({ description: 'URL de la foto de perfil', required: false })
+  @IsOptional()
+  @IsUrl()
+  fotoPerfil?: string;
 }

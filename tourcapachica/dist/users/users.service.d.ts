@@ -9,6 +9,7 @@ export declare class UsersService {
     private readonly prisma;
     private readonly supabaseService;
     private readonly IMAGEABLE_TYPE;
+    private readonly BUCKET_NAME;
     constructor(prisma: PrismaService, supabaseService: SupabaseService);
     findAll(): Promise<{
         imagenes: {
@@ -145,7 +146,7 @@ export declare class UsersService {
         createdAt: Date;
         updatedAt: Date;
     }>;
-    create(createUserDto: CreateUserDto, file?: Express.Multer.File): Promise<{
+    create(createUserDto: CreateUserDto): Promise<{
         imagenes: {
             id: number;
             url: string;
@@ -237,7 +238,7 @@ export declare class UsersService {
         createdAt: Date;
         updatedAt: Date;
     }>;
-    update(id: number, updateUserDto: UpdateUserDto, file?: Express.Multer.File): Promise<{
+    update(id: number, updateUserDto: UpdateUserDto): Promise<{
         imagenes: {
             id: number;
             url: string;

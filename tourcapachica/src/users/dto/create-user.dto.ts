@@ -1,4 +1,4 @@
-import { IsString, IsEmail, IsNotEmpty, MinLength, IsInt, IsOptional, IsNumber, IsDate } from 'class-validator';
+import { IsString, IsEmail, IsNotEmpty, MinLength, IsInt, IsOptional, IsNumber, IsDate, IsUrl } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 
@@ -72,11 +72,10 @@ export class CreateUserDto {
   subdivisionId: number;
 
   @ApiProperty({
-    description: 'Foto de perfil',
-    type: 'string',
-    format: 'binary',
+    description: 'URL de la foto de perfil',
     required: false,
   })
   @IsOptional()
-  fotoPerfil?: Express.Multer.File;
+  @IsUrl()
+  fotoPerfil?: string;
 }

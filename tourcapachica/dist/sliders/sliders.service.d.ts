@@ -6,8 +6,9 @@ export declare class SlidersService {
     private prisma;
     private supabaseService;
     private readonly IMAGEABLE_TYPE;
+    private readonly BUCKET_NAME;
     constructor(prisma: PrismaService, supabaseService: SupabaseService);
-    create(createSliderDto: CreateSliderDto, files?: Express.Multer.File[]): Promise<{
+    create(createSliderDto: CreateSliderDto): Promise<{
         imagenes: {
             id: number;
             url: string;
@@ -43,7 +44,7 @@ export declare class SlidersService {
         estado: string;
         description: string | null;
     }>;
-    update(id: number, updateSliderDto: UpdateSliderDto, files?: Express.Multer.File[]): Promise<{
+    update(id: number, updateSliderDto: UpdateSliderDto): Promise<{
         imagenes: {
             id: number;
             url: string;

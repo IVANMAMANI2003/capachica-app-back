@@ -1,6 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, UseGuards, Req, UseInterceptors, UploadedFiles } from '@nestjs/common';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, UseGuards, Req } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { PaquetesTuristicosService } from './paquetes-turisticos.service';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { CreateDisponibilidadDto } from './dto/create-disponibilidad.dto';
@@ -20,18 +19,11 @@ export class PaquetesTuristicosController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileFieldsInterceptor([
-    { name: 'files', maxCount: 5 }
-  ]))
   @ApiOperation({ summary: 'Crear un nuevo paquete turístico' })
   @ApiResponse({ status: 201, description: 'Paquete turístico creado exitosamente' })
   @ApiResponse({ status: 400, description: 'Datos inválidos' })
-  create(
-    @Body() createPaqueteTuristicoDto: CreatePaqueteTuristicoDto,
-    @UploadedFiles() files: { files?: Express.Multer.File[] }
-  ) {
-    return this.paquetesTuristicosService.create(createPaqueteTuristicoDto, files?.files);
+  create(@Body() createPaqueteTuristicoDto: CreatePaqueteTuristicoDto) {
+    return this.paquetesTuristicosService.create(createPaqueteTuristicoDto);
   }
 
   @Get()
@@ -60,20 +52,15 @@ export class PaquetesTuristicosController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileFieldsInterceptor([
-    { name: 'files', maxCount: 5 }
-  ]))
   @ApiOperation({ summary: 'Actualizar un paquete turístico por ID' })
   @ApiResponse({ status: 200, description: 'Paquete turístico actualizado exitosamente' })
   @ApiResponse({ status: 400, description: 'Datos inválidos' })
   @ApiResponse({ status: 404, description: 'Paquete turístico no encontrado' })
   update(
     @Param('id') id: string,
-    @Body() updatePaqueteTuristicoDto: UpdatePaqueteTuristicoDto,
-    @UploadedFiles() files: { files?: Express.Multer.File[] }
+    @Body() updatePaqueteTuristicoDto: UpdatePaqueteTuristicoDto
   ) {
-    return this.paquetesTuristicosService.update(+id, updatePaqueteTuristicoDto, files?.files);
+    return this.paquetesTuristicosService.update(+id, updatePaqueteTuristicoDto);
   }
 
   @Delete(':id')
@@ -134,7 +121,8 @@ export class PaquetesTuristicosController {
   @Get(':id/estadisticas')
   @Roles('emprendedor', 'SuperAdmin')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @ApiBearerAuth()  @ApiOperation({ summary: 'Obtener estadísticas de un paquete turístico' })
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Obtener estadísticas de un paquete turístico' })
   @ApiResponse({ status: 200, description: 'Estadísticas obtenidas exitosamente' })
   @ApiResponse({ status: 404, description: 'Paquete no encontrado' })
   @ApiResponse({ status: 403, description: 'No autorizado' })
@@ -148,7 +136,8 @@ export class PaquetesTuristicosController {
   @Get(':id/exportar')
   @Roles('emprendedor', 'SuperAdmin')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @ApiBearerAuth()  @ApiOperation({ summary: 'Exportar datos de un paquete turístico' })
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Exportar datos de un paquete turístico' })
   @ApiResponse({ status: 200, description: 'Datos exportados exitosamente' })
   @ApiResponse({ status: 404, description: 'Paquete no encontrado' })
   @ApiResponse({ status: 403, description: 'No autorizado' })
@@ -162,7 +151,8 @@ export class PaquetesTuristicosController {
   @Post(':id/disponibilidad')
   @Roles('emprendedor', 'SuperAdmin')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @ApiBearerAuth()  @ApiOperation({ summary: 'Crear disponibilidad para un paquete turístico' })
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Crear disponibilidad para un paquete turístico' })
   @ApiResponse({ status: 201, description: 'Disponibilidad creada exitosamente' })
   @ApiResponse({ status: 400, description: 'Datos inválidos' })
   @ApiResponse({ status: 403, description: 'No autorizado' })

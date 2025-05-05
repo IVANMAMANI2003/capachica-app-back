@@ -14,7 +14,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
-const platform_express_1 = require("@nestjs/platform-express");
 const swagger_1 = require("@nestjs/swagger");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 const roles_guard_1 = require("../auth/guards/roles.guard");
@@ -77,26 +76,20 @@ let UsersController = class UsersController {
             throw new common_1.HttpException('Error al restablecer la contraseña', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    async create(createUserDto, file) {
-        try {
-            return await this.usersService.create(createUserDto, file);
-        }
-        catch (error) {
-            if (error instanceof common_1.HttpException) {
-                throw error;
-            }
-            console.error('Error en el controlador al crear usuario:', error);
-            throw new common_1.HttpException('Error al crear el usuario', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    create(createUserDto) {
+        return this.usersService.create(createUserDto);
     }
     findAll() {
         return this.usersService.findAll();
     }
+    getProfile(req) {
+        return this.usersService.findOne(req.user.id);
+    }
     findOne(id) {
         return this.usersService.findOne(+id);
     }
-    update(id, updateUserDto, file) {
-        return this.usersService.update(+id, updateUserDto, file);
+    update(id, updateUserDto) {
+        return this.usersService.update(+id, updateUserDto);
     }
     remove(id) {
         return this.usersService.delete(+id);
@@ -159,31 +152,54 @@ __decorate([
 ], UsersController.prototype, "adminResetPassword", null);
 __decorate([
     (0, common_1.Post)(),
-    (0, swagger_1.ApiConsumes)('multipart/form-data'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('fotoPerfil')),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('SuperAdmin'),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Crear un nuevo usuario' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Usuario creado exitosamente' }),
-    (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos o usuario ya existe' }),
-    (0, swagger_1.ApiResponse)({ status: 404, description: 'Persona no encontrada' }),
-    (0, swagger_1.ApiResponse)({ status: 500, description: 'Error interno del servidor' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'No autorizado' }),
+    (0, swagger_1.ApiResponse)({ status: 403, description: 'No tiene permisos' }),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto, Object]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),
+    __metadata("design:returntype", void 0)
 ], UsersController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('SuperAdmin'),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Obtener todos los usuarios' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Lista de usuarios' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Lista de usuarios obtenida exitosamente' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'No autorizado' }),
+    (0, swagger_1.ApiResponse)({ status: 403, description: 'No tiene permisos' }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "findAll", null);
 __decorate([
+    (0, common_1.Get)('profile'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('SuperAdmin'),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener el perfil del usuario actual' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Perfil obtenido exitosamente' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'No autorizado' }),
+    __param(0, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "getProfile", null);
+__decorate([
     (0, common_1.Get)(':id'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('SuperAdmin'),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Obtener un usuario por ID' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Usuario encontrado' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Usuario obtenido exitosamente' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'No autorizado' }),
+    (0, swagger_1.ApiResponse)({ status: 403, description: 'No tiene permisos' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Usuario no encontrado' }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
@@ -192,22 +208,30 @@ __decorate([
 ], UsersController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Patch)(':id'),
-    (0, swagger_1.ApiConsumes)('multipart/form-data'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('fotoPerfil')),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Actualizar un usuario' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Usuario actualizado exitosamente' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'No autorizado' }),
+    (0, swagger_1.ApiResponse)({ status: 403, description: 'No tiene permisos' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Usuario no encontrado' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
-    __param(2, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_user_dto_1.UpdateUserDto, Object]),
+    __metadata("design:paramtypes", [String, update_user_dto_1.UpdateUserDto]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('SuperAdmin'),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Eliminar un usuario' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Usuario eliminado exitosamente' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'No autorizado' }),
+    (0, swagger_1.ApiResponse)({ status: 403, description: 'No tiene permisos' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Usuario no encontrado' }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),

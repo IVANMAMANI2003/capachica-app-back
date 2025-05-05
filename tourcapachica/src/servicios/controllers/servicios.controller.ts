@@ -1,12 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseIntPipe, UseInterceptors, UploadedFiles } from '@nestjs/common';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseIntPipe } from '@nestjs/common';
 import { ServiciosService } from '../services/servicios.service';
 import { CreateServicioDto } from '../dto/create-servicio.dto';
 import { UpdateServicioDto } from '../dto/update-servicio.dto';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../../auth/guards/roles.guard';
 import { Roles } from '../../auth/decorators/roles.decorator';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { ServicioEntity } from '../entities/servicio.entity';
 
 @ApiTags('servicios')
@@ -15,18 +14,11 @@ export class ServiciosController {
   constructor(private readonly serviciosService: ServiciosService) {}
 
   @Post()
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileFieldsInterceptor([
-    { name: 'files', maxCount: 5 }
-  ]))
   @ApiOperation({ summary: 'Crear un nuevo servicio' })
   @ApiResponse({ status: 201, description: 'Servicio creado exitosamente' })
   @ApiResponse({ status: 400, description: 'Datos inválidos' })
-  create(
-    @Body() createServicioDto: CreateServicioDto,
-    @UploadedFiles() files: { files?: Express.Multer.File[] }
-  ) {
-    return this.serviciosService.create(createServicioDto, files?.files);
+  create(@Body() createServicioDto: CreateServicioDto) {
+    return this.serviciosService.create(createServicioDto);
   }
 
   @Get()
@@ -52,20 +44,15 @@ export class ServiciosController {
   }
 
   @Patch(':id')
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileFieldsInterceptor([
-    { name: 'files', maxCount: 5 }
-  ]))
   @ApiOperation({ summary: 'Actualizar un servicio por ID' })
   @ApiResponse({ status: 200, description: 'Servicio actualizado exitosamente' })
   @ApiResponse({ status: 400, description: 'Datos inválidos' })
   @ApiResponse({ status: 404, description: 'Servicio no encontrado' })
   update(
     @Param('id') id: string,
-    @Body() updateServicioDto: UpdateServicioDto,
-    @UploadedFiles() files: { files?: Express.Multer.File[] }
+    @Body() updateServicioDto: UpdateServicioDto
   ) {
-    return this.serviciosService.update(+id, updateServicioDto, files?.files);
+    return this.serviciosService.update(+id, updateServicioDto);
   }
 
   @Delete(':id')

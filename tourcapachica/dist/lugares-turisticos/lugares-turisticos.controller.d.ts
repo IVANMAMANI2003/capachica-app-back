@@ -4,21 +4,19 @@ import { UpdateLugarTuristicoDto } from './dto/update-lugar-turistico.dto';
 export declare class LugaresTuristicosController {
     private readonly lugaresTuristicosService;
     constructor(lugaresTuristicosService: LugaresTuristicosService);
-    create(createLugarTuristicoDto: CreateLugarTuristicoDto, files: {
-        files?: Express.Multer.File[];
-    }): Promise<{
+    create(createLugarTuristicoDto: CreateLugarTuristicoDto): Promise<{
         imagenes: {
             id: number;
             url: string;
         }[];
-        nombre: string;
-        descripcion: string;
-        estado: string;
         id: number;
-        direccion: string;
-        coordenadas: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        direccion: string;
+        descripcion: string;
+        estado: string;
+        coordenadas: string;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
@@ -31,14 +29,14 @@ export declare class LugaresTuristicosController {
             id: number;
             url: string;
         }[];
-        nombre: string;
-        descripcion: string;
-        estado: string;
         id: number;
-        direccion: string;
-        coordenadas: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        direccion: string;
+        descripcion: string;
+        estado: string;
+        coordenadas: string;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
@@ -47,14 +45,14 @@ export declare class LugaresTuristicosController {
         esDestacado: boolean;
     }[]>;
     findDestacados(): Promise<{
-        nombre: string;
-        descripcion: string;
-        estado: string;
         id: number;
-        direccion: string;
-        coordenadas: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        direccion: string;
+        descripcion: string;
+        estado: string;
+        coordenadas: string;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
@@ -67,14 +65,14 @@ export declare class LugaresTuristicosController {
             id: number;
             url: string;
         }[];
-        nombre: string;
-        descripcion: string;
-        estado: string;
         id: number;
-        direccion: string;
-        coordenadas: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        direccion: string;
+        descripcion: string;
+        estado: string;
+        coordenadas: string;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
@@ -82,21 +80,19 @@ export declare class LugaresTuristicosController {
         restricciones: string | null;
         esDestacado: boolean;
     }>;
-    update(id: string, updateLugarTuristicoDto: UpdateLugarTuristicoDto, files: {
-        files?: Express.Multer.File[];
-    }): Promise<{
+    update(id: string, updateLugarTuristicoDto: UpdateLugarTuristicoDto): Promise<{
         imagenes: {
             id: number;
             url: string;
         }[];
-        nombre: string;
-        descripcion: string;
-        estado: string;
         id: number;
-        direccion: string;
-        coordenadas: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        direccion: string;
+        descripcion: string;
+        estado: string;
+        coordenadas: string;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
@@ -105,14 +101,14 @@ export declare class LugaresTuristicosController {
         esDestacado: boolean;
     }>;
     remove(id: string): Promise<{
-        nombre: string;
-        descripcion: string;
-        estado: string;
         id: number;
-        direccion: string;
-        coordenadas: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        direccion: string;
+        descripcion: string;
+        estado: string;
+        coordenadas: string;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;

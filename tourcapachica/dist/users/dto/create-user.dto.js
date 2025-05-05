@@ -95,12 +95,11 @@ __decorate([
 ], CreateUserDto.prototype, "subdivisionId", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Foto de perfil',
-        type: 'string',
-        format: 'binary',
+        description: 'URL de la foto de perfil',
         required: false,
     }),
     (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", Object)
+    (0, class_validator_1.IsUrl)(),
+    __metadata("design:type", String)
 ], CreateUserDto.prototype, "fotoPerfil", void 0);
 //# sourceMappingURL=create-user.dto.js.map
