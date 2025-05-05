@@ -14,6 +14,37 @@ export declare class UsersController {
     private readonly usersService;
     constructor(usersService: UsersService);
     register(registerUserDto: RegisterUserDto): Promise<{
+        imagenes: {
+            id: number;
+            url: string;
+        }[];
+        persona: {
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
+            nombre: string;
+            apellidos: string;
+            telefono: string | null;
+            direccion: string | null;
+            fotoPerfilUrl: string | null;
+            fechaNacimiento: Date | null;
+            subdivisionId: number;
+        };
+        usuariosRoles: ({
+            rol: {
+                id: number;
+                createdAt: Date;
+                updatedAt: Date;
+                nombre: string;
+                descripcion: string | null;
+            };
+        } & {
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
+            rolId: number;
+            usuarioId: number;
+        })[];
         id: number;
         personaId: number;
         email: string;
@@ -179,7 +210,7 @@ export declare class UsersController {
         createdAt: Date;
         updatedAt: Date;
     }>;
-    findOne(id: string): Promise<{
+    findOne(id: string, req: RequestWithUser): Promise<{
         imagenes: {
             id: number;
             url: string;

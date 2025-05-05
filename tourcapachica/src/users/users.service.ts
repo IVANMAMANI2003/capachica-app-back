@@ -127,7 +127,7 @@ export class UsersService {
         },
       });
 
-      // Buscar el rol de usuario regular (asumiendo que tiene ID 3)
+      // Buscar el rol de usuario regular
       const userRole = await this.prisma.role.findFirst({
         where: { nombre: 'User' },
       });
@@ -144,7 +144,8 @@ export class UsersService {
         },
       });
 
-      return usuario;
+      // Retornar el usuario con sus roles y datos de persona
+      return this.findOne(usuario.id);
     } catch (error) {
       if (error instanceof NotFoundException || error instanceof BadRequestException) {
         throw error;

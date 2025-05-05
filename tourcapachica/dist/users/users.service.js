@@ -131,7 +131,7 @@ let UsersService = class UsersService {
                     rolId: userRole.id,
                 },
             });
-            return usuario;
+            return this.findOne(usuario.id);
         }
         catch (error) {
             if (error instanceof common_1.NotFoundException || error instanceof common_1.BadRequestException) {

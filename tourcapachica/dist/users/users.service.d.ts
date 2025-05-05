@@ -132,6 +132,37 @@ export declare class UsersService {
         updatedAt: Date;
     }>;
     register(data: RegisterUserDto): Promise<{
+        imagenes: {
+            id: number;
+            url: string;
+        }[];
+        persona: {
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
+            nombre: string;
+            apellidos: string;
+            telefono: string | null;
+            direccion: string | null;
+            fotoPerfilUrl: string | null;
+            fechaNacimiento: Date | null;
+            subdivisionId: number;
+        };
+        usuariosRoles: ({
+            rol: {
+                id: number;
+                createdAt: Date;
+                updatedAt: Date;
+                nombre: string;
+                descripcion: string | null;
+            };
+        } & {
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
+            rolId: number;
+            usuarioId: number;
+        })[];
         id: number;
         personaId: number;
         email: string;

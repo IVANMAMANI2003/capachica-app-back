@@ -85,7 +85,15 @@ let UsersController = class UsersController {
     getProfile(req) {
         return this.usersService.findOne(req.user.id);
     }
-    findOne(id) {
+    async findOne(id, req) {
+        if (req.user.id === +id) {
+            return this.usersService.findOne(+id);
+        }
+        const user = await this.usersService.findById(req.user.id);
+        const isSuperAdmin = user.usuariosRoles.some(ur => ur.rol.nombre === 'SuperAdmin');
+        if (!isSuperAdmin) {
+            throw new common_1.HttpException('No tiene permisos para ver este perfil', common_1.HttpStatus.FORBIDDEN);
+        }
         return this.usersService.findOne(+id);
     }
     update(id, updateUserDto) {
@@ -180,8 +188,7 @@ __decorate([
 ], UsersController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)('profile'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('SuperAdmin'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Obtener el perfil del usuario actual' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Perfil obtenido exitosamente' }),
@@ -194,17 +201,18 @@ __decorate([
 __decorate([
     (0, common_1.Get)(':id'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('SuperAdmin'),
+    (0, roles_decorator_1.Roles)('SuperAdmin', 'User'),
     (0, swagger_1.ApiBearerAuth)(),
-    (0, swagger_1.ApiOperation)({ summary: 'Obtener un usuario por ID' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener un usuario por ID (SuperAdmin) o el propio perfil' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Usuario obtenido exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 401, description: 'No autorizado' }),
     (0, swagger_1.ApiResponse)({ status: 403, description: 'No tiene permisos' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Usuario no encontrado' }),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
 ], UsersController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Patch)(':id'),

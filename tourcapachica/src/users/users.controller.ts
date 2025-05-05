@@ -122,8 +122,7 @@ export class UsersController {
   }
 
   @Get('profile')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('SuperAdmin')
+  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Obtener el perfil del usuario actual' })
   @ApiResponse({ status: 200, description: 'Perfil obtenido exitosamente' })
@@ -134,14 +133,27 @@ export class UsersController {
 
   @Get(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('SuperAdmin')
+  @Roles('SuperAdmin', 'User')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Obtener un usuario por ID' })
+  @ApiOperation({ summary: 'Obtener un usuario por ID (SuperAdmin) o el propio perfil' })
   @ApiResponse({ status: 200, description: 'Usuario obtenido exitosamente' })
   @ApiResponse({ status: 401, description: 'No autorizado' })
   @ApiResponse({ status: 403, description: 'No tiene permisos' })
   @ApiResponse({ status: 404, description: 'Usuario no encontrado' })
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string, @Request() req: RequestWithUser) {
+    // Si el usuario está intentando acceder a su propio perfil, permitirlo
+    if (req.user.id === +id) {
+      return this.usersService.findOne(+id);
+    }
+    
+    // Si no es su propio perfil, verificar que sea SuperAdmin
+    const user = await this.usersService.findById(req.user.id);
+    const isSuperAdmin = user.usuariosRoles.some(ur => ur.rol.nombre === 'SuperAdmin');
+    
+    if (!isSuperAdmin) {
+      throw new HttpException('No tiene permisos para ver este perfil', HttpStatus.FORBIDDEN);
+    }
+    
     return this.usersService.findOne(+id);
   }
 
