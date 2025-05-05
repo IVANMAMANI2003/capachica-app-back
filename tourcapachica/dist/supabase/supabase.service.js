@@ -16,32 +16,50 @@ const supabase_config_1 = require("../config/supabase.config");
 let SupabaseService = class SupabaseService {
     constructor(configService) {
         this.configService = configService;
+        this.BUCKET_NAME = 'images';
         this.supabase = (0, supabase_config_1.createSupabaseClient)(this.configService);
     }
-    async uploadFile(bucket, file, path) {
-        const fileExt = file.originalname.split('.').pop();
-        const fileName = `${path}/${Date.now()}.${fileExt}`;
-        const { data, error } = await this.supabase.storage
-            .from(bucket)
-            .upload(fileName, file.buffer, {
-            contentType: file.mimetype,
-            upsert: true
-        });
-        if (error) {
-            throw new Error(`Error uploading file to Supabase: ${error.message}`);
+    async uploadFile(file, imageableType, imageableId) {
+        try {
+            const folderPath = this.getFolderPath(imageableType, imageableId);
+            const fileExt = file.originalname.split('.').pop();
+            const fileName = `${folderPath}/${Date.now()}.${fileExt}`;
+            const { data, error } = await this.supabase.storage
+                .from(this.BUCKET_NAME)
+                .upload(fileName, file.buffer, {
+                contentType: file.mimetype,
+                upsert: true
+            });
+            if (error) {
+                throw new Error(`Error uploading file to Supabase: ${error.message}`);
+            }
+            const { data: { publicUrl } } = this.supabase.storage
+                .from(this.BUCKET_NAME)
+                .getPublicUrl(fileName);
+            return publicUrl;
         }
-        const { data: { publicUrl } } = this.supabase.storage
-            .from(bucket)
-            .getPublicUrl(fileName);
-        return publicUrl;
+        catch (error) {
+            throw new Error(`Error in uploadFile: ${error.message}`);
+        }
     }
-    async deleteFile(bucket, path) {
-        const { error } = await this.supabase.storage
-            .from(bucket)
-            .remove([path]);
-        if (error) {
-            throw new Error(`Error deleting file from Supabase: ${error.message}`);
+    async deleteFile(imageableType, imageableId, fileName) {
+        try {
+            const folderPath = this.getFolderPath(imageableType, imageableId);
+            const filePath = `${folderPath}/${fileName}`;
+            const { error } = await this.supabase.storage
+                .from(this.BUCKET_NAME)
+                .remove([filePath]);
+            if (error) {
+                throw new Error(`Error deleting file from Supabase: ${error.message}`);
+            }
         }
+        catch (error) {
+            throw new Error(`Error in deleteFile: ${error.message}`);
+        }
+    }
+    getFolderPath(imageableType, imageableId) {
+        const typePath = imageableType.toLowerCase().replace(/\s+/g, '-');
+        return `${typePath}/${imageableId}`;
     }
 };
 exports.SupabaseService = SupabaseService;

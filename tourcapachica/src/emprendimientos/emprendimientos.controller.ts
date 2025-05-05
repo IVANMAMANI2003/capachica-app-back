@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, UseInterceptors, UploadedFiles } from '@nestjs/common';
 import { Request as ExpressRequest } from 'express';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { EmprendimientosService } from './emprendimientos.service';
 import { CreateEmprendimientoDto } from './dto/create-emprendimiento.dto';
 import { UpdateEmprendimientoDto } from './dto/update-emprendimiento.dto';
@@ -7,7 +8,7 @@ import { CreateFavoritoDto } from './dto/create-favorito.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
 import { EmprendimientoEntity } from './entities/emprendimiento.entity';
 import { FavoritoEntity } from './entities/favorito.entity';
 
@@ -19,25 +20,31 @@ interface RequestWithUser extends ExpressRequest {
 
 @ApiTags('emprendimientos')
 @Controller('emprendimientos')
-
 export class EmprendimientosController {
   constructor(private readonly emprendimientosService: EmprendimientosService) {}
 
   @Post()
-  @Roles('emprendedor', 'SuperAdmin')
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileFieldsInterceptor([
+    { name: 'files', maxCount: 5 }
+  ]))
   @ApiOperation({ summary: 'Crear un nuevo emprendimiento' })
-  @ApiResponse({ status: 201, description: 'Emprendimiento creado exitosamente', type: EmprendimientoEntity })
+  @ApiResponse({ status: 201, description: 'Emprendimiento creado exitosamente' })
   @ApiResponse({ status: 400, description: 'Datos inválidos' })
   @ApiResponse({ status: 401, description: 'No autorizado' })
-  create(@Request() req: RequestWithUser, @Body() createEmprendimientoDto: CreateEmprendimientoDto) {
-    return this.emprendimientosService.create(req.user.id, createEmprendimientoDto);
+  create(
+    @Body() createEmprendimientoDto: CreateEmprendimientoDto,
+    @UploadedFiles() files: { files?: Express.Multer.File[] }
+  ) {
+    return this.emprendimientosService.create(createEmprendimientoDto, files?.files);
   }
 
   @Get()
   @ApiOperation({ summary: 'Obtener todos los emprendimientos' })
-  @ApiResponse({ status: 200, description: 'Lista de emprendimientos', type: [EmprendimientoEntity] })
+  @ApiResponse({ status: 200, description: 'Lista de emprendimientos' })
   findAll() {
     return this.emprendimientosService.findAll();
   }
@@ -52,31 +59,47 @@ export class EmprendimientosController {
     return this.emprendimientosService.findByUsuario(req.user.id);
   }
 
+  @Get('usuario/:usuarioId')
+  @ApiOperation({ summary: 'Obtener emprendimientos por usuario' })
+  @ApiResponse({ status: 200, description: 'Lista de emprendimientos del usuario' })
+  findByUsuario(@Param('usuarioId') usuarioId: string) {
+    return this.emprendimientosService.findByUsuario(+usuarioId);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Obtener un emprendimiento por ID' })
-  @ApiResponse({ status: 200, description: 'Emprendimiento encontrado', type: EmprendimientoEntity })
+  @ApiResponse({ status: 200, description: 'Emprendimiento encontrado' })
   @ApiResponse({ status: 404, description: 'Emprendimiento no encontrado' })
   findOne(@Param('id') id: string) {
     return this.emprendimientosService.findOne(+id);
   }
 
   @Patch(':id')
-  @Roles('emprendedor', 'SuperAdmin')
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Actualizar un emprendimiento' })
-  @ApiResponse({ status: 200, description: 'Emprendimiento actualizado', type: EmprendimientoEntity })
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileFieldsInterceptor([
+    { name: 'files', maxCount: 5 }
+  ]))
+  @ApiOperation({ summary: 'Actualizar un emprendimiento por ID' })
+  @ApiResponse({ status: 200, description: 'Emprendimiento actualizado exitosamente' })
+  @ApiResponse({ status: 400, description: 'Datos inválidos' })
   @ApiResponse({ status: 404, description: 'Emprendimiento no encontrado' })
-  update(@Param('id') id: string, @Body() updateEmprendimientoDto: UpdateEmprendimientoDto) {
-    return this.emprendimientosService.update(+id, updateEmprendimientoDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateEmprendimientoDto: UpdateEmprendimientoDto,
+    @UploadedFiles() files: { files?: Express.Multer.File[] }
+  ) {
+    return this.emprendimientosService.update(+id, updateEmprendimientoDto, files?.files);
   }
 
   @Delete(':id')
-  @Roles('emprendedor', 'SuperAdmin')
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Eliminar un emprendimiento' })
-  @ApiResponse({ status: 200, description: 'Emprendimiento eliminado' })
+  @ApiOperation({ summary: 'Eliminar un emprendimiento por ID' })
+  @ApiResponse({ status: 200, description: 'Emprendimiento eliminado exitosamente' })
   @ApiResponse({ status: 404, description: 'Emprendimiento no encontrado' })
   remove(@Param('id') id: string) {
     return this.emprendimientosService.remove(+id);

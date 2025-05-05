@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, UseGuards, Req } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, UseGuards, Req, UseInterceptors, UploadedFiles } from '@nestjs/common';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
 import { PaquetesTuristicosService } from './paquetes-turisticos.service';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { CreateDisponibilidadDto } from './dto/create-disponibilidad.dto';
@@ -9,7 +10,6 @@ import { UpdatePaqueteTuristicoDto } from './dto/update-paquete-turistico.dto';
 import { AddServiciosDto } from './dto/add-servicios.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { PaqueteTuristicoEntity } from './entities/paquete-turistico.entity';
 
 @ApiTags('paquetes-turisticos')
 @Controller('paquetes-turisticos')
@@ -17,71 +17,86 @@ export class PaquetesTuristicosController {
   constructor(private readonly paquetesTuristicosService: PaquetesTuristicosService) {}
 
   @Post()
-  @Roles('SuperAdmin', 'emprendedor')
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileFieldsInterceptor([
+    { name: 'files', maxCount: 5 }
+  ]))
   @ApiOperation({ summary: 'Crear un nuevo paquete turístico' })
-  @ApiResponse({ 
-    status: 201, 
-    description: 'Paquete turístico creado exitosamente',
-    type: PaqueteTuristicoEntity
-  })
+  @ApiResponse({ status: 201, description: 'Paquete turístico creado exitosamente' })
   @ApiResponse({ status: 400, description: 'Datos inválidos' })
-  @ApiResponse({ status: 403, description: 'No autorizado' })
-  create(@Body() createPaqueteTuristicoDto: CreatePaqueteTuristicoDto) {
-    return this.paquetesTuristicosService.create(createPaqueteTuristicoDto);
+  create(
+    @Body() createPaqueteTuristicoDto: CreatePaqueteTuristicoDto,
+    @UploadedFiles() files: { files?: Express.Multer.File[] }
+  ) {
+    return this.paquetesTuristicosService.create(createPaqueteTuristicoDto, files?.files);
   }
 
   @Get()
   @ApiOperation({ summary: 'Obtener todos los paquetes turísticos' })
-  @ApiResponse({ 
-    status: 200, 
-    description: 'Lista de paquetes turísticos',
-    type: [PaqueteTuristicoEntity]
-  })
+  @ApiResponse({ status: 200, description: 'Lista de paquetes turísticos' })
   findAll() {
     return this.paquetesTuristicosService.findAll();
   }
 
+  @Get('emprendimiento/:emprendimientoId')
+  @ApiOperation({ summary: 'Obtener paquetes turísticos por emprendimiento' })
+  @ApiResponse({ status: 200, description: 'Lista de paquetes turísticos del emprendimiento' })
+  findByEmprendimiento(@Param('emprendimientoId') emprendimientoId: string) {
+    return this.paquetesTuristicosService.findByEmprendimiento(+emprendimientoId);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Obtener un paquete turístico por ID' })
-  @ApiResponse({ 
-    status: 200, 
-    description: 'Paquete turístico encontrado',
-    type: PaqueteTuristicoEntity
-  })
+  @ApiResponse({ status: 200, description: 'Paquete turístico encontrado' })
   @ApiResponse({ status: 404, description: 'Paquete turístico no encontrado' })
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.paquetesTuristicosService.findOne(id);
+  findOne(@Param('id') id: string) {
+    return this.paquetesTuristicosService.findOne(+id);
   }
 
   @Patch(':id')
-  @Roles('SuperAdmin', 'emprendedor')
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Actualizar un paquete turístico' })
-  @ApiResponse({ 
-    status: 200, 
-    description: 'Paquete turístico actualizado',
-    type: PaqueteTuristicoEntity
-  })
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileFieldsInterceptor([
+    { name: 'files', maxCount: 5 }
+  ]))
+  @ApiOperation({ summary: 'Actualizar un paquete turístico por ID' })
+  @ApiResponse({ status: 200, description: 'Paquete turístico actualizado exitosamente' })
+  @ApiResponse({ status: 400, description: 'Datos inválidos' })
   @ApiResponse({ status: 404, description: 'Paquete turístico no encontrado' })
   update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: string,
     @Body() updatePaqueteTuristicoDto: UpdatePaqueteTuristicoDto,
+    @UploadedFiles() files: { files?: Express.Multer.File[] }
   ) {
-    return this.paquetesTuristicosService.update(id, updatePaqueteTuristicoDto);
+    return this.paquetesTuristicosService.update(+id, updatePaqueteTuristicoDto, files?.files);
   }
 
   @Delete(':id')
-  @Roles('SuperAdmin', 'emprendedor')
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Eliminar un paquete turístico' })
-  @ApiResponse({ status: 200, description: 'Paquete turístico eliminado' })
+  @ApiOperation({ summary: 'Eliminar un paquete turístico por ID' })
+  @ApiResponse({ status: 200, description: 'Paquete turístico eliminado exitosamente' })
   @ApiResponse({ status: 404, description: 'Paquete turístico no encontrado' })
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.paquetesTuristicosService.remove(id);
+  remove(@Param('id') id: string) {
+    return this.paquetesTuristicosService.remove(+id);
+  }
+
+  @Patch(':id/estado')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('emprendedor', 'SuperAdmin')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Actualizar el estado de un paquete turístico' })
+  @ApiResponse({ status: 200, description: 'Estado actualizado' })
+  @ApiResponse({ status: 400, description: 'Estado inválido' })
+  @ApiResponse({ status: 404, description: 'Paquete turístico no encontrado' })
+  updateEstado(@Param('id') id: string, @Body('estado') estado: string) {
+    return this.paquetesTuristicosService.updateEstado(+id, estado);
   }
 
   @Post(':id/servicios')

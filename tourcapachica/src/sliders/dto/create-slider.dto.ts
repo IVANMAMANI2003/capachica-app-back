@@ -1,7 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsOptional, IsEnum, MaxLength, IsArray } from 'class-validator';
 
-class ImageDto {
+export class ImageDto {
+  @ApiProperty({
+    description: 'URL de la imagen',
+    example: 'https://example.com/image.jpg',
+  })
   @IsString()
   @IsNotEmpty()
   url: string;

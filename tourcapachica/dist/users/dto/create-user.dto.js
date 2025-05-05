@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateUserDto = void 0;
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
+const class_transformer_1 = require("class-transformer");
 class CreateUserDto {
 }
 exports.CreateUserDto = CreateUserDto;
@@ -34,4 +35,72 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)({ message: 'El ID de la persona es requerido' }),
     __metadata("design:type", Number)
 ], CreateUserDto.prototype, "persona_id", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Nombre de la persona',
+        example: 'Juan',
+    }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateUserDto.prototype, "nombre", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Apellidos de la persona',
+        example: 'Pérez García',
+    }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateUserDto.prototype, "apellidos", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Teléfono de contacto',
+        example: '+51 987654321',
+        required: false,
+    }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateUserDto.prototype, "telefono", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Dirección',
+        example: 'Av. Principal 123',
+        required: false,
+    }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateUserDto.prototype, "direccion", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Fecha de nacimiento',
+        example: '1990-01-01',
+        required: false,
+    }),
+    (0, class_validator_1.IsDate)(),
+    (0, class_transformer_1.Type)(() => Date),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", Date)
+], CreateUserDto.prototype, "fechaNacimiento", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'ID de la subdivisión',
+        example: 1,
+    }),
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Number)
+], CreateUserDto.prototype, "subdivisionId", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Foto de perfil',
+        type: 'string',
+        format: 'binary',
+        required: false,
+    }),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", Object)
+], CreateUserDto.prototype, "fotoPerfil", void 0);
 //# sourceMappingURL=create-user.dto.js.map

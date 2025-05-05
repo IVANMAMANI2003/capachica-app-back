@@ -8,112 +8,106 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ServiciosService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../prisma/prisma.service");
+const supabase_service_1 = require("../../supabase/supabase.service");
 let ServiciosService = class ServiciosService {
-    constructor(prisma) {
+    constructor(prisma, supabaseService) {
         this.prisma = prisma;
+        this.supabaseService = supabaseService;
+        this.IMAGEABLE_TYPE = 'Servicio';
     }
-    async create(emprendimientoId, createServicioDto) {
-        try {
-            const tipoServicio = await this.prisma.tipoServicio.findUnique({
-                where: { id: createServicioDto.tipoServicioId },
-            });
-            if (!tipoServicio) {
-                throw new common_1.NotFoundException(`Tipo de servicio con ID ${createServicioDto.tipoServicioId} no encontrado`);
-            }
-            const servicio = await this.prisma.servicio.create({
-                data: {
-                    tipoServicioId: createServicioDto.tipoServicioId,
-                    nombre: createServicioDto.nombre,
-                    descripcion: createServicioDto.descripcion,
-                    precioBase: createServicioDto.precioBase,
-                    moneda: createServicioDto.moneda,
-                    estado: createServicioDto.estado || 'activo',
-                    detallesServicio: createServicioDto.detallesServicio || '{}',
-                    serviciosEmprendedores: {
-                        create: {
-                            emprendimientoId,
-                        },
-                    },
-                },
-                include: {
-                    tipoServicio: true,
-                    serviciosEmprendedores: {
-                        include: {
-                            emprendimiento: true,
-                        },
-                    },
-                },
-            });
-            if (createServicioDto.imagenes && createServicioDto.imagenes.length > 0) {
-                const imagenesPromises = createServicioDto.imagenes.map(async (imagen) => {
-                    return this.prisma.image.create({
-                        data: {
-                            url: imagen.url,
-                            imageableId: servicio.id,
-                            imageableType: 'Servicio',
-                        },
-                    });
-                });
-                await Promise.all(imagenesPromises);
-            }
-            const servicioConImagenes = await this.prisma.servicio.findUnique({
-                where: { id: servicio.id },
-                include: {
-                    tipoServicio: true,
-                    serviciosEmprendedores: {
-                        include: {
-                            emprendimiento: true,
-                        },
-                    },
-                },
-            });
-            const imagenes = await this.prisma.image.findMany({
-                where: {
-                    imageableId: servicio.id,
-                    imageableType: 'Servicio',
-                },
-            });
-            return Object.assign(Object.assign({}, servicioConImagenes), { imagenes });
-        }
-        catch (error) {
-            if (error instanceof common_1.NotFoundException) {
-                throw error;
-            }
-            throw new common_1.BadRequestException('Error al crear el servicio: ' + error.message);
-        }
-    }
-    async findAll() {
-        return this.prisma.servicio.findMany({
-            include: {
-                tipoServicio: true,
-                serviciosEmprendedores: {
-                    include: {
-                        emprendimiento: true,
-                    },
-                },
+    async create(createServicioDto, files) {
+        const { imagenes } = createServicioDto, servicioData = __rest(createServicioDto, ["imagenes"]);
+        const servicio = await this.prisma.servicio.create({
+            data: {
+                tipoServicioId: servicioData.tipoServicioId,
+                nombre: servicioData.nombre,
+                descripcion: servicioData.descripcion,
+                precioBase: servicioData.precioBase,
+                moneda: servicioData.moneda || 'PEN',
+                estado: servicioData.estado || 'activo',
+                detallesServicio: servicioData.detallesServicio || {},
             },
         });
+        if (files && files.length > 0) {
+            for (const file of files) {
+                const imageUrl = await this.supabaseService.uploadFile(file, this.IMAGEABLE_TYPE, servicio.id);
+                const imagen = await this.prisma.image.create({
+                    data: {
+                        url: imageUrl
+                    }
+                });
+                await this.prisma.imageable.create({
+                    data: {
+                        image_id: imagen.id,
+                        imageable_id: servicio.id,
+                        imageable_type: this.IMAGEABLE_TYPE
+                    }
+                });
+            }
+        }
+        return this.findOne(servicio.id);
+    }
+    async findAll() {
+        const servicios = await this.prisma.servicio.findMany({
+            include: {
+                tipoServicio: true
+            }
+        });
+        const serviciosWithImages = await Promise.all(servicios.map(async (servicio) => {
+            const imageables = await this.prisma.imageable.findMany({
+                where: {
+                    imageable_type: this.IMAGEABLE_TYPE,
+                    imageable_id: servicio.id,
+                },
+                include: {
+                    image: true
+                }
+            });
+            return Object.assign(Object.assign({}, servicio), { imagenes: imageables.map(imageable => ({
+                    id: imageable.image.id,
+                    url: imageable.image.url
+                })) });
+        }));
+        return serviciosWithImages;
     }
     async findOne(id) {
         const servicio = await this.prisma.servicio.findUnique({
             where: { id },
             include: {
-                tipoServicio: true,
-                serviciosEmprendedores: {
-                    include: {
-                        emprendimiento: true,
-                    },
-                },
-            },
+                tipoServicio: true
+            }
         });
         if (!servicio) {
-            throw new common_1.NotFoundException(`Servicio con ID ${id} no encontrado`);
+            return null;
         }
-        return servicio;
+        const imageables = await this.prisma.imageable.findMany({
+            where: {
+                imageable_type: this.IMAGEABLE_TYPE,
+                imageable_id: servicio.id,
+            },
+            include: {
+                image: true
+            }
+        });
+        return Object.assign(Object.assign({}, servicio), { imagenes: imageables.map(imageable => ({
+                id: imageable.image.id,
+                url: imageable.image.url
+            })) });
     }
     async findByEmprendimiento(emprendimientoId) {
         return this.prisma.servicio.findMany({
@@ -134,42 +128,81 @@ let ServiciosService = class ServiciosService {
             },
         });
     }
-    async update(id, updateServicioDto) {
-        try {
-            if (updateServicioDto.tipoServicioId) {
-                const tipoServicio = await this.prisma.tipoServicio.findUnique({
-                    where: { id: updateServicioDto.tipoServicioId },
-                });
-                if (!tipoServicio) {
-                    throw new common_1.NotFoundException(`Tipo de servicio con ID ${updateServicioDto.tipoServicioId} no encontrado`);
-                }
-            }
-            return await this.prisma.servicio.update({
-                where: { id },
-                data: updateServicioDto,
-                include: {
-                    tipoServicio: true,
-                    serviciosEmprendedores: {
-                        include: {
-                            emprendimiento: true,
-                        },
-                    },
+    async update(id, updateServicioDto, files) {
+        const { imagenes } = updateServicioDto, servicioData = __rest(updateServicioDto, ["imagenes"]);
+        await this.prisma.servicio.update({
+            where: { id },
+            data: {
+                tipoServicioId: servicioData.tipoServicioId,
+                nombre: servicioData.nombre,
+                descripcion: servicioData.descripcion,
+                precioBase: servicioData.precioBase,
+                moneda: servicioData.moneda,
+                estado: servicioData.estado,
+                detallesServicio: servicioData.detallesServicio,
+            },
+        });
+        if (files && files.length > 0) {
+            const imageables = await this.prisma.imageable.findMany({
+                where: {
+                    imageable_type: this.IMAGEABLE_TYPE,
+                    imageable_id: id,
                 },
+                include: {
+                    image: true
+                }
             });
+            for (const imageable of imageables) {
+                const fileName = imageable.image.url.split('/').pop();
+                await this.supabaseService.deleteFile(this.IMAGEABLE_TYPE, id, fileName);
+                await this.prisma.imageable.delete({
+                    where: { id: imageable.id }
+                });
+                await this.prisma.image.delete({
+                    where: { id: imageable.image.id }
+                });
+            }
+            for (const file of files) {
+                const imageUrl = await this.supabaseService.uploadFile(file, this.IMAGEABLE_TYPE, id);
+                const imagen = await this.prisma.image.create({
+                    data: {
+                        url: imageUrl
+                    }
+                });
+                await this.prisma.imageable.create({
+                    data: {
+                        image_id: imagen.id,
+                        imageable_id: id,
+                        imageable_type: this.IMAGEABLE_TYPE
+                    }
+                });
+            }
         }
-        catch (error) {
-            throw new common_1.NotFoundException(`Servicio con ID ${id} no encontrado`);
-        }
+        return this.findOne(id);
     }
     async remove(id) {
-        try {
-            return await this.prisma.servicio.delete({
-                where: { id },
+        const imageables = await this.prisma.imageable.findMany({
+            where: {
+                imageable_type: this.IMAGEABLE_TYPE,
+                imageable_id: id,
+            },
+            include: {
+                image: true
+            }
+        });
+        for (const imageable of imageables) {
+            const fileName = imageable.image.url.split('/').pop();
+            await this.supabaseService.deleteFile(this.IMAGEABLE_TYPE, id, fileName);
+            await this.prisma.imageable.delete({
+                where: { id: imageable.id }
+            });
+            await this.prisma.image.delete({
+                where: { id: imageable.image.id }
             });
         }
-        catch (error) {
-            throw new common_1.NotFoundException(`Servicio con ID ${id} no encontrado`);
-        }
+        return this.prisma.servicio.delete({
+            where: { id },
+        });
     }
     async updateEstado(id, estado) {
         if (!['activo', 'inactivo'].includes(estado)) {
@@ -258,10 +291,35 @@ let ServiciosService = class ServiciosService {
         }
         return disponibilidad;
     }
+    async findByTipoServicio(tipoServicioId) {
+        const servicios = await this.prisma.servicio.findMany({
+            where: { tipoServicioId },
+            include: {
+                tipoServicio: true
+            }
+        });
+        const serviciosWithImages = await Promise.all(servicios.map(async (servicio) => {
+            const imageables = await this.prisma.imageable.findMany({
+                where: {
+                    imageable_type: this.IMAGEABLE_TYPE,
+                    imageable_id: servicio.id,
+                },
+                include: {
+                    image: true
+                }
+            });
+            return Object.assign(Object.assign({}, servicio), { imagenes: imageables.map(imageable => ({
+                    id: imageable.image.id,
+                    url: imageable.image.url
+                })) });
+        }));
+        return serviciosWithImages;
+    }
 };
 exports.ServiciosService = ServiciosService;
 exports.ServiciosService = ServiciosService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+        supabase_service_1.SupabaseService])
 ], ServiciosService);
 //# sourceMappingURL=servicios.service.js.map

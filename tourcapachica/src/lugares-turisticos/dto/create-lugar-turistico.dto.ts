@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsOptional, IsBoolean, IsNumber, IsUrl, IsEnum, IsArray, MaxLength, IsTimeZone, Matches, Min } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsBoolean, IsNumber, IsUrl, IsEnum, IsArray, MaxLength, IsTimeZone, Matches, Min, IsDate } from 'class-validator';
+import { Type } from 'class-transformer';
 
 class ImageDto {
   @ApiProperty({
@@ -73,28 +74,22 @@ export class CreateLugarTuristicoDto {
   esDestacado?: boolean = false;
 
   @ApiProperty({
-    description: 'Horario de apertura en formato HH:mm',
-    example: '08:00',
+    description: 'Horario de apertura',
     required: false,
   })
-  @IsString()
   @IsOptional()
-  @Matches(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, {
-    message: 'El horario debe estar en formato HH:mm',
-  })
-  horarioApertura?: string;
+  @IsDate()
+  @Type(() => Date)
+  horarioApertura?: Date;
 
   @ApiProperty({
-    description: 'Horario de cierre en formato HH:mm',
-    example: '17:00',
+    description: 'Horario de cierre',
     required: false,
   })
-  @IsString()
   @IsOptional()
-  @Matches(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, {
-    message: 'El horario debe estar en formato HH:mm',
-  })
-  horarioCierre?: string;
+  @IsDate()
+  @Type(() => Date)
+  horarioCierre?: Date;
 
   @ApiProperty({
     description: 'Costo de entrada',

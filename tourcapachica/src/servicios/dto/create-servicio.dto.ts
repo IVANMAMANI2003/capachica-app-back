@@ -1,10 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsOptional, IsEnum, IsNumber, IsJSON, MaxLength, Min, IsArray } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsEnum, IsNumber, IsJSON, MaxLength, Min, IsArray, IsObject } from 'class-validator';
+import { Type } from 'class-transformer';
 
 class ImageDto {
   @ApiProperty({
     description: 'URL de la imagen',
-    example: 'https://example.com/imagen.jpg',
+    example: 'https://example.com/image.jpg',
     required: true,
   })
   @IsString()
@@ -24,18 +25,16 @@ export class CreateServicioDto {
 
   @ApiProperty({
     description: 'Nombre del servicio',
-    example: 'Hotel Capachica',
+    example: 'Tour guiado por la isla',
     required: true,
-    maxLength: 200,
   })
   @IsString()
   @IsNotEmpty()
-  @MaxLength(200)
   nombre: string;
 
   @ApiProperty({
     description: 'Descripción del servicio',
-    example: 'Hotel con vista al lago Titicaca',
+    example: 'Tour guiado por los principales atractivos de la isla',
     required: false,
   })
   @IsString()
@@ -44,55 +43,50 @@ export class CreateServicioDto {
 
   @ApiProperty({
     description: 'Precio base del servicio',
-    example: 100.50,
+    example: 50.00,
     required: true,
   })
   @IsNumber()
-  @IsNotEmpty()
   @Min(0)
+  @IsNotEmpty()
   precioBase: number;
 
   @ApiProperty({
     description: 'Moneda del precio',
     example: 'PEN',
-    required: true,
-    maxLength: 3,
+    default: 'PEN',
+    required: false,
   })
   @IsString()
-  @IsNotEmpty()
-  @MaxLength(3)
-  moneda: string;
+  @IsOptional()
+  @IsEnum(['PEN', 'USD'])
+  moneda?: string = 'PEN';
 
   @ApiProperty({
     description: 'Estado del servicio',
     example: 'activo',
-    enum: ['activo', 'inactivo', 'pendiente'],
     default: 'activo',
     required: false,
-    maxLength: 20,
   })
   @IsString()
   @IsOptional()
-  @IsEnum(['activo', 'inactivo', 'pendiente'])
-  @MaxLength(20)
+  @IsEnum(['activo', 'inactivo'])
   estado?: string = 'activo';
 
   @ApiProperty({
-    description: 'Detalles del servicio en formato JSON',
-    example: '{"duracion": "12 horas", "incluye": ["camas", "papayas"]}',
+    description: 'Detalles adicionales del servicio',
+    example: { duracion: '2 horas', capacidad: 10 },
     required: false,
   })
-  @IsString()
+  @IsObject()
   @IsOptional()
-  @IsJSON()
-  detallesServicio?: string = '{}';
+  detallesServicio?: Record<string, any>;
 
   @ApiProperty({
-    description: 'Imágenes del servicio',
+    description: 'Lista de imágenes del servicio',
     type: [ImageDto],
     required: false,
   })
-  @IsArray()
   @IsOptional()
   imagenes?: ImageDto[];
 } 

@@ -14,6 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PaquetesTuristicosController = void 0;
 const common_1 = require("@nestjs/common");
+const platform_express_1 = require("@nestjs/platform-express");
 const swagger_1 = require("@nestjs/swagger");
 const paquetes_turisticos_service_1 = require("./paquetes-turisticos.service");
 const roles_decorator_1 = require("../auth/decorators/roles.decorator");
@@ -24,25 +25,30 @@ const update_paquete_turistico_dto_1 = require("./dto/update-paquete-turistico.d
 const add_servicios_dto_1 = require("./dto/add-servicios.dto");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 const roles_guard_1 = require("../auth/guards/roles.guard");
-const paquete_turistico_entity_1 = require("./entities/paquete-turistico.entity");
 let PaquetesTuristicosController = class PaquetesTuristicosController {
     constructor(paquetesTuristicosService) {
         this.paquetesTuristicosService = paquetesTuristicosService;
     }
-    create(createPaqueteTuristicoDto) {
-        return this.paquetesTuristicosService.create(createPaqueteTuristicoDto);
+    create(createPaqueteTuristicoDto, files) {
+        return this.paquetesTuristicosService.create(createPaqueteTuristicoDto, files === null || files === void 0 ? void 0 : files.files);
     }
     findAll() {
         return this.paquetesTuristicosService.findAll();
     }
-    findOne(id) {
-        return this.paquetesTuristicosService.findOne(id);
+    findByEmprendimiento(emprendimientoId) {
+        return this.paquetesTuristicosService.findByEmprendimiento(+emprendimientoId);
     }
-    update(id, updatePaqueteTuristicoDto) {
-        return this.paquetesTuristicosService.update(id, updatePaqueteTuristicoDto);
+    findOne(id) {
+        return this.paquetesTuristicosService.findOne(+id);
+    }
+    update(id, updatePaqueteTuristicoDto, files) {
+        return this.paquetesTuristicosService.update(+id, updatePaqueteTuristicoDto, files === null || files === void 0 ? void 0 : files.files);
     }
     remove(id) {
-        return this.paquetesTuristicosService.remove(id);
+        return this.paquetesTuristicosService.remove(+id);
+    }
+    updateEstado(id, estado) {
+        return this.paquetesTuristicosService.updateEstado(+id, estado);
     }
     async addServicios(id, addServiciosDto, req) {
         return this.paquetesTuristicosService.addServicios(id, addServiciosDto, req.user.id);
@@ -75,79 +81,97 @@ let PaquetesTuristicosController = class PaquetesTuristicosController {
 exports.PaquetesTuristicosController = PaquetesTuristicosController;
 __decorate([
     (0, common_1.Post)(),
-    (0, roles_decorator_1.Roles)('SuperAdmin', 'emprendedor'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiConsumes)('multipart/form-data'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileFieldsInterceptor)([
+        { name: 'files', maxCount: 5 }
+    ])),
     (0, swagger_1.ApiOperation)({ summary: 'Crear un nuevo paquete turístico' }),
-    (0, swagger_1.ApiResponse)({
-        status: 201,
-        description: 'Paquete turístico creado exitosamente',
-        type: paquete_turistico_entity_1.PaqueteTuristicoEntity
-    }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Paquete turístico creado exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
-    (0, swagger_1.ApiResponse)({ status: 403, description: 'No autorizado' }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.UploadedFiles)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_paquete_turistico_dto_1.CreatePaqueteTuristicoDto]),
+    __metadata("design:paramtypes", [create_paquete_turistico_dto_1.CreatePaqueteTuristicoDto, Object]),
     __metadata("design:returntype", void 0)
 ], PaquetesTuristicosController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
     (0, swagger_1.ApiOperation)({ summary: 'Obtener todos los paquetes turísticos' }),
-    (0, swagger_1.ApiResponse)({
-        status: 200,
-        description: 'Lista de paquetes turísticos',
-        type: [paquete_turistico_entity_1.PaqueteTuristicoEntity]
-    }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Lista de paquetes turísticos' }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], PaquetesTuristicosController.prototype, "findAll", null);
 __decorate([
+    (0, common_1.Get)('emprendimiento/:emprendimientoId'),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener paquetes turísticos por emprendimiento' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Lista de paquetes turísticos del emprendimiento' }),
+    __param(0, (0, common_1.Param)('emprendimientoId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], PaquetesTuristicosController.prototype, "findByEmprendimiento", null);
+__decorate([
     (0, common_1.Get)(':id'),
     (0, swagger_1.ApiOperation)({ summary: 'Obtener un paquete turístico por ID' }),
-    (0, swagger_1.ApiResponse)({
-        status: 200,
-        description: 'Paquete turístico encontrado',
-        type: paquete_turistico_entity_1.PaqueteTuristicoEntity
-    }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Paquete turístico encontrado' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Paquete turístico no encontrado' }),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], PaquetesTuristicosController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Patch)(':id'),
-    (0, roles_decorator_1.Roles)('SuperAdmin', 'emprendedor'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiBearerAuth)(),
-    (0, swagger_1.ApiOperation)({ summary: 'Actualizar un paquete turístico' }),
-    (0, swagger_1.ApiResponse)({
-        status: 200,
-        description: 'Paquete turístico actualizado',
-        type: paquete_turistico_entity_1.PaqueteTuristicoEntity
-    }),
+    (0, swagger_1.ApiConsumes)('multipart/form-data'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileFieldsInterceptor)([
+        { name: 'files', maxCount: 5 }
+    ])),
+    (0, swagger_1.ApiOperation)({ summary: 'Actualizar un paquete turístico por ID' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Paquete turístico actualizado exitosamente' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Paquete turístico no encontrado' }),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.UploadedFiles)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, update_paquete_turistico_dto_1.UpdatePaqueteTuristicoDto]),
+    __metadata("design:paramtypes", [String, update_paquete_turistico_dto_1.UpdatePaqueteTuristicoDto, Object]),
     __metadata("design:returntype", void 0)
 ], PaquetesTuristicosController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    (0, roles_decorator_1.Roles)('SuperAdmin', 'emprendedor'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiBearerAuth)(),
-    (0, swagger_1.ApiOperation)({ summary: 'Eliminar un paquete turístico' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Paquete turístico eliminado' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Eliminar un paquete turístico por ID' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Paquete turístico eliminado exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Paquete turístico no encontrado' }),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], PaquetesTuristicosController.prototype, "remove", null);
+__decorate([
+    (0, common_1.Patch)(':id/estado'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Actualizar el estado de un paquete turístico' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Estado actualizado' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Estado inválido' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Paquete turístico no encontrado' }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)('estado')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", void 0)
+], PaquetesTuristicosController.prototype, "updateEstado", null);
 __decorate([
     (0, common_1.Post)(':id/servicios'),
     (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),

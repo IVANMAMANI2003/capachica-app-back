@@ -4,76 +4,64 @@ import { UpdateSliderDto } from './dto/update-slider.dto';
 export declare class SlidersController {
     private readonly slidersService;
     constructor(slidersService: SlidersService);
-    create(createSliderDto: CreateSliderDto): Promise<{
+    create(createSliderDto: CreateSliderDto, files: {
+        files?: Express.Multer.File[];
+    }): Promise<{
         imagenes: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             url: string;
-            imageableId: number;
-            imageableType: string;
         }[];
         id: number;
-        nombre: string;
-        descripcion: string | null;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        estado: string;
+        description: string | null;
     }>;
     findAll(): Promise<{
         imagenes: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             url: string;
-            imageableId: number;
-            imageableType: string;
         }[];
         id: number;
-        nombre: string;
-        descripcion: string | null;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        estado: string;
+        description: string | null;
     }[]>;
     findOne(id: string): Promise<{
         imagenes: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             url: string;
-            imageableId: number;
-            imageableType: string;
         }[];
         id: number;
-        nombre: string;
-        descripcion: string | null;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        estado: string;
+        description: string | null;
     }>;
-    update(id: string, updateSliderDto: UpdateSliderDto): Promise<{
+    update(id: string, updateSliderDto: UpdateSliderDto, files: {
+        files?: Express.Multer.File[];
+    }): Promise<{
         imagenes: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             url: string;
-            imageableId: number;
-            imageableType: string;
         }[];
         id: number;
-        nombre: string;
-        descripcion: string | null;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        estado: string;
+        description: string | null;
     }>;
     remove(id: string): Promise<{
         id: number;
-        nombre: string;
-        descripcion: string | null;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        estado: string;
+        description: string | null;
     }>;
 }

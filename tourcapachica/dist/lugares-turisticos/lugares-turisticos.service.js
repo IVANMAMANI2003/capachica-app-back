@@ -23,42 +23,65 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LugaresTuristicosService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
+const supabase_service_1 = require("../supabase/supabase.service");
 let LugaresTuristicosService = class LugaresTuristicosService {
-    constructor(prisma) {
+    constructor(prisma, supabaseService) {
         this.prisma = prisma;
+        this.supabaseService = supabaseService;
+        this.IMAGEABLE_TYPE = 'LugarTuristico';
     }
-    async create(createLugarTuristicoDto) {
-        const { imagenes, horarioApertura, horarioCierre } = createLugarTuristicoDto, lugarData = __rest(createLugarTuristicoDto, ["imagenes", "horarioApertura", "horarioCierre"]);
-        try {
-            const lugar = await this.prisma.lugarTuristico.create({
-                data: Object.assign(Object.assign({}, lugarData), { estado: lugarData.estado || 'activo', esDestacado: lugarData.esDestacado || false, horarioApertura: horarioApertura ? new Date(`1970-01-01T${horarioApertura}`) : null, horarioCierre: horarioCierre ? new Date(`1970-01-01T${horarioCierre}`) : null }),
-            });
-            if (imagenes && imagenes.length > 0) {
-                await this.prisma.image.createMany({
-                    data: imagenes.map(img => ({
-                        url: img.url,
-                        imageableId: lugar.id,
-                        imageableType: 'LugarTuristico',
-                    })),
+    async create(createLugarTuristicoDto, files) {
+        const { imagenes } = createLugarTuristicoDto, lugarData = __rest(createLugarTuristicoDto, ["imagenes"]);
+        const lugarTuristico = await this.prisma.lugarTuristico.create({
+            data: {
+                nombre: lugarData.nombre,
+                descripcion: lugarData.descripcion,
+                direccion: lugarData.direccion,
+                coordenadas: lugarData.coordenadas,
+                horarioApertura: lugarData.horarioApertura,
+                horarioCierre: lugarData.horarioCierre,
+                costoEntrada: lugarData.costoEntrada,
+                recomendaciones: lugarData.recomendaciones,
+                restricciones: lugarData.restricciones,
+                esDestacado: lugarData.esDestacado,
+                estado: lugarData.estado,
+            },
+        });
+        if (files && files.length > 0) {
+            for (const file of files) {
+                const imageUrl = await this.supabaseService.uploadFile(file, this.IMAGEABLE_TYPE, lugarTuristico.id);
+                const imagen = await this.prisma.image.create({
+                    data: {
+                        url: imageUrl
+                    }
+                });
+                await this.prisma.imageable.create({
+                    data: {
+                        image_id: imagen.id,
+                        imageable_id: lugarTuristico.id,
+                        imageable_type: this.IMAGEABLE_TYPE
+                    }
                 });
             }
-            return this.findOne(lugar.id);
         }
-        catch (error) {
-            console.error('Error al crear lugar turístico:', error);
-            throw error;
-        }
+        return this.findOne(lugarTuristico.id);
     }
     async findAll() {
         const lugares = await this.prisma.lugarTuristico.findMany();
         const lugaresWithImages = await Promise.all(lugares.map(async (lugar) => {
-            const imagenes = await this.prisma.image.findMany({
+            const imageables = await this.prisma.imageable.findMany({
                 where: {
-                    imageableId: lugar.id,
-                    imageableType: 'LugarTuristico',
+                    imageable_type: this.IMAGEABLE_TYPE,
+                    imageable_id: lugar.id,
                 },
+                include: {
+                    image: true
+                }
             });
-            return Object.assign(Object.assign({}, lugar), { imagenes });
+            return Object.assign(Object.assign({}, lugar), { imagenes: imageables.map(imageable => ({
+                    id: imageable.image.id,
+                    url: imageable.image.url
+                })) });
         }));
         return lugaresWithImages;
     }
@@ -69,46 +92,96 @@ let LugaresTuristicosService = class LugaresTuristicosService {
         if (!lugar) {
             return null;
         }
-        const imagenes = await this.prisma.image.findMany({
+        const imageables = await this.prisma.imageable.findMany({
             where: {
-                imageableId: lugar.id,
-                imageableType: 'LugarTuristico',
+                imageable_type: this.IMAGEABLE_TYPE,
+                imageable_id: lugar.id,
+            },
+            include: {
+                image: true
+            }
+        });
+        return Object.assign(Object.assign({}, lugar), { imagenes: imageables.map(imageable => ({
+                id: imageable.image.id,
+                url: imageable.image.url
+            })) });
+    }
+    async update(id, updateLugarTuristicoDto, files) {
+        const { imagenes } = updateLugarTuristicoDto, lugarData = __rest(updateLugarTuristicoDto, ["imagenes"]);
+        await this.prisma.lugarTuristico.update({
+            where: { id },
+            data: {
+                nombre: lugarData.nombre,
+                descripcion: lugarData.descripcion,
+                direccion: lugarData.direccion,
+                coordenadas: lugarData.coordenadas,
+                horarioApertura: lugarData.horarioApertura,
+                horarioCierre: lugarData.horarioCierre,
+                costoEntrada: lugarData.costoEntrada,
+                recomendaciones: lugarData.recomendaciones,
+                restricciones: lugarData.restricciones,
+                esDestacado: lugarData.esDestacado,
+                estado: lugarData.estado,
             },
         });
-        return Object.assign(Object.assign({}, lugar), { imagenes });
-    }
-    async update(id, updateLugarTuristicoDto) {
-        const { imagenes } = updateLugarTuristicoDto, lugarData = __rest(updateLugarTuristicoDto, ["imagenes"]);
-        const lugar = await this.prisma.lugarTuristico.update({
-            where: { id },
-            data: lugarData,
-        });
-        if (imagenes) {
-            await this.prisma.image.deleteMany({
+        if (files && files.length > 0) {
+            const imageables = await this.prisma.imageable.findMany({
                 where: {
-                    imageableId: id,
-                    imageableType: 'LugarTuristico',
+                    imageable_type: this.IMAGEABLE_TYPE,
+                    imageable_id: id,
                 },
+                include: {
+                    image: true
+                }
             });
-            if (imagenes.length > 0) {
-                await this.prisma.image.createMany({
-                    data: imagenes.map(img => ({
-                        url: img.url,
-                        imageableId: id,
-                        imageableType: 'LugarTuristico',
-                    })),
+            for (const imageable of imageables) {
+                const fileName = imageable.image.url.split('/').pop();
+                await this.supabaseService.deleteFile(this.IMAGEABLE_TYPE, id, fileName);
+                await this.prisma.imageable.delete({
+                    where: { id: imageable.id }
+                });
+                await this.prisma.image.delete({
+                    where: { id: imageable.image.id }
+                });
+            }
+            for (const file of files) {
+                const imageUrl = await this.supabaseService.uploadFile(file, this.IMAGEABLE_TYPE, id);
+                const imagen = await this.prisma.image.create({
+                    data: {
+                        url: imageUrl
+                    }
+                });
+                await this.prisma.imageable.create({
+                    data: {
+                        image_id: imagen.id,
+                        imageable_id: id,
+                        imageable_type: this.IMAGEABLE_TYPE
+                    }
                 });
             }
         }
         return this.findOne(id);
     }
     async remove(id) {
-        await this.prisma.image.deleteMany({
+        const imageables = await this.prisma.imageable.findMany({
             where: {
-                imageableId: id,
-                imageableType: 'LugarTuristico',
+                imageable_type: this.IMAGEABLE_TYPE,
+                imageable_id: id,
             },
+            include: {
+                image: true
+            }
         });
+        for (const imageable of imageables) {
+            const fileName = imageable.image.url.split('/').pop();
+            await this.supabaseService.deleteFile(this.IMAGEABLE_TYPE, id, fileName);
+            await this.prisma.imageable.delete({
+                where: { id: imageable.id }
+            });
+            await this.prisma.image.delete({
+                where: { id: imageable.image.id }
+            });
+        }
         return this.prisma.lugarTuristico.delete({
             where: { id },
         });
@@ -122,6 +195,7 @@ let LugaresTuristicosService = class LugaresTuristicosService {
 exports.LugaresTuristicosService = LugaresTuristicosService;
 exports.LugaresTuristicosService = LugaresTuristicosService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+        supabase_service_1.SupabaseService])
 ], LugaresTuristicosService);
 //# sourceMappingURL=lugares-turisticos.service.js.map

@@ -14,7 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
-const users_service_1 = require("./users.service");
+const platform_express_1 = require("@nestjs/platform-express");
 const swagger_1 = require("@nestjs/swagger");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 const roles_guard_1 = require("../auth/guards/roles.guard");
@@ -24,6 +24,7 @@ const update_user_dto_1 = require("./dto/update-user.dto");
 const register_user_dto_1 = require("./dto/register-user.dto");
 const request_password_reset_dto_1 = require("./dto/request-password-reset.dto");
 const reset_password_dto_1 = require("./dto/reset-password.dto");
+const users_service_1 = require("./users.service");
 let UsersController = class UsersController {
     constructor(usersService) {
         this.usersService = usersService;
@@ -76,9 +77,9 @@ let UsersController = class UsersController {
             throw new common_1.HttpException('Error al restablecer la contraseña', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    async create(createUserDto) {
+    async create(createUserDto, file) {
         try {
-            return await this.usersService.create(createUserDto);
+            return await this.usersService.create(createUserDto, file);
         }
         catch (error) {
             if (error instanceof common_1.HttpException) {
@@ -92,10 +93,10 @@ let UsersController = class UsersController {
         return this.usersService.findAll();
     }
     findOne(id) {
-        return this.usersService.findById(+id);
+        return this.usersService.findOne(+id);
     }
-    update(id, updateUserDto) {
-        return this.usersService.update(+id, updateUserDto);
+    update(id, updateUserDto, file) {
+        return this.usersService.update(+id, updateUserDto, file);
     }
     remove(id) {
         return this.usersService.delete(+id);
@@ -158,33 +159,32 @@ __decorate([
 ], UsersController.prototype, "adminResetPassword", null);
 __decorate([
     (0, common_1.Post)(),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('SuperAdmin'),
-    (0, swagger_1.ApiBearerAuth)(),
-    (0, swagger_1.ApiOperation)({ summary: 'Crear un nuevo usuario (solo SuperAdmin)' }),
+    (0, swagger_1.ApiConsumes)('multipart/form-data'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('fotoPerfil')),
+    (0, swagger_1.ApiOperation)({ summary: 'Crear un nuevo usuario' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Usuario creado exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos o usuario ya existe' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Persona no encontrada' }),
     (0, swagger_1.ApiResponse)({ status: 500, description: 'Error interno del servidor' }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),
+    __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto, Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('SuperAdmin'),
-    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener todos los usuarios' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Lista de usuarios' }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(':id'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('SuperAdmin'),
-    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener un usuario por ID' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Usuario encontrado' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Usuario no encontrado' }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -192,20 +192,23 @@ __decorate([
 ], UsersController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Patch)(':id'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('admin'),
-    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiConsumes)('multipart/form-data'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('fotoPerfil')),
+    (0, swagger_1.ApiOperation)({ summary: 'Actualizar un usuario' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Usuario actualizado exitosamente' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Usuario no encontrado' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_user_dto_1.UpdateUserDto]),
+    __metadata("design:paramtypes", [String, update_user_dto_1.UpdateUserDto, Object]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('SuperAdmin'),
-    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Eliminar un usuario' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Usuario eliminado exitosamente' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Usuario no encontrado' }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

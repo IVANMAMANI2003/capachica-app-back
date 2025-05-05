@@ -1,20 +1,27 @@
 import { Injectable, NotFoundException, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { hash, compare } from 'bcrypt';
+import { hash } from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { RequestPasswordResetDto } from './dto/request-password-reset.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { randomBytes } from 'crypto';
+import { SupabaseService } from '../supabase/supabase.service';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  private readonly IMAGEABLE_TYPE = 'Usuario';
+
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly supabaseService: SupabaseService
+  ) {}
 
   async findAll() {
-    return this.prisma.usuario.findMany({
+    const users = await this.prisma.usuario.findMany({
       include: {
+        persona: true,
         usuariosRoles: {
           include: {
             rol: true
@@ -22,6 +29,29 @@ export class UsersService {
         }
       }
     });
+
+    const usersWithImages = await Promise.all(
+      users.map(async (user) => {
+        const imageables = await this.prisma.imageable.findMany({
+          where: {
+            imageable_type: this.IMAGEABLE_TYPE,
+            imageable_id: user.id,
+          },
+          include: {
+            image: true
+          }
+        });
+        return { 
+          ...user, 
+          imagenes: imageables.map(imageable => ({
+            id: imageable.image.id,
+            url: imageable.image.url
+          }))
+        };
+      })
+    );
+
+    return usersWithImages;
   }
 
   async findByEmail(email: string) {
@@ -124,93 +154,185 @@ export class UsersService {
     }
   }
 
-  async create(data: CreateUserDto) {
-    try {
-      // Verificar si la persona existe
-      const persona = await this.prisma.persona.findUnique({
-        where: { id: data.persona_id },
-      });
+  async create(createUserDto: CreateUserDto, file?: Express.Multer.File) {
+    const { fotoPerfil, password, ...userData } = createUserDto;
+    const hashedPassword = await hash(password, 10);
 
-      if (!persona) {
-        throw new NotFoundException(`Persona con ID ${data.persona_id} no encontrada`);
+    // Crear el usuario
+    const user = await this.prisma.usuario.create({
+      data: {
+        ...userData,
+        passwordHash: hashedPassword,
+        persona: {
+          create: {
+            nombre: userData.nombre,
+            apellidos: userData.apellidos,
+            telefono: userData.telefono,
+            direccion: userData.direccion,
+            fechaNacimiento: userData.fechaNacimiento,
+            subdivisionId: userData.subdivisionId,
+          }
+        }
+      },
+      include: {
+        persona: true
       }
+    });
 
-      // Verificar si ya existe un usuario con ese email
-      const existingUser = await this.prisma.usuario.findUnique({
-        where: { email: data.email },
-      });
+    // Si hay una imagen de perfil, subirla
+    if (file) {
+      const imageUrl = await this.supabaseService.uploadFile(
+        file,
+        this.IMAGEABLE_TYPE,
+        user.id
+      );
 
-      if (existingUser) {
-        throw new BadRequestException(`Ya existe un usuario con el email ${data.email}`);
-      }
-
-      const hashedPassword = await hash(data.password, 10);
-      
-      return this.prisma.usuario.create({
+      // Crear la imagen en la base de datos
+      const imagen = await this.prisma.image.create({
         data: {
-          email: data.email,
-          passwordHash: hashedPassword,
-          personaId: data.persona_id,
-        },
+          url: imageUrl
+        }
       });
-    } catch (error) {
-      if (error instanceof NotFoundException || error instanceof BadRequestException) {
-        throw error;
-      }
-      
-      console.error('Error al crear usuario:', error);
-      throw new InternalServerErrorException('Error al crear el usuario. Por favor, intente nuevamente.');
+
+      // Crear la relación imageable
+      await this.prisma.imageable.create({
+        data: {
+          image_id: imagen.id,
+          imageable_id: user.id,
+          imageable_type: this.IMAGEABLE_TYPE
+        }
+      });
+
+      // Actualizar la URL de la foto de perfil en la persona
+      await this.prisma.persona.update({
+        where: { id: user.personaId },
+        data: { fotoPerfilUrl: imageUrl }
+      });
     }
+
+    return this.findOne(user.id);
   }
 
-  async update(id: number, data: UpdateUserDto) {
-    try {
-      // Verificar si el usuario existe
-      const user = await this.prisma.usuario.findUnique({
-        where: { id },
-      });
-
-      if (!user) {
-        throw new NotFoundException(`Usuario con ID ${id} no encontrado`);
-      }
-
-      // Si se está actualizando el email, verificar que no exista otro usuario con ese email
-      if (data.email && data.email !== user.email) {
-        const existingUser = await this.prisma.usuario.findUnique({
-          where: { email: data.email },
-        });
-
-        if (existingUser) {
-          throw new BadRequestException(`Ya existe un usuario con el email ${data.email}`);
+  async findOne(id: number) {
+    const user = await this.prisma.usuario.findUnique({
+      where: { id },
+      include: {
+        persona: true,
+        usuariosRoles: {
+          include: {
+            rol: true
+          }
         }
       }
+    });
 
-      const updateData: any = {};
-      
-      if (data.email) {
-        updateData.email = data.email;
-      }
-      
-      if (data.password) {
-        updateData.passwordHash = await hash(data.password, 10);
-      }
-      
-      if (data.esta_activo !== undefined) {
-        updateData.estaActivo = data.esta_activo;
-      }
-
-      return this.prisma.usuario.update({
-        where: { id },
-        data: updateData,
-      });
-    } catch (error) {
-      if (error instanceof NotFoundException || error instanceof BadRequestException) {
-        throw error;
-      }
-      
-      console.error('Error al actualizar usuario:', error);
-      throw new InternalServerErrorException('Error al actualizar el usuario. Por favor, intente nuevamente.');
+    if (!user) {
+      throw new NotFoundException(`Usuario con ID ${id} no encontrado`);
     }
+
+    const imageables = await this.prisma.imageable.findMany({
+      where: {
+        imageable_type: this.IMAGEABLE_TYPE,
+        imageable_id: user.id,
+      },
+      include: {
+        image: true
+      }
+    });
+
+    return { 
+      ...user, 
+      imagenes: imageables.map(imageable => ({
+        id: imageable.image.id,
+        url: imageable.image.url
+      }))
+    };
+  }
+
+  async update(id: number, updateUserDto: UpdateUserDto, file?: Express.Multer.File) {
+    const { fotoPerfil, ...userData } = updateUserDto;
+
+    // Actualizar datos del usuario
+    const user = await this.prisma.usuario.update({
+      where: { id },
+      data: {
+        ...userData,
+        persona: {
+          update: {
+            nombre: userData.nombre,
+            apellidos: userData.apellidos,
+            telefono: userData.telefono,
+            direccion: userData.direccion,
+            fechaNacimiento: userData.fechaNacimiento,
+            subdivisionId: userData.subdivisionId,
+          }
+        }
+      },
+      include: {
+        persona: true
+      }
+    });
+
+    // Si hay una nueva imagen de perfil
+    if (file) {
+      // Obtener las relaciones imageables existentes
+      const imageables = await this.prisma.imageable.findMany({
+        where: {
+          imageable_type: this.IMAGEABLE_TYPE,
+          imageable_id: id,
+        },
+        include: {
+          image: true
+        }
+      });
+
+      // Eliminar las relaciones y las imágenes existentes
+      for (const imageable of imageables) {
+        const fileName = imageable.image.url.split('/').pop();
+        await this.supabaseService.deleteFile(
+          this.IMAGEABLE_TYPE,
+          id,
+          fileName
+        );
+
+        await this.prisma.imageable.delete({
+          where: { id: imageable.id }
+        });
+        await this.prisma.image.delete({
+          where: { id: imageable.image.id }
+        });
+      }
+
+      // Subir la nueva imagen
+      const imageUrl = await this.supabaseService.uploadFile(
+        file,
+        this.IMAGEABLE_TYPE,
+        id
+      );
+
+      // Crear la nueva imagen y relación
+      const imagen = await this.prisma.image.create({
+        data: {
+          url: imageUrl
+        }
+      });
+
+      await this.prisma.imageable.create({
+        data: {
+          image_id: imagen.id,
+          imageable_id: id,
+          imageable_type: this.IMAGEABLE_TYPE
+        }
+      });
+
+      // Actualizar la URL de la foto de perfil en la persona
+      await this.prisma.persona.update({
+        where: { id: user.personaId },
+        data: { fotoPerfilUrl: imageUrl }
+      });
+    }
+
+    return this.findOne(id);
   }
 
   async delete(id: number) {

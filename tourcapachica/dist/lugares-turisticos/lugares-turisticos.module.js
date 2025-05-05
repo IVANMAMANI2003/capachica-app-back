@@ -10,15 +10,17 @@ exports.LugaresTuristicosModule = void 0;
 const common_1 = require("@nestjs/common");
 const lugares_turisticos_service_1 = require("./lugares-turisticos.service");
 const lugares_turisticos_controller_1 = require("./lugares-turisticos.controller");
-const prisma_service_1 = require("../prisma/prisma.service");
+const prisma_module_1 = require("../prisma/prisma.module");
+const supabase_module_1 = require("../supabase/supabase.module");
 let LugaresTuristicosModule = class LugaresTuristicosModule {
 };
 exports.LugaresTuristicosModule = LugaresTuristicosModule;
 exports.LugaresTuristicosModule = LugaresTuristicosModule = __decorate([
     (0, common_1.Module)({
+        imports: [prisma_module_1.PrismaModule, supabase_module_1.SupabaseModule],
         controllers: [lugares_turisticos_controller_1.LugaresTuristicosController],
-        providers: [lugares_turisticos_service_1.LugaresTuristicosService, prisma_service_1.PrismaService],
-        exports: [lugares_turisticos_service_1.LugaresTuristicosService],
+        providers: [lugares_turisticos_service_1.LugaresTuristicosService],
+        exports: [lugares_turisticos_service_1.LugaresTuristicosService]
     })
 ], LugaresTuristicosModule);
 //# sourceMappingURL=lugares-turisticos.module.js.map

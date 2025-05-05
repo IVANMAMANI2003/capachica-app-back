@@ -12,14 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateSliderDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
-class ImageDto {
-}
-__decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], ImageDto.prototype, "url", void 0);
-class UpdateSliderDto {
+const create_slider_dto_1 = require("./create-slider.dto");
+const create_slider_dto_2 = require("./create-slider.dto");
+class UpdateSliderDto extends (0, swagger_1.PartialType)(create_slider_dto_1.CreateSliderDto) {
 }
 exports.UpdateSliderDto = UpdateSliderDto;
 __decorate([
@@ -60,7 +55,7 @@ __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Imágenes del slider',
         required: false,
-        type: [ImageDto]
+        type: [create_slider_dto_2.ImageDto]
     }),
     (0, class_validator_1.IsArray)(),
     (0, class_validator_1.IsOptional)(),

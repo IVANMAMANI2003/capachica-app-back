@@ -5,56 +5,60 @@ export declare class TiposServicioService {
     constructor(prisma: PrismaService);
     create(createTipoServicioDto: CreateTipoServicioDto): Promise<{
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
         requiereCupo: boolean;
-        createdAt: Date;
     }>;
     findAll(): Promise<({
         servicios: {
             id: number;
+            createdAt: Date;
+            updatedAt: Date;
             nombre: string;
             descripcion: string | null;
-            createdAt: Date;
+            estado: string;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
-            estado: string;
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
-            updatedAt: Date;
         }[];
     } & {
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
         requiereCupo: boolean;
-        createdAt: Date;
     })[]>;
     findOne(id: number): Promise<{
         servicios: {
             id: number;
+            createdAt: Date;
+            updatedAt: Date;
             nombre: string;
             descripcion: string | null;
-            createdAt: Date;
+            estado: string;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
-            estado: string;
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
-            updatedAt: Date;
         }[];
     } & {
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
         requiereCupo: boolean;
-        createdAt: Date;
     }>;
     remove(id: number): Promise<{
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
         requiereCupo: boolean;
-        createdAt: Date;
     }>;
 }

@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, UseGuards, UseInterceptors, UploadedFiles } from '@nestjs/common';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
 import { LugaresTuristicosService } from './lugares-turisticos.service';
 import { CreateLugarTuristicoDto } from './dto/create-lugar-turistico.dto';
 import { UpdateLugarTuristicoDto } from './dto/update-lugar-turistico.dto';
@@ -14,15 +15,21 @@ export class LugaresTuristicosController {
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('SuperAdmin')
+  @Roles('emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileFieldsInterceptor([
+    { name: 'files', maxCount: 5 }
+  ]))
   @ApiOperation({ summary: 'Crear un nuevo lugar turístico' })
   @ApiResponse({ status: 201, description: 'Lugar turístico creado exitosamente' })
   @ApiResponse({ status: 400, description: 'Datos inválidos' })
   @ApiResponse({ status: 401, description: 'No autorizado' })
-  @ApiResponse({ status: 403, description: 'Prohibido' })
-  create(@Body() createLugarTuristicoDto: CreateLugarTuristicoDto) {
-    return this.lugaresTuristicosService.create(createLugarTuristicoDto);
+  create(
+    @Body() createLugarTuristicoDto: CreateLugarTuristicoDto,
+    @UploadedFiles() files: { files?: Express.Multer.File[] }
+  ) {
+    return this.lugaresTuristicosService.create(createLugarTuristicoDto, files?.files);
   }
 
   @Get()
@@ -43,34 +50,49 @@ export class LugaresTuristicosController {
   @ApiOperation({ summary: 'Obtener un lugar turístico por ID' })
   @ApiResponse({ status: 200, description: 'Lugar turístico encontrado' })
   @ApiResponse({ status: 404, description: 'Lugar turístico no encontrado' })
-  findOne(@Param('id') id: string) {
-    return this.lugaresTuristicosService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const lugar = await this.lugaresTuristicosService.findOne(+id);
+    if (!lugar) {
+      throw new HttpException('Lugar turístico no encontrado', HttpStatus.NOT_FOUND);
+    }
+    return lugar;
   }
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('SuperAdmin')
+  @Roles('emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Actualizar un lugar turístico' })
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileFieldsInterceptor([
+    { name: 'files', maxCount: 5 }
+  ]))
+  @ApiOperation({ summary: 'Actualizar un lugar turístico por ID' })
   @ApiResponse({ status: 200, description: 'Lugar turístico actualizado exitosamente' })
   @ApiResponse({ status: 400, description: 'Datos inválidos' })
-  @ApiResponse({ status: 401, description: 'No autorizado' })
-  @ApiResponse({ status: 403, description: 'Prohibido' })
-  @ApiResponse({ status: 404, description: 'Lugar turístico no encontrado' })
-  update(@Param('id') id: string, @Body() updateLugarTuristicoDto: UpdateLugarTuristicoDto) {
-    return this.lugaresTuristicosService.update(+id, updateLugarTuristicoDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateLugarTuristicoDto: UpdateLugarTuristicoDto,
+    @UploadedFiles() files: { files?: Express.Multer.File[] }
+  ) {
+    const lugar = await this.lugaresTuristicosService.findOne(+id);
+    if (!lugar) {
+      throw new HttpException('Lugar turístico no encontrado', HttpStatus.NOT_FOUND);
+    }
+    return this.lugaresTuristicosService.update(+id, updateLugarTuristicoDto, files?.files);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('SuperAdmin')
+  @Roles('emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Eliminar un lugar turístico' })
+  @ApiOperation({ summary: 'Eliminar un lugar turístico por ID' })
   @ApiResponse({ status: 200, description: 'Lugar turístico eliminado exitosamente' })
-  @ApiResponse({ status: 401, description: 'No autorizado' })
-  @ApiResponse({ status: 403, description: 'Prohibido' })
   @ApiResponse({ status: 404, description: 'Lugar turístico no encontrado' })
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
+    const lugar = await this.lugaresTuristicosService.findOne(+id);
+    if (!lugar) {
+      throw new HttpException('Lugar turístico no encontrado', HttpStatus.NOT_FOUND);
+    }
     return this.lugaresTuristicosService.remove(+id);
   }
 } 

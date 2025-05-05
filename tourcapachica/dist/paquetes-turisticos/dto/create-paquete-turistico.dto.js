@@ -12,13 +12,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreatePaqueteTuristicoDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
-const estado_paquete_enum_1 = require("../enums/estado-paquete.enum");
 class ImageDto {
 }
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'URL de la imagen',
-        example: 'https://example.com/imagen.jpg',
+        example: 'https://example.com/image.jpg',
         required: true,
     }),
     (0, class_validator_1.IsString)(),
@@ -26,24 +25,35 @@ __decorate([
     __metadata("design:type", String)
 ], ImageDto.prototype, "url", void 0);
 class CreatePaqueteTuristicoDto {
+    constructor() {
+        this.estado = 'activo';
+    }
 }
 exports.CreatePaqueteTuristicoDto = CreatePaqueteTuristicoDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Nombre del paquete turístico',
-        example: 'Turismo vivencial',
+        description: 'ID del emprendimiento',
+        example: 1,
         required: true,
-        maxLength: 200,
+    }),
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Number)
+], CreatePaqueteTuristicoDto.prototype, "emprendimientoId", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Nombre del paquete turístico',
+        example: 'Tour por la isla de Capachica',
+        required: true,
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.MaxLength)(200),
     __metadata("design:type", String)
 ], CreatePaqueteTuristicoDto.prototype, "nombre", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Descripción del paquete turístico',
-        example: 'Tour completo por los principales atractivos de Capachica',
+        example: 'Recorrido completo por los principales atractivos de la isla',
         required: true,
     }),
     (0, class_validator_1.IsString)(),
@@ -57,38 +67,39 @@ __decorate([
         required: true,
     }),
     (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.Min)(0),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
 ], CreatePaqueteTuristicoDto.prototype, "precio", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Estado del paquete turístico',
-        example: 'ACTIVO',
-        enum: estado_paquete_enum_1.EstadoPaquete,
-        default: estado_paquete_enum_1.EstadoPaquete.ACTIVO,
-        required: true,
+        example: 'activo',
+        default: 'activo',
+        required: false,
     }),
-    (0, class_validator_1.IsEnum)(estado_paquete_enum_1.EstadoPaquete),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsEnum)(['activo', 'inactivo']),
     __metadata("design:type", String)
 ], CreatePaqueteTuristicoDto.prototype, "estado", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'ID del emprendimiento al que pertenece el paquete',
-        example: 1,
-        required: true,
-    }),
-    (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Number)
-], CreatePaqueteTuristicoDto.prototype, "emprendimientoId", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Imágenes del paquete turístico',
+        description: 'IDs de los servicios incluidos en el paquete',
+        type: [Number],
         required: false,
-        type: [ImageDto]
     }),
     (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNumber)({}, { each: true }),
+    __metadata("design:type", Array)
+], CreatePaqueteTuristicoDto.prototype, "servicios", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Lista de imágenes del paquete turístico',
+        type: [ImageDto],
+        required: false,
+    }),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Array)
 ], CreatePaqueteTuristicoDto.prototype, "imagenes", void 0);

@@ -1,79 +1,66 @@
 import { PrismaService } from '../prisma/prisma.service';
+import { SupabaseService } from '../supabase/supabase.service';
 import { CreateSliderDto } from './dto/create-slider.dto';
 import { UpdateSliderDto } from './dto/update-slider.dto';
 export declare class SlidersService {
     private prisma;
-    constructor(prisma: PrismaService);
-    create(createSliderDto: CreateSliderDto): Promise<{
+    private supabaseService;
+    private readonly IMAGEABLE_TYPE;
+    constructor(prisma: PrismaService, supabaseService: SupabaseService);
+    create(createSliderDto: CreateSliderDto, files?: Express.Multer.File[]): Promise<{
         imagenes: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             url: string;
-            imageableId: number;
-            imageableType: string;
         }[];
         id: number;
-        nombre: string;
-        descripcion: string | null;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        estado: string;
+        description: string | null;
     }>;
     findAll(): Promise<{
         imagenes: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             url: string;
-            imageableId: number;
-            imageableType: string;
         }[];
         id: number;
-        nombre: string;
-        descripcion: string | null;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        estado: string;
+        description: string | null;
     }[]>;
     findOne(id: number): Promise<{
         imagenes: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             url: string;
-            imageableId: number;
-            imageableType: string;
         }[];
         id: number;
-        nombre: string;
-        descripcion: string | null;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        estado: string;
+        description: string | null;
     }>;
-    update(id: number, updateSliderDto: UpdateSliderDto): Promise<{
+    update(id: number, updateSliderDto: UpdateSliderDto, files?: Express.Multer.File[]): Promise<{
         imagenes: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             url: string;
-            imageableId: number;
-            imageableType: string;
         }[];
         id: number;
-        nombre: string;
-        descripcion: string | null;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        estado: string;
+        description: string | null;
     }>;
     remove(id: number): Promise<{
         id: number;
-        nombre: string;
-        descripcion: string | null;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        estado: string;
+        description: string | null;
     }>;
 }

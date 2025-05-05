@@ -6,9 +6,9 @@ export declare class CreateServicioDto {
     nombre: string;
     descripcion?: string;
     precioBase: number;
-    moneda: string;
+    moneda?: string;
     estado?: string;
-    detallesServicio?: string;
+    detallesServicio?: Record<string, any>;
     imagenes?: ImageDto[];
 }
 export {};

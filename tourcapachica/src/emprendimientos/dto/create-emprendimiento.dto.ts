@@ -1,26 +1,32 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsOptional, IsEmail, IsUrl, IsObject, IsEnum, IsArray, IsPhoneNumber, IsJSON, MaxLength, IsInt } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsBoolean, IsNumber, IsUrl, IsEnum, IsArray, MaxLength, IsEmail, IsDate } from 'class-validator';
+import { Type } from 'class-transformer';
 
 class ImageDto {
+  @ApiProperty({
+    description: 'URL de la imagen',
+    example: 'https://example.com/image.jpg',
+    required: true,
+  })
   @IsUrl()
+  @IsNotEmpty()
   url: string;
 }
 
 export class CreateEmprendimientoDto {
   @ApiProperty({
-    description: 'ID del usuario emprendedor',
+    description: 'ID del usuario propietario del emprendimiento',
     example: 1,
     required: true,
   })
-  @IsInt()
+  @IsNumber()
   @IsNotEmpty()
   usuarioId: number;
 
   @ApiProperty({
     description: 'Nombre del emprendimiento',
-    example: 'Tour Capachica',
+    example: 'Restaurante La Isla',
     required: true,
-    maxLength: 200,
   })
   @IsString()
   @IsNotEmpty()
@@ -29,7 +35,7 @@ export class CreateEmprendimientoDto {
 
   @ApiProperty({
     description: 'Descripción del emprendimiento',
-    example: 'Empresa de turismo en Capachica',
+    example: 'Restaurante especializado en comida local',
     required: false,
   })
   @IsString()
@@ -38,13 +44,12 @@ export class CreateEmprendimientoDto {
 
   @ApiProperty({
     description: 'Tipo de emprendimiento',
-    example: 'turismo',
+    example: 'restaurante',
     required: true,
-    maxLength: 50,
   })
   @IsString()
   @IsNotEmpty()
-  @MaxLength(50)
+  @IsEnum(['restaurante', 'hospedaje', 'artesania', 'otro'])
   tipo: string;
 
   @ApiProperty({
@@ -57,8 +62,8 @@ export class CreateEmprendimientoDto {
   direccion?: string;
 
   @ApiProperty({
-    description: 'Coordenadas geográficas',
-    example: '-15.8200,-70.0200',
+    description: 'Coordenadas geográficas del emprendimiento',
+    example: '-15.7667, -69.6833',
     required: false,
   })
   @IsString()
@@ -67,68 +72,64 @@ export class CreateEmprendimientoDto {
 
   @ApiProperty({
     description: 'Teléfono de contacto',
-    example: '+51987654321',
+    example: '+51 987654321',
     required: false,
-    maxLength: 20,
   })
   @IsString()
   @IsOptional()
-  @IsPhoneNumber()
-  @MaxLength(20)
   contactoTelefono?: string;
 
   @ApiProperty({
-    description: 'Email de contacto',
-    example: 'contacto@tourcapachica.com',
+    description: 'Correo electrónico de contacto',
+    example: 'contacto@restaurante.com',
     required: false,
-    maxLength: 100,
   })
-  @IsString()
-  @IsOptional()
   @IsEmail()
-  @MaxLength(100)
+  @IsOptional()
   contactoEmail?: string;
 
   @ApiProperty({
     description: 'Sitio web del emprendimiento',
-    example: 'https://www.tourcapachica.com',
+    example: 'https://restaurante.com',
     required: false,
-    maxLength: 200,
   })
-  @IsString()
-  @IsOptional()
   @IsUrl()
-  @MaxLength(200)
+  @IsOptional()
   sitioWeb?: string;
 
   @ApiProperty({
-    description: 'Redes sociales en formato JSON',
-    example: '{"facebook": "https://facebook.com/tourcapachica", "instagram": "https://instagram.com/tourcapachica"}',
+    description: 'Redes sociales del emprendimiento',
+    example: '{"facebook": "https://facebook.com/restaurante", "instagram": "https://instagram.com/restaurante"}',
     required: false,
   })
   @IsString()
   @IsOptional()
-  @IsJSON()
   redesSociales?: string;
 
   @ApiProperty({
     description: 'Estado del emprendimiento',
     example: 'pendiente',
-    enum: ['pendiente', 'aprobado', 'rechazado'],
     default: 'pendiente',
     required: false,
-    maxLength: 20,
   })
   @IsString()
   @IsOptional()
   @IsEnum(['pendiente', 'aprobado', 'rechazado'])
-  @MaxLength(20)
   estado?: string = 'pendiente';
 
-  @ApiProperty({ 
-    description: 'Imágenes del emprendimiento', 
+  @ApiProperty({
+    description: 'Fecha de aprobación del emprendimiento',
     required: false,
-    type: [ImageDto]
+  })
+  @IsOptional()
+  @IsDate()
+  @Type(() => Date)
+  fechaAprobacion?: Date;
+
+  @ApiProperty({
+    description: 'Lista de imágenes del emprendimiento',
+    type: [ImageDto],
+    required: false,
   })
   @IsArray()
   @IsOptional()

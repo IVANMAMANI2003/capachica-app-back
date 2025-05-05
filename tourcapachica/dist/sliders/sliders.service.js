@@ -23,36 +23,57 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SlidersService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
+const supabase_service_1 = require("../supabase/supabase.service");
 let SlidersService = class SlidersService {
-    constructor(prisma) {
+    constructor(prisma, supabaseService) {
         this.prisma = prisma;
+        this.supabaseService = supabaseService;
+        this.IMAGEABLE_TYPE = 'Slider';
     }
-    async create(createSliderDto) {
+    async create(createSliderDto, files) {
         const { imagenes } = createSliderDto, sliderData = __rest(createSliderDto, ["imagenes"]);
         const slider = await this.prisma.slider.create({
-            data: sliderData,
+            data: {
+                nombre: sliderData.nombre,
+                description: sliderData.descripcion,
+                estado: sliderData.estado,
+            },
         });
-        if (imagenes && imagenes.length > 0) {
-            await this.prisma.image.createMany({
-                data: imagenes.map(img => ({
-                    url: img.url,
-                    imageableId: slider.id,
-                    imageableType: 'Slider',
-                })),
-            });
+        if (files && files.length > 0) {
+            for (const file of files) {
+                const imageUrl = await this.supabaseService.uploadFile(file, this.IMAGEABLE_TYPE, slider.id);
+                const imagen = await this.prisma.image.create({
+                    data: {
+                        url: imageUrl
+                    }
+                });
+                await this.prisma.imageable.create({
+                    data: {
+                        image_id: imagen.id,
+                        imageable_id: slider.id,
+                        imageable_type: this.IMAGEABLE_TYPE
+                    }
+                });
+            }
         }
         return this.findOne(slider.id);
     }
     async findAll() {
         const sliders = await this.prisma.slider.findMany();
         const slidersWithImages = await Promise.all(sliders.map(async (slider) => {
-            const imagenes = await this.prisma.image.findMany({
+            const imageables = await this.prisma.imageable.findMany({
                 where: {
-                    imageableId: slider.id,
-                    imageableType: 'Slider',
+                    imageable_type: this.IMAGEABLE_TYPE,
+                    imageable_id: slider.id,
                 },
+                include: {
+                    image: true
+                }
             });
-            return Object.assign(Object.assign({}, slider), { imagenes });
+            return Object.assign(Object.assign({}, slider), { imagenes: imageables.map(imageable => ({
+                    id: imageable.image.id,
+                    url: imageable.image.url
+                })) });
         }));
         return slidersWithImages;
     }
@@ -63,46 +84,88 @@ let SlidersService = class SlidersService {
         if (!slider) {
             return null;
         }
-        const imagenes = await this.prisma.image.findMany({
+        const imageables = await this.prisma.imageable.findMany({
             where: {
-                imageableId: slider.id,
-                imageableType: 'Slider',
+                imageable_type: this.IMAGEABLE_TYPE,
+                imageable_id: slider.id,
+            },
+            include: {
+                image: true
+            }
+        });
+        return Object.assign(Object.assign({}, slider), { imagenes: imageables.map(imageable => ({
+                id: imageable.image.id,
+                url: imageable.image.url
+            })) });
+    }
+    async update(id, updateSliderDto, files) {
+        const { imagenes } = updateSliderDto, sliderData = __rest(updateSliderDto, ["imagenes"]);
+        await this.prisma.slider.update({
+            where: { id },
+            data: {
+                nombre: sliderData.nombre,
+                description: sliderData.descripcion,
+                estado: sliderData.estado,
             },
         });
-        return Object.assign(Object.assign({}, slider), { imagenes });
-    }
-    async update(id, updateSliderDto) {
-        const { imagenes } = updateSliderDto, sliderData = __rest(updateSliderDto, ["imagenes"]);
-        const slider = await this.prisma.slider.update({
-            where: { id },
-            data: sliderData,
-        });
-        if (imagenes) {
-            await this.prisma.image.deleteMany({
+        if (files && files.length > 0) {
+            const imageables = await this.prisma.imageable.findMany({
                 where: {
-                    imageableId: id,
-                    imageableType: 'Slider',
+                    imageable_type: this.IMAGEABLE_TYPE,
+                    imageable_id: id,
                 },
+                include: {
+                    image: true
+                }
             });
-            if (imagenes.length > 0) {
-                await this.prisma.image.createMany({
-                    data: imagenes.map(img => ({
-                        url: img.url,
-                        imageableId: id,
-                        imageableType: 'Slider',
-                    })),
+            for (const imageable of imageables) {
+                const fileName = imageable.image.url.split('/').pop();
+                await this.supabaseService.deleteFile(this.IMAGEABLE_TYPE, id, fileName);
+                await this.prisma.imageable.delete({
+                    where: { id: imageable.id }
+                });
+                await this.prisma.image.delete({
+                    where: { id: imageable.image.id }
+                });
+            }
+            for (const file of files) {
+                const imageUrl = await this.supabaseService.uploadFile(file, this.IMAGEABLE_TYPE, id);
+                const imagen = await this.prisma.image.create({
+                    data: {
+                        url: imageUrl
+                    }
+                });
+                await this.prisma.imageable.create({
+                    data: {
+                        image_id: imagen.id,
+                        imageable_id: id,
+                        imageable_type: this.IMAGEABLE_TYPE
+                    }
                 });
             }
         }
         return this.findOne(id);
     }
     async remove(id) {
-        await this.prisma.image.deleteMany({
+        const imageables = await this.prisma.imageable.findMany({
             where: {
-                imageableId: id,
-                imageableType: 'Slider',
+                imageable_type: this.IMAGEABLE_TYPE,
+                imageable_id: id,
             },
+            include: {
+                image: true
+            }
         });
+        for (const imageable of imageables) {
+            const fileName = imageable.image.url.split('/').pop();
+            await this.supabaseService.deleteFile(this.IMAGEABLE_TYPE, id, fileName);
+            await this.prisma.imageable.delete({
+                where: { id: imageable.id }
+            });
+            await this.prisma.image.delete({
+                where: { id: imageable.image.id }
+            });
+        }
         return this.prisma.slider.delete({
             where: { id },
         });
@@ -111,6 +174,7 @@ let SlidersService = class SlidersService {
 exports.SlidersService = SlidersService;
 exports.SlidersService = SlidersService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+        supabase_service_1.SupabaseService])
 ], SlidersService);
 //# sourceMappingURL=sliders.service.js.map

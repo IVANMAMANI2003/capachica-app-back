@@ -12,10 +12,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateEmprendimientoDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
+const class_transformer_1 = require("class-transformer");
 class ImageDto {
 }
 __decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'URL de la imagen',
+        example: 'https://example.com/image.jpg',
+        required: true,
+    }),
     (0, class_validator_1.IsUrl)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], ImageDto.prototype, "url", void 0);
 class CreateEmprendimientoDto {
@@ -26,20 +33,19 @@ class CreateEmprendimientoDto {
 exports.CreateEmprendimientoDto = CreateEmprendimientoDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'ID del usuario emprendedor',
+        description: 'ID del usuario propietario del emprendimiento',
         example: 1,
         required: true,
     }),
-    (0, class_validator_1.IsInt)(),
+    (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
 ], CreateEmprendimientoDto.prototype, "usuarioId", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Nombre del emprendimiento',
-        example: 'Tour Capachica',
+        example: 'Restaurante La Isla',
         required: true,
-        maxLength: 200,
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
@@ -49,7 +55,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Descripción del emprendimiento',
-        example: 'Empresa de turismo en Capachica',
+        example: 'Restaurante especializado en comida local',
         required: false,
     }),
     (0, class_validator_1.IsString)(),
@@ -59,13 +65,12 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Tipo de emprendimiento',
-        example: 'turismo',
+        example: 'restaurante',
         required: true,
-        maxLength: 50,
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.MaxLength)(50),
+    (0, class_validator_1.IsEnum)(['restaurante', 'hospedaje', 'artesania', 'otro']),
     __metadata("design:type", String)
 ], CreateEmprendimientoDto.prototype, "tipo", void 0);
 __decorate([
@@ -80,8 +85,8 @@ __decorate([
 ], CreateEmprendimientoDto.prototype, "direccion", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Coordenadas geográficas',
-        example: '-15.8200,-70.0200',
+        description: 'Coordenadas geográficas del emprendimiento',
+        example: '-15.7667, -69.6833',
         required: false,
     }),
     (0, class_validator_1.IsString)(),
@@ -91,73 +96,70 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Teléfono de contacto',
-        example: '+51987654321',
+        example: '+51 987654321',
         required: false,
-        maxLength: 20,
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsPhoneNumber)(),
-    (0, class_validator_1.MaxLength)(20),
     __metadata("design:type", String)
 ], CreateEmprendimientoDto.prototype, "contactoTelefono", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Email de contacto',
-        example: 'contacto@tourcapachica.com',
+        description: 'Correo electrónico de contacto',
+        example: 'contacto@restaurante.com',
         required: false,
-        maxLength: 100,
     }),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsEmail)(),
-    (0, class_validator_1.MaxLength)(100),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateEmprendimientoDto.prototype, "contactoEmail", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Sitio web del emprendimiento',
-        example: 'https://www.tourcapachica.com',
+        example: 'https://restaurante.com',
         required: false,
-        maxLength: 200,
     }),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsUrl)(),
-    (0, class_validator_1.MaxLength)(200),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateEmprendimientoDto.prototype, "sitioWeb", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Redes sociales en formato JSON',
-        example: '{"facebook": "https://facebook.com/tourcapachica", "instagram": "https://instagram.com/tourcapachica"}',
+        description: 'Redes sociales del emprendimiento',
+        example: '{"facebook": "https://facebook.com/restaurante", "instagram": "https://instagram.com/restaurante"}',
         required: false,
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsJSON)(),
     __metadata("design:type", String)
 ], CreateEmprendimientoDto.prototype, "redesSociales", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Estado del emprendimiento',
         example: 'pendiente',
-        enum: ['pendiente', 'aprobado', 'rechazado'],
         default: 'pendiente',
         required: false,
-        maxLength: 20,
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsEnum)(['pendiente', 'aprobado', 'rechazado']),
-    (0, class_validator_1.MaxLength)(20),
     __metadata("design:type", String)
 ], CreateEmprendimientoDto.prototype, "estado", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Imágenes del emprendimiento',
+        description: 'Fecha de aprobación del emprendimiento',
         required: false,
-        type: [ImageDto]
+    }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsDate)(),
+    (0, class_transformer_1.Type)(() => Date),
+    __metadata("design:type", Date)
+], CreateEmprendimientoDto.prototype, "fechaAprobacion", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Lista de imágenes del emprendimiento',
+        type: [ImageDto],
+        required: false,
     }),
     (0, class_validator_1.IsArray)(),
     (0, class_validator_1.IsOptional)(),

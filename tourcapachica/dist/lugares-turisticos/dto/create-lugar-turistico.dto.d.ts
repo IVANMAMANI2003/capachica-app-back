@@ -8,8 +8,8 @@ export declare class CreateLugarTuristicoDto {
     coordenadas: string;
     estado?: string;
     esDestacado?: boolean;
-    horarioApertura?: string;
-    horarioCierre?: string;
+    horarioApertura?: Date;
+    horarioCierre?: Date;
     costoEntrada?: number;
     recomendaciones?: string;
     restricciones?: string;

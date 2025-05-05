@@ -109,6 +109,7 @@ model Usuario {
   turista                Turista?
   persona                Persona           @relation(fields: [personaId], references: [id])
   usuariosRoles          UsuariosRoles[]
+  
 
   @@map("usuarios")
 }
@@ -171,7 +172,8 @@ model TokenInvalidado {
   invalidadoEn DateTime @map("invalidado_en")
   expiraEn     DateTime @map("expira_en")
   metadata     Json     @default("{}")
-  createdAt    DateTime @default(now()) @map("created_at")
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @default(now()) @map("updated_at")
   usuario      Usuario  @relation(fields: [usuarioId], references: [id])
 
   @@map("tokens_invalidados")
@@ -264,7 +266,8 @@ model ServicioPaquete {
   orden              Int              @default(0)
   paqueteTuristico   PaqueteTuristico @relation(fields: [paqueteTuristicoId], references: [id])
   servicio           Servicio         @relation(fields: [servicioId], references: [id])
-
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @default(now()) @map("updated_at")
   @@unique([paqueteTuristicoId, servicioId])
   @@map("servicios_paquetes")
 }
@@ -292,7 +295,8 @@ model TipoServicio {
   nombre       String     @unique @db.VarChar(100)
   descripcion  String?
   requiereCupo Boolean    @default(false) @map("requiere_cupo")
-  createdAt    DateTime   @default(now()) @map("created_at")
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @default(now()) @map("updated_at")
   servicios    Servicio[]
 
   @@map("tipos_servicio")
@@ -305,7 +309,8 @@ model ServicioDisponibilidad {
   cuposDisponibles Int      @map("cupos_disponibles")
   precioEspecial   Decimal? @map("precio_especial") @db.Decimal(10, 2)
   servicio         Servicio @relation(fields: [servicioId], references: [id], onDelete: Cascade)
-
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @default(now()) @map("updated_at")
   @@unique([servicioId, fecha])
   @@map("servicios_disponibilidad")
 }
@@ -332,7 +337,8 @@ model Favorito {
   estado           String         @default("pendiente") @db.VarChar(20)
   emprendimientoId Int            @map("emprendimiento_id")
   usuarioId        Int            @map("usuario_id")
-  createdAt        DateTime       @default(now()) @map("created_at")
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @default(now()) @map("updated_at")
   emprendimiento   Emprendimiento @relation(fields: [emprendimientoId], references: [id], onDelete: Cascade)
   usuario          Usuario        @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
 
@@ -490,22 +496,36 @@ model Tour {
   @@map("tours")
 }
 
-model Image {
-  id            Int      @id @default(autoincrement())
-  url           String
-  imageableId   Int
-  imageableType String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
 
-  @@index([imageableId, imageableType])
+model Image {
+  id           Int           @id @default(autoincrement())
+  url          String
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
+  imageables   Imageable[]
+
   @@map("images")
 }
+
+model Imageable {
+  id              Int      @id @default(autoincrement())
+  image_id        Int
+  imageable_id    Int
+  imageable_type  String
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  image Image @relation(fields: [image_id], references: [id], onDelete: Cascade)
+
+  @@index([imageable_id, imageable_type])
+  @@map("imageables")
+}
+
 
 model Slider {
   id          Int      @id @default(autoincrement())
   nombre      String   @db.VarChar(100)
-  descripcion String?
+  description String?
   estado      String   @default("activo") @db.VarChar(20)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

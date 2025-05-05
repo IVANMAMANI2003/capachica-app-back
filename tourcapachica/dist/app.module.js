@@ -16,7 +16,6 @@ const emprendimientos_module_1 = require("./emprendimientos/emprendimientos.modu
 const lugares_turisticos_module_1 = require("./lugares-turisticos/lugares-turisticos.module");
 const servicios_module_1 = require("./servicios/servicios.module");
 const paquetes_turisticos_module_1 = require("./paquetes-turisticos/paquetes-turisticos.module");
-const images_module_1 = require("./images/images.module");
 const supabase_module_1 = require("./supabase/supabase.module");
 const payments_module_1 = require("./payments/payments.module");
 const reservas_module_1 = require("./reservas/reservas.module");
@@ -25,6 +24,7 @@ const roles_module_1 = require("./roles/roles.module");
 const permissions_module_1 = require("./permissions/permissions.module");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
+const personas_module_1 = require("./personas/personas.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -37,6 +37,7 @@ exports.AppModule = AppModule = __decorate([
             prisma_module_1.PrismaModule,
             auth_module_1.AuthModule,
             users_module_1.UsersModule,
+            personas_module_1.PersonasModule,
             roles_module_1.RolesModule,
             permissions_module_1.PermissionsModule,
             sliders_module_1.SlidersModule,
@@ -44,10 +45,9 @@ exports.AppModule = AppModule = __decorate([
             lugares_turisticos_module_1.LugaresTuristicosModule,
             servicios_module_1.ServiciosModule,
             paquetes_turisticos_module_1.PaquetesTuristicosModule,
-            images_module_1.ImagesModule,
             supabase_module_1.SupabaseModule,
-            payments_module_1.PaymentsModule,
             reservas_module_1.ReservasModule,
+            payments_module_1.PaymentsModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

@@ -13,6 +13,7 @@ export declare class CreateEmprendimientoDto {
     sitioWeb?: string;
     redesSociales?: string;
     estado?: string;
+    fechaAprobacion?: Date;
     imagenes?: ImageDto[];
 }
 export {};

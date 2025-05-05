@@ -1,31 +1,66 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { SupabaseService } from '../supabase/supabase.service';
 import { CreateEmprendimientoDto } from './dto/create-emprendimiento.dto';
 import { UpdateEmprendimientoDto } from './dto/update-emprendimiento.dto';
 import { CreateFavoritoDto } from './dto/create-favorito.dto';
 
 @Injectable()
 export class EmprendimientosService {
-  constructor(private prisma: PrismaService) {}
+  private readonly IMAGEABLE_TYPE = 'Emprendimiento';
 
-  async create(usuarioId: number, createEmprendimientoDto: CreateEmprendimientoDto) {
+  constructor(
+    private prisma: PrismaService,
+    private supabaseService: SupabaseService
+  ) {}
+
+  async create(createEmprendimientoDto: CreateEmprendimientoDto, files?: Express.Multer.File[]) {
     const { imagenes, ...emprendimientoData } = createEmprendimientoDto;
     
+    // Crear el emprendimiento
     const emprendimiento = await this.prisma.emprendimiento.create({
       data: {
-        ...emprendimientoData,
-        usuarioId,
+        usuarioId: emprendimientoData.usuarioId,
+        nombre: emprendimientoData.nombre,
+        descripcion: emprendimientoData.descripcion,
+        tipo: emprendimientoData.tipo,
+        direccion: emprendimientoData.direccion,
+        coordenadas: emprendimientoData.coordenadas,
+        contactoTelefono: emprendimientoData.contactoTelefono,
+        contactoEmail: emprendimientoData.contactoEmail,
+        sitioWeb: emprendimientoData.sitioWeb,
+        redesSociales: emprendimientoData.redesSociales,
+        estado: emprendimientoData.estado || 'pendiente',
+        fechaAprobacion: emprendimientoData.fechaAprobacion,
       },
     });
 
-    if (imagenes && imagenes.length > 0) {
-      await this.prisma.image.createMany({
-        data: imagenes.map(img => ({
-          url: img.url,
-          imageableId: emprendimiento.id,
-          imageableType: 'Emprendimiento',
-        })),
-      });
+    // Crear las imágenes si existen
+    if (files && files.length > 0) {
+      for (const file of files) {
+        // Subir la imagen a Supabase
+        const imageUrl = await this.supabaseService.uploadFile(
+          file,
+          this.IMAGEABLE_TYPE,
+          emprendimiento.id
+        );
+
+        // Crear la imagen en la base de datos
+        const imagen = await this.prisma.image.create({
+          data: {
+            url: imageUrl
+          }
+        });
+
+        // Crear la relación imageable
+        await this.prisma.imageable.create({
+          data: {
+            image_id: imagen.id,
+            imageable_id: emprendimiento.id,
+            imageable_type: this.IMAGEABLE_TYPE
+          }
+        });
+      }
     }
 
     return this.findOne(emprendimiento.id);
@@ -36,21 +71,30 @@ export class EmprendimientosService {
       include: {
         usuario: {
           include: {
-            persona: true,
-          },
-        },
-      },
+            persona: true
+          }
+        }
+      }
     });
     
     const emprendimientosWithImages = await Promise.all(
       emprendimientos.map(async (emprendimiento) => {
-        const imagenes = await this.prisma.image.findMany({
+        const imageables = await this.prisma.imageable.findMany({
           where: {
-            imageableId: emprendimiento.id,
-            imageableType: 'Emprendimiento',
+            imageable_type: this.IMAGEABLE_TYPE,
+            imageable_id: emprendimiento.id,
           },
+          include: {
+            image: true
+          }
         });
-        return { ...emprendimiento, imagenes };
+        return { 
+          ...emprendimiento, 
+          imagenes: imageables.map(imageable => ({
+            id: imageable.image.id,
+            url: imageable.image.url
+          }))
+        };
       })
     );
 
@@ -63,64 +107,149 @@ export class EmprendimientosService {
       include: {
         usuario: {
           include: {
-            persona: true,
-          },
-        },
-      },
+            persona: true
+          }
+        }
+      }
     });
 
     if (!emprendimiento) {
       return null;
     }
 
-    const imagenes = await this.prisma.image.findMany({
+    const imageables = await this.prisma.imageable.findMany({
       where: {
-        imageableId: emprendimiento.id,
-        imageableType: 'Emprendimiento',
+        imageable_type: this.IMAGEABLE_TYPE,
+        imageable_id: emprendimiento.id,
       },
+      include: {
+        image: true
+      }
     });
 
-    return { ...emprendimiento, imagenes };
+    return { 
+      ...emprendimiento, 
+      imagenes: imageables.map(imageable => ({
+        id: imageable.image.id,
+        url: imageable.image.url
+      }))
+    };
   }
 
   async findByUsuario(usuarioId: number) {
-    return this.prisma.emprendimiento.findMany({
+    const emprendimientos = await this.prisma.emprendimiento.findMany({
       where: { usuarioId },
       include: {
         usuario: {
           include: {
-            persona: true,
-          },
-        },
-      },
+            persona: true
+          }
+        }
+      }
     });
+
+    const emprendimientosWithImages = await Promise.all(
+      emprendimientos.map(async (emprendimiento) => {
+        const imageables = await this.prisma.imageable.findMany({
+          where: {
+            imageable_type: this.IMAGEABLE_TYPE,
+            imageable_id: emprendimiento.id,
+          },
+          include: {
+            image: true
+          }
+        });
+        return { 
+          ...emprendimiento, 
+          imagenes: imageables.map(imageable => ({
+            id: imageable.image.id,
+            url: imageable.image.url
+          }))
+        };
+      })
+    );
+
+    return emprendimientosWithImages;
   }
 
-  async update(id: number, updateEmprendimientoDto: UpdateEmprendimientoDto) {
+  async update(id: number, updateEmprendimientoDto: UpdateEmprendimientoDto, files?: Express.Multer.File[]) {
     const { imagenes, ...emprendimientoData } = updateEmprendimientoDto;
 
     // Actualizar datos del emprendimiento
-    const emprendimiento = await this.prisma.emprendimiento.update({
+    await this.prisma.emprendimiento.update({
       where: { id },
-      data: emprendimientoData,
+      data: {
+        nombre: emprendimientoData.nombre,
+        descripcion: emprendimientoData.descripcion,
+        tipo: emprendimientoData.tipo,
+        direccion: emprendimientoData.direccion,
+        coordenadas: emprendimientoData.coordenadas,
+        contactoTelefono: emprendimientoData.contactoTelefono,
+        contactoEmail: emprendimientoData.contactoEmail,
+        sitioWeb: emprendimientoData.sitioWeb,
+        redesSociales: emprendimientoData.redesSociales,
+        estado: emprendimientoData.estado,
+        fechaAprobacion: emprendimientoData.fechaAprobacion,
+      },
     });
 
     // Si hay nuevas imágenes, eliminar las antiguas y crear las nuevas
-    if (imagenes) {
-      await this.prisma.image.deleteMany({
+    if (files && files.length > 0) {
+      // Obtener las relaciones imageables existentes
+      const imageables = await this.prisma.imageable.findMany({
         where: {
-          imageableId: id,
-          imageableType: 'Emprendimiento',
+          imageable_type: this.IMAGEABLE_TYPE,
+          imageable_id: id,
         },
+        include: {
+          image: true
+        }
       });
 
-      if (imagenes.length > 0) {
-        await this.prisma.image.createMany({
-          data: imagenes.map(img => ({
-            url: img.url,
-            imageableId: id,
-            imageableType: 'Emprendimiento',
-          })),
+      // Eliminar las relaciones y las imágenes
+      for (const imageable of imageables) {
+        // Extraer el nombre del archivo de la URL
+        const fileName = imageable.image.url.split('/').pop();
+        
+        // Eliminar el archivo de Supabase
+        await this.supabaseService.deleteFile(
+          this.IMAGEABLE_TYPE,
+          id,
+          fileName
+        );
+
+        // Eliminar la relación y la imagen de la base de datos
+        await this.prisma.imageable.delete({
+          where: { id: imageable.id }
+        });
+        await this.prisma.image.delete({
+          where: { id: imageable.image.id }
+        });
+      }
+
+      // Crear las nuevas imágenes y relaciones
+      for (const file of files) {
+        // Subir la nueva imagen a Supabase
+        const imageUrl = await this.supabaseService.uploadFile(
+          file,
+          this.IMAGEABLE_TYPE,
+          id
+        );
+
+        // Crear la imagen en la base de datos
+        const imagen = await this.prisma.image.create({
+          data: {
+            url: imageUrl
+          }
+        });
+
+        // Crear la relación imageable
+        await this.prisma.imageable.create({
+          data: {
+            image_id: imagen.id,
+            imageable_id: id,
+            imageable_type: this.IMAGEABLE_TYPE
+          }
         });
       }
     }
@@ -129,13 +258,37 @@ export class EmprendimientosService {
   }
 
   async remove(id: number) {
-    // Eliminar imágenes asociadas
-    await this.prisma.image.deleteMany({
+    // Obtener las relaciones imageables
+    const imageables = await this.prisma.imageable.findMany({
       where: {
-        imageableId: id,
-        imageableType: 'Emprendimiento',
+        imageable_type: this.IMAGEABLE_TYPE,
+        imageable_id: id,
       },
+      include: {
+        image: true
+      }
     });
+
+    // Eliminar las relaciones y las imágenes
+    for (const imageable of imageables) {
+      // Extraer el nombre del archivo de la URL
+      const fileName = imageable.image.url.split('/').pop();
+      
+      // Eliminar el archivo de Supabase
+      await this.supabaseService.deleteFile(
+        this.IMAGEABLE_TYPE,
+        id,
+        fileName
+      );
+
+      // Eliminar la relación y la imagen de la base de datos
+      await this.prisma.imageable.delete({
+        where: { id: imageable.id }
+      });
+      await this.prisma.image.delete({
+        where: { id: imageable.image.id }
+      });
+    }
 
     // Eliminar el emprendimiento
     return this.prisma.emprendimiento.delete({

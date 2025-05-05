@@ -12,7 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateUserDto = void 0;
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
-class UpdateUserDto {
+const create_user_dto_1 = require("./create-user.dto");
+class UpdateUserDto extends (0, swagger_1.PartialType)(create_user_dto_1.CreateUserDto) {
 }
 exports.UpdateUserDto = UpdateUserDto;
 __decorate([

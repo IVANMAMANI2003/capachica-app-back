@@ -1,131 +1,126 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
+import { SupabaseService } from '../../supabase/supabase.service';
 import { CreateServicioDto } from '../dto/create-servicio.dto';
 import { UpdateServicioDto } from '../dto/update-servicio.dto';
 import { CreateServicioDisponibilidadDto } from '../dto/create-servicio-disponibilidad.dto';
 
 @Injectable()
 export class ServiciosService {
+  private readonly IMAGEABLE_TYPE = 'Servicio';
+
   constructor(
     private prisma: PrismaService,
+    private supabaseService: SupabaseService
   ) {}
 
-  async create(emprendimientoId: number, createServicioDto: CreateServicioDto) {
-    try {
-      // Verificar si existe el tipo de servicio
-      const tipoServicio = await this.prisma.tipoServicio.findUnique({
-        where: { id: createServicioDto.tipoServicioId },
-      });
+  async create(createServicioDto: CreateServicioDto, files?: Express.Multer.File[]) {
+    const { imagenes, ...servicioData } = createServicioDto;
+    
+    // Crear el servicio
+    const servicio = await this.prisma.servicio.create({
+      data: {
+        tipoServicioId: servicioData.tipoServicioId,
+        nombre: servicioData.nombre,
+        descripcion: servicioData.descripcion,
+        precioBase: servicioData.precioBase,
+        moneda: servicioData.moneda || 'PEN',
+        estado: servicioData.estado || 'activo',
+        detallesServicio: servicioData.detallesServicio || {},
+      },
+    });
 
-      if (!tipoServicio) {
-        throw new NotFoundException(`Tipo de servicio con ID ${createServicioDto.tipoServicioId} no encontrado`);
-      }
+    // Crear las imágenes si existen
+    if (files && files.length > 0) {
+      for (const file of files) {
+        // Subir la imagen a Supabase
+        const imageUrl = await this.supabaseService.uploadFile(
+          file,
+          this.IMAGEABLE_TYPE,
+          servicio.id
+        );
 
-      // Crear el servicio
-      const servicio = await this.prisma.servicio.create({
-        data: {
-          tipoServicioId: createServicioDto.tipoServicioId,
-          nombre: createServicioDto.nombre,
-          descripcion: createServicioDto.descripcion,
-          precioBase: createServicioDto.precioBase,
-          moneda: createServicioDto.moneda,
-          estado: createServicioDto.estado || 'activo',
-          detallesServicio: createServicioDto.detallesServicio || '{}',
-          serviciosEmprendedores: {
-            create: {
-              emprendimientoId,
-            },
-          },
-        },
-        include: {
-          tipoServicio: true,
-          serviciosEmprendedores: {
-            include: {
-              emprendimiento: true,
-            },
-          },
-        },
-      });
-
-      // Crear las imágenes si existen
-      if (createServicioDto.imagenes && createServicioDto.imagenes.length > 0) {
-        const imagenesPromises = createServicioDto.imagenes.map(async (imagen) => {
-          return this.prisma.image.create({
-            data: {
-              url: imagen.url,
-              imageableId: servicio.id,
-              imageableType: 'Servicio',
-            },
-          });
+        // Crear la imagen en la base de datos
+        const imagen = await this.prisma.image.create({
+          data: {
+            url: imageUrl
+          }
         });
 
-        await Promise.all(imagenesPromises);
+        // Crear la relación imageable
+        await this.prisma.imageable.create({
+          data: {
+            image_id: imagen.id,
+            imageable_id: servicio.id,
+            imageable_type: this.IMAGEABLE_TYPE
+          }
+        });
       }
-
-      // Obtener el servicio con sus imágenes
-      const servicioConImagenes = await this.prisma.servicio.findUnique({
-        where: { id: servicio.id },
-        include: {
-          tipoServicio: true,
-          serviciosEmprendedores: {
-            include: {
-              emprendimiento: true,
-            },
-          },
-        },
-      });
-
-      // Obtener las imágenes asociadas
-      const imagenes = await this.prisma.image.findMany({
-        where: {
-          imageableId: servicio.id,
-          imageableType: 'Servicio',
-        },
-      });
-
-      return {
-        ...servicioConImagenes,
-        imagenes,
-      };
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-      throw new BadRequestException('Error al crear el servicio: ' + error.message);
     }
+
+    return this.findOne(servicio.id);
   }
 
   async findAll() {
-    return this.prisma.servicio.findMany({
+    const servicios = await this.prisma.servicio.findMany({
       include: {
-        tipoServicio: true,
-        serviciosEmprendedores: {
-          include: {
-            emprendimiento: true,
-          },
-        },
-      },
+        tipoServicio: true
+      }
     });
+    
+    const serviciosWithImages = await Promise.all(
+      servicios.map(async (servicio) => {
+        const imageables = await this.prisma.imageable.findMany({
+          where: {
+            imageable_type: this.IMAGEABLE_TYPE,
+            imageable_id: servicio.id,
+          },
+          include: {
+            image: true
+          }
+        });
+        return { 
+          ...servicio, 
+          imagenes: imageables.map(imageable => ({
+            id: imageable.image.id,
+            url: imageable.image.url
+          }))
+        };
+      })
+    );
+
+    return serviciosWithImages;
   }
 
   async findOne(id: number) {
     const servicio = await this.prisma.servicio.findUnique({
       where: { id },
       include: {
-        tipoServicio: true,
-        serviciosEmprendedores: {
-          include: {
-            emprendimiento: true,
-          },
-        },
-      },
+        tipoServicio: true
+      }
     });
 
     if (!servicio) {
-      throw new NotFoundException(`Servicio con ID ${id} no encontrado`);
+      return null;
     }
 
-    return servicio;
+    const imageables = await this.prisma.imageable.findMany({
+      where: {
+        imageable_type: this.IMAGEABLE_TYPE,
+        imageable_id: servicio.id,
+      },
+      include: {
+        image: true
+      }
+    });
+
+    return { 
+      ...servicio, 
+      imagenes: imageables.map(imageable => ({
+        id: imageable.image.id,
+        url: imageable.image.url
+      }))
+    };
   }
 
   async findByEmprendimiento(emprendimientoId: number) {
@@ -148,44 +143,124 @@ export class ServiciosService {
     });
   }
 
-  async update(id: number, updateServicioDto: UpdateServicioDto) {
-    try {
-      // Verificar si existe el tipo de servicio si se proporciona
-      if (updateServicioDto.tipoServicioId) {
-        const tipoServicio = await this.prisma.tipoServicio.findUnique({
-          where: { id: updateServicioDto.tipoServicioId },
-        });
+  async update(id: number, updateServicioDto: UpdateServicioDto, files?: Express.Multer.File[]) {
+    const { imagenes, ...servicioData } = updateServicioDto;
 
-        if (!tipoServicio) {
-          throw new NotFoundException(`Tipo de servicio con ID ${updateServicioDto.tipoServicioId} no encontrado`);
+    // Actualizar datos del servicio
+    await this.prisma.servicio.update({
+      where: { id },
+      data: {
+        tipoServicioId: servicioData.tipoServicioId,
+        nombre: servicioData.nombre,
+        descripcion: servicioData.descripcion,
+        precioBase: servicioData.precioBase,
+        moneda: servicioData.moneda,
+        estado: servicioData.estado,
+        detallesServicio: servicioData.detallesServicio,
+      },
+    });
+
+    // Si hay nuevas imágenes, eliminar las antiguas y crear las nuevas
+    if (files && files.length > 0) {
+      // Obtener las relaciones imageables existentes
+      const imageables = await this.prisma.imageable.findMany({
+        where: {
+          imageable_type: this.IMAGEABLE_TYPE,
+          imageable_id: id,
+        },
+        include: {
+          image: true
         }
+      });
+
+      // Eliminar las relaciones y las imágenes
+      for (const imageable of imageables) {
+        // Extraer el nombre del archivo de la URL
+        const fileName = imageable.image.url.split('/').pop();
+        
+        // Eliminar el archivo de Supabase
+        await this.supabaseService.deleteFile(
+          this.IMAGEABLE_TYPE,
+          id,
+          fileName
+        );
+
+        // Eliminar la relación y la imagen de la base de datos
+        await this.prisma.imageable.delete({
+          where: { id: imageable.id }
+        });
+        await this.prisma.image.delete({
+          where: { id: imageable.image.id }
+        });
       }
 
-      return await this.prisma.servicio.update({
-        where: { id },
-        data: updateServicioDto,
-        include: {
-          tipoServicio: true,
-          serviciosEmprendedores: {
-            include: {
-              emprendimiento: true,
-            },
-          },
-        },
-      });
-    } catch (error) {
-      throw new NotFoundException(`Servicio con ID ${id} no encontrado`);
+      // Crear las nuevas imágenes y relaciones
+      for (const file of files) {
+        // Subir la nueva imagen a Supabase
+        const imageUrl = await this.supabaseService.uploadFile(
+          file,
+          this.IMAGEABLE_TYPE,
+          id
+        );
+
+        // Crear la imagen en la base de datos
+        const imagen = await this.prisma.image.create({
+          data: {
+            url: imageUrl
+          }
+        });
+
+        // Crear la relación imageable
+        await this.prisma.imageable.create({
+          data: {
+            image_id: imagen.id,
+            imageable_id: id,
+            imageable_type: this.IMAGEABLE_TYPE
+          }
+        });
+      }
     }
+
+    return this.findOne(id);
   }
 
   async remove(id: number) {
-    try {
-      return await this.prisma.servicio.delete({
-        where: { id },
+    // Obtener las relaciones imageables
+    const imageables = await this.prisma.imageable.findMany({
+      where: {
+        imageable_type: this.IMAGEABLE_TYPE,
+        imageable_id: id,
+      },
+      include: {
+        image: true
+      }
+    });
+
+    // Eliminar las relaciones y las imágenes
+    for (const imageable of imageables) {
+      // Extraer el nombre del archivo de la URL
+      const fileName = imageable.image.url.split('/').pop();
+      
+      // Eliminar el archivo de Supabase
+      await this.supabaseService.deleteFile(
+        this.IMAGEABLE_TYPE,
+        id,
+        fileName
+      );
+
+      // Eliminar la relación y la imagen de la base de datos
+      await this.prisma.imageable.delete({
+        where: { id: imageable.id }
       });
-    } catch (error) {
-      throw new NotFoundException(`Servicio con ID ${id} no encontrado`);
+      await this.prisma.image.delete({
+        where: { id: imageable.image.id }
+      });
     }
+
+    // Eliminar el servicio
+    return this.prisma.servicio.delete({
+      where: { id },
+    });
   }
 
   async updateEstado(id: number, estado: string) {
@@ -289,5 +364,37 @@ export class ServiciosService {
     }
 
     return disponibilidad;
+  }
+
+  async findByTipoServicio(tipoServicioId: number) {
+    const servicios = await this.prisma.servicio.findMany({
+      where: { tipoServicioId },
+      include: {
+        tipoServicio: true
+      }
+    });
+    
+    const serviciosWithImages = await Promise.all(
+      servicios.map(async (servicio) => {
+        const imageables = await this.prisma.imageable.findMany({
+          where: {
+            imageable_type: this.IMAGEABLE_TYPE,
+            imageable_id: servicio.id,
+          },
+          include: {
+            image: true
+          }
+        });
+        return { 
+          ...servicio, 
+          imagenes: imageables.map(imageable => ({
+            id: imageable.image.id,
+            url: imageable.image.url
+          }))
+        };
+      })
+    );
+
+    return serviciosWithImages;
   }
 } 

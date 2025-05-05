@@ -1,11 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsOptional, IsNumber, IsEnum, IsArray, MaxLength } from 'class-validator';
-import { EstadoPaquete } from '../enums/estado-paquete.enum';
+import { IsString, IsNotEmpty, IsOptional, IsNumber, IsEnum, IsArray, Min } from 'class-validator';
+import { Type } from 'class-transformer';
 
 class ImageDto {
   @ApiProperty({
     description: 'URL de la imagen',
-    example: 'https://example.com/imagen.jpg',
+    example: 'https://example.com/image.jpg',
     required: true,
   })
   @IsString()
@@ -15,19 +15,26 @@ class ImageDto {
 
 export class CreatePaqueteTuristicoDto {
   @ApiProperty({
-    description: 'Nombre del paquete turístico',
-    example: 'Turismo vivencial',
+    description: 'ID del emprendimiento',
+    example: 1,
     required: true,
-    maxLength: 200,
+  })
+  @IsNumber()
+  @IsNotEmpty()
+  emprendimientoId: number;
+
+  @ApiProperty({
+    description: 'Nombre del paquete turístico',
+    example: 'Tour por la isla de Capachica',
+    required: true,
   })
   @IsString()
   @IsNotEmpty()
-  @MaxLength(200)
   nombre: string;
 
   @ApiProperty({
     description: 'Descripción del paquete turístico',
-    example: 'Tour completo por los principales atractivos de Capachica',
+    example: 'Recorrido completo por los principales atractivos de la isla',
     required: true,
   })
   @IsString()
@@ -40,35 +47,36 @@ export class CreatePaqueteTuristicoDto {
     required: true,
   })
   @IsNumber()
+  @Min(0)
   @IsNotEmpty()
   precio: number;
 
   @ApiProperty({
     description: 'Estado del paquete turístico',
-    example: 'ACTIVO',
-    enum: EstadoPaquete,
-    default: EstadoPaquete.ACTIVO,
-    required: true,
+    example: 'activo',
+    default: 'activo',
+    required: false,
   })
-  @IsEnum(EstadoPaquete)
-  @IsNotEmpty()
-  estado: EstadoPaquete;
+  @IsString()
+  @IsOptional()
+  @IsEnum(['activo', 'inactivo'])
+  estado?: string = 'activo';
 
   @ApiProperty({
-    description: 'ID del emprendimiento al que pertenece el paquete',
-    example: 1,
-    required: true,
-  })
-  @IsNumber()
-  @IsNotEmpty()
-  emprendimientoId: number;
-
-  @ApiProperty({ 
-    description: 'Imágenes del paquete turístico', 
+    description: 'IDs de los servicios incluidos en el paquete',
+    type: [Number],
     required: false,
-    type: [ImageDto]
   })
   @IsArray()
+  @IsOptional()
+  @IsNumber({}, { each: true })
+  servicios?: number[];
+
+  @ApiProperty({
+    description: 'Lista de imágenes del paquete turístico',
+    type: [ImageDto],
+    required: false,
+  })
   @IsOptional()
   imagenes?: ImageDto[];
 } 

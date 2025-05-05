@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
 import { LugaresTuristicosService } from './lugares-turisticos.service';
 import { LugaresTuristicosController } from './lugares-turisticos.controller';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaModule } from '../prisma/prisma.module';
+import { SupabaseModule } from '../supabase/supabase.module';
 
 @Module({
+  imports: [PrismaModule, SupabaseModule],
   controllers: [LugaresTuristicosController],
-  providers: [LugaresTuristicosService, PrismaService],
-  exports: [LugaresTuristicosService],
+  providers: [LugaresTuristicosService],
+  exports: [LugaresTuristicosService]
 })
 export class LugaresTuristicosModule {} 

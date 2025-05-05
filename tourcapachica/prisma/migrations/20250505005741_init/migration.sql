@@ -143,6 +143,7 @@ CREATE TABLE "tokens_invalidados" (
     "expira_en" TIMESTAMP(3) NOT NULL,
     "metadata" JSONB NOT NULL DEFAULT '{}',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "tokens_invalidados_pkey" PRIMARY KEY ("id")
 );
@@ -224,6 +225,8 @@ CREATE TABLE "servicios_paquetes" (
     "paqueteTuristicoId" INTEGER NOT NULL,
     "servicioId" INTEGER NOT NULL,
     "orden" INTEGER NOT NULL DEFAULT 0,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "servicios_paquetes_pkey" PRIMARY KEY ("id")
 );
@@ -252,6 +255,7 @@ CREATE TABLE "tipos_servicio" (
     "descripcion" TEXT,
     "requiere_cupo" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "tipos_servicio_pkey" PRIMARY KEY ("id")
 );
@@ -263,6 +267,8 @@ CREATE TABLE "servicios_disponibilidad" (
     "fecha" DATE NOT NULL,
     "cupos_disponibles" INTEGER NOT NULL,
     "precio_especial" DECIMAL(10,2),
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "servicios_disponibilidad_pkey" PRIMARY KEY ("id")
 );
@@ -291,6 +297,7 @@ CREATE TABLE "favoritos" (
     "emprendimiento_id" INTEGER NOT NULL,
     "usuario_id" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "favoritos_pkey" PRIMARY KEY ("id")
 );
@@ -439,19 +446,29 @@ CREATE TABLE "tours" (
 CREATE TABLE "images" (
     "id" SERIAL NOT NULL,
     "url" TEXT NOT NULL,
-    "imageableId" INTEGER NOT NULL,
-    "imageableType" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "images_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "imageables" (
+    "id" SERIAL NOT NULL,
+    "image_id" INTEGER NOT NULL,
+    "imageable_id" INTEGER NOT NULL,
+    "imageable_type" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "imageables_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "sliders" (
     "id" SERIAL NOT NULL,
     "nombre" VARCHAR(100) NOT NULL,
-    "descripcion" TEXT,
+    "description" TEXT,
     "estado" VARCHAR(20) NOT NULL DEFAULT 'activo',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -531,7 +548,7 @@ CREATE UNIQUE INDEX "comprobantes_pago_id_key" ON "comprobantes"("pago_id");
 CREATE UNIQUE INDEX "comprobantes_serie_numero_key" ON "comprobantes"("serie", "numero");
 
 -- CreateIndex
-CREATE INDEX "images_imageableId_imageableType_idx" ON "images"("imageableId", "imageableType");
+CREATE INDEX "imageables_imageable_id_imageable_type_idx" ON "imageables"("imageable_id", "imageable_type");
 
 -- CreateIndex
 CREATE INDEX "_TourToTurista_B_index" ON "_TourToTurista"("B");
@@ -631,6 +648,9 @@ ALTER TABLE "comprobantes" ADD CONSTRAINT "comprobantes_pago_id_fkey" FOREIGN KE
 
 -- AddForeignKey
 ALTER TABLE "tours" ADD CONSTRAINT "tours_guide_id_fkey" FOREIGN KEY ("guide_id") REFERENCES "usuarios"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "imageables" ADD CONSTRAINT "imageables_image_id_fkey" FOREIGN KEY ("image_id") REFERENCES "images"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_TourToTurista" ADD CONSTRAINT "_TourToTurista_A_fkey" FOREIGN KEY ("A") REFERENCES "tours"("id") ON DELETE CASCADE ON UPDATE CASCADE;

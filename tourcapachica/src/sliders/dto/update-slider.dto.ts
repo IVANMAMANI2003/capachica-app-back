@@ -1,13 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { IsString, IsOptional, IsEnum, MaxLength, IsArray, IsNotEmpty } from 'class-validator';
+import { CreateSliderDto } from './create-slider.dto';
+import { ImageDto } from './create-slider.dto';
 
-class ImageDto {
-  @IsString()
-  @IsNotEmpty()
-  url: string;
-}
- 
-export class UpdateSliderDto {
+export class UpdateSliderDto extends PartialType(CreateSliderDto) {
   @ApiProperty({
     description: 'Nombre del slider',
     example: 'Banner Principal',

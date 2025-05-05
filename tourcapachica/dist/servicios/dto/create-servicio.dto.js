@@ -17,7 +17,7 @@ class ImageDto {
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'URL de la imagen',
-        example: 'https://example.com/imagen.jpg',
+        example: 'https://example.com/image.jpg',
         required: true,
     }),
     (0, class_validator_1.IsString)(),
@@ -26,8 +26,8 @@ __decorate([
 ], ImageDto.prototype, "url", void 0);
 class CreateServicioDto {
     constructor() {
+        this.moneda = 'PEN';
         this.estado = 'activo';
-        this.detallesServicio = '{}';
     }
 }
 exports.CreateServicioDto = CreateServicioDto;
@@ -44,19 +44,17 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Nombre del servicio',
-        example: 'Hotel Capachica',
+        example: 'Tour guiado por la isla',
         required: true,
-        maxLength: 200,
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.MaxLength)(200),
     __metadata("design:type", String)
 ], CreateServicioDto.prototype, "nombre", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Descripción del servicio',
-        example: 'Hotel con vista al lago Titicaca',
+        example: 'Tour guiado por los principales atractivos de la isla',
         required: false,
     }),
     (0, class_validator_1.IsString)(),
@@ -66,59 +64,54 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Precio base del servicio',
-        example: 100.50,
+        example: 50.00,
         required: true,
     }),
     (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.Min)(0),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
 ], CreateServicioDto.prototype, "precioBase", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Moneda del precio',
         example: 'PEN',
-        required: true,
-        maxLength: 3,
+        default: 'PEN',
+        required: false,
     }),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.MaxLength)(3),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsEnum)(['PEN', 'USD']),
     __metadata("design:type", String)
 ], CreateServicioDto.prototype, "moneda", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Estado del servicio',
         example: 'activo',
-        enum: ['activo', 'inactivo', 'pendiente'],
         default: 'activo',
         required: false,
-        maxLength: 20,
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsEnum)(['activo', 'inactivo', 'pendiente']),
-    (0, class_validator_1.MaxLength)(20),
+    (0, class_validator_1.IsEnum)(['activo', 'inactivo']),
     __metadata("design:type", String)
 ], CreateServicioDto.prototype, "estado", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Detalles del servicio en formato JSON',
-        example: '{"duracion": "12 horas", "incluye": ["camas", "papayas"]}',
+        description: 'Detalles adicionales del servicio',
+        example: { duracion: '2 horas', capacidad: 10 },
         required: false,
     }),
-    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsObject)(),
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsJSON)(),
-    __metadata("design:type", String)
+    __metadata("design:type", Object)
 ], CreateServicioDto.prototype, "detallesServicio", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Imágenes del servicio',
+        description: 'Lista de imágenes del servicio',
         type: [ImageDto],
         required: false,
     }),
-    (0, class_validator_1.IsArray)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Array)
 ], CreateServicioDto.prototype, "imagenes", void 0);

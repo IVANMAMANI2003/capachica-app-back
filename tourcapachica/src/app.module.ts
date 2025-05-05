@@ -7,7 +7,6 @@ import { EmprendimientosModule } from './emprendimientos/emprendimientos.module'
 import { LugaresTuristicosModule } from './lugares-turisticos/lugares-turisticos.module';
 import { ServiciosModule } from './servicios/servicios.module';
 import { PaquetesTuristicosModule } from './paquetes-turisticos/paquetes-turisticos.module';
-import { ImagesModule } from './images/images.module';
 import { SupabaseModule } from './supabase/supabase.module';
 import { PaymentsModule } from './payments/payments.module';
 import { ReservasModule } from './reservas/reservas.module';
@@ -16,6 +15,7 @@ import { RolesModule } from './roles/roles.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { PersonasModule } from './personas/personas.module';
 
 @Module({
   imports: [
@@ -25,6 +25,7 @@ import { AppService } from './app.service';
     PrismaModule,
     AuthModule,
     UsersModule,
+    PersonasModule,
     RolesModule,
     PermissionsModule,
     SlidersModule,
@@ -32,10 +33,10 @@ import { AppService } from './app.service';
     LugaresTuristicosModule,
     ServiciosModule,
     PaquetesTuristicosModule,
-    ImagesModule,
     SupabaseModule,
-    PaymentsModule,
     ReservasModule,
+    PaymentsModule,
+    
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -6,10 +6,12 @@ import { TiposServicioController } from './controllers/tipos-servicio.controller
 import { DisponibilidadService } from './services/disponibilidad.service';
 import { DisponibilidadController } from './controllers/disponibilidad.controller';
 import { PrismaModule } from '../prisma/prisma.module';
+import { SupabaseModule } from '../supabase/supabase.module';
 
 @Module({
   imports: [
     PrismaModule,
+    SupabaseModule,
   ],
   controllers: [
     ServiciosController,

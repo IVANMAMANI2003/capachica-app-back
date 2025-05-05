@@ -8,21 +8,15 @@ async function main() {
     // Limpiar la base de datos
     await prisma.$transaction([
       prisma.rolesPermisos.deleteMany(),
-      prisma.usuariosRoles.deleteMany(),
-      prisma.permiso.deleteMany(),
       prisma.role.deleteMany(),
+      prisma.permiso.deleteMany(),
       prisma.usuario.deleteMany(),
       prisma.persona.deleteMany(),
       prisma.subdivision.deleteMany(),
       prisma.country.deleteMany(),
+      prisma.imageable.deleteMany(),
       prisma.image.deleteMany(),
-      prisma.servicioPaquete.deleteMany(),
-      prisma.paqueteTuristico.deleteMany(),
-      prisma.servicio.deleteMany(),
-      prisma.lugarTuristico.deleteMany(),
-      prisma.emprendimiento.deleteMany(),
       prisma.slider.deleteMany(),
-      prisma.tipoServicio.deleteMany(),
     ]);
 
     // Crear roles
@@ -155,7 +149,7 @@ async function main() {
       throw new Error('No se pudo encontrar la subdivisión de Lima');
     }
 
-    // Crear usuarios
+    // Crear usuarios con fotos de perfil
     const hashedPassword = await bcrypt.hash('password123', 10);
 
     const superAdminPersona = await prisma.persona.create({
@@ -165,6 +159,7 @@ async function main() {
         telefono: '999999999',
         direccion: 'Av. Principal 123',
         subdivisionId: lima.id,
+        fotoPerfilUrl: 'https://example.com/images/admin-profile.jpg'
       },
     });
 
@@ -175,6 +170,7 @@ async function main() {
         telefono: '987654321',
         direccion: 'Av. Comercial 456',
         subdivisionId: lima.id,
+        fotoPerfilUrl: 'https://example.com/images/emprendedor-profile.jpg'
       },
     });
 
@@ -185,6 +181,7 @@ async function main() {
         telefono: '987123456',
         direccion: 'Av. Usuario 789',
         subdivisionId: lima.id,
+        fotoPerfilUrl: 'https://example.com/images/user-profile.jpg'
       },
     });
 
@@ -218,26 +215,48 @@ async function main() {
       },
     });
 
-    // Asignar roles a usuarios
+    // Crear imágenes para los usuarios
+    const userImages = await Promise.all([
+      prisma.image.create({
+        data: {
+          url: 'https://example.com/images/admin-profile.jpg'
+        }
+      }),
+      prisma.image.create({
+        data: {
+          url: 'https://example.com/images/emprendedor-profile.jpg'
+        }
+      }),
+      prisma.image.create({
+        data: {
+          url: 'https://example.com/images/user-profile.jpg'
+        }
+      })
+    ]);
+
+    // Crear relaciones imageables para los usuarios
     await Promise.all([
-      prisma.usuariosRoles.create({
+      prisma.imageable.create({
         data: {
-          usuarioId: superAdmin.id,
-          rolId: superAdminRole.id,
-        },
+          image_id: userImages[0].id,
+          imageable_id: superAdmin.id,
+          imageable_type: 'Usuario'
+        }
       }),
-      prisma.usuariosRoles.create({
+      prisma.imageable.create({
         data: {
-          usuarioId: emprendedor.id,
-          rolId: emprendedorRole.id,
-        },
+          image_id: userImages[1].id,
+          imageable_id: emprendedor.id,
+          imageable_type: 'Usuario'
+        }
       }),
-      prisma.usuariosRoles.create({
+      prisma.imageable.create({
         data: {
-          usuarioId: user.id,
-          rolId: userRole.id,
-        },
-      }),
+          image_id: userImages[2].id,
+          imageable_id: user.id,
+          imageable_type: 'Usuario'
+        }
+      })
     ]);
 
     // Crear tipos de servicio
@@ -288,7 +307,7 @@ async function main() {
       },
     });
 
-    // Crear servicios
+    // Crear servicios con imágenes
     const servicios = await Promise.all([
       prisma.servicio.create({
         data: {
@@ -334,7 +353,51 @@ async function main() {
       }),
     ]);
 
-    // Crear paquete turístico
+    // Crear imágenes para los servicios
+    const servicioImages = await Promise.all([
+      prisma.image.create({
+        data: {
+          url: 'https://example.com/images/transporte-islas-uros.jpg'
+        }
+      }),
+      prisma.image.create({
+        data: {
+          url: 'https://example.com/images/hospedaje-capachica.jpg'
+        }
+      }),
+      prisma.image.create({
+        data: {
+          url: 'https://example.com/images/guia-turistico.jpg'
+        }
+      })
+    ]);
+
+    // Crear relaciones imageables para los servicios
+    await Promise.all([
+      prisma.imageable.create({
+        data: {
+          image_id: servicioImages[0].id,
+          imageable_id: servicios[0].id,
+          imageable_type: 'Servicio'
+        }
+      }),
+      prisma.imageable.create({
+        data: {
+          image_id: servicioImages[1].id,
+          imageable_id: servicios[1].id,
+          imageable_type: 'Servicio'
+        }
+      }),
+      prisma.imageable.create({
+        data: {
+          image_id: servicioImages[2].id,
+          imageable_id: servicios[2].id,
+          imageable_type: 'Servicio'
+        }
+      })
+    ]);
+
+    // Crear paquete turístico con imágenes
     const paquete = await prisma.paqueteTuristico.create({
       data: {
         nombre: 'Tour Completo Capachica',
@@ -361,112 +424,119 @@ async function main() {
       },
     });
 
-    // Crear disponibilidades
-    await Promise.all([
-      prisma.disponibilidadPaquete.create({
+    // Crear imágenes para el paquete turístico
+    const paqueteImages = await Promise.all([
+      prisma.image.create({
         data: {
-          paqueteId: paquete.id,
-          fechaInicio: new Date('2024-06-01'),
-          fechaFin: new Date('2024-06-30'),
-          cuposDisponibles: 20,
-          cuposMaximos: 20,
-          precioEspecial: 180.00,
-          estado: 'activo',
-        },
-      }),
-      prisma.disponibilidadPaquete.create({
-        data: {
-          paqueteId: paquete.id,
-          fechaInicio: new Date('2024-07-01'),
-          fechaFin: new Date('2024-07-31'),
-          cuposDisponibles: 20,
-          cuposMaximos: 20,
-          precioEspecial: 190.00,
-          estado: 'activo',
-        },
-      }),
-    ]);
-
-    // Crear turista
-    const turistaEntity = await prisma.turista.create({
-      data: {
-        usuario: {
-          connect: {
-            id: user.id
-          }
+          url: 'https://example.com/images/tour-capachica-1.jpg'
         }
-      },
-    });
-
-    // Crear reseñas
-    await Promise.all([
-      prisma.resena.create({
-        data: {
-          usuarioId: user.id,
-          tipoObjeto: 'PAQUETE_TURISTICO',
-          calificacion: 5,
-          comentario: 'Excelente experiencia, muy recomendado',
-          estado: 'aprobado',
-        },
       }),
-      prisma.resena.create({
+      prisma.image.create({
         data: {
-          usuarioId: user.id,
-          tipoObjeto: 'SERVICIO',
-          calificacion: 4,
-          comentario: 'Buen servicio de transporte',
-          estado: 'aprobado',
-        },
+          url: 'https://example.com/images/tour-capachica-2.jpg'
+        }
       }),
+      prisma.image.create({
+        data: {
+          url: 'https://example.com/images/tour-capachica-3.jpg'
+        }
+      })
     ]);
 
-    // Crear reserva
-    await prisma.reserva.create({
+    // Crear relaciones imageables para el paquete
+    await Promise.all(
+      paqueteImages.map(image =>
+        prisma.imageable.create({
+          data: {
+            image_id: image.id,
+            imageable_id: paquete.id,
+            imageable_type: 'PaqueteTuristico'
+          }
+        })
+      )
+    );
+
+    // Crear imágenes de ejemplo para lugares turísticos
+    const lugares = await prisma.lugarTuristico.findMany();
+    for (const lugar of lugares) {
+      const imagenes = await Promise.all([
+        prisma.image.create({
+          data: {
+            url: `https://example.com/images/${lugar.nombre.toLowerCase().replace(/\s+/g, '-')}-1.jpg`
+          }
+        }),
+        prisma.image.create({
+          data: {
+            url: `https://example.com/images/${lugar.nombre.toLowerCase().replace(/\s+/g, '-')}-2.jpg`
+          }
+        }),
+        prisma.image.create({
+          data: {
+            url: `https://example.com/images/${lugar.nombre.toLowerCase().replace(/\s+/g, '-')}-3.jpg`
+          }
+        })
+      ]);
+
+      await Promise.all(
+        imagenes.map(imagen =>
+          prisma.imageable.create({
+            data: {
+              image_id: imagen.id,
+              imageable_id: lugar.id,
+              imageable_type: 'LugarTuristico'
+            }
+          })
+        )
+      );
+    }
+
+    // Crear slider de ejemplo con múltiples imágenes
+    const slider = await prisma.slider.create({
       data: {
-        turistaId: turistaEntity.id,
-        codigoReserva: 'RES-001',
-        tipoReserva: 'PAQUETE',
-        fechaReserva: new Date(),
-        fechaInicio: new Date('2024-06-15'),
-        hora: '08:00',
-        fechaFin: new Date('2024-06-16'),
-        cantidadPersonas: 2,
-        estado: 'confirmada',
-        precioTotal: 360.00,
-        moneda: 'PEN',
-        metodoPago: 'TARJETA',
-        itinerarios: {
-          create: [
-            {
-              fecha: new Date('2024-06-15'),
-              hora: new Date('2024-06-15T08:00:00'),
-              tipoEvento: 'TRANSPORTE',
-              descripcion: 'Transporte a Islas Uros',
-              servicioId: servicios[0].id,
-            },
-            {
-              fecha: new Date('2024-06-15'),
-              hora: new Date('2024-06-15T14:00:00'),
-              tipoEvento: 'ALOJAMIENTO',
-              descripcion: 'Check-in en cabañas',
-              servicioId: servicios[1].id,
-            },
-            {
-              fecha: new Date('2024-06-16'),
-              hora: new Date('2024-06-16T09:00:00'),
-              tipoEvento: 'GUIA',
-              descripcion: 'Tour guiado por Capachica',
-              servicioId: servicios[2].id,
-            },
-          ],
-        },
-      },
+        nombre: 'Banner Principal',
+        description: 'Banner promocional para la temporada de verano',
+        estado: 'activo'
+      }
     });
+
+    // Crear múltiples imágenes para el slider
+    const sliderImages = await Promise.all([
+      prisma.image.create({
+        data: {
+          url: 'https://example.com/images/banner-principal-1.jpg'
+        }
+      }),
+      prisma.image.create({
+        data: {
+          url: 'https://example.com/images/banner-principal-2.jpg'
+        }
+      }),
+      prisma.image.create({
+        data: {
+          url: 'https://example.com/images/banner-principal-3.jpg'
+        }
+      })
+    ]);
+
+    // Crear relaciones imageables para el slider
+    await Promise.all(
+      sliderImages.map(image =>
+        prisma.imageable.create({
+          data: {
+            image_id: image.id,
+            imageable_id: slider.id,
+            imageable_type: 'Slider'
+          }
+        })
+      )
+    );
 
     console.log('Seed completado exitosamente');
   } catch (error) {
     console.error('Error en el seed:', error);
     throw error;
+  } finally {
+    await prisma.$disconnect();
   }
 }
 

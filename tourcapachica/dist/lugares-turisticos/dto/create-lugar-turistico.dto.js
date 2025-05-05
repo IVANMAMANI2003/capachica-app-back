@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateLugarTuristicoDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
+const class_transformer_1 = require("class-transformer");
 class ImageDto {
 }
 __decorate([
@@ -98,29 +99,23 @@ __decorate([
 ], CreateLugarTuristicoDto.prototype, "esDestacado", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Horario de apertura en formato HH:mm',
-        example: '08:00',
+        description: 'Horario de apertura',
         required: false,
     }),
-    (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.Matches)(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, {
-        message: 'El horario debe estar en formato HH:mm',
-    }),
-    __metadata("design:type", String)
+    (0, class_validator_1.IsDate)(),
+    (0, class_transformer_1.Type)(() => Date),
+    __metadata("design:type", Date)
 ], CreateLugarTuristicoDto.prototype, "horarioApertura", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Horario de cierre en formato HH:mm',
-        example: '17:00',
+        description: 'Horario de cierre',
         required: false,
     }),
-    (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.Matches)(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, {
-        message: 'El horario debe estar en formato HH:mm',
-    }),
-    __metadata("design:type", String)
+    (0, class_validator_1.IsDate)(),
+    (0, class_transformer_1.Type)(() => Date),
+    __metadata("design:type", Date)
 ], CreateLugarTuristicoDto.prototype, "horarioCierre", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({

@@ -23,105 +23,248 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PaquetesTuristicosService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
+const supabase_service_1 = require("../supabase/supabase.service");
 let PaquetesTuristicosService = class PaquetesTuristicosService {
-    constructor(prisma) {
+    constructor(prisma, supabaseService) {
         this.prisma = prisma;
+        this.supabaseService = supabaseService;
+        this.IMAGEABLE_TYPE = 'PaqueteTuristico';
     }
-    async create(createPaqueteTuristicoDto) {
-        try {
-            const { imagenes } = createPaqueteTuristicoDto, paqueteData = __rest(createPaqueteTuristicoDto, ["imagenes"]);
-            const paquete = await this.prisma.paqueteTuristico.create({
-                data: Object.assign(Object.assign({}, paqueteData), { estado: paqueteData.estado.toLowerCase() }),
-                include: {
-                    servicios: {
-                        include: {
-                            servicio: true,
-                        },
-                    },
-                },
+    async create(createPaqueteTuristicoDto, files) {
+        const { imagenes, servicios } = createPaqueteTuristicoDto, paqueteData = __rest(createPaqueteTuristicoDto, ["imagenes", "servicios"]);
+        const paquete = await this.prisma.paqueteTuristico.create({
+            data: {
+                nombre: paqueteData.nombre,
+                descripcion: paqueteData.descripcion,
+                precio: paqueteData.precio,
+                estado: paqueteData.estado || 'activo',
+                emprendimientoId: paqueteData.emprendimientoId,
+            },
+        });
+        if (servicios && servicios.length > 0) {
+            await this.prisma.servicioPaquete.createMany({
+                data: servicios.map((servicioId, index) => ({
+                    paqueteTuristicoId: paquete.id,
+                    servicioId,
+                    orden: index + 1,
+                })),
             });
-            if (imagenes && imagenes.length > 0) {
-                const imagenesPromises = imagenes.map(async (imagen) => {
-                    return this.prisma.image.create({
-                        data: {
-                            url: imagen.url,
-                            imageableId: paquete.id,
-                            imageableType: 'PaqueteTuristico',
-                        },
-                    });
+        }
+        if (files && files.length > 0) {
+            for (const file of files) {
+                const imageUrl = await this.supabaseService.uploadFile(file, this.IMAGEABLE_TYPE, paquete.id);
+                const imagen = await this.prisma.image.create({
+                    data: {
+                        url: imageUrl
+                    }
                 });
-                await Promise.all(imagenesPromises);
+                await this.prisma.imageable.create({
+                    data: {
+                        image_id: imagen.id,
+                        imageable_id: paquete.id,
+                        imageable_type: this.IMAGEABLE_TYPE
+                    }
+                });
             }
-            const paqueteConImagenes = await this.prisma.paqueteTuristico.findUnique({
-                where: { id: paquete.id },
-                include: {
-                    servicios: {
-                        include: {
-                            servicio: true,
-                        },
-                    },
-                },
-            });
-            const imagenesAsociadas = await this.prisma.image.findMany({
-                where: {
-                    imageableId: paquete.id,
-                    imageableType: 'PaqueteTuristico',
-                },
-            });
-            return Object.assign(Object.assign({}, paqueteConImagenes), { imagenes: imagenesAsociadas });
         }
-        catch (error) {
-            throw new common_1.BadRequestException('Error al crear el paquete turístico: ' + error.message);
-        }
+        return this.findOne(paquete.id);
     }
     async findAll() {
-        return this.prisma.paqueteTuristico.findMany({
+        const paquetes = await this.prisma.paqueteTuristico.findMany({
             include: {
+                emprendimiento: true,
                 servicios: {
                     include: {
-                        servicio: true,
-                    },
-                },
-                disponibilidad: true,
-            },
+                        servicio: true
+                    }
+                }
+            }
         });
+        const paquetesWithImages = await Promise.all(paquetes.map(async (paquete) => {
+            const imageables = await this.prisma.imageable.findMany({
+                where: {
+                    imageable_type: this.IMAGEABLE_TYPE,
+                    imageable_id: paquete.id,
+                },
+                include: {
+                    image: true
+                }
+            });
+            return Object.assign(Object.assign({}, paquete), { imagenes: imageables.map(imageable => ({
+                    id: imageable.image.id,
+                    url: imageable.image.url
+                })) });
+        }));
+        return paquetesWithImages;
     }
     async findOne(id) {
-        const result = await this.prisma.paqueteTuristico.findUnique({
+        const paquete = await this.prisma.paqueteTuristico.findUnique({
             where: { id },
             include: {
+                emprendimiento: true,
                 servicios: {
                     include: {
-                        servicio: true,
-                    },
+                        servicio: true
+                    }
                 },
-                disponibilidad: true,
-            },
+                disponibilidad: true
+            }
         });
-        if (!result) {
-            throw new common_1.NotFoundException(`Paquete turístico con ID ${id} no encontrado`);
+        if (!paquete) {
+            return null;
         }
-        return result;
-    }
-    async update(id, updatePaqueteTuristicoDto) {
-        await this.findOne(id);
-        return this.prisma.paqueteTuristico.update({
-            where: { id },
-            data: updatePaqueteTuristicoDto,
+        const imageables = await this.prisma.imageable.findMany({
+            where: {
+                imageable_type: this.IMAGEABLE_TYPE,
+                imageable_id: paquete.id,
+            },
             include: {
+                image: true
+            }
+        });
+        return Object.assign(Object.assign({}, paquete), { imagenes: imageables.map(imageable => ({
+                id: imageable.image.id,
+                url: imageable.image.url
+            })) });
+    }
+    async findByEmprendimiento(emprendimientoId) {
+        const paquetes = await this.prisma.paqueteTuristico.findMany({
+            where: { emprendimientoId },
+            include: {
+                emprendimiento: true,
                 servicios: {
                     include: {
-                        servicio: true,
-                    },
+                        servicio: true
+                    }
                 },
+                disponibilidad: true
+            }
+        });
+        const paquetesWithImages = await Promise.all(paquetes.map(async (paquete) => {
+            const imageables = await this.prisma.imageable.findMany({
+                where: {
+                    imageable_type: this.IMAGEABLE_TYPE,
+                    imageable_id: paquete.id,
+                },
+                include: {
+                    image: true
+                }
+            });
+            return Object.assign(Object.assign({}, paquete), { imagenes: imageables.map(imageable => ({
+                    id: imageable.image.id,
+                    url: imageable.image.url
+                })) });
+        }));
+        return paquetesWithImages;
+    }
+    async update(id, updatePaqueteTuristicoDto, files) {
+        const { imagenes, servicios } = updatePaqueteTuristicoDto, paqueteData = __rest(updatePaqueteTuristicoDto, ["imagenes", "servicios"]);
+        await this.prisma.paqueteTuristico.update({
+            where: { id },
+            data: {
+                nombre: paqueteData.nombre,
+                descripcion: paqueteData.descripcion,
+                precio: paqueteData.precio,
+                estado: paqueteData.estado,
             },
         });
+        if (servicios) {
+            await this.prisma.servicioPaquete.deleteMany({
+                where: { paqueteTuristicoId: id },
+            });
+            if (servicios.length > 0) {
+                await this.prisma.servicioPaquete.createMany({
+                    data: servicios.map((servicioId, index) => ({
+                        paqueteTuristicoId: id,
+                        servicioId,
+                        orden: index + 1,
+                    })),
+                });
+            }
+        }
+        if (files && files.length > 0) {
+            const imageables = await this.prisma.imageable.findMany({
+                where: {
+                    imageable_type: this.IMAGEABLE_TYPE,
+                    imageable_id: id,
+                },
+                include: {
+                    image: true
+                }
+            });
+            for (const imageable of imageables) {
+                const fileName = imageable.image.url.split('/').pop();
+                await this.supabaseService.deleteFile(this.IMAGEABLE_TYPE, id, fileName);
+                await this.prisma.imageable.delete({
+                    where: { id: imageable.id }
+                });
+                await this.prisma.image.delete({
+                    where: { id: imageable.image.id }
+                });
+            }
+            for (const file of files) {
+                const imageUrl = await this.supabaseService.uploadFile(file, this.IMAGEABLE_TYPE, id);
+                const imagen = await this.prisma.image.create({
+                    data: {
+                        url: imageUrl
+                    }
+                });
+                await this.prisma.imageable.create({
+                    data: {
+                        image_id: imagen.id,
+                        imageable_id: id,
+                        imageable_type: this.IMAGEABLE_TYPE
+                    }
+                });
+            }
+        }
+        return this.findOne(id);
     }
     async remove(id) {
-        await this.findOne(id);
+        const imageables = await this.prisma.imageable.findMany({
+            where: {
+                imageable_type: this.IMAGEABLE_TYPE,
+                imageable_id: id,
+            },
+            include: {
+                image: true
+            }
+        });
+        for (const imageable of imageables) {
+            const fileName = imageable.image.url.split('/').pop();
+            await this.supabaseService.deleteFile(this.IMAGEABLE_TYPE, id, fileName);
+            await this.prisma.imageable.delete({
+                where: { id: imageable.id }
+            });
+            await this.prisma.image.delete({
+                where: { id: imageable.image.id }
+            });
+        }
         return this.prisma.paqueteTuristico.delete({
             where: { id },
         });
+    }
+    async updateEstado(id, estado) {
+        if (!['activo', 'inactivo'].includes(estado)) {
+            throw new common_1.BadRequestException('Estado inválido. Debe ser "activo" o "inactivo"');
+        }
+        try {
+            return await this.prisma.paqueteTuristico.update({
+                where: { id },
+                data: { estado },
+                include: {
+                    emprendimiento: true,
+                    servicios: {
+                        include: {
+                            servicio: true
+                        }
+                    }
+                },
+            });
+        }
+        catch (error) {
+            throw new common_1.NotFoundException(`Paquete turístico con ID ${id} no encontrado`);
+        }
     }
     async addServicios(id, addServiciosDto, userId) {
         const paquete = await this.findOne(id);
@@ -322,9 +465,22 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
         };
     }
     async createDisponibilidad(id, createDisponibilidadDto) {
-        await this.findOne(id);
+        const paquete = await this.prisma.paqueteTuristico.findUnique({
+            where: { id },
+        });
+        if (!paquete) {
+            throw new common_1.NotFoundException(`Paquete turístico con ID ${id} no encontrado`);
+        }
         return this.prisma.disponibilidadPaquete.create({
-            data: Object.assign(Object.assign({}, createDisponibilidadDto), { paqueteId: id }),
+            data: {
+                paqueteId: id,
+                fechaInicio: new Date(createDisponibilidadDto.fechaInicio),
+                fechaFin: new Date(createDisponibilidadDto.fechaFin),
+                cuposDisponibles: createDisponibilidadDto.cuposDisponibles,
+                cuposMaximos: createDisponibilidadDto.cuposMaximos,
+                precioEspecial: createDisponibilidadDto.precioEspecial,
+                notas: createDisponibilidadDto.notas,
+            },
         });
     }
     async getDisponibilidadesPaquete(id) {
@@ -335,14 +491,17 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
             },
         });
     }
-    async getDisponibilidad(id) {
-        const result = await this.prisma.disponibilidadPaquete.findUnique({
-            where: { id },
+    async getDisponibilidad(paqueteId) {
+        const paquete = await this.prisma.paqueteTuristico.findUnique({
+            where: { id: paqueteId },
         });
-        if (!result) {
-            throw new common_1.NotFoundException(`Disponibilidad con ID ${id} no encontrada`);
+        if (!paquete) {
+            throw new common_1.NotFoundException(`Paquete turístico con ID ${paqueteId} no encontrado`);
         }
-        return result;
+        return this.prisma.disponibilidadPaquete.findMany({
+            where: { paqueteId },
+            orderBy: { fechaInicio: 'asc' },
+        });
     }
     async updateDisponibilidad(id, updateDisponibilidadDto) {
         await this.getDisponibilidad(id);
@@ -361,6 +520,7 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
 exports.PaquetesTuristicosService = PaquetesTuristicosService;
 exports.PaquetesTuristicosService = PaquetesTuristicosService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+        supabase_service_1.SupabaseService])
 ], PaquetesTuristicosService);
 //# sourceMappingURL=paquetes-turisticos.service.js.map

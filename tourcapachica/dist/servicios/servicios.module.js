@@ -15,6 +15,7 @@ const tipos_servicio_controller_1 = require("./controllers/tipos-servicio.contro
 const disponibilidad_service_1 = require("./services/disponibilidad.service");
 const disponibilidad_controller_1 = require("./controllers/disponibilidad.controller");
 const prisma_module_1 = require("../prisma/prisma.module");
+const supabase_module_1 = require("../supabase/supabase.module");
 let ServiciosModule = class ServiciosModule {
 };
 exports.ServiciosModule = ServiciosModule;
@@ -22,6 +23,7 @@ exports.ServiciosModule = ServiciosModule = __decorate([
     (0, common_1.Module)({
         imports: [
             prisma_module_1.PrismaModule,
+            supabase_module_1.SupabaseModule,
         ],
         controllers: [
             servicios_controller_1.ServiciosController,
