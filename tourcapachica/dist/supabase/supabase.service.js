@@ -24,7 +24,7 @@ let SupabaseService = class SupabaseService {
             const folderPath = this.getFolderPath(imageableType, imageableId);
             const fileExt = file.originalname.split('.').pop();
             const fileName = `${folderPath}/${Date.now()}.${fileExt}`;
-            const { data, error } = await this.supabase.storage
+            const { error } = await this.supabase.storage
                 .from(this.BUCKET_NAME)
                 .upload(fileName, file.buffer, {
                 contentType: file.mimetype,

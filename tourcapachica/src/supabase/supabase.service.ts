@@ -30,7 +30,7 @@ export class SupabaseService {
       const fileName = `${folderPath}/${Date.now()}.${fileExt}`;
 
       // Subir el archivo
-      const { data, error } = await this.supabase.storage
+      const { error } = await this.supabase.storage
         .from(this.BUCKET_NAME)
         .upload(fileName, file.buffer, {
           contentType: file.mimetype,

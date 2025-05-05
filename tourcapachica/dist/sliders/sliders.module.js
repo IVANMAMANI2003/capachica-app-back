@@ -9,6 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SlidersModule = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_module_1 = require("../prisma/prisma.module");
+const supabase_module_1 = require("../supabase/supabase.module");
 const sliders_controller_1 = require("./sliders.controller");
 const sliders_service_1 = require("./sliders.service");
 let SlidersModule = class SlidersModule {
@@ -16,7 +17,7 @@ let SlidersModule = class SlidersModule {
 exports.SlidersModule = SlidersModule;
 exports.SlidersModule = SlidersModule = __decorate([
     (0, common_1.Module)({
-        imports: [prisma_module_1.PrismaModule],
+        imports: [prisma_module_1.PrismaModule, supabase_module_1.SupabaseModule],
         controllers: [sliders_controller_1.SlidersController],
         providers: [sliders_service_1.SlidersService],
         exports: [sliders_service_1.SlidersService],
