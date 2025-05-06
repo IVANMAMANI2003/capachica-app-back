@@ -3,7 +3,7 @@ export declare class ImageDto {
 }
 export declare class CreateSliderDto {
     nombre: string;
-    descripcion?: string;
+    description?: string;
     estado?: string;
     imagenes?: ImageDto[];
 }

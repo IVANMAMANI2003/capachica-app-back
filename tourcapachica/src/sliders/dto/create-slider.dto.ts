@@ -33,7 +33,7 @@ export class CreateSliderDto {
   })
   @IsString()
   @IsOptional()
-  descripcion?: string;
+  description?: string;
 
   @ApiProperty({
     description: 'Estado del slider',

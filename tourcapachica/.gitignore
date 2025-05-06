@@ -1,3 +1,8 @@
 node_modules
 # Keep environment variables out of version control
 .env
+# Testing
+/tests
+/coverage
+.nyc_output
+jest.config.js

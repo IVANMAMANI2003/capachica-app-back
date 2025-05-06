@@ -36,7 +36,7 @@ let SlidersService = class SlidersService {
         const slider = await this.prisma.slider.create({
             data: {
                 nombre: sliderData.nombre,
-                description: sliderData.descripcion,
+                description: sliderData.description,
                 estado: sliderData.estado,
             },
         });
