@@ -14,7 +14,7 @@ export class LugaresTuristicosController {
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('emprendedor', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Crear un nuevo lugar turístico' })
   @ApiResponse({ status: 201, description: 'Lugar turístico creado exitosamente' })
@@ -52,7 +52,7 @@ export class LugaresTuristicosController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('emprendedor', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar un lugar turístico por ID' })
   @ApiResponse({ status: 200, description: 'Lugar turístico actualizado exitosamente' })
@@ -70,7 +70,7 @@ export class LugaresTuristicosController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('emprendedor', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Eliminar un lugar turístico por ID' })
   @ApiResponse({ status: 200, description: 'Lugar turístico eliminado exitosamente' })

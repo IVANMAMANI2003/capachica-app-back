@@ -24,7 +24,7 @@ export class EmprendimientosController {
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('emprendedor', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Crear un nuevo emprendimiento' })
   @ApiResponse({ status: 201, description: 'Emprendimiento creado exitosamente' })
@@ -42,7 +42,7 @@ export class EmprendimientosController {
   }
 
   @Get('mis-emprendimientos')
-  @Roles('emprendedor', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiBearerAuth() 
   @ApiOperation({ summary: 'Obtener los emprendimientos del usuario autenticado' })
@@ -68,7 +68,7 @@ export class EmprendimientosController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('emprendedor', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar un emprendimiento por ID' })
   @ApiResponse({ status: 200, description: 'Emprendimiento actualizado exitosamente' })
@@ -83,7 +83,7 @@ export class EmprendimientosController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('emprendedor', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Eliminar un emprendimiento por ID' })
   @ApiResponse({ status: 200, description: 'Emprendimiento eliminado exitosamente' })

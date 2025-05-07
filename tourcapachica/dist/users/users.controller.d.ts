@@ -20,12 +20,12 @@ export declare class UsersController {
         }[];
         persona: {
             id: number;
+            nombre: string;
+            direccion: string | null;
             createdAt: Date;
             updatedAt: Date;
-            nombre: string;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -33,10 +33,10 @@ export declare class UsersController {
         usuariosRoles: ({
             rol: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
                 descripcion: string | null;
+                createdAt: Date;
+                updatedAt: Date;
             };
         } & {
             id: number;
@@ -79,12 +79,12 @@ export declare class UsersController {
         }[];
         persona: {
             id: number;
+            nombre: string;
+            direccion: string | null;
             createdAt: Date;
             updatedAt: Date;
-            nombre: string;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -92,10 +92,10 @@ export declare class UsersController {
         usuariosRoles: ({
             rol: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
                 descripcion: string | null;
+                createdAt: Date;
+                updatedAt: Date;
             };
         } & {
             id: number;
@@ -125,12 +125,12 @@ export declare class UsersController {
         }[];
         persona: {
             id: number;
+            nombre: string;
+            direccion: string | null;
             createdAt: Date;
             updatedAt: Date;
-            nombre: string;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -138,10 +138,10 @@ export declare class UsersController {
         usuariosRoles: ({
             rol: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
                 descripcion: string | null;
+                createdAt: Date;
+                updatedAt: Date;
             };
         } & {
             id: number;
@@ -171,12 +171,12 @@ export declare class UsersController {
         }[];
         persona: {
             id: number;
+            nombre: string;
+            direccion: string | null;
             createdAt: Date;
             updatedAt: Date;
-            nombre: string;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -184,10 +184,10 @@ export declare class UsersController {
         usuariosRoles: ({
             rol: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
                 descripcion: string | null;
+                createdAt: Date;
+                updatedAt: Date;
             };
         } & {
             id: number;
@@ -217,12 +217,12 @@ export declare class UsersController {
         }[];
         persona: {
             id: number;
+            nombre: string;
+            direccion: string | null;
             createdAt: Date;
             updatedAt: Date;
-            nombre: string;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -230,10 +230,10 @@ export declare class UsersController {
         usuariosRoles: ({
             rol: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
                 descripcion: string | null;
+                createdAt: Date;
+                updatedAt: Date;
             };
         } & {
             id: number;
@@ -263,12 +263,12 @@ export declare class UsersController {
         }[];
         persona: {
             id: number;
+            nombre: string;
+            direccion: string | null;
             createdAt: Date;
             updatedAt: Date;
-            nombre: string;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -276,10 +276,10 @@ export declare class UsersController {
         usuariosRoles: ({
             rol: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
                 descripcion: string | null;
+                createdAt: Date;
+                updatedAt: Date;
             };
         } & {
             id: number;

@@ -19,12 +19,12 @@ export declare class EmprendimientosController {
         usuario: {
             persona: {
                 id: number;
+                nombre: string;
+                direccion: string | null;
                 createdAt: Date;
                 updatedAt: Date;
-                nombre: string;
                 apellidos: string;
                 telefono: string | null;
-                direccion: string | null;
                 fotoPerfilUrl: string | null;
                 fechaNacimiento: Date | null;
                 subdivisionId: number;
@@ -46,19 +46,19 @@ export declare class EmprendimientosController {
         };
         id: number;
         usuarioId: number;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
-        direccion: string | null;
         tipo: string;
+        direccion: string | null;
         coordenadas: string | null;
         contactoTelefono: string | null;
         contactoEmail: string | null;
         sitioWeb: string | null;
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
+        estado: string;
         fechaAprobacion: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     findAll(): Promise<{
         imagenes: {
@@ -68,12 +68,12 @@ export declare class EmprendimientosController {
         usuario: {
             persona: {
                 id: number;
+                nombre: string;
+                direccion: string | null;
                 createdAt: Date;
                 updatedAt: Date;
-                nombre: string;
                 apellidos: string;
                 telefono: string | null;
-                direccion: string | null;
                 fotoPerfilUrl: string | null;
                 fechaNacimiento: Date | null;
                 subdivisionId: number;
@@ -95,19 +95,19 @@ export declare class EmprendimientosController {
         };
         id: number;
         usuarioId: number;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
-        direccion: string | null;
         tipo: string;
+        direccion: string | null;
         coordenadas: string | null;
         contactoTelefono: string | null;
         contactoEmail: string | null;
         sitioWeb: string | null;
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
+        estado: string;
         fechaAprobacion: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
     }[]>;
     findMyEmprendimientos(req: RequestWithUser): Promise<{
         imagenes: {
@@ -117,12 +117,12 @@ export declare class EmprendimientosController {
         usuario: {
             persona: {
                 id: number;
+                nombre: string;
+                direccion: string | null;
                 createdAt: Date;
                 updatedAt: Date;
-                nombre: string;
                 apellidos: string;
                 telefono: string | null;
-                direccion: string | null;
                 fotoPerfilUrl: string | null;
                 fechaNacimiento: Date | null;
                 subdivisionId: number;
@@ -144,19 +144,19 @@ export declare class EmprendimientosController {
         };
         id: number;
         usuarioId: number;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
-        direccion: string | null;
         tipo: string;
+        direccion: string | null;
         coordenadas: string | null;
         contactoTelefono: string | null;
         contactoEmail: string | null;
         sitioWeb: string | null;
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
+        estado: string;
         fechaAprobacion: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
     }[]>;
     findByUsuario(usuarioId: string): Promise<{
         imagenes: {
@@ -166,12 +166,12 @@ export declare class EmprendimientosController {
         usuario: {
             persona: {
                 id: number;
+                nombre: string;
+                direccion: string | null;
                 createdAt: Date;
                 updatedAt: Date;
-                nombre: string;
                 apellidos: string;
                 telefono: string | null;
-                direccion: string | null;
                 fotoPerfilUrl: string | null;
                 fechaNacimiento: Date | null;
                 subdivisionId: number;
@@ -193,19 +193,19 @@ export declare class EmprendimientosController {
         };
         id: number;
         usuarioId: number;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
-        direccion: string | null;
         tipo: string;
+        direccion: string | null;
         coordenadas: string | null;
         contactoTelefono: string | null;
         contactoEmail: string | null;
         sitioWeb: string | null;
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
+        estado: string;
         fechaAprobacion: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
     }[]>;
     findOne(id: string): Promise<{
         imagenes: {
@@ -215,12 +215,12 @@ export declare class EmprendimientosController {
         usuario: {
             persona: {
                 id: number;
+                nombre: string;
+                direccion: string | null;
                 createdAt: Date;
                 updatedAt: Date;
-                nombre: string;
                 apellidos: string;
                 telefono: string | null;
-                direccion: string | null;
                 fotoPerfilUrl: string | null;
                 fechaNacimiento: Date | null;
                 subdivisionId: number;
@@ -242,19 +242,19 @@ export declare class EmprendimientosController {
         };
         id: number;
         usuarioId: number;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
-        direccion: string | null;
         tipo: string;
+        direccion: string | null;
         coordenadas: string | null;
         contactoTelefono: string | null;
         contactoEmail: string | null;
         sitioWeb: string | null;
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
+        estado: string;
         fechaAprobacion: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     update(id: string, updateEmprendimientoDto: UpdateEmprendimientoDto): Promise<{
         imagenes: {
@@ -264,12 +264,12 @@ export declare class EmprendimientosController {
         usuario: {
             persona: {
                 id: number;
+                nombre: string;
+                direccion: string | null;
                 createdAt: Date;
                 updatedAt: Date;
-                nombre: string;
                 apellidos: string;
                 telefono: string | null;
-                direccion: string | null;
                 fotoPerfilUrl: string | null;
                 fechaNacimiento: Date | null;
                 subdivisionId: number;
@@ -291,19 +291,19 @@ export declare class EmprendimientosController {
         };
         id: number;
         usuarioId: number;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
-        direccion: string | null;
         tipo: string;
+        direccion: string | null;
         coordenadas: string | null;
         contactoTelefono: string | null;
         contactoEmail: string | null;
         sitioWeb: string | null;
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
+        estado: string;
         fechaAprobacion: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     remove(id: string): Promise<{
         message: string;
@@ -311,37 +311,37 @@ export declare class EmprendimientosController {
     updateEstado(id: string, estado: string): Promise<{
         id: number;
         usuarioId: number;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
-        direccion: string | null;
         tipo: string;
+        direccion: string | null;
         coordenadas: string | null;
         contactoTelefono: string | null;
         contactoEmail: string | null;
         sitioWeb: string | null;
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
+        estado: string;
         fechaAprobacion: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     addFavorito(req: RequestWithUser, createFavoritoDto: CreateFavoritoDto): Promise<{
         emprendimiento: {
             id: number;
             usuarioId: number;
-            estado: string;
-            createdAt: Date;
-            updatedAt: Date;
             nombre: string;
             descripcion: string | null;
-            direccion: string | null;
             tipo: string;
+            direccion: string | null;
             coordenadas: string | null;
             contactoTelefono: string | null;
             contactoEmail: string | null;
             sitioWeb: string | null;
             redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
+            estado: string;
             fechaAprobacion: Date | null;
+            createdAt: Date;
+            updatedAt: Date;
         };
     } & {
         id: number;
@@ -362,12 +362,12 @@ export declare class EmprendimientosController {
         usuario: {
             persona: {
                 id: number;
+                nombre: string;
+                direccion: string | null;
                 createdAt: Date;
                 updatedAt: Date;
-                nombre: string;
                 apellidos: string;
                 telefono: string | null;
-                direccion: string | null;
                 fotoPerfilUrl: string | null;
                 fechaNacimiento: Date | null;
                 subdivisionId: number;
@@ -389,19 +389,19 @@ export declare class EmprendimientosController {
         };
         id: number;
         usuarioId: number;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
-        direccion: string | null;
         tipo: string;
+        direccion: string | null;
         coordenadas: string | null;
         contactoTelefono: string | null;
         contactoEmail: string | null;
         sitioWeb: string | null;
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
+        estado: string;
         fechaAprobacion: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
     }[]>;
     isFavorito(req: RequestWithUser, id: string): Promise<boolean>;
 }

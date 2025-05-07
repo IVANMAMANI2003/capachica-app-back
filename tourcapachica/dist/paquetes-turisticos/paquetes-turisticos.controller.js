@@ -81,7 +81,7 @@ exports.PaquetesTuristicosController = PaquetesTuristicosController;
 __decorate([
     (0, common_1.Post)(),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Crear un nuevo paquete turístico' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Paquete turístico creado exitosamente' }),
@@ -121,7 +121,7 @@ __decorate([
 __decorate([
     (0, common_1.Patch)(':id'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Actualizar un paquete turístico por ID' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Paquete turístico actualizado exitosamente' }),
@@ -136,7 +136,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Eliminar un paquete turístico por ID' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Paquete turístico eliminado exitosamente' }),
@@ -149,7 +149,7 @@ __decorate([
 __decorate([
     (0, common_1.Patch)(':id/estado'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Actualizar el estado de un paquete turístico' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Estado actualizado' }),
@@ -163,7 +163,7 @@ __decorate([
 ], PaquetesTuristicosController.prototype, "updateEstado", null);
 __decorate([
     (0, common_1.Post)(':id/servicios'),
-    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Agregar servicios a un paquete turístico' }),
@@ -179,7 +179,7 @@ __decorate([
 ], PaquetesTuristicosController.prototype, "addServicios", null);
 __decorate([
     (0, common_1.Delete)(':id/servicios/:servicioId'),
-    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Eliminar un servicio de un paquete turístico' }),
@@ -195,7 +195,7 @@ __decorate([
 ], PaquetesTuristicosController.prototype, "removeServicio", null);
 __decorate([
     (0, common_1.Get)(':id/estadisticas'),
-    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Obtener estadísticas de un paquete turístico' }),
@@ -210,7 +210,7 @@ __decorate([
 ], PaquetesTuristicosController.prototype, "getEstadisticas", null);
 __decorate([
     (0, common_1.Get)(':id/exportar'),
-    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Exportar datos de un paquete turístico' }),
@@ -225,7 +225,7 @@ __decorate([
 ], PaquetesTuristicosController.prototype, "exportarDatos", null);
 __decorate([
     (0, common_1.Post)(':id/disponibilidad'),
-    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Crear disponibilidad para un paquete turístico' }),
@@ -261,7 +261,7 @@ __decorate([
 ], PaquetesTuristicosController.prototype, "getDisponibilidad", null);
 __decorate([
     (0, common_1.Patch)('disponibilidad/:id'),
-    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Actualizar una disponibilidad' }),
@@ -277,7 +277,7 @@ __decorate([
 ], PaquetesTuristicosController.prototype, "updateDisponibilidad", null);
 __decorate([
     (0, common_1.Delete)('disponibilidad/:id'),
-    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Eliminar una disponibilidad' }),

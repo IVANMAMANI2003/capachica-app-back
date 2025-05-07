@@ -69,7 +69,7 @@ exports.EmprendimientosController = EmprendimientosController;
 __decorate([
     (0, common_1.Post)(),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Crear un nuevo emprendimiento' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Emprendimiento creado exitosamente' }),
@@ -90,7 +90,7 @@ __decorate([
 ], EmprendimientosController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)('mis-emprendimientos'),
-    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Obtener los emprendimientos del usuario autenticado' }),
@@ -122,7 +122,7 @@ __decorate([
 __decorate([
     (0, common_1.Patch)(':id'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Actualizar un emprendimiento por ID' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Emprendimiento actualizado exitosamente' }),
@@ -137,7 +137,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Eliminar un emprendimiento por ID' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Emprendimiento eliminado exitosamente' }),

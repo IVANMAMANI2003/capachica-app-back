@@ -50,7 +50,7 @@ let ComprobantesController = class ComprobantesController {
 exports.ComprobantesController = ComprobantesController;
 __decorate([
     (0, common_1.Post)(),
-    (0, roles_decorator_1.Roles)('Admin', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiOperation)({ summary: 'Crear un nuevo comprobante' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Comprobante creado exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
@@ -62,7 +62,7 @@ __decorate([
 ], ComprobantesController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
-    (0, roles_decorator_1.Roles)('Admin', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiOperation)({ summary: 'Obtener todos los comprobantes' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Lista de comprobantes' }),
     __metadata("design:type", Function),
@@ -71,7 +71,7 @@ __decorate([
 ], ComprobantesController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(':id'),
-    (0, roles_decorator_1.Roles)('Admin', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiOperation)({ summary: 'Obtener un comprobante por ID' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Comprobante encontrado' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Comprobante no encontrado' }),
@@ -82,7 +82,7 @@ __decorate([
 ], ComprobantesController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Get)('pago/:pagoId'),
-    (0, roles_decorator_1.Roles)('Admin', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiOperation)({ summary: 'Obtener un comprobante por ID de pago' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Comprobante encontrado' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Comprobante no encontrado' }),
@@ -93,7 +93,7 @@ __decorate([
 ], ComprobantesController.prototype, "findByPagoId", null);
 __decorate([
     (0, common_1.Patch)(':id'),
-    (0, roles_decorator_1.Roles)('Admin', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiOperation)({ summary: 'Actualizar un comprobante' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Comprobante actualizado' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
@@ -106,7 +106,7 @@ __decorate([
 ], ComprobantesController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    (0, roles_decorator_1.Roles)('Admin', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiOperation)({ summary: 'Eliminar un comprobante' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Comprobante eliminado' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Comprobante no encontrado' }),
@@ -117,7 +117,7 @@ __decorate([
 ], ComprobantesController.prototype, "remove", null);
 __decorate([
     (0, common_1.Patch)(':id/estado'),
-    (0, roles_decorator_1.Roles)('Admin', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiOperation)({ summary: 'Actualizar el estado de un comprobante' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Estado actualizado' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Comprobante no encontrado' }),

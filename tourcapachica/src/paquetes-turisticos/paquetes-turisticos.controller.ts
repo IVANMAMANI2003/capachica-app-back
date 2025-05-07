@@ -17,7 +17,7 @@ export class PaquetesTuristicosController {
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('emprendedor', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Crear un nuevo paquete turístico' })
   @ApiResponse({ status: 201, description: 'Paquete turístico creado exitosamente' })
@@ -50,7 +50,7 @@ export class PaquetesTuristicosController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('emprendedor', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar un paquete turístico por ID' })
   @ApiResponse({ status: 200, description: 'Paquete turístico actualizado exitosamente' })
@@ -65,7 +65,7 @@ export class PaquetesTuristicosController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('emprendedor', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Eliminar un paquete turístico por ID' })
   @ApiResponse({ status: 200, description: 'Paquete turístico eliminado exitosamente' })
@@ -76,7 +76,7 @@ export class PaquetesTuristicosController {
 
   @Patch(':id/estado')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('emprendedor', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar el estado de un paquete turístico' })
   @ApiResponse({ status: 200, description: 'Estado actualizado' })
@@ -87,7 +87,7 @@ export class PaquetesTuristicosController {
   }
 
   @Post(':id/servicios')
-  @Roles('emprendedor', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Agregar servicios a un paquete turístico' })
@@ -103,7 +103,7 @@ export class PaquetesTuristicosController {
   }
 
   @Delete(':id/servicios/:servicioId')
-  @Roles('emprendedor', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Eliminar un servicio de un paquete turístico' })
@@ -119,7 +119,7 @@ export class PaquetesTuristicosController {
   }
 
   @Get(':id/estadisticas')
-  @Roles('emprendedor', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Obtener estadísticas de un paquete turístico' })
@@ -134,7 +134,7 @@ export class PaquetesTuristicosController {
   }
 
   @Get(':id/exportar')
-  @Roles('emprendedor', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Exportar datos de un paquete turístico' })
@@ -149,7 +149,7 @@ export class PaquetesTuristicosController {
   }
 
   @Post(':id/disponibilidad')
-  @Roles('emprendedor', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Crear disponibilidad para un paquete turístico' })
@@ -181,7 +181,7 @@ export class PaquetesTuristicosController {
   }
 
   @Patch('disponibilidad/:id')
-  @Roles('emprendedor', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar una disponibilidad' })
@@ -197,7 +197,7 @@ export class PaquetesTuristicosController {
   }
 
   @Delete('disponibilidad/:id')
-  @Roles('emprendedor', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Eliminar una disponibilidad' })

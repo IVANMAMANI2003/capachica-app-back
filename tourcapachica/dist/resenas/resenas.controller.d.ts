@@ -8,53 +8,53 @@ export declare class ResenasController {
     constructor(resenasService: ResenasService);
     create(createResenaDto: CreateResenaDto): Promise<{
         id: number;
-        servicioId: number;
         usuarioId: number;
-        calificacion: number;
-        comentario: string | null;
         estado: string;
         createdAt: Date;
         updatedAt: Date;
+        servicioId: number;
+        calificacion: number;
+        comentario: string | null;
     }>;
     findAll(filter: FilterResenasDto): Promise<{
         id: number;
-        servicioId: number;
         usuarioId: number;
-        calificacion: number;
-        comentario: string | null;
         estado: string;
         createdAt: Date;
         updatedAt: Date;
+        servicioId: number;
+        calificacion: number;
+        comentario: string | null;
     }[]>;
     findOne(id: string): Promise<{
         id: number;
-        servicioId: number;
         usuarioId: number;
-        calificacion: number;
-        comentario: string | null;
         estado: string;
         createdAt: Date;
         updatedAt: Date;
+        servicioId: number;
+        calificacion: number;
+        comentario: string | null;
     }>;
     update(id: string, updateResenaDto: UpdateResenaDto): Promise<{
         id: number;
-        servicioId: number;
         usuarioId: number;
-        calificacion: number;
-        comentario: string | null;
         estado: string;
         createdAt: Date;
         updatedAt: Date;
+        servicioId: number;
+        calificacion: number;
+        comentario: string | null;
     }>;
     remove(id: string): Promise<{
         id: number;
-        servicioId: number;
         usuarioId: number;
-        calificacion: number;
-        comentario: string | null;
         estado: string;
         createdAt: Date;
         updatedAt: Date;
+        servicioId: number;
+        calificacion: number;
+        comentario: string | null;
     }>;
     promedio(servicioId: string): Promise<PromedioResponseDto>;
 }

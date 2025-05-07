@@ -15,7 +15,7 @@ export class ComprobantesController {
   constructor(private readonly comprobantesService: ComprobantesService) {}
 
   @Post()
-  @Roles('Admin', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @ApiOperation({ summary: 'Crear un nuevo comprobante' })
   @ApiResponse({ status: 201, description: 'Comprobante creado exitosamente' })
   @ApiResponse({ status: 400, description: 'Datos inválidos' })
@@ -25,7 +25,7 @@ export class ComprobantesController {
   }
 
   @Get()
-  @Roles('Admin', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @ApiOperation({ summary: 'Obtener todos los comprobantes' })
   @ApiResponse({ status: 200, description: 'Lista de comprobantes' })
   findAll() {
@@ -33,7 +33,7 @@ export class ComprobantesController {
   }
 
   @Get(':id')
-  @Roles('Admin', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @ApiOperation({ summary: 'Obtener un comprobante por ID' })
   @ApiResponse({ status: 200, description: 'Comprobante encontrado' })
   @ApiResponse({ status: 404, description: 'Comprobante no encontrado' })
@@ -42,7 +42,7 @@ export class ComprobantesController {
   }
 
   @Get('pago/:pagoId')
-  @Roles('Admin', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @ApiOperation({ summary: 'Obtener un comprobante por ID de pago' })
   @ApiResponse({ status: 200, description: 'Comprobante encontrado' })
   @ApiResponse({ status: 404, description: 'Comprobante no encontrado' })
@@ -51,7 +51,7 @@ export class ComprobantesController {
   }
 
   @Patch(':id')
-  @Roles('Admin', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @ApiOperation({ summary: 'Actualizar un comprobante' })
   @ApiResponse({ status: 200, description: 'Comprobante actualizado' })
   @ApiResponse({ status: 400, description: 'Datos inválidos' })
@@ -61,7 +61,7 @@ export class ComprobantesController {
   }
 
   @Delete(':id')
-  @Roles('Admin', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @ApiOperation({ summary: 'Eliminar un comprobante' })
   @ApiResponse({ status: 200, description: 'Comprobante eliminado' })
   @ApiResponse({ status: 404, description: 'Comprobante no encontrado' })
@@ -70,7 +70,7 @@ export class ComprobantesController {
   }
 
   @Patch(':id/estado')
-  @Roles('Admin', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @ApiOperation({ summary: 'Actualizar el estado de un comprobante' })
   @ApiResponse({ status: 200, description: 'Estado actualizado' })
   @ApiResponse({ status: 404, description: 'Comprobante no encontrado' })
