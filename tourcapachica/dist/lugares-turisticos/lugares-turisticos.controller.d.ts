@@ -10,19 +10,19 @@ export declare class LugaresTuristicosController {
             url: string;
         }[];
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        direccion: string;
         descripcion: string;
-        estado: string;
+        direccion: string;
         coordenadas: string;
+        esDestacado: boolean;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
-        esDestacado: boolean;
     }>;
     findAll(): Promise<{
         imagenes: {
@@ -30,35 +30,35 @@ export declare class LugaresTuristicosController {
             url: string;
         }[];
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        direccion: string;
         descripcion: string;
-        estado: string;
+        direccion: string;
         coordenadas: string;
+        esDestacado: boolean;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
-        esDestacado: boolean;
     }[]>;
     findDestacados(): Promise<{
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        direccion: string;
         descripcion: string;
-        estado: string;
+        direccion: string;
         coordenadas: string;
+        esDestacado: boolean;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
-        esDestacado: boolean;
     }[]>;
     findOne(id: string): Promise<{
         imagenes: {
@@ -66,19 +66,19 @@ export declare class LugaresTuristicosController {
             url: string;
         }[];
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        direccion: string;
         descripcion: string;
-        estado: string;
+        direccion: string;
         coordenadas: string;
+        esDestacado: boolean;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
-        esDestacado: boolean;
     }>;
     update(id: string, updateLugarTuristicoDto: UpdateLugarTuristicoDto): Promise<{
         imagenes: {
@@ -86,34 +86,34 @@ export declare class LugaresTuristicosController {
             url: string;
         }[];
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        direccion: string;
         descripcion: string;
-        estado: string;
+        direccion: string;
         coordenadas: string;
+        esDestacado: boolean;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
-        esDestacado: boolean;
     }>;
     remove(id: string): Promise<{
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        direccion: string;
         descripcion: string;
-        estado: string;
+        direccion: string;
         coordenadas: string;
+        esDestacado: boolean;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
-        esDestacado: boolean;
     }>;
 }

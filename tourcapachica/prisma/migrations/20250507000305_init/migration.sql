@@ -276,13 +276,10 @@ CREATE TABLE "servicios_disponibilidad" (
 -- CreateTable
 CREATE TABLE "resenas" (
     "id" SERIAL NOT NULL,
+    "servicio_id" INTEGER NOT NULL,
     "usuario_id" INTEGER NOT NULL,
-    "tipo_objeto" VARCHAR(50) NOT NULL,
     "calificacion" INTEGER NOT NULL,
     "comentario" TEXT,
-    "fecha_experiencia" DATE,
-    "respuesta_owner" TEXT,
-    "fecha_respuesta" TIMESTAMP(3),
     "estado" VARCHAR(20) NOT NULL DEFAULT 'pendiente',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -609,6 +606,9 @@ ALTER TABLE "disponibilidad_paquetes" ADD CONSTRAINT "disponibilidad_paquetes_pa
 
 -- AddForeignKey
 ALTER TABLE "servicios_disponibilidad" ADD CONSTRAINT "servicios_disponibilidad_servicio_id_fkey" FOREIGN KEY ("servicio_id") REFERENCES "servicios"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "resenas" ADD CONSTRAINT "resenas_servicio_id_fkey" FOREIGN KEY ("servicio_id") REFERENCES "servicios"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "resenas" ADD CONSTRAINT "resenas_usuario_id_fkey" FOREIGN KEY ("usuario_id") REFERENCES "usuarios"("id") ON DELETE CASCADE ON UPDATE CASCADE;

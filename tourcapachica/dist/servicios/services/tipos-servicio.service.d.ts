@@ -14,11 +14,11 @@ export declare class TiposServicioService {
     findAll(): Promise<({
         servicios: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
             descripcion: string | null;
-            estado: string;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
@@ -35,11 +35,11 @@ export declare class TiposServicioService {
     findOne(id: number): Promise<{
         servicios: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
             descripcion: string | null;
-            estado: string;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;

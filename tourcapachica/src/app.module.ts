@@ -16,6 +16,7 @@ import { PermissionsModule } from './permissions/permissions.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PersonasModule } from './personas/personas.module';
+import { ResenasModule } from './resenas/resenas.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { PersonasModule } from './personas/personas.module';
     EmprendimientosModule,
     LugaresTuristicosModule,
     ServiciosModule,
+    ResenasModule,
     PaquetesTuristicosModule,
     SupabaseModule,
     ReservasModule,

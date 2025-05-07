@@ -7,9 +7,9 @@ export declare class PagoDetalleController {
     create(createPagoDetalleDto: CreatePagoDetalleDto): Promise<{
         pago: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
-            estado: string;
             moneda: string;
             reservaId: number;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
@@ -42,9 +42,9 @@ export declare class PagoDetalleController {
     findAll(): Promise<({
         pago: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
-            estado: string;
             moneda: string;
             reservaId: number;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
@@ -77,9 +77,9 @@ export declare class PagoDetalleController {
     findOne(id: string): Promise<{
         pago: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
-            estado: string;
             moneda: string;
             reservaId: number;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
@@ -135,9 +135,9 @@ export declare class PagoDetalleController {
     update(id: string, updatePagoDetalleDto: UpdatePagoDetalleDto): Promise<{
         pago: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
-            estado: string;
             moneda: string;
             reservaId: number;
             montoTotal: import(".prisma/client/runtime/library").Decimal;

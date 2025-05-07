@@ -10,6 +10,7 @@ async function main() {
       prisma.rolesPermisos.deleteMany(),
       prisma.role.deleteMany(),
       prisma.permiso.deleteMany(),
+      prisma.turista.deleteMany(),
       prisma.usuario.deleteMany(),
       prisma.persona.deleteMany(),
       prisma.subdivision.deleteMany(),
@@ -26,7 +27,6 @@ async function main() {
       prisma.tipoServicio.deleteMany(),
       prisma.tipoPago.deleteMany(),
       prisma.tour.deleteMany(),
-      prisma.turista.deleteMany(),
     ]);
 
     // 1. Crear roles
@@ -321,6 +321,14 @@ async function main() {
       })
     ]);
 
+    // Crear turista para el usuario regular
+    await prisma.turista.create({
+      data: {
+        usuarioId: usuarios[2].id,
+        // otros campos necesarios
+      },
+    });
+
     // 10. Asignar roles a usuarios
     await Promise.all([
       prisma.usuariosRoles.create({
@@ -489,11 +497,36 @@ async function main() {
       }),
     ]);
 
-    // 15. Crear turista para el usuario regular
-    const turista = await prisma.turista.create({
+    // Crear turista para el usuario regular
+    // (Eliminado duplicado para evitar error de unicidad)
+    await prisma.turista.create({
       data: {
         usuarioId: usuarios[2].id,
       },
+    });
+
+    // Poblar la tabla reseña con datos de ejemplo
+    await prisma.resena.createMany({
+      data: [
+        {
+          usuarioId: usuarios[2].id,
+          servicioId: servicios[0].id,
+          calificacion: 5,
+          comentario: 'Excelente servicio, muy recomendado!',
+        },
+        {
+          usuarioId: usuarios[3].id,
+          servicioId: servicios[1].id,
+          calificacion: 4,
+          comentario: 'Buena experiencia, pero se puede mejorar.',
+        },
+        {
+          usuarioId: usuarios[1].id,
+          servicioId: servicios[2].id,
+          calificacion: 3,
+          comentario: 'Servicio aceptable, pero esperaba más.',
+        },
+      ],
     });
 
     // 16. Crear sliders
@@ -530,4 +563,4 @@ main()
   .catch((e) => {
     console.error(e);
     process.exit(1);
-  }); 
+  });

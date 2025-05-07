@@ -452,7 +452,12 @@ export class PaquetesTuristicosService {
 
     const resenas = await this.prisma.resena.findMany({
       where: {
-        tipoObjeto: 'PAQUETE_TURISTICO',
+        servicioId: {
+          in: paquete.servicios.map((s: any) => s.servicioId),
+        },
+      },
+      include: {
+        usuario: true,
       },
     });
 
@@ -461,6 +466,7 @@ export class PaquetesTuristicosService {
     const promedioCalificacion = resenas.length > 0
       ? resenas.reduce((sum, resena) => sum + resena.calificacion, 0) / resenas.length
       : 0;
+    const totalResenas = resenas.length;
 
     const serviciosPopulares = await this.prisma.servicioPaquete.groupBy({
       by: ['servicioId'],
@@ -505,7 +511,7 @@ export class PaquetesTuristicosService {
       totalReservas,
       totalIngresos,
       promedioCalificacion,
-      totalResenas: resenas.length,
+      totalResenas,
       tasaOcupacion: totalReservas > 0 ? (totalReservas / (paquete.disponibilidad[0]?.cuposMaximos || 0)) * 100 : 0,
       serviciosPopulares: await Promise.all(
         serviciosPopulares.map(async (sp) => {
@@ -564,7 +570,9 @@ export class PaquetesTuristicosService {
 
     const resenas = await this.prisma.resena.findMany({
       where: {
-        tipoObjeto: 'PAQUETE_TURISTICO',
+        servicioId: {
+          in: paquete.servicios.map((s: any) => s.servicioId),
+        },
       },
       include: {
         usuario: true,
@@ -641,4 +649,4 @@ export class PaquetesTuristicosService {
       where: { id },
     });
   }
-} 
+}

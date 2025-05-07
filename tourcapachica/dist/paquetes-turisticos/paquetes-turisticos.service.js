@@ -363,7 +363,12 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
         });
         const resenas = await this.prisma.resena.findMany({
             where: {
-                tipoObjeto: 'PAQUETE_TURISTICO',
+                servicioId: {
+                    in: paquete.servicios.map((s) => s.servicioId),
+                },
+            },
+            include: {
+                usuario: true,
             },
         });
         const totalReservas = reservas.length;
@@ -371,6 +376,7 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
         const promedioCalificacion = resenas.length > 0
             ? resenas.reduce((sum, resena) => sum + resena.calificacion, 0) / resenas.length
             : 0;
+        const totalResenas = resenas.length;
         const serviciosPopulares = await this.prisma.servicioPaquete.groupBy({
             by: ['servicioId'],
             where: {
@@ -412,7 +418,7 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
             totalReservas,
             totalIngresos,
             promedioCalificacion,
-            totalResenas: resenas.length,
+            totalResenas,
             tasaOcupacion: totalReservas > 0 ? (totalReservas / (((_a = paquete.disponibilidad[0]) === null || _a === void 0 ? void 0 : _a.cuposMaximos) || 0)) * 100 : 0,
             serviciosPopulares: await Promise.all(serviciosPopulares.map(async (sp) => {
                 const servicio = await this.prisma.servicio.findUnique({
@@ -465,7 +471,9 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
         });
         const resenas = await this.prisma.resena.findMany({
             where: {
-                tipoObjeto: 'PAQUETE_TURISTICO',
+                servicioId: {
+                    in: paquete.servicios.map((s) => s.servicioId),
+                },
             },
             include: {
                 usuario: true,

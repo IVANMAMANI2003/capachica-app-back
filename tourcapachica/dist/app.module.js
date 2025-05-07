@@ -25,6 +25,7 @@ const permissions_module_1 = require("./permissions/permissions.module");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const personas_module_1 = require("./personas/personas.module");
+const resenas_module_1 = require("./resenas/resenas.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -44,6 +45,7 @@ exports.AppModule = AppModule = __decorate([
             emprendimientos_module_1.EmprendimientosModule,
             lugares_turisticos_module_1.LugaresTuristicosModule,
             servicios_module_1.ServiciosModule,
+            resenas_module_1.ResenasModule,
             paquetes_turisticos_module_1.PaquetesTuristicosModule,
             supabase_module_1.SupabaseModule,
             reservas_module_1.ReservasModule,

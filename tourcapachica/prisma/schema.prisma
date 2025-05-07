@@ -239,6 +239,7 @@ model Servicio {
   disponibilidad         ServicioDisponibilidad[]
   serviciosEmprendedores ServicioEmprendedor[]
   serviciosPaquetes      ServicioPaquete[]
+  resenas                Resena[]
 
   @@map("servicios")
 }
@@ -317,16 +318,14 @@ model ServicioDisponibilidad {
 
 model Resena {
   id               Int       @id @default(autoincrement())
+  servicioId       Int       @map("servicio_id")
   usuarioId        Int       @map("usuario_id")
-  tipoObjeto       String    @map("tipo_objeto") @db.VarChar(50)
   calificacion     Int
   comentario       String?
-  fechaExperiencia DateTime? @map("fecha_experiencia") @db.Date
-  respuestaOwner   String?   @map("respuesta_owner")
-  fechaRespuesta   DateTime? @map("fecha_respuesta")
   estado           String    @default("pendiente") @db.VarChar(20)
   createdAt        DateTime  @default(now()) @map("created_at")
   updatedAt        DateTime  @default(now()) @map("updated_at")
+  servicio         Servicio  @relation(fields: [servicioId], references: [id], onDelete: Cascade)
   usuario          Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
 
   @@map("resenas")

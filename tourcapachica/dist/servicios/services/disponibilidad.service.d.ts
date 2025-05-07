@@ -5,48 +5,48 @@ export declare class DisponibilidadService {
     constructor(prisma: PrismaService);
     createDisponibilidad(createDisponibilidadDto: CreateServicioDisponibilidadDto): Promise<{
         id: number;
+        servicioId: number;
         createdAt: Date;
         updatedAt: Date;
+        fecha: Date;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
-        servicioId: number;
-        fecha: Date;
     }>;
     createDisponibilidades(disponibilidades: CreateServicioDisponibilidadDto[]): Promise<{
         id: number;
+        servicioId: number;
         createdAt: Date;
         updatedAt: Date;
+        fecha: Date;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
-        servicioId: number;
-        fecha: Date;
     }[]>;
     getDisponibilidad(servicioId: number): Promise<{
         id: number;
+        servicioId: number;
         createdAt: Date;
         updatedAt: Date;
+        fecha: Date;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
-        servicioId: number;
-        fecha: Date;
     }[]>;
     getDisponibilidadByFecha(servicioId: number, fecha: string): Promise<{
         id: number;
+        servicioId: number;
         createdAt: Date;
         updatedAt: Date;
+        fecha: Date;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
-        servicioId: number;
-        fecha: Date;
     }>;
     findAll(): Promise<({
         servicio: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
             descripcion: string | null;
-            estado: string;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
@@ -54,21 +54,21 @@ export declare class DisponibilidadService {
         };
     } & {
         id: number;
+        servicioId: number;
         createdAt: Date;
         updatedAt: Date;
+        fecha: Date;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
-        servicioId: number;
-        fecha: Date;
     })[]>;
     findByServicio(servicioId: number): Promise<({
         servicio: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
             descripcion: string | null;
-            estado: string;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
@@ -76,21 +76,21 @@ export declare class DisponibilidadService {
         };
     } & {
         id: number;
+        servicioId: number;
         createdAt: Date;
         updatedAt: Date;
+        fecha: Date;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
-        servicioId: number;
-        fecha: Date;
     })[]>;
     findOne(id: number): Promise<{
         servicio: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
             descripcion: string | null;
-            estado: string;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
@@ -98,21 +98,21 @@ export declare class DisponibilidadService {
         };
     } & {
         id: number;
+        servicioId: number;
         createdAt: Date;
         updatedAt: Date;
+        fecha: Date;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
-        servicioId: number;
-        fecha: Date;
     }>;
     update(id: number, updateData: Partial<CreateServicioDisponibilidadDto>): Promise<{
         servicio: {
             id: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
             descripcion: string | null;
-            estado: string;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
@@ -120,20 +120,20 @@ export declare class DisponibilidadService {
         };
     } & {
         id: number;
+        servicioId: number;
         createdAt: Date;
         updatedAt: Date;
+        fecha: Date;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
-        servicioId: number;
-        fecha: Date;
     }>;
     remove(id: number): Promise<{
         id: number;
+        servicioId: number;
         createdAt: Date;
         updatedAt: Date;
+        fecha: Date;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
-        servicioId: number;
-        fecha: Date;
     }>;
 }

@@ -7,6 +7,8 @@ export declare class PersonasController {
     create(createPersonaDto: CreatePersonaDto): Promise<{
         usuario: {
             id: number;
+            createdAt: Date;
+            updatedAt: Date;
             personaId: number;
             email: string;
             passwordHash: string;
@@ -17,8 +19,6 @@ export declare class PersonasController {
             estaActivo: boolean;
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue;
-            createdAt: Date;
-            updatedAt: Date;
         };
         subdivision: {
             id: number;
@@ -42,6 +42,8 @@ export declare class PersonasController {
     findAll(): Promise<({
         usuario: {
             id: number;
+            createdAt: Date;
+            updatedAt: Date;
             personaId: number;
             email: string;
             passwordHash: string;
@@ -52,8 +54,6 @@ export declare class PersonasController {
             estaActivo: boolean;
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue;
-            createdAt: Date;
-            updatedAt: Date;
         };
         subdivision: {
             id: number;
@@ -77,6 +77,8 @@ export declare class PersonasController {
     findOne(id: string): Promise<{
         usuario: {
             id: number;
+            createdAt: Date;
+            updatedAt: Date;
             personaId: number;
             email: string;
             passwordHash: string;
@@ -87,8 +89,6 @@ export declare class PersonasController {
             estaActivo: boolean;
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue;
-            createdAt: Date;
-            updatedAt: Date;
         };
         subdivision: {
             id: number;
@@ -112,6 +112,8 @@ export declare class PersonasController {
     update(id: string, updatePersonaDto: UpdatePersonaDto): Promise<{
         usuario: {
             id: number;
+            createdAt: Date;
+            updatedAt: Date;
             personaId: number;
             email: string;
             passwordHash: string;
@@ -122,8 +124,6 @@ export declare class PersonasController {
             estaActivo: boolean;
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue;
-            createdAt: Date;
-            updatedAt: Date;
         };
         subdivision: {
             id: number;
