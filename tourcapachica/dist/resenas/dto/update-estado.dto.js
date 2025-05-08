@@ -11,11 +11,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateEstadoDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
+const class_validator_1 = require("class-validator");
 class UpdateEstadoDto {
 }
 exports.UpdateEstadoDto = UpdateEstadoDto;
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'estado', example: 'aprobado' }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], UpdateEstadoDto.prototype, "estado", void 0);
 //# sourceMappingURL=update-estado.dto.js.map

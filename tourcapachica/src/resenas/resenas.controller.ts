@@ -97,19 +97,21 @@ export class ResenasController {
   }
 
   @Patch(':id/estado')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('Emprendedor', 'SuperAdmin')
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Actualizar solo el estado de una reseña' })
-  @ApiResponse({ status: 200, description: 'Estado actualizado exitosamente' })
-  async updateEstado(
-    @Param('id') id: string,
-    @Body() updateEstadoDto: UpdateEstadoDto
-  ) {
-    const resena = await this.resenasService.findOne(Number(id));
-    if (!resena) {
-      throw new HttpException('Reseña no encontrada', HttpStatus.NOT_FOUND);
-    }
-    return this.resenasService.updateEstado(Number(id), updateEstadoDto.estado);
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('Emprendedor', 'SuperAdmin')
+@ApiBearerAuth()
+@ApiOperation({ summary: 'Actualizar solo el estado de una reseña' })
+@ApiResponse({ status: 200, description: 'Estado actualizado exitosamente' })
+async updateEstado(
+  @Param('id') id: string,
+  @Body() updateEstadoDto: UpdateEstadoDto
+) {
+  console.log('➡️ Ejecutando updateEstado con ID:', id, 'y estado:', updateEstadoDto.estado);
+
+  const resena = await this.resenasService.findOne(Number(id));
+  if (!resena) {
+    throw new HttpException('Reseña no encontrada', HttpStatus.NOT_FOUND);
   }
+  return this.resenasService.updateEstado(Number(id), updateEstadoDto.estado);
+}
 }
