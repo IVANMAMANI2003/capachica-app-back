@@ -45,6 +45,16 @@ export declare class ResenasService {
         createdAt: Date;
         updatedAt: Date;
     }>;
+    updateEstado(id: number, estado: string): Promise<{
+        id: number;
+        servicioId: number;
+        usuarioId: number;
+        calificacion: number;
+        comentario: string | null;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
     remove(id: number): Promise<{
         id: number;
         servicioId: number;

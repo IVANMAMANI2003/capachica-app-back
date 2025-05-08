@@ -9,17 +9,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateResenaDto = void 0;
+exports.UpdateEstadoDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
-class UpdateResenaDto {
+class UpdateEstadoDto {
 }
-exports.UpdateResenaDto = UpdateResenaDto;
+exports.UpdateEstadoDto = UpdateEstadoDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Calificación', example: 5, required: false }),
-    __metadata("design:type", Number)
-], UpdateResenaDto.prototype, "calificacion", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Comentario', example: 'Muy buen servicio', required: false }),
+    (0, swagger_1.ApiProperty)({ description: 'Estado de la reseña', example: 'aprobado' }),
     __metadata("design:type", String)
-], UpdateResenaDto.prototype, "comentario", void 0);
-//# sourceMappingURL=update-resena.dto.js.map
+], UpdateEstadoDto.prototype, "estado", void 0);
+//# sourceMappingURL=update-estado.dto.js.map

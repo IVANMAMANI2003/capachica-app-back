@@ -16,11 +16,11 @@ exports.ResenasController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const create_resena_dto_1 = require("./dto/create-resena.dto");
-const update_resena_dto_1 = require("./dto/update-resena.dto");
 const resenas_service_1 = require("./resenas.service");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 const roles_guard_1 = require("../auth/guards/roles.guard");
 const roles_decorator_1 = require("../auth/decorators/roles.decorator");
+const update_estado_dto_1 = require("./dto/update-estado.dto");
 let ResenasController = class ResenasController {
     constructor(resenasService) {
         this.resenasService = resenasService;
@@ -51,7 +51,12 @@ let ResenasController = class ResenasController {
         if (!resena) {
             throw new common_1.HttpException('Reseña no encontrada', common_1.HttpStatus.NOT_FOUND);
         }
-        return this.resenasService.update(Number(id), updateResenaDto);
+        const updateData = {};
+        if (updateResenaDto.calificacion !== undefined)
+            updateData.calificacion = updateResenaDto.calificacion;
+        if (updateResenaDto.comentario !== undefined)
+            updateData.comentario = updateResenaDto.comentario;
+        return this.resenasService.update(Number(id), updateData);
     }
     async remove(id) {
         const resena = await this.resenasService.findOne(Number(id));
@@ -62,6 +67,13 @@ let ResenasController = class ResenasController {
     }
     async promedio(servicioId) {
         return this.resenasService.promedioCalificacionPorServicio(Number(servicioId));
+    }
+    async updateEstado(id, updateEstadoDto) {
+        const resena = await this.resenasService.findOne(Number(id));
+        if (!resena) {
+            throw new common_1.HttpException('Reseña no encontrada', common_1.HttpStatus.NOT_FOUND);
+        }
+        return this.resenasService.updateEstado(Number(id), updateEstadoDto.estado);
     }
 };
 exports.ResenasController = ResenasController;
@@ -110,12 +122,12 @@ __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin', 'User'),
     (0, swagger_1.ApiBearerAuth)(),
-    (0, swagger_1.ApiOperation)({ summary: 'Actualizar una reseña por ID' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Actualizar comentario y calificación de una reseña por ID' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Reseña actualizada exitosamente' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_resena_dto_1.UpdateResenaDto]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], ResenasController.prototype, "partialUpdate", null);
 __decorate([
@@ -140,6 +152,19 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], ResenasController.prototype, "promedio", null);
+__decorate([
+    (0, common_1.Patch)(':id/estado'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Actualizar solo el estado de una reseña' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Estado actualizado exitosamente' }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, update_estado_dto_1.UpdateEstadoDto]),
+    __metadata("design:returntype", Promise)
+], ResenasController.prototype, "updateEstado", null);
 exports.ResenasController = ResenasController = __decorate([
     (0, swagger_1.ApiTags)('resenas'),
     (0, common_1.Controller)('resenas'),

@@ -7,6 +7,4 @@ export class UpdateResenaDto {
   @ApiProperty({ description: 'Comentario', example: 'Muy buen servicio', required: false })
   comentario?: string;
 
-  @ApiProperty({ description: 'Estado de la reseña', example: 'aprobado', required: false })
-  estado?: string;
 }

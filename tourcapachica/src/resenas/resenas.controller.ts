@@ -8,7 +8,7 @@ import { ResenasService } from './resenas.service';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { RolesGuard } from '@/auth/guards/roles.guard';
 import { Roles } from '@/auth/decorators/roles.decorator';
-
+import { UpdateEstadoDto } from './dto/update-estado.dto';
 @ApiTags('resenas')
 @Controller('resenas')
 export class ResenasController {
@@ -61,14 +61,21 @@ export class ResenasController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('Emprendedor', 'SuperAdmin', 'User')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Actualizar una reseña por ID' })
+  @ApiOperation({ summary: 'Actualizar comentario y calificación de una reseña por ID' })
   @ApiResponse({ status: 200, description: 'Reseña actualizada exitosamente' })   
-  async partialUpdate(@Param('id') id: string, @Body() updateResenaDto: UpdateResenaDto) {
+  async partialUpdate(
+    @Param('id') id: string, 
+    @Body() updateResenaDto: { calificacion?: number; comentario?: string }
+  ) {
     const resena = await this.resenasService.findOne(Number(id));
     if (!resena) {
       throw new HttpException('Reseña no encontrada', HttpStatus.NOT_FOUND);
     }
-    return this.resenasService.update(Number(id), updateResenaDto);
+    // Solo permite actualizar calificacion y comentario
+    const updateData: any = {};
+    if (updateResenaDto.calificacion !== undefined) updateData.calificacion = updateResenaDto.calificacion;
+    if (updateResenaDto.comentario !== undefined) updateData.comentario = updateResenaDto.comentario;
+    return this.resenasService.update(Number(id), updateData);
   }
 
   @Delete(':id')
@@ -91,5 +98,22 @@ export class ResenasController {
   @ApiResponse({ status: 200, description: 'Promedio de calificación obtenido exitosamente' })
   async promedio(@Param('servicioId') servicioId: string): Promise<PromedioResponseDto> {
     return this.resenasService.promedioCalificacionPorServicio(Number(servicioId));
+  }
+
+  @Patch(':id/estado')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('Emprendedor', 'SuperAdmin')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Actualizar solo el estado de una reseña' })
+  @ApiResponse({ status: 200, description: 'Estado actualizado exitosamente' })
+  async updateEstado(
+    @Param('id') id: string,
+    @Body() updateEstadoDto: UpdateEstadoDto
+  ) {
+    const resena = await this.resenasService.findOne(Number(id));
+    if (!resena) {
+      throw new HttpException('Reseña no encontrada', HttpStatus.NOT_FOUND);
+    }
+    return this.resenasService.updateEstado(Number(id), updateEstadoDto.estado);
   }
 }

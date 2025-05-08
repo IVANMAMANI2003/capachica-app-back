@@ -32,6 +32,10 @@ let ResenasService = class ResenasService {
         await this.findOne(id);
         return this.prisma.resena.update({ where: { id }, data: updateResenaDto });
     }
+    async updateEstado(id, estado) {
+        await this.findOne(id);
+        return this.prisma.resena.update({ where: { id }, data: { estado } });
+    }
     async remove(id) {
         await this.findOne(id);
         return this.prisma.resena.delete({ where: { id } });

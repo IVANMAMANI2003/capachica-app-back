@@ -27,6 +27,11 @@ export class ResenasService {
     return this.prisma.resena.update({ where: { id }, data: updateResenaDto });
   }
 
+  async updateEstado(id: number, estado: string) {
+    await this.findOne(id);
+    return this.prisma.resena.update({ where: { id }, data: { estado } });
+  }
+
   async remove(id: number) {
     await this.findOne(id);
     return this.prisma.resena.delete({ where: { id } });
@@ -38,4 +43,7 @@ export class ResenasService {
     const promedioCalificacion = totalResenas > 0 ? resenas.reduce((sum, r) => sum + r.calificacion, 0) / totalResenas : 0;
     return { promedioCalificacion, totalResenas };
   }
+
+
+
 }
