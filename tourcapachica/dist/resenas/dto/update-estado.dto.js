@@ -15,7 +15,7 @@ class UpdateEstadoDto {
 }
 exports.UpdateEstadoDto = UpdateEstadoDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Estado de la reseña', example: 'aprobado' }),
+    (0, swagger_1.ApiProperty)({ description: 'estado', example: 'aprobado' }),
     __metadata("design:type", String)
 ], UpdateEstadoDto.prototype, "estado", void 0);
 //# sourceMappingURL=update-estado.dto.js.map

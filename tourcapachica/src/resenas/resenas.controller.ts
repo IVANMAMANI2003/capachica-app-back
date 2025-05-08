@@ -65,17 +65,13 @@ export class ResenasController {
   @ApiResponse({ status: 200, description: 'Reseña actualizada exitosamente' })   
   async partialUpdate(
     @Param('id') id: string, 
-    @Body() updateResenaDto: { calificacion?: number; comentario?: string }
+    @Body() updateResenaDto: UpdateResenaDto
   ) {
     const resena = await this.resenasService.findOne(Number(id));
     if (!resena) {
       throw new HttpException('Reseña no encontrada', HttpStatus.NOT_FOUND);
     }
-    // Solo permite actualizar calificacion y comentario
-    const updateData: any = {};
-    if (updateResenaDto.calificacion !== undefined) updateData.calificacion = updateResenaDto.calificacion;
-    if (updateResenaDto.comentario !== undefined) updateData.comentario = updateResenaDto.comentario;
-    return this.resenasService.update(Number(id), updateData);
+    return this.resenasService.update(Number(id), updateResenaDto);
   }
 
   @Delete(':id')

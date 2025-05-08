@@ -1,4 +1,5 @@
 import { CreateResenaDto } from './dto/create-resena.dto';
+import { UpdateResenaDto } from './dto/update-resena.dto';
 import { PromedioResponseDto } from './dto/promedio-response.dto';
 import { ResenasService } from './resenas.service';
 import { UpdateEstadoDto } from './dto/update-estado.dto';
@@ -45,10 +46,7 @@ export declare class ResenasController {
         createdAt: Date;
         updatedAt: Date;
     }>;
-    partialUpdate(id: string, updateResenaDto: {
-        calificacion?: number;
-        comentario?: string;
-    }): Promise<{
+    partialUpdate(id: string, updateResenaDto: UpdateResenaDto): Promise<{
         id: number;
         servicioId: number;
         usuarioId: number;

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateEstadoDto {
-  @ApiProperty({ description: 'Estado de la reseña', example: 'aprobado' })
+  @ApiProperty({ description: 'estado', example: 'aprobado' })
   estado: string;
 }
