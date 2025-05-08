@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateEstadoDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
-const resena_estado_enum_1 = require("../resena-estado.enum");
+const resena_estado_enum_1 = require("../enums/resena-estado.enum");
 class UpdateEstadoDto {
 }
 exports.UpdateEstadoDto = UpdateEstadoDto;
