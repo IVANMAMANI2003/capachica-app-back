@@ -45,7 +45,7 @@ export declare class ResenasController {
         createdAt: Date;
         updatedAt: Date;
     }>;
-    partialUpdate(id: string, updateResenaDto: Partial<UpdateResenaDto>): Promise<{
+    partialUpdate(id: string, updateResenaDto: UpdateResenaDto): Promise<{
         id: number;
         servicioId: number;
         usuarioId: number;

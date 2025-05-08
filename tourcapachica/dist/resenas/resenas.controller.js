@@ -16,6 +16,7 @@ exports.ResenasController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const create_resena_dto_1 = require("./dto/create-resena.dto");
+const update_resena_dto_1 = require("./dto/update-resena.dto");
 const resenas_service_1 = require("./resenas.service");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 const roles_guard_1 = require("../auth/guards/roles.guard");
@@ -114,7 +115,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String, update_resena_dto_1.UpdateResenaDto]),
     __metadata("design:returntype", Promise)
 ], ResenasController.prototype, "partialUpdate", null);
 __decorate([

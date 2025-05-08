@@ -63,7 +63,7 @@ export class ResenasController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar una reseña por ID' })
   @ApiResponse({ status: 200, description: 'Reseña actualizada exitosamente' })   
-  async partialUpdate(@Param('id') id: string, @Body() updateResenaDto: Partial<UpdateResenaDto>) {
+  async partialUpdate(@Param('id') id: string, @Body() updateResenaDto: UpdateResenaDto) {
     const resena = await this.resenasService.findOne(Number(id));
     if (!resena) {
       throw new HttpException('Reseña no encontrada', HttpStatus.NOT_FOUND);
