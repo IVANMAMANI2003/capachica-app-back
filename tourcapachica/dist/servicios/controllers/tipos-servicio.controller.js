@@ -20,6 +20,7 @@ const jwt_auth_guard_1 = require("../../auth/guards/jwt-auth.guard");
 const roles_guard_1 = require("../../auth/guards/roles.guard");
 const roles_decorator_1 = require("../../auth/decorators/roles.decorator");
 const swagger_1 = require("@nestjs/swagger");
+const update_tipo_servicio_dto_1 = require("../dto/update-tipo-servicio.dto");
 let TiposServicioController = class TiposServicioController {
     constructor(tiposServicioService) {
         this.tiposServicioService = tiposServicioService;
@@ -33,6 +34,9 @@ let TiposServicioController = class TiposServicioController {
     findOne(id) {
         return this.tiposServicioService.findOne(+id);
     }
+    update(id, updateTipoServicioDto) {
+        return this.tiposServicioService.update(+id, updateTipoServicioDto);
+    }
     remove(id) {
         return this.tiposServicioService.remove(+id);
     }
@@ -41,7 +45,8 @@ exports.TiposServicioController = TiposServicioController;
 __decorate([
     (0, common_1.Post)(),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('SuperAdmin'),
+    (0, roles_decorator_1.Roles)('SuperAdmin', 'Emprendedor'),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Crear un nuevo tipo de servicio' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Tipo de servicio creado exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
@@ -70,9 +75,24 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], TiposServicioController.prototype, "findOne", null);
 __decorate([
+    (0, common_1.Patch)(':id'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('SuperAdmin', 'Emprendedor'),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Actualizar un tipo de servicio' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Tipo de servicio actualizado' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Tipo de servicio no encontrado' }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, update_tipo_servicio_dto_1.UpdateTipoServicioDto]),
+    __metadata("design:returntype", void 0)
+], TiposServicioController.prototype, "update", null);
+__decorate([
     (0, common_1.Delete)(':id'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('SuperAdmin'),
+    (0, roles_decorator_1.Roles)('SuperAdmin', 'Emprendedor'),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Eliminar un tipo de servicio' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Tipo de servicio eliminado' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Tipo de servicio no encontrado' }),
@@ -84,7 +104,6 @@ __decorate([
 exports.TiposServicioController = TiposServicioController = __decorate([
     (0, swagger_1.ApiTags)('tipos-servicio'),
     (0, common_1.Controller)('tipos-servicio'),
-    (0, swagger_1.ApiBearerAuth)(),
     __metadata("design:paramtypes", [tipos_servicio_service_1.TiposServicioService])
 ], TiposServicioController);
 //# sourceMappingURL=tipos-servicio.controller.js.map

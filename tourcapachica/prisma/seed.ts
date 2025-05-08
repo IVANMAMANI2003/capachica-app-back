@@ -4,6 +4,8 @@ import * as bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
 async function main() {
+  // Generate the hashed password inside the async function
+
   try {
     // Limpiar la base de datos
     await prisma.$transaction([
@@ -136,6 +138,104 @@ async function main() {
       throw new Error('No se pudieron encontrar las subdivisiones necesarias');
     }
 
+    // Generar hash para los usuarios de prueba
+    const hashedPassword = await bcrypt.hash('password123', 10);
+
+    // Crear personas de prueba
+    const personas = await Promise.all([
+      prisma.persona.create({
+        data: {
+          nombre: 'Admin',
+          apellidos: 'Sistema',
+          telefono: '999999999',
+          direccion: 'Av. Principal 123',
+          subdivisionId: lima.id,
+          fotoPerfilUrl: 'https://example.com/images/admin-profile.jpg'
+        },
+      }),
+      prisma.persona.create({
+        data: {
+          nombre: 'Juan',
+          apellidos: 'Emprendedor',
+          telefono: '987654321',
+          direccion: 'Av. Comercial 456',
+          subdivisionId: puno.id,
+          fotoPerfilUrl: 'https://example.com/images/emprendedor-profile.jpg'
+        },
+      }),
+      prisma.persona.create({
+        data: {
+          nombre: 'Carlos',
+          apellidos: 'Usuario',
+          telefono: '987123456',
+          direccion: 'Av. Usuario 789',
+          subdivisionId: lima.id,
+          fotoPerfilUrl: 'https://example.com/images/user-profile.jpg'
+        },
+      }),
+      prisma.persona.create({
+        data: {
+          nombre: 'María',
+          apellidos: 'Emprendedora',
+          telefono: '987654322',
+          direccion: 'Av. Turismo 101',
+          subdivisionId: puno.id,
+          fotoPerfilUrl: 'https://example.com/images/emprendedora-profile.jpg'
+        },
+      })
+    ]);
+
+    // Crear usuarios asociados a las personas
+    const usuarios = await Promise.all([
+      prisma.usuario.create({
+        data: {
+          email: 'admin@tourcapachica.com',
+          passwordHash: hashedPassword,
+          personaId: personas[0].id,
+          emailVerified: true,
+          estaActivo: true,
+        },
+      }),
+      prisma.usuario.create({
+        data: {
+          email: 'emprendedor@tourcapachica.com',
+          passwordHash: hashedPassword,
+          personaId: personas[1].id,
+          emailVerified: true,
+          estaActivo: true,
+        },
+      }),
+      prisma.usuario.create({
+        data: {
+          email: 'usuario@tourcapachica.com',
+          passwordHash: hashedPassword,
+          personaId: personas[2].id,
+          emailVerified: true,
+          estaActivo: true,
+        },
+      }),
+      prisma.usuario.create({
+        data: {
+          email: 'emprendedora@tourcapachica.com',
+          passwordHash: hashedPassword,
+          personaId: personas[3].id,
+          emailVerified: true,
+          estaActivo: true,
+        },
+      }),
+    ]);
+
+    // Asignar roles a los usuarios de prueba
+    await prisma.usuariosRoles.createMany({
+      data: [
+        { usuarioId: usuarios[0].id, rolId: superAdminRole.id }, // Admin
+        { usuarioId: usuarios[1].id, rolId: emprendedorRole.id }, // Juan
+        { usuarioId: usuarios[2].id, rolId: userRole.id },        // Carlos
+        { usuarioId: usuarios[3].id, rolId: emprendedorRole.id }, // María
+      ]
+    });
+
+    // Poblar las demás tablas con datos de ejemplo (ya tienes ejemplos en el resto del seed)
     // 6. Crear tipos de servicio
     const tiposServicio = await Promise.all([
       prisma.tipoServicio.create({
@@ -234,224 +334,236 @@ async function main() {
       ],
     });
 
-    // 9. Crear usuarios con fotos de perfil
-    const hashedPassword = await bcrypt.hash('password123', 10);
-
-    // Crear personas
-    const personas = await Promise.all([
+    // 9. Crear personas y usuarios adicionales para Emprendedores y Users
+    const personasEmprendedores = await Promise.all([
       prisma.persona.create({
         data: {
-          nombre: 'Admin',
-          apellidos: 'Sistema',
-          telefono: '999999999',
-          direccion: 'Av. Principal 123',
-          subdivisionId: lima.id,
-          fotoPerfilUrl: 'https://example.com/images/admin-profile.jpg'
-        },
-      }),
-      prisma.persona.create({
-        data: {
-          nombre: 'Juan',
-          apellidos: 'Emprendedor',
-          telefono: '987654321',
-          direccion: 'Av. Comercial 456',
+          nombre: 'Pedro',
+          apellidos: 'García',
+          telefono: '900000001',
+          direccion: 'Av. Emprendedor 1',
           subdivisionId: puno.id,
-          fotoPerfilUrl: 'https://example.com/images/emprendedor-profile.jpg'
+          fotoPerfilUrl: 'https://example.com/images/emprendedor1.jpg'
         },
       }),
       prisma.persona.create({
         data: {
-          nombre: 'Carlos',
-          apellidos: 'Usuario',
-          telefono: '987123456',
-          direccion: 'Av. Usuario 789',
-          subdivisionId: lima.id,
-          fotoPerfilUrl: 'https://example.com/images/user-profile.jpg'
-        },
-      }),
-      prisma.persona.create({
-        data: {
-          nombre: 'María',
-          apellidos: 'Emprendedora',
-          telefono: '987654322',
-          direccion: 'Av. Turismo 101',
+          nombre: 'Lucía',
+          apellidos: 'Fernández',
+          telefono: '900000002',
+          direccion: 'Av. Emprendedor 2',
           subdivisionId: puno.id,
-          fotoPerfilUrl: 'https://example.com/images/emprendedora-profile.jpg'
+          fotoPerfilUrl: 'https://example.com/images/emprendedor2.jpg'
         },
-      })
+      }),
+      prisma.persona.create({
+        data: {
+          nombre: 'Miguel',
+          apellidos: 'Rojas',
+          telefono: '900000003',
+          direccion: 'Av. Emprendedor 3',
+          subdivisionId: puno.id,
+          fotoPerfilUrl: 'https://example.com/images/emprendedor3.jpg'
+        },
+      }),
+      prisma.persona.create({
+        data: {
+          nombre: 'Ana',
+          apellidos: 'Lopez',
+          telefono: '900000004',
+          direccion: 'Av. Emprendedor 4',
+          subdivisionId: puno.id,
+          fotoPerfilUrl: 'https://example.com/images/emprendedor4.jpg'
+        },
+      }),
+      prisma.persona.create({
+        data: {
+          nombre: 'Jorge',
+          apellidos: 'Vargas',
+          telefono: '900000005',
+          direccion: 'Av. Emprendedor 5',
+          subdivisionId: puno.id,
+          fotoPerfilUrl: 'https://example.com/images/emprendedor5.jpg'
+        },
+      }),
     ]);
 
-    // Crear usuarios
-    const usuarios = await Promise.all([
+    const usuariosEmprendedores = await Promise.all(personasEmprendedores.map((persona, idx) =>
       prisma.usuario.create({
         data: {
-          email: 'admin@tourcapachica.com',
+          email: `emprendedor${idx+1}@tourcapachica.com`,
           passwordHash: hashedPassword,
-          personaId: personas[0].id,
-          emailVerified: true,
-          estaActivo: true,
-        },
-      }),
-      prisma.usuario.create({
-        data: {
-          email: 'emprendedor@tourcapachica.com',
-          passwordHash: hashedPassword,
-          personaId: personas[1].id,
-          emailVerified: true,
-          estaActivo: true,
-        },
-      }),
-      prisma.usuario.create({
-        data: {
-          email: 'usuario@tourcapachica.com',
-          passwordHash: hashedPassword,
-          personaId: personas[2].id,
-          emailVerified: true,
-          estaActivo: true,
-        },
-      }),
-      prisma.usuario.create({
-        data: {
-          email: 'maria@tourcapachica.com',
-          passwordHash: hashedPassword,
-          personaId: personas[3].id,
+          personaId: persona.id,
           emailVerified: true,
           estaActivo: true,
         },
       })
+    ));
+
+    // 3 usuarios tipo User
+    const personasUsers = await Promise.all([
+      prisma.persona.create({
+        data: {
+          nombre: 'Sofía',
+          apellidos: 'Mendoza',
+          telefono: '900000006',
+          direccion: 'Av. User 1',
+          subdivisionId: lima.id,
+          fotoPerfilUrl: 'https://example.com/images/user1.jpg'
+        },
+      }),
+      prisma.persona.create({
+        data: {
+          nombre: 'Luis',
+          apellidos: 'Ramírez',
+          telefono: '900000007',
+          direccion: 'Av. User 2',
+          subdivisionId: lima.id,
+          fotoPerfilUrl: 'https://example.com/images/user2.jpg'
+        },
+      }),
+      prisma.persona.create({
+        data: {
+          nombre: 'Valeria',
+          apellidos: 'Quispe',
+          telefono: '900000008',
+          direccion: 'Av. User 3',
+          subdivisionId: puno.id,
+          fotoPerfilUrl: 'https://example.com/images/user3.jpg'
+        },
+      }),
     ]);
 
-    // Crear turista para el usuario regular
-    await prisma.turista.create({
-      data: {
-        usuarioId: usuarios[2].id,
-        // otros campos necesarios
-      },
-    });
+    const usuariosUsers = await Promise.all(personasUsers.map((persona, idx) =>
+      prisma.usuario.create({
+        data: {
+          email: `user${idx+1}@tourcapachica.com`,
+          passwordHash: hashedPassword,
+          personaId: persona.id,
+          emailVerified: true,
+          estaActivo: true,
+        },
+      })
+    ));
 
-    // 10. Asignar roles a usuarios
+    // Asignar roles a los nuevos usuarios
     await Promise.all([
-      prisma.usuariosRoles.create({
-        data: {
-          usuarioId: usuarios[0].id,
-          rolId: superAdminRole.id,
-        },
-      }),
-      prisma.usuariosRoles.create({
-        data: {
-          usuarioId: usuarios[1].id,
-          rolId: emprendedorRole.id,
-        },
-      }),
-      prisma.usuariosRoles.create({
-        data: {
-          usuarioId: usuarios[2].id,
-          rolId: userRole.id,
-        },
-      }),
-      prisma.usuariosRoles.create({
-        data: {
-          usuarioId: usuarios[3].id,
-          rolId: emprendedorRole.id,
-        },
-      })
+      ...usuariosEmprendedores.map(usuario =>
+        prisma.usuariosRoles.create({
+          data: {
+            usuarioId: usuario.id,
+            rolId: emprendedorRole.id,
+          },
+        })
+      ),
+      ...usuariosUsers.map(usuario =>
+        prisma.usuariosRoles.create({
+          data: {
+            usuarioId: usuario.id,
+            rolId: userRole.id,
+          },
+        })
+      ),
     ]);
 
-    // 11. Crear emprendimientos
-    const emprendimientos = await Promise.all([
+    // Crear emprendimientos para cada emprendedor
+    const emprendimientosExtra = await Promise.all(usuariosEmprendedores.map((usuario, idx) =>
       prisma.emprendimiento.create({
         data: {
-          nombre: 'Tour Capachica',
-          descripcion: 'Empresa de turismo en Capachica',
+          nombre: `Emprendimiento ${idx+1}`,
+          descripcion: `Descripción del emprendimiento ${idx+1}`,
           tipo: 'TURISMO',
-          direccion: 'Capachica, Puno',
-          usuarioId: usuarios[1].id,
+          direccion: `Dirección Emprendimiento ${idx+1}`,
+          usuarioId: usuario.id,
           estado: 'aprobado',
           fechaAprobacion: new Date(),
         },
-      }),
-      prisma.emprendimiento.create({
-        data: {
-          nombre: 'Hostal Lago Azul',
-          descripcion: 'Hospedaje con vista al lago',
-          tipo: 'HOSPEDAJE',
-          direccion: 'Capachica, Puno',
-          usuarioId: usuarios[3].id,
-          estado: 'aprobado',
-          fechaAprobacion: new Date(),
-        },
-      }),
-    ]);
+      })
+    ));
 
-    // 12. Crear servicios
-    const servicios = await Promise.all([
-      prisma.servicio.create({
-        data: {
-          tipoServicioId: tiposServicio[0].id,
-          nombre: 'Transporte a Islas Uros',
-          descripcion: 'Transporte en bote a las Islas Uros',
-          precioBase: 50.00,
-          moneda: 'PEN',
-          estado: 'activo',
-          detallesServicio: {
-            duracion: '2 horas',
-            capacidad: 10,
+    // Crear 3 servicios para cada emprendimiento y asignarlos
+    let serviciosExtra: any[] = [];
+    for (let i = 0; i < emprendimientosExtra.length; i++) {
+      const serviciosCreados = await Promise.all([
+        prisma.servicio.create({
+          data: {
+            tipoServicioId: tiposServicio[0].id,
+            nombre: `Servicio Transporte ${i+1}-1`,
+            descripcion: `Transporte especial para el emprendimiento ${i+1}`,
+            precioBase: 60 + i,
+            moneda: 'PEN',
+            estado: 'activo',
+            detallesServicio: {
+              duracion: '1 hora',
+              capacidad: 8 + i,
+            },
           },
-        },
-      }),
-      prisma.servicio.create({
-        data: {
-          tipoServicioId: tiposServicio[1].id,
-          nombre: 'Hospedaje en Capachica',
-          descripcion: 'Hospedaje en cabañas tradicionales',
-          precioBase: 100.00,
-          moneda: 'PEN',
-          estado: 'activo',
-          detallesServicio: {
-            capacidad: 4,
-            comodidades: ['WiFi', 'Desayuno'],
+        }),
+        prisma.servicio.create({
+          data: {
+            tipoServicioId: tiposServicio[1].id,
+            nombre: `Servicio Hospedaje ${i+1}-2`,
+            descripcion: `Hospedaje especial para el emprendimiento ${i+1}`,
+            precioBase: 120 + i,
+            moneda: 'PEN',
+            estado: 'activo',
+            detallesServicio: {
+              capacidad: 5 + i,
+              comodidades: ['WiFi', 'Desayuno'],
+            },
           },
-        },
-      }),
-      prisma.servicio.create({
-        data: {
-          tipoServicioId: tiposServicio[2].id,
-          nombre: 'Guía Turístico',
-          descripcion: 'Guía especializado en la zona',
-          precioBase: 80.00,
-          moneda: 'PEN',
-          estado: 'activo',
-          detallesServicio: {
-            idiomas: ['Español', 'Inglés'],
-            experiencia: '5 años',
+        }),
+        prisma.servicio.create({
+          data: {
+            tipoServicioId: tiposServicio[2].id,
+            nombre: `Servicio Guía ${i+1}-3`,
+            descripcion: `Guía turístico para el emprendimiento ${i+1}`,
+            precioBase: 90 + i,
+            moneda: 'PEN',
+            estado: 'activo',
+            detallesServicio: {
+              idiomas: ['Español', 'Inglés'],
+              experiencia: `${2 + i} años`,
+            },
           },
-        },
-      }),
-    ]);
+        }),
+      ]);
+      serviciosExtra.push(...serviciosCreados);
 
-    // 13. Asignar servicios a emprendimientos
-    await Promise.all([
-      prisma.servicioEmprendedor.create({
-        data: {
-          servicioId: servicios[0].id,
-          emprendimientoId: emprendimientos[0].id,
-        },
-      }),
-      prisma.servicioEmprendedor.create({
-        data: {
-          servicioId: servicios[2].id,
-          emprendimientoId: emprendimientos[0].id,
-        },
-      }),
-      prisma.servicioEmprendedor.create({
-        data: {
-          servicioId: servicios[1].id,
-          emprendimientoId: emprendimientos[1].id,
-        },
-      }),
-    ]);
+      // Asignar servicios al emprendimiento
+      await Promise.all(serviciosCreados.map(servicio =>
+        prisma.servicioEmprendedor.create({
+          data: {
+            servicioId: servicio.id,
+            emprendimientoId: emprendimientosExtra[i].id,
+          },
+        })
+      ));
+    }
 
-    // 14. Crear paquetes turísticos
+    // Crear reseñas de los usuarios tipo User para los servicios de los nuevos emprendimientos
+    for (let i = 0; i < serviciosExtra.length; i++) {
+      const userIdx = i % usuariosUsers.length;
+      await prisma.resena.create({
+        data: {
+          usuarioId: usuariosUsers[userIdx].id,
+          servicioId: serviciosExtra[i].id,
+          calificacion: 3 + (i % 3),
+          comentario: `Reseña automática para el servicio ${serviciosExtra[i].nombre}`,
+        },
+      });
+    }
+
+    // Crear turistas para los nuevos usuarios tipo User
+    await Promise.all(usuariosUsers.map(usuario =>
+      prisma.turista.create({
+        data: {
+          usuarioId: usuario.id,
+        },
+      })
+    ));
+
+    // 14. Crear paquetes turísticos con los datos actuales
     const paquetes = await Promise.all([
       prisma.paqueteTuristico.create({
         data: {
@@ -459,15 +571,15 @@ async function main() {
           descripcion: 'Experiencia completa en Capachica',
           precio: 200.00,
           estado: 'activo',
-          emprendimientoId: emprendimientos[0].id,
+          emprendimientoId: emprendimientosExtra[0].id,
           servicios: {
             create: [
               {
-                servicioId: servicios[0].id,
+                servicioId: serviciosExtra[0].id,
                 orden: 1,
               },
               {
-                servicioId: servicios[2].id,
+                servicioId: serviciosExtra[1].id,
                 orden: 2,
               },
             ],
@@ -480,15 +592,15 @@ async function main() {
           descripcion: 'Tour por el lago más alto del mundo',
           precio: 150.00,
           estado: 'activo',
-          emprendimientoId: emprendimientos[0].id,
+          emprendimientoId: emprendimientosExtra[1].id,
           servicios: {
             create: [
               {
-                servicioId: servicios[0].id,
+                servicioId: serviciosExtra[3].id,
                 orden: 1,
               },
               {
-                servicioId: servicios[2].id,
+                servicioId: serviciosExtra[4].id,
                 orden: 2,
               },
             ],
@@ -496,38 +608,6 @@ async function main() {
         },
       }),
     ]);
-
-    // Crear turista para el usuario regular
-    // (Eliminado duplicado para evitar error de unicidad)
-    await prisma.turista.create({
-      data: {
-        usuarioId: usuarios[2].id,
-      },
-    });
-
-    // Poblar la tabla reseña con datos de ejemplo
-    await prisma.resena.createMany({
-      data: [
-        {
-          usuarioId: usuarios[2].id,
-          servicioId: servicios[0].id,
-          calificacion: 5,
-          comentario: 'Excelente servicio, muy recomendado!',
-        },
-        {
-          usuarioId: usuarios[3].id,
-          servicioId: servicios[1].id,
-          calificacion: 4,
-          comentario: 'Buena experiencia, pero se puede mejorar.',
-        },
-        {
-          usuarioId: usuarios[1].id,
-          servicioId: servicios[2].id,
-          calificacion: 3,
-          comentario: 'Servicio aceptable, pero esperaba más.',
-        },
-      ],
-    });
 
     // 16. Crear sliders
     await prisma.slider.createMany({

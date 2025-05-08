@@ -8,51 +8,51 @@ export declare class ResenasController {
     constructor(resenasService: ResenasService);
     create(createResenaDto: CreateResenaDto): Promise<{
         id: number;
-        usuarioId: number;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        estado: string;
         servicioId: number;
+        usuarioId: number;
         calificacion: number;
         comentario: string | null;
     }>;
     findAll(filter: FilterResenasDto): Promise<{
         id: number;
-        usuarioId: number;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        estado: string;
         servicioId: number;
+        usuarioId: number;
         calificacion: number;
         comentario: string | null;
     }[]>;
     findOne(id: string): Promise<{
         id: number;
-        usuarioId: number;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        estado: string;
         servicioId: number;
+        usuarioId: number;
         calificacion: number;
         comentario: string | null;
     }>;
     update(id: string, updateResenaDto: UpdateResenaDto): Promise<{
         id: number;
-        usuarioId: number;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        estado: string;
         servicioId: number;
+        usuarioId: number;
         calificacion: number;
         comentario: string | null;
     }>;
     remove(id: string): Promise<{
         id: number;
-        usuarioId: number;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        estado: string;
         servicioId: number;
+        usuarioId: number;
         calificacion: number;
         comentario: string | null;
     }>;

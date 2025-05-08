@@ -38,6 +38,21 @@ export class TiposServicioService {
 
     return tipoServicio;
   }
+  async update(id: number, updateTipoServicioDto: CreateTipoServicioDto) {
+    try {
+      return await this.prisma.tipoServicio.update({
+        where: { id },
+        data: {
+          nombre: updateTipoServicioDto.nombre,
+          descripcion: updateTipoServicioDto.descripcion,
+          requiereCupo: updateTipoServicioDto.requiereCupo, 
+        }
+      })
+
+    } catch (error) {
+      throw new NotFoundException(`Tipo de servicio con ID ${id} no encontrado`);
+    }
+  }
 
   async remove(id: number) {
     try {

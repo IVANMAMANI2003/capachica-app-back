@@ -39,6 +39,8 @@ export class ResenasController {
     return this.resenasService.findAll();
   }
 
+  
+
   @Get(':id')
   @ApiOperation({ summary: 'Obtener una reseña por ID' })
   @ApiResponse({ status: 200, description: 'Reseña encontrada' })

@@ -5,60 +5,68 @@ export declare class TiposServicioService {
     constructor(prisma: PrismaService);
     create(createTipoServicioDto: CreateTipoServicioDto): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
         requiereCupo: boolean;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     findAll(): Promise<({
         servicios: {
             id: number;
-            estado: string;
-            createdAt: Date;
-            updatedAt: Date;
             nombre: string;
             descripcion: string | null;
+            createdAt: Date;
+            updatedAt: Date;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
+            estado: string;
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
         }[];
     } & {
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
         requiereCupo: boolean;
+        createdAt: Date;
+        updatedAt: Date;
     })[]>;
     findOne(id: number): Promise<{
         servicios: {
             id: number;
-            estado: string;
-            createdAt: Date;
-            updatedAt: Date;
             nombre: string;
             descripcion: string | null;
+            createdAt: Date;
+            updatedAt: Date;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
+            estado: string;
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
         }[];
     } & {
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
         requiereCupo: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
+    update(id: number, updateTipoServicioDto: CreateTipoServicioDto): Promise<{
+        id: number;
+        nombre: string;
+        descripcion: string | null;
+        requiereCupo: boolean;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     remove(id: number): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
         requiereCupo: boolean;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
 }
