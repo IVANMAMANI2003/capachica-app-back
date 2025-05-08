@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateUserDto = void 0;
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
+const class_transformer_1 = require("class-transformer");
 class UpdateUserDto {
 }
 exports.UpdateUserDto = UpdateUserDto;
@@ -48,6 +49,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Fecha de nacimiento del usuario', required: false }),
     (0, class_validator_1.IsOptional)(),
+    (0, class_transformer_1.Type)(() => Date),
     (0, class_validator_1.IsDate)(),
     __metadata("design:type", Date)
 ], UpdateUserDto.prototype, "fechaNacimiento", void 0);

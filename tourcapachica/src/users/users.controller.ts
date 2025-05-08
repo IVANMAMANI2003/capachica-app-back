@@ -121,21 +121,13 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Get('profile')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Obtener el perfil del usuario actual' })
-  @ApiResponse({ status: 200, description: 'Perfil obtenido exitosamente' })
-  @ApiResponse({ status: 401, description: 'No autorizado' })
-  getProfile(@Request() req: RequestWithUser) {
-    return this.usersService.findOne(req.user.id);
-  }
+
 
   @Get(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('SuperAdmin', 'User')
+  @Roles('SuperAdmin', 'User', 'emprendedor')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Obtener un usuario por ID (SuperAdmin) o el propio perfil' })
+  @ApiOperation({ summary: 'Obtener un usuario por ID  o el propio perfil' })
   @ApiResponse({ status: 200, description: 'Usuario obtenido exitosamente' })
   @ApiResponse({ status: 401, description: 'No autorizado' })
   @ApiResponse({ status: 403, description: 'No tiene permisos' })
@@ -159,7 +151,7 @@ export class UsersController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('Emprendedor', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin', 'User')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar un usuario' })
   @ApiResponse({ status: 200, description: 'Usuario actualizado exitosamente' })

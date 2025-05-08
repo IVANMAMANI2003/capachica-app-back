@@ -82,9 +82,6 @@ let UsersController = class UsersController {
     findAll() {
         return this.usersService.findAll();
     }
-    getProfile(req) {
-        return this.usersService.findOne(req.user.id);
-    }
     async findOne(id, req) {
         if (req.user.id === +id) {
             return this.usersService.findOne(+id);
@@ -187,23 +184,11 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)('profile'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
-    (0, swagger_1.ApiBearerAuth)(),
-    (0, swagger_1.ApiOperation)({ summary: 'Obtener el perfil del usuario actual' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Perfil obtenido exitosamente' }),
-    (0, swagger_1.ApiResponse)({ status: 401, description: 'No autorizado' }),
-    __param(0, (0, common_1.Request)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], UsersController.prototype, "getProfile", null);
-__decorate([
     (0, common_1.Get)(':id'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('SuperAdmin', 'User'),
+    (0, roles_decorator_1.Roles)('SuperAdmin', 'User', 'emprendedor'),
     (0, swagger_1.ApiBearerAuth)(),
-    (0, swagger_1.ApiOperation)({ summary: 'Obtener un usuario por ID (SuperAdmin) o el propio perfil' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener un usuario por ID  o el propio perfil' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Usuario obtenido exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 401, description: 'No autorizado' }),
     (0, swagger_1.ApiResponse)({ status: 403, description: 'No tiene permisos' }),
@@ -217,7 +202,7 @@ __decorate([
 __decorate([
     (0, common_1.Patch)(':id'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin', 'User'),
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Actualizar un usuario' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Usuario actualizado exitosamente' }),

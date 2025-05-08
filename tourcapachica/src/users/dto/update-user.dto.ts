@@ -1,5 +1,6 @@
 import { IsString, IsEmail, IsOptional, IsDate, IsNumber, IsUrl } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 
 export class UpdateUserDto {
   @ApiProperty({ description: 'Nombre del usuario', required: false })
@@ -29,6 +30,7 @@ export class UpdateUserDto {
 
   @ApiProperty({ description: 'Fecha de nacimiento del usuario', required: false })
   @IsOptional()
+  @Type(() => Date)
   @IsDate()
   fechaNacimiento?: Date;
 
