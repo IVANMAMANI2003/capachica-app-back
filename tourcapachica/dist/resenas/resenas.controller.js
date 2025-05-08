@@ -22,13 +22,15 @@ const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 const roles_guard_1 = require("../auth/guards/roles.guard");
 const roles_decorator_1 = require("../auth/decorators/roles.decorator");
 const update_estado_dto_1 = require("./dto/update-estado.dto");
+const common_2 = require("@nestjs/common");
 let ResenasController = class ResenasController {
     constructor(resenasService) {
         this.resenasService = resenasService;
     }
-    create(createResenaDto) {
+    create(createResenaDto, req) {
         try {
-            return this.resenasService.create(createResenaDto);
+            const usuarioId = req.user.id;
+            return this.resenasService.create(Object.assign(createResenaDto, { usuarioId }));
         }
         catch (error) {
             throw new common_1.HttpException('Error al crear la reseña', common_1.HttpStatus.BAD_REQUEST);
@@ -82,8 +84,9 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Reseña creada exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_2.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_resena_dto_1.CreateResenaDto]),
+    __metadata("design:paramtypes", [create_resena_dto_1.CreateResenaDto, Object]),
     __metadata("design:returntype", void 0)
 ], ResenasController.prototype, "create", null);
 __decorate([

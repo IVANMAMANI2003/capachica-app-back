@@ -1,14 +1,13 @@
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateResenaDto } from './dto/create-resena.dto';
 import { UpdateResenaDto } from './dto/update-resena.dto';
 import { PromedioResponseDto } from './dto/promedio-response.dto';
 export declare class ResenasService {
     private readonly prisma;
     constructor(prisma: PrismaService);
-    create(createResenaDto: CreateResenaDto): Promise<{
+    create(createResenaDto: any): Promise<{
+        usuarioId: number;
         id: number;
         servicioId: number;
-        usuarioId: number;
         calificacion: number;
         comentario: string | null;
         estado: string;
@@ -16,9 +15,9 @@ export declare class ResenasService {
         updatedAt: Date;
     }>;
     findAll(): Promise<{
+        usuarioId: number;
         id: number;
         servicioId: number;
-        usuarioId: number;
         calificacion: number;
         comentario: string | null;
         estado: string;
@@ -26,9 +25,9 @@ export declare class ResenasService {
         updatedAt: Date;
     }[]>;
     findOne(id: number): Promise<{
+        usuarioId: number;
         id: number;
         servicioId: number;
-        usuarioId: number;
         calificacion: number;
         comentario: string | null;
         estado: string;
@@ -36,9 +35,9 @@ export declare class ResenasService {
         updatedAt: Date;
     }>;
     update(id: number, updateResenaDto: UpdateResenaDto): Promise<{
+        usuarioId: number;
         id: number;
         servicioId: number;
-        usuarioId: number;
         calificacion: number;
         comentario: string | null;
         estado: string;
@@ -46,9 +45,9 @@ export declare class ResenasService {
         updatedAt: Date;
     }>;
     updateEstado(id: number, estado: string): Promise<{
+        usuarioId: number;
         id: number;
         servicioId: number;
-        usuarioId: number;
         calificacion: number;
         comentario: string | null;
         estado: string;
@@ -56,9 +55,9 @@ export declare class ResenasService {
         updatedAt: Date;
     }>;
     remove(id: number): Promise<{
+        usuarioId: number;
         id: number;
         servicioId: number;
-        usuarioId: number;
         calificacion: number;
         comentario: string | null;
         estado: string;

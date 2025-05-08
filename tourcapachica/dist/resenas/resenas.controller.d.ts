@@ -6,73 +6,73 @@ import { UpdateEstadoDto } from './dto/update-estado.dto';
 export declare class ResenasController {
     private readonly resenasService;
     constructor(resenasService: ResenasService);
-    create(createResenaDto: CreateResenaDto): Promise<{
-        calificacion: number;
-        comentario: string | null;
+    create(createResenaDto: CreateResenaDto, req: any): Promise<{
+        usuarioId: number;
         id: number;
         servicioId: number;
-        usuarioId: number;
+        calificacion: number;
+        comentario: string | null;
         estado: string;
         createdAt: Date;
         updatedAt: Date;
     }>;
     findAll(): Promise<{
-        calificacion: number;
-        comentario: string | null;
+        usuarioId: number;
         id: number;
         servicioId: number;
-        usuarioId: number;
+        calificacion: number;
+        comentario: string | null;
         estado: string;
         createdAt: Date;
         updatedAt: Date;
     }[]>;
     findByServicio(servicioId: string): Promise<{
-        calificacion: number;
-        comentario: string | null;
+        usuarioId: number;
         id: number;
         servicioId: number;
-        usuarioId: number;
+        calificacion: number;
+        comentario: string | null;
         estado: string;
         createdAt: Date;
         updatedAt: Date;
     }[]>;
     findOne(id: string): Promise<{
-        calificacion: number;
-        comentario: string | null;
+        usuarioId: number;
         id: number;
         servicioId: number;
-        usuarioId: number;
+        calificacion: number;
+        comentario: string | null;
         estado: string;
         createdAt: Date;
         updatedAt: Date;
     }>;
     partialUpdate(id: string, updateResenaDto: UpdateResenaDto): Promise<{
-        calificacion: number;
-        comentario: string | null;
+        usuarioId: number;
         id: number;
         servicioId: number;
-        usuarioId: number;
+        calificacion: number;
+        comentario: string | null;
         estado: string;
         createdAt: Date;
         updatedAt: Date;
     }>;
     remove(id: string): Promise<{
-        calificacion: number;
-        comentario: string | null;
+        usuarioId: number;
         id: number;
         servicioId: number;
-        usuarioId: number;
+        calificacion: number;
+        comentario: string | null;
         estado: string;
         createdAt: Date;
         updatedAt: Date;
     }>;
     promedio(servicioId: string): Promise<PromedioResponseDto>;
     updateEstado(id: string, updateEstadoDto: UpdateEstadoDto): Promise<{
-        calificacion: number;
-        comentario: string | null;
+        usuarioId: number;
         id: number;
         servicioId: number;
-        usuarioId: number;
+        calificacion: number;
+        comentario: string | null;
         estado: string;
         createdAt: Date;
         updatedAt: Date;

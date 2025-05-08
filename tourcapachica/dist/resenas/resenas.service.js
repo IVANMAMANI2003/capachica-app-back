@@ -17,7 +17,14 @@ let ResenasService = class ResenasService {
         this.prisma = prisma;
     }
     async create(createResenaDto) {
-        return this.prisma.resena.create({ data: createResenaDto });
+        return this.prisma.resena.create({
+            data: {
+                servicioId: createResenaDto.servicioId,
+                calificacion: createResenaDto.calificacion,
+                comentario: createResenaDto.comentario,
+                usuarioId: createResenaDto.usuarioId
+            }
+        });
     }
     async findAll() {
         return this.prisma.resena.findMany();

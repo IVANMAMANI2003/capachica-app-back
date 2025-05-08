@@ -9,6 +9,7 @@ import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { RolesGuard } from '@/auth/guards/roles.guard';
 import { Roles } from '@/auth/decorators/roles.decorator';
 import { UpdateEstadoDto } from './dto/update-estado.dto';
+import { Request } from '@nestjs/common';
 @ApiTags('resenas')
 @Controller('resenas')
 export class ResenasController {
@@ -21,9 +22,10 @@ export class ResenasController {
   @ApiOperation({ summary: 'Crear una nueva reseña' })
   @ApiResponse({ status: 201, description: 'Reseña creada exitosamente' })
   @ApiResponse({ status: 400, description: 'Datos inválidos' })
-  create(@Body() createResenaDto: CreateResenaDto) {
+  create(@Body() createResenaDto: CreateResenaDto, @Request() req) {
     try {
-      return this.resenasService.create(createResenaDto);
+      const usuarioId = req.user.id; // Obtén el id del usuario autenticado
+      return this.resenasService.create(Object.assign(createResenaDto, { usuarioId }));
     } catch (error) {
       throw new HttpException('Error al crear la reseña', HttpStatus.BAD_REQUEST);
     }

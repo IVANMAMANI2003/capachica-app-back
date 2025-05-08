@@ -8,8 +8,16 @@ import { PromedioResponseDto } from './dto/promedio-response.dto';
 export class ResenasService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createResenaDto: CreateResenaDto) {
-    return this.prisma.resena.create({ data: createResenaDto });
+  async create(createResenaDto: any) {
+    return this.prisma.resena.create({
+      data: {
+        servicioId: createResenaDto.servicioId,
+        calificacion: createResenaDto.calificacion,
+        comentario: createResenaDto.comentario,
+        usuarioId: createResenaDto.usuarioId // Este campo lo añade el controlador
+        // No incluyas 'estado' aquí si quieres que use el valor por defecto de la base de datos
+      }
+    });
   }
 
   async findAll() {
