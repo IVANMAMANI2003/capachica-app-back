@@ -33,12 +33,10 @@ let ResenasService = class ResenasService {
         return this.prisma.resena.update({ where: { id }, data: updateResenaDto });
     }
     async updateEstado(id, estado) {
-        console.log('➡️ Ejecutando updateEstado con ID:', id, 'y estado:', estado);
         const updated = await this.prisma.resena.update({
             where: { id },
             data: { estado },
         });
-        console.log('✅ Resultado:', updated);
         return updated;
     }
     async remove(id) {

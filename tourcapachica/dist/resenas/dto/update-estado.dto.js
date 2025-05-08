@@ -12,13 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateEstadoDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
+const resena_estado_enum_1 = require("../resena-estado.enum");
 class UpdateEstadoDto {
 }
 exports.UpdateEstadoDto = UpdateEstadoDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'estado', example: 'aprobado' }),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)({ description: 'Estado de la reseña', enum: resena_estado_enum_1.ResenaEstado }),
+    (0, class_validator_1.IsEnum)(resena_estado_enum_1.ResenaEstado, { message: 'El estado debe ser visible u oculto' }),
     __metadata("design:type", String)
 ], UpdateEstadoDto.prototype, "estado", void 0);
 //# sourceMappingURL=update-estado.dto.js.map

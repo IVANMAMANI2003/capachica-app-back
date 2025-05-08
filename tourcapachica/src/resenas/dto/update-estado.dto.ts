@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsEnum } from 'class-validator';
+import { ResenaEstado } from '../resena-estado.enum';
 
 export class UpdateEstadoDto {
-  @ApiProperty({ description: 'estado', example: 'aprobado' })
-  @IsString()
-  @IsNotEmpty()
-  estado: string;
+  @ApiProperty({ description: 'Estado de la reseña', enum: ResenaEstado })
+  @IsEnum(ResenaEstado, { message: 'El estado debe ser visible u oculto' })
+  estado: ResenaEstado;
 }

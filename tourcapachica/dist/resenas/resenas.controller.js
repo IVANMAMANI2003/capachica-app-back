@@ -65,7 +65,6 @@ let ResenasController = class ResenasController {
         return this.resenasService.promedioCalificacionPorServicio(Number(servicioId));
     }
     async updateEstado(id, updateEstadoDto) {
-        console.log('➡️ Ejecutando updateEstado con ID:', id, 'y estado:', updateEstadoDto.estado);
         const resena = await this.resenasService.findOne(Number(id));
         if (!resena) {
             throw new common_1.HttpException('Reseña no encontrada', common_1.HttpStatus.NOT_FOUND);

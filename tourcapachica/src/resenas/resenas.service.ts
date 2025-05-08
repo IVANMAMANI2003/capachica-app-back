@@ -27,15 +27,11 @@ export class ResenasService {
     return this.prisma.resena.update({ where: { id }, data: updateResenaDto });
   }
 
-  async updateEstado(id: number, estado: string) {
-    console.log('➡️ Ejecutando updateEstado con ID:', id, 'y estado:', estado);
-  
+  async updateEstado(id: number, estado: string) {  
     const updated = await this.prisma.resena.update({
       where: { id },
       data: { estado },
     });
-  
-    console.log('✅ Resultado:', updated);
     return updated;
   }
 

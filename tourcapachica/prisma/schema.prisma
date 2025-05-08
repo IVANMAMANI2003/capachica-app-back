@@ -322,7 +322,7 @@ model Resena {
   usuarioId        Int       @map("usuario_id")
   calificacion     Int
   comentario       String?
-  estado           String    @default("pendiente") @db.VarChar(20)
+  estado           String    @default("visible") @db.VarChar(20)
   createdAt        DateTime  @default(now()) @map("created_at")
   updatedAt        DateTime  @default(now()) @map("updated_at")
   servicio         Servicio  @relation(fields: [servicioId], references: [id], onDelete: Cascade)
