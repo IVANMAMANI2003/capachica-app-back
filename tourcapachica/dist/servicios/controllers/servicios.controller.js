@@ -22,6 +22,7 @@ const roles_guard_1 = require("../../auth/guards/roles.guard");
 const roles_decorator_1 = require("../../auth/decorators/roles.decorator");
 const swagger_1 = require("@nestjs/swagger");
 const servicio_entity_1 = require("../entities/servicio.entity");
+const update_estado_dto_1 = require("../dto/update-estado.dto");
 let ServiciosController = class ServiciosController {
     constructor(serviciosService) {
         this.serviciosService = serviciosService;
@@ -44,8 +45,8 @@ let ServiciosController = class ServiciosController {
     remove(id) {
         return this.serviciosService.remove(+id);
     }
-    updateEstado(id, estado) {
-        return this.serviciosService.updateEstado(+id, estado);
+    updateEstado(id, updateEstadoDto) {
+        return this.serviciosService.updateEstado(+id, updateEstadoDto.estado);
     }
     findByTipoServicio(tipoServicioId) {
         return this.serviciosService.findByTipoServicio(+tipoServicioId);
@@ -121,9 +122,9 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Estado inválido' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Servicio no encontrado' }),
     __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)('estado')),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [String, update_estado_dto_1.UpdateEstadoDto]),
     __metadata("design:returntype", void 0)
 ], ServiciosController.prototype, "updateEstado", null);
 __decorate([

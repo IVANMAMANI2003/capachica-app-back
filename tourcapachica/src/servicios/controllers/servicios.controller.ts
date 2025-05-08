@@ -7,6 +7,7 @@ import { RolesGuard } from '../../auth/guards/roles.guard';
 import { Roles } from '../../auth/decorators/roles.decorator';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { ServicioEntity } from '../entities/servicio.entity';
+import { UpdateEstadoDto } from '../dto/update-estado.dto';
 
 @ApiTags('servicios')
 @Controller('servicios')
@@ -71,8 +72,11 @@ export class ServiciosController {
   @ApiResponse({ status: 200, description: 'Estado actualizado', type: ServicioEntity })
   @ApiResponse({ status: 400, description: 'Estado inválido' })
   @ApiResponse({ status: 404, description: 'Servicio no encontrado' })
-  updateEstado(@Param('id') id: string, @Body('estado') estado: string) {
-    return this.serviciosService.updateEstado(+id, estado);
+  updateEstado(
+    @Param('id') id: string,
+    @Body() updateEstadoDto: UpdateEstadoDto
+  ) {
+    return this.serviciosService.updateEstado(+id, updateEstadoDto.estado);
   }
 
   @Get('tipo-servicio/:tipoServicioId')
@@ -81,4 +85,4 @@ export class ServiciosController {
   findByTipoServicio(@Param('tipoServicioId') tipoServicioId: string) {
     return this.serviciosService.findByTipoServicio(+tipoServicioId);
   }
-} 
+}
