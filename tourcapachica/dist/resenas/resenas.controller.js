@@ -17,7 +17,6 @@ const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const create_resena_dto_1 = require("./dto/create-resena.dto");
 const update_resena_dto_1 = require("./dto/update-resena.dto");
-const filter_resenas_dto_1 = require("./dto/filter-resenas.dto");
 const resenas_service_1 = require("./resenas.service");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 const roles_guard_1 = require("../auth/guards/roles.guard");
@@ -34,11 +33,11 @@ let ResenasController = class ResenasController {
             throw new common_1.HttpException('Error al crear la reseña', common_1.HttpStatus.BAD_REQUEST);
         }
     }
-    findAll(filter) {
-        if (filter.servicioId) {
-            return this.resenasService.findAll().then(resenas => resenas.filter(r => r.servicioId === filter.servicioId));
-        }
+    findAll() {
         return this.resenasService.findAll();
+    }
+    findByServicio(servicioId) {
+        return this.resenasService.findAll().then(resenas => resenas.filter(r => r.servicioId === Number(servicioId)));
     }
     async findOne(id) {
         const resena = await this.resenasService.findOne(Number(id));
@@ -81,13 +80,21 @@ __decorate([
 ], ResenasController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
-    (0, swagger_1.ApiOperation)({ summary: 'Obtener todas las reseñas (puede filtrar por servicioId)' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener todas las reseñas' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Lista de reseñas obtenida exitosamente' }),
-    __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [filter_resenas_dto_1.FilterResenasDto]),
+    __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], ResenasController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('/servicio/:servicioId'),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener  reseñas por el id del servicio' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Lista de reseñas por servicio obtenida exitosamente' }),
+    __param(0, (0, common_1.Param)('servicioId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], ResenasController.prototype, "findByServicio", null);
 __decorate([
     (0, common_1.Get)(':id'),
     (0, swagger_1.ApiOperation)({ summary: 'Obtener una reseña por ID' }),

@@ -1,6 +1,5 @@
 import { CreateResenaDto } from './dto/create-resena.dto';
 import { UpdateResenaDto } from './dto/update-resena.dto';
-import { FilterResenasDto } from './dto/filter-resenas.dto';
 import { PromedioResponseDto } from './dto/promedio-response.dto';
 import { ResenasService } from './resenas.service';
 export declare class ResenasController {
@@ -16,7 +15,17 @@ export declare class ResenasController {
         calificacion: number;
         comentario: string | null;
     }>;
-    findAll(filter: FilterResenasDto): Promise<{
+    findAll(): Promise<{
+        id: number;
+        createdAt: Date;
+        updatedAt: Date;
+        estado: string;
+        servicioId: number;
+        usuarioId: number;
+        calificacion: number;
+        comentario: string | null;
+    }[]>;
+    findByServicio(servicioId: string): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;

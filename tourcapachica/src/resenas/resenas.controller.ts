@@ -30,13 +30,17 @@ export class ResenasController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Obtener todas las reseñas (puede filtrar por servicioId)' })
+  @ApiOperation({ summary: 'Obtener todas las reseñas' })
   @ApiResponse({ status: 200, description: 'Lista de reseñas obtenida exitosamente' })
-  findAll(@Query() filter: FilterResenasDto) {
-    if (filter.servicioId) {
-      return this.resenasService.findAll().then(resenas => resenas.filter(r => r.servicioId === filter.servicioId));
-    }
+  findAll() {
     return this.resenasService.findAll();
+  }
+
+  @Get('/servicio/:servicioId')
+  @ApiOperation({ summary: 'Obtener  reseñas por el id del servicio' })
+  @ApiResponse({ status: 200, description: 'Lista de reseñas por servicio obtenida exitosamente' })
+  findByServicio(@Param('servicioId') servicioId: string) {
+    return this.resenasService.findAll().then(resenas => resenas.filter(r => r.servicioId === Number(servicioId)));
   }
 
   
