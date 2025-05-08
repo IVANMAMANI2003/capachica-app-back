@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, HttpException, HttpStatus, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, HttpException, HttpStatus, UseGuards, Patch } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { CreateResenaDto } from './dto/create-resena.dto';
 import { UpdateResenaDto } from './dto/update-resena.dto';
@@ -57,14 +57,13 @@ export class ResenasController {
     return resena;
   }
 
-  @Put(':id')
+  @Patch(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('Emprendedor', 'SuperAdmin', 'User')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar una reseña por ID' })
-  @ApiResponse({ status: 200, description: 'Reseña actualizada exitosamente' })
-  @ApiResponse({ status: 404, description: 'Reseña no encontrada' })
-  async update(@Param('id') id: string, @Body() updateResenaDto: UpdateResenaDto) {
+  @ApiResponse({ status: 200, description: 'Reseña actualizada exitosamente' })   
+  async partialUpdate(@Param('id') id: string, @Body() updateResenaDto: Partial<UpdateResenaDto>) {
     const resena = await this.resenasService.findOne(Number(id));
     if (!resena) {
       throw new HttpException('Reseña no encontrada', HttpStatus.NOT_FOUND);

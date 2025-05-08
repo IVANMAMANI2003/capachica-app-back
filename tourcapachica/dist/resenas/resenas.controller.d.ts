@@ -7,63 +7,63 @@ export declare class ResenasController {
     constructor(resenasService: ResenasService);
     create(createResenaDto: CreateResenaDto): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
-        estado: string;
         servicioId: number;
         usuarioId: number;
         calificacion: number;
         comentario: string | null;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     findAll(): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
-        estado: string;
         servicioId: number;
         usuarioId: number;
         calificacion: number;
         comentario: string | null;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
     }[]>;
     findByServicio(servicioId: string): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
-        estado: string;
         servicioId: number;
         usuarioId: number;
         calificacion: number;
         comentario: string | null;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
     }[]>;
     findOne(id: string): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
-        estado: string;
         servicioId: number;
         usuarioId: number;
         calificacion: number;
         comentario: string | null;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
-    update(id: string, updateResenaDto: UpdateResenaDto): Promise<{
+    partialUpdate(id: string, updateResenaDto: Partial<UpdateResenaDto>): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
-        estado: string;
         servicioId: number;
         usuarioId: number;
         calificacion: number;
         comentario: string | null;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     remove(id: string): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
-        estado: string;
         servicioId: number;
         usuarioId: number;
         calificacion: number;
         comentario: string | null;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     promedio(servicioId: string): Promise<PromedioResponseDto>;
 }
