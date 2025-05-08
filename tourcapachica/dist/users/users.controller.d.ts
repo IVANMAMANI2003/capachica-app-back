@@ -19,23 +19,23 @@ export declare class UsersController {
             url: string;
         }[];
         persona: {
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
             nombre: string;
             apellidos: string;
             telefono: string | null;
             direccion: string | null;
+            fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            fotoPerfilUrl: string | null;
         };
         usuariosRoles: ({
             rol: {
-                nombre: string;
                 id: number;
                 createdAt: Date;
                 updatedAt: Date;
+                nombre: string;
                 descripcion: string | null;
             };
         } & {
@@ -45,9 +45,9 @@ export declare class UsersController {
             rolId: number;
             usuarioId: number;
         })[];
-        email: string;
         id: number;
         personaId: number;
+        email: string;
         passwordHash: string;
         recoveryToken: string | null;
         recoveryTokenExpiresAt: Date | null;
@@ -78,23 +78,23 @@ export declare class UsersController {
             url: string;
         }[];
         persona: {
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
             nombre: string;
             apellidos: string;
             telefono: string | null;
             direccion: string | null;
+            fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            fotoPerfilUrl: string | null;
         };
         usuariosRoles: ({
             rol: {
-                nombre: string;
                 id: number;
                 createdAt: Date;
                 updatedAt: Date;
+                nombre: string;
                 descripcion: string | null;
             };
         } & {
@@ -104,9 +104,9 @@ export declare class UsersController {
             rolId: number;
             usuarioId: number;
         })[];
-        email: string;
         id: number;
         personaId: number;
+        email: string;
         passwordHash: string;
         recoveryToken: string | null;
         recoveryTokenExpiresAt: Date | null;
@@ -124,23 +124,23 @@ export declare class UsersController {
             url: string;
         }[];
         persona: {
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
             nombre: string;
             apellidos: string;
             telefono: string | null;
             direccion: string | null;
+            fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            fotoPerfilUrl: string | null;
         };
         usuariosRoles: ({
             rol: {
-                nombre: string;
                 id: number;
                 createdAt: Date;
                 updatedAt: Date;
+                nombre: string;
                 descripcion: string | null;
             };
         } & {
@@ -150,9 +150,9 @@ export declare class UsersController {
             rolId: number;
             usuarioId: number;
         })[];
-        email: string;
         id: number;
         personaId: number;
+        email: string;
         passwordHash: string;
         recoveryToken: string | null;
         recoveryTokenExpiresAt: Date | null;
@@ -170,23 +170,23 @@ export declare class UsersController {
             url: string;
         }[];
         persona: {
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
             nombre: string;
             apellidos: string;
             telefono: string | null;
             direccion: string | null;
+            fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            fotoPerfilUrl: string | null;
         };
         usuariosRoles: ({
             rol: {
-                nombre: string;
                 id: number;
                 createdAt: Date;
                 updatedAt: Date;
+                nombre: string;
                 descripcion: string | null;
             };
         } & {
@@ -196,9 +196,9 @@ export declare class UsersController {
             rolId: number;
             usuarioId: number;
         })[];
-        email: string;
         id: number;
         personaId: number;
+        email: string;
         passwordHash: string;
         recoveryToken: string | null;
         recoveryTokenExpiresAt: Date | null;
@@ -210,29 +210,29 @@ export declare class UsersController {
         createdAt: Date;
         updatedAt: Date;
     }>;
-    update(id: string, updateUserDto: UpdateUserDto): Promise<{
+    update(id: number, updateUserDto: UpdateUserDto): Promise<{
         imagenes: {
             id: number;
             url: string;
         }[];
         persona: {
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
             nombre: string;
             apellidos: string;
             telefono: string | null;
             direccion: string | null;
+            fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            fotoPerfilUrl: string | null;
         };
         usuariosRoles: ({
             rol: {
-                nombre: string;
                 id: number;
                 createdAt: Date;
                 updatedAt: Date;
+                nombre: string;
                 descripcion: string | null;
             };
         } & {
@@ -242,9 +242,9 @@ export declare class UsersController {
             rolId: number;
             usuarioId: number;
         })[];
-        email: string;
         id: number;
         personaId: number;
+        email: string;
         passwordHash: string;
         recoveryToken: string | null;
         recoveryTokenExpiresAt: Date | null;
@@ -257,9 +257,9 @@ export declare class UsersController {
         updatedAt: Date;
     }>;
     remove(id: string): Promise<{
-        email: string;
         id: number;
         personaId: number;
+        email: string;
         passwordHash: string;
         recoveryToken: string | null;
         recoveryTokenExpiresAt: Date | null;

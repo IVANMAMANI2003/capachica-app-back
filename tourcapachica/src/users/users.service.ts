@@ -259,8 +259,12 @@ export class UsersService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
+    console.log('--- Iniciando actualización de usuario ---');
+    console.log('ID del usuario:', id);
+    console.log('DTO recibido:', updateUserDto);
+  
     const { fotoPerfil, ...userData } = updateUserDto;
-
+  
     // Actualizar datos del usuario
     const user = await this.prisma.usuario.update({
       where: { id },
@@ -281,10 +285,12 @@ export class UsersService {
         persona: true
       }
     });
-
-    // Si hay una nueva imagen de perfil, actualizarla
+  
+    console.log('Usuario actualizado:', user);
+  
     if (fotoPerfil) {
-      // Obtener las relaciones imageables existentes
+      console.log('Nueva foto de perfil detectada, actualizando imagen...');
+  
       const imageables = await this.prisma.imageable.findMany({
         where: {
           imageable_type: this.IMAGEABLE_TYPE,
@@ -294,49 +300,49 @@ export class UsersService {
           image: true
         }
       });
-
-      // Eliminar las relaciones y las imágenes existentes
+  
+      console.log('Relaciones imageables encontradas:', imageables.length);
+  
       for (const imageable of imageables) {
-        // Eliminar la imagen de Supabase
+        console.log('Eliminando imagen:', imageable.image.url);
+  
         const { error } = await this.supabaseService.deleteFile(
           this.BUCKET_NAME,
           imageable.image.url
         );
-
+  
         if (error) {
           console.error(`Error al eliminar la imagen de Supabase: ${error.message}`);
         }
-
-        // Eliminar la relación y la imagen de la base de datos
-        await this.prisma.imageable.delete({
-          where: { id: imageable.id }
-        });
-        await this.prisma.image.delete({
-          where: { id: imageable.image.id }
-        });
+  
+        await this.prisma.imageable.delete({ where: { id: imageable.id } });
+        console.log('Relación imageable eliminada:', imageable.id);
+  
+        await this.prisma.image.delete({ where: { id: imageable.image.id } });
+        console.log('Imagen eliminada de base de datos:', imageable.image.id);
       }
-
+  
       const filePath = `${id}/${Date.now()}-${fotoPerfil.split('/').pop()}`;
-      
-      // Subir la nueva imagen a Supabase
+      console.log('Ruta para nueva imagen:', filePath);
+  
       const { data, error } = await this.supabaseService.uploadFile(
         this.BUCKET_NAME,
         filePath,
         fotoPerfil
       );
-
+  
       if (error) {
         throw new BadRequestException(`Error al subir la imagen: ${error.message}`);
       }
-
-      // Crear la imagen en la base de datos con la URL de Supabase
+  
+      console.log('Imagen subida correctamente:', data.path);
+  
       const imagenDb = await this.prisma.image.create({
-        data: {
-          url: data.path
-        }
+        data: { url: data.path }
       });
-
-      // Crear la relación imageable
+  
+      console.log('Imagen guardada en BD con ID:', imagenDb.id);
+  
       await this.prisma.imageable.create({
         data: {
           image_id: imagenDb.id,
@@ -344,16 +350,21 @@ export class UsersService {
           imageable_type: this.IMAGEABLE_TYPE
         }
       });
-
-      // Actualizar la URL de la foto de perfil en la persona
+  
+      console.log('Relación imageable creada');
+  
       await this.prisma.persona.update({
         where: { id: user.personaId },
         data: { fotoPerfilUrl: data.path }
       });
+  
+      console.log('Foto de perfil actualizada en entidad persona');
     }
-
+  
+    console.log('--- Actualización finalizada ---');
     return this.findOne(id);
   }
+  
 
   async delete(id: number) {
     // Obtener las relaciones imageables
