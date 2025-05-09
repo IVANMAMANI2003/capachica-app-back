@@ -207,9 +207,12 @@ export class PaquetesTuristicosController {
   @ApiResponse({ status: 403, description: 'No autorizado' })
   @ApiResponse({ status: 404, description: 'Disponibilidad no encontrada' })
   async updateDisponibilidad(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: number,
     @Body() updateDisponibilidadDto: UpdateDisponibilidadDto
   ) {
+    // Asegúrate de que las fechas estén en formato ISO-8601
+    updateDisponibilidadDto.fechaInicio = new Date(updateDisponibilidadDto.fechaInicio).toISOString();
+    updateDisponibilidadDto.fechaFin = new Date(updateDisponibilidadDto.fechaFin).toISOString();
     return this.paquetesTuristicosService.updateDisponibilidad(id, updateDisponibilidadDto);
   }
 
@@ -226,4 +229,4 @@ export class PaquetesTuristicosController {
   ) {
     return this.paquetesTuristicosService.deleteDisponibilidad(id);
   }
-} 
+}

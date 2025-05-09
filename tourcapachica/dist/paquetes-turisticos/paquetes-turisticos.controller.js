@@ -80,6 +80,8 @@ let PaquetesTuristicosController = class PaquetesTuristicosController {
         return this.paquetesTuristicosService.getDisponibilidad(id);
     }
     async updateDisponibilidad(id, updateDisponibilidadDto) {
+        updateDisponibilidadDto.fechaInicio = new Date(updateDisponibilidadDto.fechaInicio).toISOString();
+        updateDisponibilidadDto.fechaFin = new Date(updateDisponibilidadDto.fechaFin).toISOString();
         return this.paquetesTuristicosService.updateDisponibilidad(id, updateDisponibilidadDto);
     }
     async deleteDisponibilidad(id) {
@@ -282,7 +284,7 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
     (0, swagger_1.ApiResponse)({ status: 403, description: 'No autorizado' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Disponibilidad no encontrada' }),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, update_disponibilidad_dto_1.UpdateDisponibilidadDto]),
