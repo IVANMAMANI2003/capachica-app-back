@@ -27,14 +27,24 @@ __decorate([
 ], CreateServicioDisponibilidadDto.prototype, "servicioId", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Fecha de disponibilidad (YYYY-MM-DD)',
+        description: 'Fecha Inicio de disponibilidad (YYYY-MM-DD)',
         example: '2024-03-15',
         required: true,
     }),
     (0, class_validator_1.IsDateString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
-], CreateServicioDisponibilidadDto.prototype, "fecha", void 0);
+], CreateServicioDisponibilidadDto.prototype, "fechaInicio", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Fecha Fin de disponibilidad (YYYY-MM-DD)',
+        example: '2024-03-17',
+        required: true,
+    }),
+    (0, class_validator_1.IsDateString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateServicioDisponibilidadDto.prototype, "fechaFin", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Cupos disponibles para la fecha',

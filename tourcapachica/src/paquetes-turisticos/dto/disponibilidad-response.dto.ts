@@ -61,13 +61,6 @@ export class DisponibilidadResponseDto {
   })
   estado?: string;
 
-  @ApiProperty({
-    description: 'Días de la semana disponibles',
-    example: ['Lunes', 'Miércoles', 'Viernes'],
-    type: [String],
-    required: false,
-  })
-  diasSemana?: string[];
 
   @ApiProperty({
     description: 'Fecha de creación del registro',

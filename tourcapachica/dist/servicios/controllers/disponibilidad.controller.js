@@ -20,6 +20,7 @@ const roles_guard_1 = require("../../auth/guards/roles.guard");
 const roles_decorator_1 = require("../../auth/decorators/roles.decorator");
 const swagger_1 = require("@nestjs/swagger");
 const create_servicio_disponibilidad_dto_1 = require("../dto/create-servicio-disponibilidad.dto");
+const update_disponibilidad_dto_1 = require("../../paquetes-turisticos/dto/update-disponibilidad.dto");
 let DisponibilidadController = class DisponibilidadController {
     constructor(disponibilidadService) {
         this.disponibilidadService = disponibilidadService;
@@ -112,7 +113,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String, update_disponibilidad_dto_1.UpdateDisponibilidadDto]),
     __metadata("design:returntype", void 0)
 ], DisponibilidadController.prototype, "update", null);
 __decorate([

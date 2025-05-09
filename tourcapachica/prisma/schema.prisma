@@ -306,13 +306,14 @@ model TipoServicio {
 model ServicioDisponibilidad {
   id               Int      @id @default(autoincrement())
   servicioId       Int      @map("servicio_id")
-  fecha            DateTime @db.Date
+  fechaInicio  DateTime     @map("fecha") @db.Date
+  fechaFin     DateTime?    @db.Date
   cuposDisponibles Int      @map("cupos_disponibles")
   precioEspecial   Decimal? @map("precio_especial") @db.Decimal(10, 2)
   servicio         Servicio @relation(fields: [servicioId], references: [id], onDelete: Cascade)
   createdAt     DateTime        @default(now()) @map("created_at")
   updatedAt     DateTime        @default(now()) @map("updated_at")
-  @@unique([servicioId, fecha])
+  @@unique([servicioId, fechaInicio, fechaFin])
   @@map("servicios_disponibilidad")
 }
 

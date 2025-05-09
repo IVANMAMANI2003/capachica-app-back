@@ -8,7 +8,6 @@ export declare class DisponibilidadResponseDto {
     precioEspecial?: number;
     notas?: string;
     estado?: string;
-    diasSemana?: string[];
     createdAt: Date;
     updatedAt: Date;
 }

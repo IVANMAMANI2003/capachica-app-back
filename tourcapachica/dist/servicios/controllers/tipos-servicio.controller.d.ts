@@ -6,20 +6,20 @@ export declare class TiposServicioController {
     constructor(tiposServicioService: TiposServicioService);
     create(createTipoServicioDto: CreateTipoServicioDto): Promise<{
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
         requiereCupo: boolean;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     findAll(): Promise<({
         servicios: {
             id: number;
-            nombre: string;
-            descripcion: string | null;
             createdAt: Date;
             updatedAt: Date;
             tipoServicioId: number;
+            nombre: string;
+            descripcion: string | null;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
             estado: string;
@@ -27,20 +27,20 @@ export declare class TiposServicioController {
         }[];
     } & {
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
         requiereCupo: boolean;
-        createdAt: Date;
-        updatedAt: Date;
     })[]>;
     findOne(id: string): Promise<{
         servicios: {
             id: number;
-            nombre: string;
-            descripcion: string | null;
             createdAt: Date;
             updatedAt: Date;
             tipoServicioId: number;
+            nombre: string;
+            descripcion: string | null;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
             estado: string;
@@ -48,26 +48,26 @@ export declare class TiposServicioController {
         }[];
     } & {
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
         requiereCupo: boolean;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     update(id: string, updateTipoServicioDto: UpdateTipoServicioDto): Promise<{
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
         requiereCupo: boolean;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     remove(id: string): Promise<{
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         nombre: string;
         descripcion: string | null;
         requiereCupo: boolean;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
 }

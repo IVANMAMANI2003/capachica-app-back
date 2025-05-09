@@ -26,7 +26,8 @@ let DisponibilidadService = class DisponibilidadService {
         return this.prisma.servicioDisponibilidad.create({
             data: {
                 servicioId: createDisponibilidadDto.servicioId,
-                fecha: new Date(createDisponibilidadDto.fecha),
+                fechaInicio: new Date(createDisponibilidadDto.fechaInicio),
+                fechaFin: new Date(createDisponibilidadDto.fechaFin),
                 cuposDisponibles: createDisponibilidadDto.cuposDisponibles,
                 precioEspecial: createDisponibilidadDto.precioEspecial,
             },
@@ -44,7 +45,8 @@ let DisponibilidadService = class DisponibilidadService {
         return this.prisma.$transaction(disponibilidades.map(disponibilidad => this.prisma.servicioDisponibilidad.create({
             data: {
                 servicioId: disponibilidad.servicioId,
-                fecha: new Date(disponibilidad.fecha),
+                fechaInicio: new Date(disponibilidad.fechaInicio),
+                fechaFin: new Date(disponibilidad.fechaFin),
                 cuposDisponibles: disponibilidad.cuposDisponibles,
                 precioEspecial: disponibilidad.precioEspecial,
             },
@@ -59,7 +61,7 @@ let DisponibilidadService = class DisponibilidadService {
         }
         return this.prisma.servicioDisponibilidad.findMany({
             where: { servicioId },
-            orderBy: { fecha: 'asc' },
+            orderBy: { fechaInicio: 'asc' },
         });
     }
     async getDisponibilidadByFecha(servicioId, fecha) {
@@ -72,7 +74,7 @@ let DisponibilidadService = class DisponibilidadService {
         const disponibilidad = await this.prisma.servicioDisponibilidad.findFirst({
             where: {
                 servicioId,
-                fecha: new Date(fecha),
+                fechaInicio: new Date(fecha),
             },
         });
         if (!disponibilidad) {

@@ -7,5 +7,4 @@ export declare class CreateDisponibilidadDto {
     precioEspecial?: number;
     notas?: string;
     estado?: EstadoDisponibilidad;
-    diasSemana?: string[];
 }

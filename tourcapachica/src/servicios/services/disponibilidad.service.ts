@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateServicioDisponibilidadDto } from '../dto/create-servicio-disponibilidad.dto';
+import { UpdateServicioDisponibilidadDto } from '../dto/update-servicio-disponibilidad.dto';
 
 @Injectable()
 export class DisponibilidadService {
@@ -18,7 +19,9 @@ export class DisponibilidadService {
     return this.prisma.servicioDisponibilidad.create({
       data: {
         servicioId: createDisponibilidadDto.servicioId,
-        fecha: new Date(createDisponibilidadDto.fecha),
+        fechaInicio: new Date(createDisponibilidadDto.fechaInicio),
+        fechaFin: new Date(createDisponibilidadDto.fechaFin),
+
         cuposDisponibles: createDisponibilidadDto.cuposDisponibles,
         precioEspecial: createDisponibilidadDto.precioEspecial,
       },
@@ -47,7 +50,8 @@ export class DisponibilidadService {
         this.prisma.servicioDisponibilidad.create({
           data: {
             servicioId: disponibilidad.servicioId,
-            fecha: new Date(disponibilidad.fecha),
+            fechaInicio: new Date(disponibilidad.fechaInicio),
+            fechaFin: new Date(disponibilidad.fechaFin),
             cuposDisponibles: disponibilidad.cuposDisponibles,
             precioEspecial: disponibilidad.precioEspecial,
           },
@@ -67,7 +71,7 @@ export class DisponibilidadService {
 
     return this.prisma.servicioDisponibilidad.findMany({
       where: { servicioId },
-      orderBy: { fecha: 'asc' },
+      orderBy: { fechaInicio: 'asc' },
     });
   }
 
@@ -83,7 +87,7 @@ export class DisponibilidadService {
     const disponibilidad = await this.prisma.servicioDisponibilidad.findFirst({
       where: {
         servicioId,
-        fecha: new Date(fecha),
+        fechaInicio: new Date(fecha),
       },
     });
 
@@ -126,7 +130,7 @@ export class DisponibilidadService {
     return disponibilidad;
   }
 
-  async update(id: number, updateData: Partial<CreateServicioDisponibilidadDto>) {
+  async update(id: number, updateData: UpdateServicioDisponibilidadDto) {
     try {
       return await this.prisma.servicioDisponibilidad.update({
         where: { id },
@@ -149,4 +153,6 @@ export class DisponibilidadService {
       throw new NotFoundException(`Disponibilidad con ID ${id} no encontrada`);
     }
   }
-} 
+
+  
+}

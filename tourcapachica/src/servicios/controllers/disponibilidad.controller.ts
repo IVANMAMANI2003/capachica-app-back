@@ -5,6 +5,7 @@ import { RolesGuard } from '../../auth/guards/roles.guard';
 import { Roles } from '../../auth/decorators/roles.decorator';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { CreateServicioDisponibilidadDto } from '../dto/create-servicio-disponibilidad.dto';
+import { UpdateDisponibilidadDto } from '@/paquetes-turisticos/dto/update-disponibilidad.dto';
 
 @ApiTags('disponibilidad')
 @Controller('disponibilidad')
@@ -66,7 +67,7 @@ export class DisponibilidadController {
   @ApiResponse({ status: 404, description: 'Disponibilidad no encontrada' })
   update(
     @Param('id') id: string,
-    @Body() updateData: Partial<CreateServicioDisponibilidadDto>,
+    @Body() updateData: UpdateDisponibilidadDto,
   ) {
     return this.disponibilidadService.update(+id, updateData);
   }

@@ -14,11 +14,11 @@ export declare class LugaresTuristicosService {
             url: string;
         }[];
         id: number;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
         descripcion: string;
+        estado: string;
         direccion: string;
         coordenadas: string;
         esDestacado: boolean;
@@ -34,11 +34,11 @@ export declare class LugaresTuristicosService {
             url: string;
         }[];
         id: number;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
         descripcion: string;
+        estado: string;
         direccion: string;
         coordenadas: string;
         esDestacado: boolean;
@@ -54,11 +54,11 @@ export declare class LugaresTuristicosService {
             url: string;
         }[];
         id: number;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
         descripcion: string;
+        estado: string;
         direccion: string;
         coordenadas: string;
         esDestacado: boolean;
@@ -74,11 +74,11 @@ export declare class LugaresTuristicosService {
             url: string;
         }[];
         id: number;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
         descripcion: string;
+        estado: string;
         direccion: string;
         coordenadas: string;
         esDestacado: boolean;
@@ -90,11 +90,11 @@ export declare class LugaresTuristicosService {
     }>;
     remove(id: number): Promise<{
         id: number;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
         descripcion: string;
+        estado: string;
         direccion: string;
         coordenadas: string;
         esDestacado: boolean;
@@ -106,11 +106,11 @@ export declare class LugaresTuristicosService {
     }>;
     findDestacados(): Promise<{
         id: number;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
         descripcion: string;
+        estado: string;
         direccion: string;
         coordenadas: string;
         esDestacado: boolean;

@@ -12,13 +12,22 @@ export class CreateServicioDisponibilidadDto {
   servicioId: number;
 
   @ApiProperty({
-    description: 'Fecha de disponibilidad (YYYY-MM-DD)',
+    description: 'Fecha Inicio de disponibilidad (YYYY-MM-DD)',
     example: '2024-03-15',
     required: true,
   })
   @IsDateString()
   @IsNotEmpty()
-  fecha: string;
+  fechaInicio: string;
+
+  @ApiProperty({
+    description: 'Fecha Fin de disponibilidad (YYYY-MM-DD)',
+    example: '2024-03-17',
+    required: true,
+  })
+  @IsDateString()
+  @IsNotEmpty()
+  fechaFin: string;
 
   @ApiProperty({
     description: 'Cupos disponibles para la fecha',

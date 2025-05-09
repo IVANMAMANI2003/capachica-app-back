@@ -9,12 +9,12 @@ export declare class PaymentsService {
     create(createPaymentDto: CreatePaymentDto): Promise<{
         reserva: {
             id: number;
-            estado: string;
+            fechaInicio: Date;
+            fechaFin: Date | null;
             createdAt: Date;
             updatedAt: Date;
             moneda: string;
-            fechaInicio: Date;
-            fechaFin: Date | null;
+            estado: string;
             notas: string | null;
             turistaId: number;
             codigoReserva: string;
@@ -42,10 +42,10 @@ export declare class PaymentsService {
         }[];
     } & {
         id: number;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
         moneda: string;
+        estado: string;
         reservaId: number;
         montoTotal: import(".prisma/client/runtime/library").Decimal;
         fechaPago: Date | null;
@@ -55,12 +55,12 @@ export declare class PaymentsService {
     findAll(): Promise<({
         reserva: {
             id: number;
-            estado: string;
+            fechaInicio: Date;
+            fechaFin: Date | null;
             createdAt: Date;
             updatedAt: Date;
             moneda: string;
-            fechaInicio: Date;
-            fechaFin: Date | null;
+            estado: string;
             notas: string | null;
             turistaId: number;
             codigoReserva: string;
@@ -88,10 +88,10 @@ export declare class PaymentsService {
         }[];
     } & {
         id: number;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
         moneda: string;
+        estado: string;
         reservaId: number;
         montoTotal: import(".prisma/client/runtime/library").Decimal;
         fechaPago: Date | null;
@@ -101,12 +101,12 @@ export declare class PaymentsService {
     findOne(id: number): Promise<{
         reserva: {
             id: number;
-            estado: string;
+            fechaInicio: Date;
+            fechaFin: Date | null;
             createdAt: Date;
             updatedAt: Date;
             moneda: string;
-            fechaInicio: Date;
-            fechaFin: Date | null;
+            estado: string;
             notas: string | null;
             turistaId: number;
             codigoReserva: string;
@@ -134,10 +134,10 @@ export declare class PaymentsService {
         }[];
     } & {
         id: number;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
         moneda: string;
+        estado: string;
         reservaId: number;
         montoTotal: import(".prisma/client/runtime/library").Decimal;
         fechaPago: Date | null;
@@ -170,10 +170,10 @@ export declare class PaymentsService {
         })[];
     } & {
         id: number;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
         moneda: string;
+        estado: string;
         reservaId: number;
         montoTotal: import(".prisma/client/runtime/library").Decimal;
         fechaPago: Date | null;
@@ -183,12 +183,12 @@ export declare class PaymentsService {
     update(id: number, updatePaymentDto: UpdatePaymentDto): Promise<{
         reserva: {
             id: number;
-            estado: string;
+            fechaInicio: Date;
+            fechaFin: Date | null;
             createdAt: Date;
             updatedAt: Date;
             moneda: string;
-            fechaInicio: Date;
-            fechaFin: Date | null;
+            estado: string;
             notas: string | null;
             turistaId: number;
             codigoReserva: string;
@@ -227,10 +227,10 @@ export declare class PaymentsService {
         })[];
     } & {
         id: number;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
         moneda: string;
+        estado: string;
         reservaId: number;
         montoTotal: import(".prisma/client/runtime/library").Decimal;
         fechaPago: Date | null;
@@ -239,10 +239,10 @@ export declare class PaymentsService {
     }>;
     remove(id: number): Promise<{
         id: number;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
         moneda: string;
+        estado: string;
         reservaId: number;
         montoTotal: import(".prisma/client/runtime/library").Decimal;
         fechaPago: Date | null;
@@ -264,10 +264,10 @@ export declare class PaymentsService {
         }[];
     } & {
         id: number;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
         moneda: string;
+        estado: string;
         reservaId: number;
         montoTotal: import(".prisma/client/runtime/library").Decimal;
         fechaPago: Date | null;
@@ -292,12 +292,12 @@ export declare class PaymentsService {
         }[];
         reserva: {
             id: number;
-            estado: string;
+            fechaInicio: Date;
+            fechaFin: Date | null;
             createdAt: Date;
             updatedAt: Date;
             moneda: string;
-            fechaInicio: Date;
-            fechaFin: Date | null;
+            estado: string;
             notas: string | null;
             turistaId: number;
             codigoReserva: string;

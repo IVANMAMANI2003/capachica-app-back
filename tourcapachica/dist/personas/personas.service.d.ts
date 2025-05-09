@@ -32,9 +32,9 @@ export declare class PersonasService {
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
+        direccion: string | null;
         apellidos: string;
         telefono: string | null;
-        direccion: string | null;
         fotoPerfilUrl: string | null;
         fechaNacimiento: Date | null;
         subdivisionId: number;
@@ -67,9 +67,9 @@ export declare class PersonasService {
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
+        direccion: string | null;
         apellidos: string;
         telefono: string | null;
-        direccion: string | null;
         fotoPerfilUrl: string | null;
         fechaNacimiento: Date | null;
         subdivisionId: number;
@@ -102,9 +102,9 @@ export declare class PersonasService {
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
+        direccion: string | null;
         apellidos: string;
         telefono: string | null;
-        direccion: string | null;
         fotoPerfilUrl: string | null;
         fechaNacimiento: Date | null;
         subdivisionId: number;
@@ -137,9 +137,9 @@ export declare class PersonasService {
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
+        direccion: string | null;
         apellidos: string;
         telefono: string | null;
-        direccion: string | null;
         fotoPerfilUrl: string | null;
         fechaNacimiento: Date | null;
         subdivisionId: number;
@@ -149,9 +149,9 @@ export declare class PersonasService {
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
+        direccion: string | null;
         apellidos: string;
         telefono: string | null;
-        direccion: string | null;
         fotoPerfilUrl: string | null;
         fechaNacimiento: Date | null;
         subdivisionId: number;

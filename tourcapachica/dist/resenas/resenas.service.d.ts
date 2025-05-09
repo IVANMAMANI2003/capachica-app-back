@@ -5,64 +5,64 @@ export declare class ResenasService {
     private readonly prisma;
     constructor(prisma: PrismaService);
     create(createResenaDto: any): Promise<{
-        usuarioId: number;
         id: number;
         servicioId: number;
-        calificacion: number;
-        comentario: string | null;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        estado: string;
+        usuarioId: number;
+        calificacion: number;
+        comentario: string | null;
     }>;
     findAll(): Promise<{
-        usuarioId: number;
         id: number;
         servicioId: number;
-        calificacion: number;
-        comentario: string | null;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        estado: string;
+        usuarioId: number;
+        calificacion: number;
+        comentario: string | null;
     }[]>;
     findOne(id: number): Promise<{
-        usuarioId: number;
         id: number;
         servicioId: number;
-        calificacion: number;
-        comentario: string | null;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        estado: string;
+        usuarioId: number;
+        calificacion: number;
+        comentario: string | null;
     }>;
     update(id: number, updateResenaDto: UpdateResenaDto): Promise<{
-        usuarioId: number;
         id: number;
         servicioId: number;
-        calificacion: number;
-        comentario: string | null;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        estado: string;
+        usuarioId: number;
+        calificacion: number;
+        comentario: string | null;
     }>;
     updateEstado(id: number, estado: string): Promise<{
-        usuarioId: number;
         id: number;
         servicioId: number;
-        calificacion: number;
-        comentario: string | null;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        estado: string;
+        usuarioId: number;
+        calificacion: number;
+        comentario: string | null;
     }>;
     remove(id: number): Promise<{
-        usuarioId: number;
         id: number;
         servicioId: number;
-        calificacion: number;
-        comentario: string | null;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        estado: string;
+        usuarioId: number;
+        calificacion: number;
+        comentario: string | null;
     }>;
     promedioCalificacionPorServicio(servicioId: number): Promise<PromedioResponseDto>;
 }

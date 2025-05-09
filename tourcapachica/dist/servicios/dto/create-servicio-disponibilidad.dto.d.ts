@@ -1,6 +1,7 @@
 export declare class CreateServicioDisponibilidadDto {
     servicioId: number;
-    fecha: string;
+    fechaInicio: string;
+    fechaFin: string;
     cuposDisponibles: number;
     precioEspecial?: number;
 }
