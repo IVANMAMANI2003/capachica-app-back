@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateServicioDto = exports.ImageDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
+const class_transformer_1 = require("class-transformer");
 class ImageDto {
 }
 exports.ImageDto = ImageDto;
@@ -34,84 +35,48 @@ class CreateServicioDto {
 }
 exports.CreateServicioDto = CreateServicioDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'ID del tipo de servicio',
-        example: 1,
-        required: true,
-        type: Number
-    }),
+    (0, swagger_1.ApiProperty)({ description: 'ID del tipo de servicio', example: 1 }),
+    (0, class_transformer_1.Type)(() => Number),
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
 ], CreateServicioDto.prototype, "tipoServicioId", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'ID del emprendimiento',
-        example: 1,
-        required: true,
-        type: Number
-    }),
+    (0, swagger_1.ApiProperty)({ description: 'ID del emprendimiento', example: 1 }),
+    (0, class_transformer_1.Type)(() => Number),
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
 ], CreateServicioDto.prototype, "emprendimientoId", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Nombre del servicio',
-        example: 'Tour guiado por la isla',
-        required: true,
-        type: String
-    }),
+    (0, swagger_1.ApiProperty)({ description: 'Nombre del servicio', example: 'Tour guiado por la isla' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateServicioDto.prototype, "nombre", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Descripción del servicio',
-        example: 'Tour guiado por los principales atractivos de la isla',
-        required: false,
-        type: String
-    }),
+    (0, swagger_1.ApiProperty)({ description: 'Descripción del servicio', example: 'Tour guiado por los principales atractivos de la isla', required: false }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateServicioDto.prototype, "descripcion", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Precio base del servicio',
-        example: 50.00,
-        required: true,
-        type: Number
-    }),
+    (0, swagger_1.ApiProperty)({ description: 'Precio base del servicio', example: 50.00 }),
+    (0, class_transformer_1.Type)(() => Number),
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.Min)(0),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
 ], CreateServicioDto.prototype, "precioBase", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Moneda del precio',
-        example: 'PEN',
-        default: 'PEN',
-        required: false,
-        enum: ['PEN', 'USD'],
-        type: String
-    }),
+    (0, swagger_1.ApiProperty)({ description: 'Moneda del precio', example: 'PEN', enum: ['PEN', 'USD'], required: false, default: 'PEN' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsEnum)(['PEN', 'USD']),
     __metadata("design:type", String)
 ], CreateServicioDto.prototype, "moneda", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Estado del servicio',
-        example: 'activo',
-        default: 'activo',
-        required: false,
-        enum: ['activo', 'inactivo'],
-        type: String
-    }),
+    (0, swagger_1.ApiProperty)({ description: 'Estado del servicio', example: 'activo', enum: ['activo', 'inactivo'], required: false, default: 'activo' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsEnum)(['activo', 'inactivo']),
@@ -126,8 +91,7 @@ __decorate([
             incluye: ['Guía local', 'Transporte', 'Refrigerio'],
             requisitos: ['Ropa cómoda', 'Zapatillas']
         },
-        required: false,
-        type: Object
+        required: false
     }),
     (0, class_validator_1.IsObject)(),
     (0, class_validator_1.IsOptional)(),
@@ -148,6 +112,8 @@ __decorate([
         ]
     }),
     (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsArray)(),
+    (0, class_transformer_1.Type)(() => ImageDto),
     __metadata("design:type", Array)
 ], CreateServicioDto.prototype, "imagenes", void 0);
 //# sourceMappingURL=create-servicio.dto.js.map

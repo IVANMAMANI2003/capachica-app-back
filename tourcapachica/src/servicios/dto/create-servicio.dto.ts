@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsOptional, IsEnum, IsNumber, IsJSON, MaxLength, Min, IsArray, IsObject } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsEnum, IsNumber, IsJSON, MaxLength, Min, IsArray, IsObject, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class ImageDto {
@@ -15,81 +15,45 @@ export class ImageDto {
 }
 
 export class CreateServicioDto {
-  @ApiProperty({
-    description: 'ID del tipo de servicio',
-    example: 1,
-    required: true,
-    type: Number
-  })
+  @ApiProperty({ description: 'ID del tipo de servicio', example: 1 })
+  @Type(() => Number)
   @IsNumber()
   @IsNotEmpty()
   tipoServicioId: number;
 
-  @ApiProperty({
-    description: 'ID del emprendimiento',
-    example: 1,
-    required: true,
-    type: Number
-  })
+  @ApiProperty({ description: 'ID del emprendimiento', example: 1 })
+  @Type(() => Number)
   @IsNumber()
   @IsNotEmpty()
   emprendimientoId: number;
 
-  @ApiProperty({
-    description: 'Nombre del servicio',
-    example: 'Tour guiado por la isla',
-    required: true,
-    type: String
-  })
+  @ApiProperty({ description: 'Nombre del servicio', example: 'Tour guiado por la isla' })
   @IsString()
   @IsNotEmpty()
   nombre: string;
 
-  @ApiProperty({
-    description: 'Descripción del servicio',
-    example: 'Tour guiado por los principales atractivos de la isla',
-    required: false,
-    type: String
-  })
+  @ApiProperty({ description: 'Descripción del servicio', example: 'Tour guiado por los principales atractivos de la isla', required: false })
   @IsString()
   @IsOptional()
   descripcion?: string;
 
-  @ApiProperty({
-    description: 'Precio base del servicio',
-    example: 50.00,
-    required: true,
-    type: Number
-  })
+  @ApiProperty({ description: 'Precio base del servicio', example: 50.00 })
+  @Type(() => Number)
   @IsNumber()
   @Min(0)
   @IsNotEmpty()
   precioBase: number;
 
-  @ApiProperty({
-    description: 'Moneda del precio',
-    example: 'PEN',
-    default: 'PEN',
-    required: false,
-    enum: ['PEN', 'USD'],
-    type: String
-  })
+  @ApiProperty({ description: 'Moneda del precio', example: 'PEN', enum: ['PEN','USD'], required: false, default: 'PEN' })
   @IsString()
   @IsOptional()
-  @IsEnum(['PEN', 'USD'])
+  @IsEnum(['PEN','USD'])
   moneda?: string = 'PEN';
 
-  @ApiProperty({
-    description: 'Estado del servicio',
-    example: 'activo',
-    default: 'activo',
-    required: false,
-    enum: ['activo', 'inactivo'],
-    type: String
-  })
+  @ApiProperty({ description: 'Estado del servicio', example: 'activo', enum: ['activo','inactivo'], required: false, default: 'activo' })
   @IsString()
   @IsOptional()
-  @IsEnum(['activo', 'inactivo'])
+  @IsEnum(['activo','inactivo'])
   estado?: string = 'activo';
 
   @ApiProperty({
@@ -97,11 +61,10 @@ export class CreateServicioDto {
     example: {
       duracion: '2 horas',
       capacidad: 10,
-      incluye: ['Guía local', 'Transporte', 'Refrigerio'],
-      requisitos: ['Ropa cómoda', 'Zapatillas']
+      incluye: ['Guía local','Transporte','Refrigerio'],
+      requisitos: ['Ropa cómoda','Zapatillas']
     },
-    required: false,
-    type: Object
+    required: false
   })
   @IsObject()
   @IsOptional()
@@ -121,5 +84,7 @@ export class CreateServicioDto {
     ]
   })
   @IsOptional()
+  @IsArray()
+  @Type(() => ImageDto)
   imagenes?: ImageDto[];
 }
