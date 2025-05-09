@@ -8,30 +8,30 @@ export declare class DisponibilidadController {
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        servicioId: number;
         fechaInicio: Date;
         fechaFin: Date | null;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
-        servicioId: number;
     }>;
     createBatch(disponibilidades: CreateServicioDisponibilidadDto[]): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        servicioId: number;
         fechaInicio: Date;
         fechaFin: Date | null;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
-        servicioId: number;
     }[]>;
     findAll(): Promise<({
         servicio: {
             id: number;
+            createdAt: Date;
+            updatedAt: Date;
             nombre: string;
             descripcion: string | null;
             estado: string;
-            createdAt: Date;
-            updatedAt: Date;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
@@ -41,20 +41,20 @@ export declare class DisponibilidadController {
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        servicioId: number;
         fechaInicio: Date;
         fechaFin: Date | null;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
-        servicioId: number;
     })[]>;
     findByServicio(servicioId: string): Promise<({
         servicio: {
             id: number;
+            createdAt: Date;
+            updatedAt: Date;
             nombre: string;
             descripcion: string | null;
             estado: string;
-            createdAt: Date;
-            updatedAt: Date;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
@@ -64,20 +64,20 @@ export declare class DisponibilidadController {
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        servicioId: number;
         fechaInicio: Date;
         fechaFin: Date | null;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
-        servicioId: number;
     })[]>;
     findOne(id: string): Promise<{
         servicio: {
             id: number;
+            createdAt: Date;
+            updatedAt: Date;
             nombre: string;
             descripcion: string | null;
             estado: string;
-            createdAt: Date;
-            updatedAt: Date;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
@@ -87,20 +87,20 @@ export declare class DisponibilidadController {
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        servicioId: number;
         fechaInicio: Date;
         fechaFin: Date | null;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
-        servicioId: number;
     }>;
     update(id: string, updateData: UpdateDisponibilidadDto): Promise<{
         servicio: {
             id: number;
+            createdAt: Date;
+            updatedAt: Date;
             nombre: string;
             descripcion: string | null;
             estado: string;
-            createdAt: Date;
-            updatedAt: Date;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
@@ -110,20 +110,20 @@ export declare class DisponibilidadController {
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        servicioId: number;
         fechaInicio: Date;
         fechaFin: Date | null;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
-        servicioId: number;
     }>;
     remove(id: string): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        servicioId: number;
         fechaInicio: Date;
         fechaFin: Date | null;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
-        servicioId: number;
     }>;
 }

@@ -9,8 +9,8 @@ export declare class ComprobantesService {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            moneda: string;
             estado: string;
+            moneda: string;
             reservaId: number;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
             fechaPago: Date | null;
@@ -21,8 +21,8 @@ export declare class ComprobantesService {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        moneda: string;
         estado: string;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -44,8 +44,8 @@ export declare class ComprobantesService {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            moneda: string;
             estado: string;
+            moneda: string;
             reservaId: number;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
             fechaPago: Date | null;
@@ -56,8 +56,8 @@ export declare class ComprobantesService {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        moneda: string;
         estado: string;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -79,8 +79,8 @@ export declare class ComprobantesService {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            moneda: string;
             estado: string;
+            moneda: string;
             reservaId: number;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
             fechaPago: Date | null;
@@ -91,8 +91,8 @@ export declare class ComprobantesService {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        moneda: string;
         estado: string;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -114,8 +114,8 @@ export declare class ComprobantesService {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            moneda: string;
             estado: string;
+            moneda: string;
             reservaId: number;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
             fechaPago: Date | null;
@@ -126,8 +126,8 @@ export declare class ComprobantesService {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        moneda: string;
         estado: string;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -149,8 +149,8 @@ export declare class ComprobantesService {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            moneda: string;
             estado: string;
+            moneda: string;
             reservaId: number;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
             fechaPago: Date | null;
@@ -161,8 +161,8 @@ export declare class ComprobantesService {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        moneda: string;
         estado: string;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -183,8 +183,8 @@ export declare class ComprobantesService {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        moneda: string;
         estado: string;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -206,8 +206,8 @@ export declare class ComprobantesService {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            moneda: string;
             estado: string;
+            moneda: string;
             reservaId: number;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
             fechaPago: Date | null;
@@ -218,8 +218,8 @@ export declare class ComprobantesService {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        moneda: string;
         estado: string;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;

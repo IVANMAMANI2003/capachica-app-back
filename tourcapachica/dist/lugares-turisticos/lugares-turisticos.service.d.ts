@@ -18,9 +18,9 @@ export declare class LugaresTuristicosService {
         updatedAt: Date;
         nombre: string;
         descripcion: string;
-        estado: string;
         direccion: string;
         coordenadas: string;
+        estado: string;
         esDestacado: boolean;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
@@ -38,9 +38,9 @@ export declare class LugaresTuristicosService {
         updatedAt: Date;
         nombre: string;
         descripcion: string;
-        estado: string;
         direccion: string;
         coordenadas: string;
+        estado: string;
         esDestacado: boolean;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
@@ -58,9 +58,9 @@ export declare class LugaresTuristicosService {
         updatedAt: Date;
         nombre: string;
         descripcion: string;
-        estado: string;
         direccion: string;
         coordenadas: string;
+        estado: string;
         esDestacado: boolean;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
@@ -78,9 +78,9 @@ export declare class LugaresTuristicosService {
         updatedAt: Date;
         nombre: string;
         descripcion: string;
-        estado: string;
         direccion: string;
         coordenadas: string;
+        estado: string;
         esDestacado: boolean;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
@@ -94,9 +94,9 @@ export declare class LugaresTuristicosService {
         updatedAt: Date;
         nombre: string;
         descripcion: string;
-        estado: string;
         direccion: string;
         coordenadas: string;
+        estado: string;
         esDestacado: boolean;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
@@ -110,9 +110,9 @@ export declare class LugaresTuristicosService {
         updatedAt: Date;
         nombre: string;
         descripcion: string;
-        estado: string;
         direccion: string;
         coordenadas: string;
+        estado: string;
         esDestacado: boolean;
         horarioApertura: Date | null;
         horarioCierre: Date | null;

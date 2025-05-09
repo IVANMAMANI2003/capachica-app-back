@@ -17,12 +17,12 @@ export declare class TiposServicioController {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            tipoServicioId: number;
             nombre: string;
             descripcion: string | null;
+            estado: string;
+            tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
-            estado: string;
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
         }[];
     } & {
@@ -38,12 +38,12 @@ export declare class TiposServicioController {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            tipoServicioId: number;
             nombre: string;
             descripcion: string | null;
+            estado: string;
+            tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
-            estado: string;
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
         }[];
     } & {

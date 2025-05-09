@@ -109,6 +109,7 @@ model Usuario {
   turista                Turista?
   persona                Persona           @relation(fields: [personaId], references: [id])
   usuariosRoles          UsuariosRoles[]
+  carritos Carrito[]
   
 
   @@map("usuarios")
@@ -240,6 +241,7 @@ model Servicio {
   serviciosEmprendedores ServicioEmprendedor[]
   serviciosPaquetes      ServicioPaquete[]
   resenas                Resena[]
+  carritoItems CarritoItem[]
 
   @@map("servicios")
 }
@@ -256,6 +258,7 @@ model PaqueteTuristico {
   disponibilidad   DisponibilidadPaquete[]
   emprendimiento   Emprendimiento          @relation(fields: [emprendimientoId], references: [id])
   servicios        ServicioPaquete[]
+  carritoItems CarritoItem[]
 
   @@map("paquetes_turisticos")
 }

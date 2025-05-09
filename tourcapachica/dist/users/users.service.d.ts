@@ -21,9 +21,9 @@ export declare class UsersService {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -40,8 +40,8 @@ export declare class UsersService {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            rolId: number;
             usuarioId: number;
+            rolId: number;
         })[];
         id: number;
         personaId: number;
@@ -63,9 +63,9 @@ export declare class UsersService {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -82,8 +82,8 @@ export declare class UsersService {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            rolId: number;
             usuarioId: number;
+            rolId: number;
         })[];
     } & {
         id: number;
@@ -113,8 +113,8 @@ export declare class UsersService {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            rolId: number;
             usuarioId: number;
+            rolId: number;
         })[];
     } & {
         id: number;
@@ -141,9 +141,9 @@ export declare class UsersService {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -160,8 +160,8 @@ export declare class UsersService {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            rolId: number;
             usuarioId: number;
+            rolId: number;
         })[];
         id: number;
         personaId: number;
@@ -187,9 +187,9 @@ export declare class UsersService {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -206,8 +206,8 @@ export declare class UsersService {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            rolId: number;
             usuarioId: number;
+            rolId: number;
         })[];
         id: number;
         personaId: number;
@@ -233,9 +233,9 @@ export declare class UsersService {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -252,8 +252,8 @@ export declare class UsersService {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            rolId: number;
             usuarioId: number;
+            rolId: number;
         })[];
         id: number;
         personaId: number;
@@ -275,9 +275,9 @@ export declare class UsersService {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -316,8 +316,8 @@ export declare class UsersService {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        rolId: number;
         usuarioId: number;
+        rolId: number;
     }>;
     removeRole(userId: number, roleId: number): Promise<import(".prisma/client").Prisma.BatchPayload>;
     requestPasswordReset(data: RequestPasswordResetDto): Promise<{

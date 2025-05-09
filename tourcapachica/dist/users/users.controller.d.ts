@@ -23,9 +23,9 @@ export declare class UsersController {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -42,8 +42,8 @@ export declare class UsersController {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            rolId: number;
             usuarioId: number;
+            rolId: number;
         })[];
         id: number;
         personaId: number;
@@ -82,9 +82,9 @@ export declare class UsersController {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -101,8 +101,8 @@ export declare class UsersController {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            rolId: number;
             usuarioId: number;
+            rolId: number;
         })[];
         id: number;
         personaId: number;
@@ -128,9 +128,9 @@ export declare class UsersController {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -147,8 +147,8 @@ export declare class UsersController {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            rolId: number;
             usuarioId: number;
+            rolId: number;
         })[];
         id: number;
         personaId: number;
@@ -174,9 +174,9 @@ export declare class UsersController {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -193,8 +193,8 @@ export declare class UsersController {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            rolId: number;
             usuarioId: number;
+            rolId: number;
         })[];
         id: number;
         personaId: number;
@@ -216,9 +216,9 @@ export declare class UsersController {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -257,8 +257,8 @@ export declare class UsersController {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        rolId: number;
         usuarioId: number;
+        rolId: number;
     }>;
     removeRole(userId: string, roleId: string): Promise<import(".prisma/client").Prisma.BatchPayload>;
 }

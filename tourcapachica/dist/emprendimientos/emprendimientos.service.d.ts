@@ -29,8 +29,6 @@ export declare class EmprendimientosService {
             };
         } & {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             personaId: number;
             email: string;
             passwordHash: string;
@@ -41,14 +39,15 @@ export declare class EmprendimientosService {
             estaActivo: boolean;
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue;
+            createdAt: Date;
+            updatedAt: Date;
         };
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        usuarioId: number;
         nombre: string;
         descripcion: string | null;
-        estado: string;
-        usuarioId: number;
         tipo: string;
         direccion: string | null;
         coordenadas: string | null;
@@ -56,6 +55,7 @@ export declare class EmprendimientosService {
         contactoEmail: string | null;
         sitioWeb: string | null;
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
+        estado: string;
         fechaAprobacion: Date | null;
     }>;
     findAll(): Promise<{
@@ -78,8 +78,6 @@ export declare class EmprendimientosService {
             };
         } & {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             personaId: number;
             email: string;
             passwordHash: string;
@@ -90,14 +88,15 @@ export declare class EmprendimientosService {
             estaActivo: boolean;
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue;
+            createdAt: Date;
+            updatedAt: Date;
         };
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        usuarioId: number;
         nombre: string;
         descripcion: string | null;
-        estado: string;
-        usuarioId: number;
         tipo: string;
         direccion: string | null;
         coordenadas: string | null;
@@ -105,6 +104,7 @@ export declare class EmprendimientosService {
         contactoEmail: string | null;
         sitioWeb: string | null;
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
+        estado: string;
         fechaAprobacion: Date | null;
     }[]>;
     findOne(id: number): Promise<{
@@ -127,8 +127,6 @@ export declare class EmprendimientosService {
             };
         } & {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             personaId: number;
             email: string;
             passwordHash: string;
@@ -139,14 +137,15 @@ export declare class EmprendimientosService {
             estaActivo: boolean;
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue;
+            createdAt: Date;
+            updatedAt: Date;
         };
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        usuarioId: number;
         nombre: string;
         descripcion: string | null;
-        estado: string;
-        usuarioId: number;
         tipo: string;
         direccion: string | null;
         coordenadas: string | null;
@@ -154,6 +153,7 @@ export declare class EmprendimientosService {
         contactoEmail: string | null;
         sitioWeb: string | null;
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
+        estado: string;
         fechaAprobacion: Date | null;
     }>;
     findByUsuario(usuarioId: number): Promise<{
@@ -176,8 +176,6 @@ export declare class EmprendimientosService {
             };
         } & {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             personaId: number;
             email: string;
             passwordHash: string;
@@ -188,14 +186,15 @@ export declare class EmprendimientosService {
             estaActivo: boolean;
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue;
+            createdAt: Date;
+            updatedAt: Date;
         };
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        usuarioId: number;
         nombre: string;
         descripcion: string | null;
-        estado: string;
-        usuarioId: number;
         tipo: string;
         direccion: string | null;
         coordenadas: string | null;
@@ -203,6 +202,7 @@ export declare class EmprendimientosService {
         contactoEmail: string | null;
         sitioWeb: string | null;
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
+        estado: string;
         fechaAprobacion: Date | null;
     }[]>;
     update(id: number, updateEmprendimientoDto: UpdateEmprendimientoDto): Promise<{
@@ -225,8 +225,6 @@ export declare class EmprendimientosService {
             };
         } & {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             personaId: number;
             email: string;
             passwordHash: string;
@@ -237,14 +235,15 @@ export declare class EmprendimientosService {
             estaActivo: boolean;
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue;
+            createdAt: Date;
+            updatedAt: Date;
         };
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        usuarioId: number;
         nombre: string;
         descripcion: string | null;
-        estado: string;
-        usuarioId: number;
         tipo: string;
         direccion: string | null;
         coordenadas: string | null;
@@ -252,6 +251,7 @@ export declare class EmprendimientosService {
         contactoEmail: string | null;
         sitioWeb: string | null;
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
+        estado: string;
         fechaAprobacion: Date | null;
     }>;
     remove(id: number): Promise<{
@@ -261,10 +261,9 @@ export declare class EmprendimientosService {
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        usuarioId: number;
         nombre: string;
         descripcion: string | null;
-        estado: string;
-        usuarioId: number;
         tipo: string;
         direccion: string | null;
         coordenadas: string | null;
@@ -272,6 +271,7 @@ export declare class EmprendimientosService {
         contactoEmail: string | null;
         sitioWeb: string | null;
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
+        estado: string;
         fechaAprobacion: Date | null;
     }>;
     addFavorito(usuarioId: number, createFavoritoDto: CreateFavoritoDto): Promise<{
@@ -279,10 +279,9 @@ export declare class EmprendimientosService {
             id: number;
             createdAt: Date;
             updatedAt: Date;
+            usuarioId: number;
             nombre: string;
             descripcion: string | null;
-            estado: string;
-            usuarioId: number;
             tipo: string;
             direccion: string | null;
             coordenadas: string | null;
@@ -290,15 +289,16 @@ export declare class EmprendimientosService {
             contactoEmail: string | null;
             sitioWeb: string | null;
             redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
+            estado: string;
             fechaAprobacion: Date | null;
         };
     } & {
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        usuarioId: number;
         estado: string;
         emprendimientoId: number;
-        usuarioId: number;
     }>;
     removeFavorito(usuarioId: number, emprendimientoId: number): Promise<{
         message: string;
@@ -323,8 +323,6 @@ export declare class EmprendimientosService {
             };
         } & {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             personaId: number;
             email: string;
             passwordHash: string;
@@ -335,14 +333,15 @@ export declare class EmprendimientosService {
             estaActivo: boolean;
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue;
+            createdAt: Date;
+            updatedAt: Date;
         };
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        usuarioId: number;
         nombre: string;
         descripcion: string | null;
-        estado: string;
-        usuarioId: number;
         tipo: string;
         direccion: string | null;
         coordenadas: string | null;
@@ -350,6 +349,7 @@ export declare class EmprendimientosService {
         contactoEmail: string | null;
         sitioWeb: string | null;
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
+        estado: string;
         fechaAprobacion: Date | null;
     }[]>;
     isFavorito(usuarioId: number, emprendimientoId: number): Promise<boolean>;
