@@ -75,13 +75,13 @@ __decorate([
 ], CreateUserDto.prototype, "direccion", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Fecha de nacimiento',
-        example: '1990-01-01',
-        required: false,
+        description: 'Fecha de nacimiento (formato: YYYY-MM-DD)',
+        example: '1990-01-15',
+        type: String
     }),
-    (0, class_validator_1.IsDate)(),
-    (0, class_transformer_1.Type)(() => Date),
     (0, class_validator_1.IsOptional)(),
+    (0, class_transformer_1.Transform)(({ value }) => value ? new Date(value + 'T00:00:00') : undefined),
+    (0, class_validator_1.IsDate)({ message: 'La fecha de nacimiento debe tener el formato YYYY-MM-DD' }),
     __metadata("design:type", Date)
 ], CreateUserDto.prototype, "fechaNacimiento", void 0);
 __decorate([

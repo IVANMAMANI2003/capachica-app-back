@@ -1,6 +1,6 @@
 import { IsString, IsEmail, IsNotEmpty, MinLength, IsInt, IsOptional, IsNumber, IsDate, IsUrl } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 
 export class CreateUserDto {
   @ApiProperty({ description: 'Email del usuario', example: 'usuario@example.com' })
@@ -54,13 +54,13 @@ export class CreateUserDto {
   direccion?: string;
 
   @ApiProperty({
-    description: 'Fecha de nacimiento',
-    example: '1990-01-01',
-    required: false,
+    description: 'Fecha de nacimiento (formato: YYYY-MM-DD)',
+    example: '1990-01-15',
+    type: String
   })
-  @IsDate()
-  @Type(() => Date)
   @IsOptional()
+  @Transform(({ value }) => value ? new Date(value + 'T00:00:00') : undefined)
+  @IsDate({ message: 'La fecha de nacimiento debe tener el formato YYYY-MM-DD' })
   fechaNacimiento?: Date;
 
   @ApiProperty({

@@ -4,6 +4,7 @@ import { RequestPasswordResetDto } from './dto/request-password-reset.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { UsersService } from './users.service';
 import { Request as ExpressRequest } from 'express';
+import { UpdateUserWithPersonaDto } from './dto/update-user-with-persona.dto';
 interface RequestWithUser extends ExpressRequest {
     user: {
         id: number;
@@ -209,7 +210,7 @@ export declare class UsersController {
         createdAt: Date;
         updatedAt: Date;
     }>;
-    update(id: number, user: any, persona: any): Promise<{
+    update(id: number, updateUserWithPersonaDto: UpdateUserWithPersonaDto): Promise<{
         imagenes: {
             id: number;
             url: string;

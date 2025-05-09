@@ -23,6 +23,7 @@ const register_user_dto_1 = require("./dto/register-user.dto");
 const request_password_reset_dto_1 = require("./dto/request-password-reset.dto");
 const reset_password_dto_1 = require("./dto/reset-password.dto");
 const users_service_1 = require("./users.service");
+const update_user_with_persona_dto_1 = require("./dto/update-user-with-persona.dto");
 let UsersController = class UsersController {
     constructor(usersService) {
         this.usersService = usersService;
@@ -92,9 +93,9 @@ let UsersController = class UsersController {
         }
         return this.usersService.findOne(+id);
     }
-    update(id, user, persona) {
+    update(id, updateUserWithPersonaDto) {
         console.log('Solicitud de actualización recibida para ID:', id);
-        return this.usersService.update(id, { user, persona });
+        return this.usersService.update(id, updateUserWithPersonaDto);
     }
     remove(id) {
         return this.usersService.delete(+id);
@@ -211,10 +212,9 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 403, description: 'No tiene permisos' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Usuario no encontrado' }),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
-    __param(1, (0, common_1.Body)('user')),
-    __param(2, (0, common_1.Body)('persona')),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Object, Object]),
+    __metadata("design:paramtypes", [Number, update_user_with_persona_dto_1.UpdateUserWithPersonaDto]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "update", null);
 __decorate([

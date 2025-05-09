@@ -10,6 +10,7 @@ import { RequestPasswordResetDto } from './dto/request-password-reset.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { UsersService } from './users.service';
 import { Request as ExpressRequest } from 'express';
+import { UpdateUserWithPersonaDto } from './dto/update-user-with-persona.dto';
 
 interface RequestWithUser extends ExpressRequest {
   user: {
@@ -161,11 +162,10 @@ export class UsersController {
   @ApiResponse({ status: 404, description: 'Usuario no encontrado' })
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body('user') user: any,
-    @Body('persona') persona: any,
+    @Body() updateUserWithPersonaDto: UpdateUserWithPersonaDto,
   ) {
     console.log('Solicitud de actualización recibida para ID:', id);
-    return this.usersService.update(id, { user, persona });
+    return this.usersService.update(id, updateUserWithPersonaDto);
   }
   
 
