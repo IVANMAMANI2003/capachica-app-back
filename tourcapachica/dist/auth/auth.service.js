@@ -20,6 +20,7 @@ let AuthService = class AuthService {
         this.jwtService = jwtService;
     }
     async login(loginDto) {
+        var _a;
         const usuario = await this.prisma.usuario.findUnique({
             where: { email: loginDto.email },
             include: {
@@ -35,7 +36,10 @@ let AuthService = class AuthService {
         if (!usuario) {
             throw new common_1.UnauthorizedException('Credenciales inválidas');
         }
-        const primerEmp = usuario.emprendimientos[0];
+        const primerEmp = (_a = usuario.emprendimientos[0]) !== null && _a !== void 0 ? _a : { id: null };
+        if (!primerEmp) {
+            throw new common_1.UnauthorizedException('El usuario no tiene un emprendimiento asignado');
+        }
         const isPasswordValid = await bcrypt.compare(loginDto.password, usuario.passwordHash);
         if (!isPasswordValid) {
             throw new common_1.UnauthorizedException('Credenciales inválidas');

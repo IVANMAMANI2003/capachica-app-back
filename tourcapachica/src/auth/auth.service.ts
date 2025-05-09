@@ -29,7 +29,10 @@ export class AuthService {
       throw new UnauthorizedException('Credenciales inválidas');
     }
 
-    const primerEmp = usuario.emprendimientos[0];
+    const primerEmp = usuario.emprendimientos[0]?? { id: null };
+    if (!primerEmp) {
+      throw new UnauthorizedException('El usuario no tiene un emprendimiento asignado');
+    }
     const isPasswordValid = await bcrypt.compare(loginDto.password, usuario.passwordHash);
 
     if (!isPasswordValid) {

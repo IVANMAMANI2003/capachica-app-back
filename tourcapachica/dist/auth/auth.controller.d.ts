@@ -11,7 +11,7 @@ export declare class AuthController {
             nombre: string;
             apellidos: string;
             roles: string[];
-            emprendimientoId: number;
+            emprendimientoId: any;
         };
     }>;
     refreshToken(refreshToken: string): Promise<{
