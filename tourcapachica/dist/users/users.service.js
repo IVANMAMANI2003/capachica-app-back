@@ -213,14 +213,14 @@ let UsersService = class UsersService {
                 url: imageable.image.url
             })) });
     }
-    async update(id, updateUserDto) {
+    async update(id, updateUserWithPersonaDto) {
         console.log('--- Iniciando actualización de usuario ---');
         console.log('ID del usuario:', id);
-        console.log('DTO recibido:', updateUserDto);
-        const { user, persona } = updateUserDto;
-        const usuarioActualizado = await this.prisma.usuario.update({
+        console.log('DTO recibido:', updateUserWithPersonaDto);
+        const { email, persona } = updateUserWithPersonaDto;
+        let usuarioActualizado = await this.prisma.usuario.update({
             where: { id },
-            data: Object.assign({}, ((user === null || user === void 0 ? void 0 : user.email) ? { email: user.email } : {})),
+            data: Object.assign({}, (email ? { email } : {})),
             include: {
                 persona: true
             }
@@ -233,8 +233,7 @@ let UsersService = class UsersService {
         }
         if (persona === null || persona === void 0 ? void 0 : persona.fotoPerfilUrl) {
         }
-        console.log('--- Actualización finalizada ---');
-        return this.findOne(id);
+        return usuarioActualizado;
     }
     async delete(id) {
         const imageables = await this.prisma.imageable.findMany({

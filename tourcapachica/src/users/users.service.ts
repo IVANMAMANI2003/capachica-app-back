@@ -9,6 +9,7 @@ import { ResetPasswordDto } from './dto/reset-password.dto';
 import { randomBytes } from 'crypto';
 import { SupabaseService } from '../supabase/supabase.service';
 import { UpdatePersonaDto } from './dto/update-persona.dto';
+import { UpdateUserWithPersonaDto } from './dto/update-user-with-persona.dto';
 
 @Injectable()
 export class UsersService {
@@ -259,18 +260,18 @@ export class UsersService {
     };
   }
 
-  async update(id: number, updateUserDto: { user: UpdateUserDto, persona: UpdatePersonaDto }) {
+  async update(id: number, updateUserWithPersonaDto: UpdateUserWithPersonaDto) {
     console.log('--- Iniciando actualización de usuario ---');
     console.log('ID del usuario:', id);
-    console.log('DTO recibido:', updateUserDto);
+    console.log('DTO recibido:', updateUserWithPersonaDto);
 
-    const { user, persona } = updateUserDto;
+    const { email, persona } = updateUserWithPersonaDto;
 
-    // Actualizar datos del usuario (solo email)
-    const usuarioActualizado = await this.prisma.usuario.update({
+    // Actualizar datos del usuario (solo email si se proporciona)
+    let usuarioActualizado = await this.prisma.usuario.update({
       where: { id },
       data: {
-        ...(user?.email ? { email: user.email } : {}),
+        ...(email ? { email } : {}),
       },
       include: {
         persona: true
@@ -298,8 +299,7 @@ export class UsersService {
       // Aquí podrías agregar la lógica de actualización de imagen si es necesario
     }
 
-    console.log('--- Actualización finalizada ---');
-    return this.findOne(id);
+    return usuarioActualizado;
   }
   
 

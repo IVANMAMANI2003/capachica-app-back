@@ -211,10 +211,6 @@ export declare class UsersController {
         updatedAt: Date;
     }>;
     update(id: number, updateUserWithPersonaDto: UpdateUserWithPersonaDto): Promise<{
-        imagenes: {
-            id: number;
-            url: string;
-        }[];
         persona: {
             id: number;
             createdAt: Date;
@@ -227,21 +223,7 @@ export declare class UsersController {
             fechaNacimiento: Date | null;
             subdivisionId: number;
         };
-        usuariosRoles: ({
-            rol: {
-                id: number;
-                createdAt: Date;
-                updatedAt: Date;
-                nombre: string;
-                descripcion: string | null;
-            };
-        } & {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            rolId: number;
-            usuarioId: number;
-        })[];
+    } & {
         id: number;
         personaId: number;
         email: string;

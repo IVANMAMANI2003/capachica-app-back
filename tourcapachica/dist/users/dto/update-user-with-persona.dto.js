@@ -11,15 +11,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateUserWithPersonaDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
-const update_user_dto_1 = require("./update-user.dto");
 const update_persona_dto_1 = require("../../personas/dto/update-persona.dto");
 class UpdateUserWithPersonaDto {
 }
 exports.UpdateUserWithPersonaDto = UpdateUserWithPersonaDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ type: update_user_dto_1.UpdateUserDto }),
-    __metadata("design:type", update_user_dto_1.UpdateUserDto)
-], UpdateUserWithPersonaDto.prototype, "user", void 0);
+    (0, swagger_1.ApiPropertyOptional)({ description: 'Email del usuario', example: 'juan.garcia@example.com' }),
+    __metadata("design:type", String)
+], UpdateUserWithPersonaDto.prototype, "email", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ type: update_persona_dto_1.UpdatePersonaDto }),
     __metadata("design:type", update_persona_dto_1.UpdatePersonaDto)

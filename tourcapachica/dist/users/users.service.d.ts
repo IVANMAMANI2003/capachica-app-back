@@ -1,11 +1,10 @@
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { RequestPasswordResetDto } from './dto/request-password-reset.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { SupabaseService } from '../supabase/supabase.service';
-import { UpdatePersonaDto } from './dto/update-persona.dto';
+import { UpdateUserWithPersonaDto } from './dto/update-user-with-persona.dto';
 export declare class UsersService {
     private readonly prisma;
     private readonly supabaseService;
@@ -270,14 +269,7 @@ export declare class UsersService {
         createdAt: Date;
         updatedAt: Date;
     }>;
-    update(id: number, updateUserDto: {
-        user: UpdateUserDto;
-        persona: UpdatePersonaDto;
-    }): Promise<{
-        imagenes: {
-            id: number;
-            url: string;
-        }[];
+    update(id: number, updateUserWithPersonaDto: UpdateUserWithPersonaDto): Promise<{
         persona: {
             id: number;
             createdAt: Date;
@@ -290,21 +282,7 @@ export declare class UsersService {
             fechaNacimiento: Date | null;
             subdivisionId: number;
         };
-        usuariosRoles: ({
-            rol: {
-                id: number;
-                createdAt: Date;
-                updatedAt: Date;
-                nombre: string;
-                descripcion: string | null;
-            };
-        } & {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            rolId: number;
-            usuarioId: number;
-        })[];
+    } & {
         id: number;
         personaId: number;
         email: string;
