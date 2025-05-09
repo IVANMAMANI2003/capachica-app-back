@@ -3,12 +3,12 @@ import { IsDate, IsNumber, IsString, IsOptional, IsEnum, IsDateString } from 'cl
 import { EstadoDisponibilidad } from '../enums/estado-disponibilidad.enum';
 
 export class UpdateDisponibilidadDto {
-  @ApiProperty({ description: 'Fecha de inicio de la disponibilidad', required: false })
+  @ApiProperty({ description: 'Fecha de inicio de la disponibilidad', example: '2025-05-08', required: false })
   @IsDateString()
   @IsOptional()
   fechaInicio?: string;
 
-  @ApiProperty({ description: 'Fecha de fin de la disponibilidad', required: false })
+  @ApiProperty({ description: 'Fecha de fin de la disponibilidad', example: '2025-05-11', required: false })
   @IsDateString()
   @IsOptional()
   fechaFin?: string;

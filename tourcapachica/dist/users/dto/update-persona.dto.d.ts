@@ -4,6 +4,6 @@ export declare class UpdatePersonaDto {
     telefono?: string;
     direccion?: string;
     fotoPerfilUrl?: string;
-    fechaNacimiento?: Date;
+    fechaNacimiento?: string;
     subdivisionId?: number;
 }

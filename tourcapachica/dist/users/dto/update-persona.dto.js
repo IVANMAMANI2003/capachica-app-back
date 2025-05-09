@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdatePersonaDto = void 0;
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
-const class_transformer_1 = require("class-transformer");
 class UpdatePersonaDto {
 }
 exports.UpdatePersonaDto = UpdatePersonaDto;
@@ -47,15 +46,10 @@ __decorate([
     __metadata("design:type", String)
 ], UpdatePersonaDto.prototype, "fotoPerfilUrl", void 0);
 __decorate([
-    (0, swagger_1.ApiPropertyOptional)({
-        description: 'Fecha de nacimiento (formato: YYYY-MM-DD)',
-        example: '1990-01-15',
-        type: String
-    }),
+    (0, swagger_1.ApiPropertyOptional)({ description: 'Fecha de nacimiento (formato: YYYY-MM-DD', example: '1990-01-15' }),
     (0, class_validator_1.IsOptional)(),
-    (0, class_transformer_1.Transform)(({ value }) => value ? new Date(value + 'T00:00:00') : undefined),
-    (0, class_validator_1.IsDate)({ message: 'La fecha de nacimiento debe tener el formato YYYY-MM-DD' }),
-    __metadata("design:type", Date)
+    (0, class_validator_1.IsDateString)(),
+    __metadata("design:type", String)
 ], UpdatePersonaDto.prototype, "fechaNacimiento", void 0);
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({ description: 'ID de la subdivisión' }),

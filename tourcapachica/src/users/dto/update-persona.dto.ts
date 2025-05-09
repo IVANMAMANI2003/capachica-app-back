@@ -1,4 +1,4 @@
-import { IsOptional, IsString, IsDate, IsInt, IsUrl } from 'class-validator';
+import { IsOptional, IsString, IsDate, IsInt, IsUrl, IsDateString } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
 
@@ -28,15 +28,10 @@ export class UpdatePersonaDto {
   @IsUrl()
   fotoPerfilUrl?: string;
 
-  @ApiPropertyOptional({
-    description: 'Fecha de nacimiento (formato: YYYY-MM-DD)',
-    example: '1990-01-15',
-    type: String
-  })
+  @ApiPropertyOptional({ description: 'Fecha de nacimiento (formato: YYYY-MM-DD', example: '1990-01-15' })
   @IsOptional()
-  @Transform(({ value }) => value ? new Date(value + 'T00:00:00') : undefined)
-  @IsDate({ message: 'La fecha de nacimiento debe tener el formato YYYY-MM-DD' })
-  fechaNacimiento?: Date;
+  @IsDateString()
+  fechaNacimiento?: string;
 
   @ApiPropertyOptional({ description: 'ID de la subdivisión' })
   @IsOptional()

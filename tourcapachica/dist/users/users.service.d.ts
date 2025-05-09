@@ -21,9 +21,9 @@ export declare class UsersService {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
-            direccion: string | null;
             apellidos: string;
             telefono: string | null;
+            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -40,12 +40,10 @@ export declare class UsersService {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            usuarioId: number;
             rolId: number;
+            usuarioId: number;
         })[];
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -56,6 +54,8 @@ export declare class UsersService {
         estaActivo: boolean;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue;
+        createdAt: Date;
+        updatedAt: Date;
     }[]>;
     findByEmail(email: string): Promise<{
         persona: {
@@ -63,9 +63,9 @@ export declare class UsersService {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
-            direccion: string | null;
             apellidos: string;
             telefono: string | null;
+            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -82,13 +82,11 @@ export declare class UsersService {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            usuarioId: number;
             rolId: number;
+            usuarioId: number;
         })[];
     } & {
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -99,6 +97,8 @@ export declare class UsersService {
         estaActivo: boolean;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     findById(id: number): Promise<{
         usuariosRoles: ({
@@ -113,13 +113,11 @@ export declare class UsersService {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            usuarioId: number;
             rolId: number;
+            usuarioId: number;
         })[];
     } & {
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -130,6 +128,8 @@ export declare class UsersService {
         estaActivo: boolean;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     register(data: RegisterUserDto): Promise<{
         imagenes: {
@@ -141,9 +141,9 @@ export declare class UsersService {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
-            direccion: string | null;
             apellidos: string;
             telefono: string | null;
+            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -160,12 +160,10 @@ export declare class UsersService {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            usuarioId: number;
             rolId: number;
+            usuarioId: number;
         })[];
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -176,6 +174,8 @@ export declare class UsersService {
         estaActivo: boolean;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     create(createUserDto: CreateUserDto): Promise<{
         imagenes: {
@@ -187,9 +187,9 @@ export declare class UsersService {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
-            direccion: string | null;
             apellidos: string;
             telefono: string | null;
+            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -206,12 +206,10 @@ export declare class UsersService {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            usuarioId: number;
             rolId: number;
+            usuarioId: number;
         })[];
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -222,6 +220,8 @@ export declare class UsersService {
         estaActivo: boolean;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     findOne(id: number): Promise<{
         imagenes: {
@@ -233,9 +233,9 @@ export declare class UsersService {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
-            direccion: string | null;
             apellidos: string;
             telefono: string | null;
+            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -252,12 +252,10 @@ export declare class UsersService {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            usuarioId: number;
             rolId: number;
+            usuarioId: number;
         })[];
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -268,6 +266,8 @@ export declare class UsersService {
         estaActivo: boolean;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     update(id: number, updateUserWithPersonaDto: UpdateUserWithPersonaDto): Promise<{
         persona: {
@@ -275,17 +275,15 @@ export declare class UsersService {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
-            direccion: string | null;
             apellidos: string;
             telefono: string | null;
+            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
         };
     } & {
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -296,11 +294,11 @@ export declare class UsersService {
         estaActivo: boolean;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     delete(id: number): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -311,13 +309,15 @@ export declare class UsersService {
         estaActivo: boolean;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     assignRole(userId: number, roleId: number): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        usuarioId: number;
         rolId: number;
+        usuarioId: number;
     }>;
     removeRole(userId: number, roleId: number): Promise<import(".prisma/client").Prisma.BatchPayload>;
     requestPasswordReset(data: RequestPasswordResetDto): Promise<{

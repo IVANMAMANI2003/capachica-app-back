@@ -17,13 +17,13 @@ class UpdateDisponibilidadDto {
 }
 exports.UpdateDisponibilidadDto = UpdateDisponibilidadDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Fecha de inicio de la disponibilidad', required: false }),
+    (0, swagger_1.ApiProperty)({ description: 'Fecha de inicio de la disponibilidad', example: '2025-05-08', required: false }),
     (0, class_validator_1.IsDateString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], UpdateDisponibilidadDto.prototype, "fechaInicio", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Fecha de fin de la disponibilidad', required: false }),
+    (0, swagger_1.ApiProperty)({ description: 'Fecha de fin de la disponibilidad', example: '2025-05-11', required: false }),
     (0, class_validator_1.IsDateString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)

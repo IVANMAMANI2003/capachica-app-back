@@ -6,7 +6,7 @@ export declare class CreateUserDto {
     apellidos: string;
     telefono?: string;
     direccion?: string;
-    fechaNacimiento?: Date;
+    fechaNacimiento?: string;
     subdivisionId: number;
     fotoPerfil?: string;
 }
