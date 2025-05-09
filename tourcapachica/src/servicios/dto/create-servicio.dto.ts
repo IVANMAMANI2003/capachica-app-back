@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsOptional, IsEnum, IsNumber, IsJSON, MaxLength, Min, IsArray, IsObject, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -21,7 +21,7 @@ export class CreateServicioDto {
   @IsNotEmpty()
   tipoServicioId: number;
 
-  @ApiProperty({ description: 'ID del Emprendimiento (solo si eres Admin)', example: 1 })
+  @ApiPropertyOptional({ description: 'ID del Emprendimiento (solo si eres Admin)', example: 1 })
   @IsOptional()
   @Type(() => Number)
   @IsNumber()

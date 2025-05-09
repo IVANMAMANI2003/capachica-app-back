@@ -5,9 +5,25 @@ import { UpdateServicioDto } from '../dto/update-servicio.dto';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../../auth/guards/roles.guard';
 import { Roles } from '../../auth/decorators/roles.decorator';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiProperty } from '@nestjs/swagger';
 import { ServicioEntity } from '../entities/servicio.entity';
 import { UpdateEstadoDto } from '../dto/update-estado.dto';
+import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+
+
+export class EmprendimientoIdDto {
+  @ApiProperty({
+    description: 'ID del emprendimiento',
+    example: 1,
+    required: true,
+  })
+  @IsOptional()
+  @IsNumber()
+  @IsNotEmpty()
+  emprendimientoId: number;
+}
+
+
 
 @ApiTags('servicios')
 @Controller('servicios')
@@ -15,34 +31,45 @@ export class ServiciosController {
   constructor(private readonly serviciosService: ServiciosService) {}
 
   @Post()
-@UseGuards(JwtAuthGuard, RolesGuard)
-@Roles('Emprendedor', 'SuperAdmin')
-@ApiBearerAuth()
-@ApiOperation({ summary: 'Crear un nuevo servicio' })
-@ApiResponse({ status: 201, description: 'Servicio creado exitosamente' })
-@ApiResponse({ status: 400, description: 'Datos inválidos' })
-async create(
-  @Body() createServicioDto: CreateServicioDto,
-  @Req() req,
-    ) {
-      try {
-        const user = req.user;
-        let emprendimientoId = createServicioDto.emprendimientoId;
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('Emprendedor', 'SuperAdmin')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Crear un nuevo servicio' })
+  @ApiResponse({ status: 201, description: 'Servicio creado exitosamente' })
+  @ApiResponse({ status: 400, description: 'Datos inválidos' })
+  async create(
+    @Body() createServicioDto: CreateServicioDto,
+    @Body() emprendimientoIdDto: EmprendimientoIdDto, // Recibe el DTO especial si el rol es SuperAdmin
+    @Req() req,
+  ) {
+    try {
+      const user = req.user;
+      let emprendimientoId: number;
 
-        if (user.role === 'Emprendedor') {
-          emprendimientoId = user.emprendimientoId;
+      // Validación para SuperAdmin: El emprendimientoId debe venir desde el cuerpo
+      if (user.role === 'SuperAdmin') {
+        if (!emprendimientoIdDto?.emprendimientoId) {
+          throw new BadRequestException('El campo emprendimientoId es obligatorio para SuperAdmin');
         }
-
-        if (!emprendimientoId) {
-          throw new BadRequestException('Debe especificar un emprendimiento válido');
-        }
-
-        return await this.serviciosService.create(createServicioDto, emprendimientoId);
-      } catch (error) {
-        if (error instanceof HttpException) throw error;
-        throw new HttpException('Error al crear el servicio', HttpStatus.BAD_REQUEST);
+        emprendimientoId = emprendimientoIdDto.emprendimientoId;
       }
+
+      // Validación para Emprendedor: El emprendimientoId debe ser tomado del token
+      if (user.role === 'Emprendedor') {
+        if (!user.emprendimientoId) {
+          throw new BadRequestException('No se pudo obtener el emprendimiento desde el token');
+        }
+        emprendimientoId = user.emprendimientoId;
+      }
+
+      // Llamar al servicio con el emprendimientoId correcto
+      return await this.serviciosService.create(createServicioDto, emprendimientoId);
+    } catch (error) {
+      console.error('Error al crear el servicio:', error);
+      if (error instanceof HttpException) throw error;
+      throw new HttpException('Error al crear el servicio', HttpStatus.BAD_REQUEST);
     }
+  }
 
   
   

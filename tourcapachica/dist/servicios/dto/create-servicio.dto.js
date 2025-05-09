@@ -42,7 +42,7 @@ __decorate([
     __metadata("design:type", Number)
 ], CreateServicioDto.prototype, "tipoServicioId", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'ID del Emprendimiento (solo si eres Admin)', example: 1 }),
+    (0, swagger_1.ApiPropertyOptional)({ description: 'ID del Emprendimiento (solo si eres Admin)', example: 1 }),
     (0, class_validator_1.IsOptional)(),
     (0, class_transformer_1.Type)(() => Number),
     (0, class_validator_1.IsNumber)(),

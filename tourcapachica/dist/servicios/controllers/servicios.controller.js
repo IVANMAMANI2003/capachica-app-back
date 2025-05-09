@@ -12,7 +12,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ServiciosController = void 0;
+exports.ServiciosController = exports.EmprendimientoIdDto = void 0;
 const common_1 = require("@nestjs/common");
 const servicios_service_1 = require("../services/servicios.service");
 const create_servicio_dto_1 = require("../dto/create-servicio.dto");
@@ -23,23 +23,45 @@ const roles_decorator_1 = require("../../auth/decorators/roles.decorator");
 const swagger_1 = require("@nestjs/swagger");
 const servicio_entity_1 = require("../entities/servicio.entity");
 const update_estado_dto_1 = require("../dto/update-estado.dto");
+const class_validator_1 = require("class-validator");
+class EmprendimientoIdDto {
+}
+exports.EmprendimientoIdDto = EmprendimientoIdDto;
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'ID del emprendimiento',
+        example: 1,
+        required: true,
+    }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Number)
+], EmprendimientoIdDto.prototype, "emprendimientoId", void 0);
 let ServiciosController = class ServiciosController {
     constructor(serviciosService) {
         this.serviciosService = serviciosService;
     }
-    async create(createServicioDto, req) {
+    async create(createServicioDto, emprendimientoIdDto, req) {
         try {
             const user = req.user;
-            let emprendimientoId = createServicioDto.emprendimientoId;
-            if (user.role === 'Emprendedor') {
-                emprendimientoId = user.emprendimientoId;
+            let emprendimientoId;
+            if (user.role === 'SuperAdmin') {
+                if (!(emprendimientoIdDto === null || emprendimientoIdDto === void 0 ? void 0 : emprendimientoIdDto.emprendimientoId)) {
+                    throw new common_1.BadRequestException('El campo emprendimientoId es obligatorio para SuperAdmin');
+                }
+                emprendimientoId = emprendimientoIdDto.emprendimientoId;
             }
-            if (!emprendimientoId) {
-                throw new common_1.BadRequestException('Debe especificar un emprendimiento válido');
+            if (user.role === 'Emprendedor') {
+                if (!user.emprendimientoId) {
+                    throw new common_1.BadRequestException('No se pudo obtener el emprendimiento desde el token');
+                }
+                emprendimientoId = user.emprendimientoId;
             }
             return await this.serviciosService.create(createServicioDto, emprendimientoId);
         }
         catch (error) {
+            console.error('Error al crear el servicio:', error);
             if (error instanceof common_1.HttpException)
                 throw error;
             throw new common_1.HttpException('Error al crear el servicio', common_1.HttpStatus.BAD_REQUEST);
@@ -81,9 +103,11 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Servicio creado exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_servicio_dto_1.CreateServicioDto, Object]),
+    __metadata("design:paramtypes", [create_servicio_dto_1.CreateServicioDto,
+        EmprendimientoIdDto, Object]),
     __metadata("design:returntype", Promise)
 ], ServiciosController.prototype, "create", null);
 __decorate([
