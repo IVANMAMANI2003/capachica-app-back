@@ -311,7 +311,8 @@ export class ServiciosService {
     return this.prisma.servicioDisponibilidad.create({
       data: {
         servicioId: createDisponibilidadDto.servicioId,
-        fecha: new Date(createDisponibilidadDto.fecha),
+        fechaInicio: new Date(createDisponibilidadDto.fechaInicio),
+        fechaFin: new Date(createDisponibilidadDto.fechaFin),
         cuposDisponibles: createDisponibilidadDto.cuposDisponibles,
         precioEspecial: createDisponibilidadDto.precioEspecial,
       },
@@ -334,7 +335,8 @@ export class ServiciosService {
     return this.prisma.servicioDisponibilidad.createMany({
       data: disponibilidades.map(d => ({
         servicioId: d.servicioId,
-        fecha: new Date(d.fecha),
+        fechaInicio: new Date(d.fechaInicio),
+        fechaFin: new Date(d.fechaFin), 
         cuposDisponibles: d.cuposDisponibles,
         precioEspecial: d.precioEspecial,
       })),
@@ -352,11 +354,11 @@ export class ServiciosService {
 
     return this.prisma.servicioDisponibilidad.findMany({
       where: { servicioId },
-      orderBy: { fecha: 'asc' },
+      orderBy: { fechaInicio: 'asc' },
     });
   }
 
-  async getDisponibilidadByFecha(servicioId: number, fecha: string) {
+  async getDisponibilidadByFecha(servicioId: number, fechaInicio: string) {
     const servicio = await this.prisma.servicio.findUnique({
       where: { id: servicioId },
     });
@@ -368,12 +370,12 @@ export class ServiciosService {
     const disponibilidad = await this.prisma.servicioDisponibilidad.findFirst({
       where: {
         servicioId,
-        fecha: new Date(fecha),
+        fechaInicio: new Date(fechaInicio),
       },
     });
 
     if (!disponibilidad) {
-      throw new NotFoundException(`No hay disponibilidad para el servicio ${servicioId} en la fecha ${fecha}`);
+      throw new NotFoundException(`No hay disponibilidad para el servicio ${servicioId} en la fecha ${fechaInicio}`);
     }
 
     return disponibilidad;
@@ -410,4 +412,4 @@ export class ServiciosService {
 
     return serviciosWithImages;
   }
-} 
+}
