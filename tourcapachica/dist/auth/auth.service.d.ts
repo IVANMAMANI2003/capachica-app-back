@@ -13,6 +13,7 @@ export declare class AuthService {
             nombre: string;
             apellidos: string;
             roles: string[];
+            emprendimientoId: number;
         };
     }>;
     refreshToken(user: any): Promise<{

@@ -26,6 +26,16 @@ export class CreateServicioDto {
   tipoServicioId: number;
 
   @ApiProperty({
+    description: 'ID del emprendimiento',
+    example: 1,
+    required: true,
+    type: Number
+  })
+  @IsNumber()
+  @IsNotEmpty()
+  emprendimientoId: number;
+
+  @ApiProperty({
     description: 'Nombre del servicio',
     example: 'Tour guiado por la isla',
     required: true,
@@ -112,4 +122,4 @@ export class CreateServicioDto {
   })
   @IsOptional()
   imagenes?: ImageDto[];
-} 
+}

@@ -28,12 +28,14 @@ let AuthService = class AuthService {
                     include: {
                         rol: true
                     }
-                }
+                },
+                emprendimientos: true
             }
         });
         if (!usuario) {
             throw new common_1.UnauthorizedException('Credenciales inválidas');
         }
+        const primerEmp = usuario.emprendimientos[0];
         const isPasswordValid = await bcrypt.compare(loginDto.password, usuario.passwordHash);
         if (!isPasswordValid) {
             throw new common_1.UnauthorizedException('Credenciales inválidas');
@@ -41,7 +43,8 @@ let AuthService = class AuthService {
         const payload = {
             sub: usuario.id,
             email: usuario.email,
-            roles: usuario.usuariosRoles.map(ur => ur.rol.nombre)
+            roles: usuario.usuariosRoles.map(ur => ur.rol.nombre),
+            emprendimientoId: primerEmp.id
         };
         return {
             access_token: await this.jwtService.signAsync(payload),
@@ -50,7 +53,8 @@ let AuthService = class AuthService {
                 email: usuario.email,
                 nombre: usuario.persona.nombre,
                 apellidos: usuario.persona.apellidos,
-                roles: usuario.usuariosRoles.map(ur => ur.rol.nombre)
+                roles: usuario.usuariosRoles.map(ur => ur.rol.nombre),
+                emprendimientoId: primerEmp.id
             }
         };
     }

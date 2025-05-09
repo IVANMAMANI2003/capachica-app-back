@@ -19,8 +19,9 @@ export class AuthService {
         usuariosRoles: {
           include: {
             rol: true
-          }
-        }
+          }  
+        },
+        emprendimientos: true
       }
     });
 
@@ -28,6 +29,7 @@ export class AuthService {
       throw new UnauthorizedException('Credenciales inválidas');
     }
 
+    const primerEmp = usuario.emprendimientos[0];
     const isPasswordValid = await bcrypt.compare(loginDto.password, usuario.passwordHash);
 
     if (!isPasswordValid) {
@@ -37,7 +39,8 @@ export class AuthService {
     const payload = {
       sub: usuario.id,
       email: usuario.email,
-      roles: usuario.usuariosRoles.map(ur => ur.rol.nombre)
+      roles: usuario.usuariosRoles.map(ur => ur.rol.nombre),
+      emprendimientoId:  primerEmp.id
     };
 
     return {
@@ -47,7 +50,8 @@ export class AuthService {
         email: usuario.email,
         nombre: usuario.persona.nombre,
         apellidos: usuario.persona.apellidos,
-        roles: usuario.usuariosRoles.map(ur => ur.rol.nombre)
+        roles: usuario.usuariosRoles.map(ur => ur.rol.nombre),
+        emprendimientoId: primerEmp.id
       }
     };
   }

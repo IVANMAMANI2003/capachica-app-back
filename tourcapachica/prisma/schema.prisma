@@ -532,3 +532,34 @@ model Slider {
 
   @@map("sliders")
 }
+
+model Carrito {
+  id          Int             @id @default(autoincrement())
+  usuarioId   Int
+  creadoAt    DateTime        @default(now())
+  actualizadoAt DateTime      @updatedAt
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+  items       CarritoItem[]
+  usuario     Usuario         @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@map("carritos")
+}
+
+model CarritoItem {
+  id          Int        @id @default(autoincrement())
+  carritoId   Int
+  servicioId      Int?    @map("servicio_id")
+  paqueteTuristicoId Int? @map("paquete_turistico_id")
+  cantidad    Int        @default(1)
+  precioUnitario Decimal @map("precio_unitario") @db.Decimal(10,2)
+  subtotal    Decimal    @map("subtotal")        @db.Decimal(12,2)
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+  carrito     Carrito    @relation(fields: [carritoId], references: [id], onDelete: Cascade)
+  servicio    Servicio?  @relation(fields: [servicioId], references: [id], onDelete: Cascade)
+  paquete     PaqueteTuristico? @relation(fields: [paqueteTuristicoId], references: [id], onDelete: Cascade)
+
+  @@map("carrito_items")
+  @@index([carritoId])
+}

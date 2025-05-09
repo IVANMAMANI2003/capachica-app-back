@@ -27,26 +27,41 @@ let ServiciosController = class ServiciosController {
     constructor(serviciosService) {
         this.serviciosService = serviciosService;
     }
-    create(createServicioDto) {
-        return this.serviciosService.create(createServicioDto);
+    async create(createServicioDto, req) {
+        try {
+            const emprendimientoId = req.user.emprendimientoId;
+            if (!emprendimientoId) {
+                throw new common_1.HttpException('No hay emprendimiento activo', common_1.HttpStatus.BAD_REQUEST);
+            }
+            return await this.serviciosService.create(createServicioDto, emprendimientoId);
+        }
+        catch (error) {
+            if (error instanceof common_1.HttpException)
+                throw error;
+            throw new common_1.HttpException('Error al crear el servicio', common_1.HttpStatus.BAD_REQUEST);
+        }
     }
     findAll() {
         return this.serviciosService.findAll();
     }
-    findByEmprendimiento(emprendimientoId) {
-        return this.serviciosService.findByEmprendimiento(+emprendimientoId);
+    findMine(req) {
+        const emprendimientoId = req.user.emprendimientoId;
+        return this.serviciosService.findByEmprendimiento(emprendimientoId);
     }
     findOne(id) {
         return this.serviciosService.findOne(+id);
     }
-    update(id, updateServicioDto) {
-        return this.serviciosService.update(+id, updateServicioDto);
+    update(id, dto, req) {
+        const emprendimientoId = req.user.emprendimientoId;
+        return this.serviciosService.update(+id, dto, emprendimientoId);
     }
-    remove(id) {
-        return this.serviciosService.remove(+id);
+    remove(id, req) {
+        const emprendimientoId = req.user.emprendimientoId;
+        return this.serviciosService.remove(+id, emprendimientoId);
     }
-    updateEstado(id, updateEstadoDto) {
-        return this.serviciosService.updateEstado(+id, updateEstadoDto.estado);
+    updateEstado(id, updateEstadoDto, req) {
+        const emprendimientoId = req.user.emprendimientoId;
+        return this.serviciosService.updateEstado(+id, updateEstadoDto.estado, emprendimientoId);
     }
     findByTipoServicio(tipoServicioId) {
         return this.serviciosService.findByTipoServicio(+tipoServicioId);
@@ -55,31 +70,38 @@ let ServiciosController = class ServiciosController {
 exports.ServiciosController = ServiciosController;
 __decorate([
     (0, common_1.Post)(),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Crear un nuevo servicio' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Servicio creado exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_servicio_dto_1.CreateServicioDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [create_servicio_dto_1.CreateServicioDto, Object]),
+    __metadata("design:returntype", Promise)
 ], ServiciosController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
-    (0, swagger_1.ApiOperation)({ summary: 'Obtener todos los servicios' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener todos los servicios (público)' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Lista de servicios', type: [servicio_entity_1.ServicioEntity] }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], ServiciosController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)('emprendimiento/:emprendimientoId'),
-    (0, swagger_1.ApiOperation)({ summary: 'Obtener servicios por emprendimiento' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Lista de servicios del emprendimiento', type: [servicio_entity_1.ServicioEntity] }),
-    __param(0, (0, common_1.Param)('emprendimientoId')),
+    (0, common_1.Get)('mios'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener servicios de mi emprendimiento' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Lista de servicios propios', type: [servicio_entity_1.ServicioEntity] }),
+    __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
-], ServiciosController.prototype, "findByEmprendimiento", null);
+], ServiciosController.prototype, "findMine", null);
 __decorate([
     (0, common_1.Get)(':id'),
     (0, swagger_1.ApiOperation)({ summary: 'Obtener un servicio por ID' }),
@@ -92,30 +114,38 @@ __decorate([
 ], ServiciosController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Patch)(':id'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Actualizar un servicio por ID' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Servicio actualizado exitosamente' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Servicio actualizado exitosamente', type: servicio_entity_1.ServicioEntity }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Servicio no encontrado' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_servicio_dto_1.UpdateServicioDto]),
+    __metadata("design:paramtypes", [String, update_servicio_dto_1.UpdateServicioDto, Object]),
     __metadata("design:returntype", void 0)
 ], ServiciosController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Eliminar un servicio por ID' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Servicio eliminado exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Servicio no encontrado' }),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
 ], ServiciosController.prototype, "remove", null);
 __decorate([
     (0, common_1.Patch)(':id/estado'),
-    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Actualizar el estado de un servicio' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Estado actualizado', type: servicio_entity_1.ServicioEntity }),
@@ -123,14 +153,15 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Servicio no encontrado' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_estado_dto_1.UpdateEstadoDto]),
+    __metadata("design:paramtypes", [String, update_estado_dto_1.UpdateEstadoDto, Object]),
     __metadata("design:returntype", void 0)
 ], ServiciosController.prototype, "updateEstado", null);
 __decorate([
     (0, common_1.Get)('tipo-servicio/:tipoServicioId'),
     (0, swagger_1.ApiOperation)({ summary: 'Obtener servicios por tipo de servicio' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Lista de servicios del tipo especificado' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Lista de servicios del tipo especificado', type: [servicio_entity_1.ServicioEntity] }),
     __param(0, (0, common_1.Param)('tipoServicioId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

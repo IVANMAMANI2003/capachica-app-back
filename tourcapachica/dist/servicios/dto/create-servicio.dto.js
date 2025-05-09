@@ -46,6 +46,17 @@ __decorate([
 ], CreateServicioDto.prototype, "tipoServicioId", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
+        description: 'ID del emprendimiento',
+        example: 1,
+        required: true,
+        type: Number
+    }),
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Number)
+], CreateServicioDto.prototype, "emprendimientoId", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
         description: 'Nombre del servicio',
         example: 'Tour guiado por la isla',
         required: true,
