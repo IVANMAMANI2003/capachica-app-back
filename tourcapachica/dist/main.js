@@ -15,6 +15,7 @@ async function bootstrap() {
     app.useGlobalPipes(new common_1.ValidationPipe({
         whitelist: true,
         transform: true,
+        forbidNonWhitelisted: true,
     }));
     const config = new swagger_1.DocumentBuilder()
         .setTitle('Tour Capachica API')
