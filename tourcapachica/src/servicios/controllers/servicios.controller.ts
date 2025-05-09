@@ -24,22 +24,26 @@ export class ServiciosController {
   async create(
     @Body() createServicioDto: CreateServicioDto,
     @Req() req,
-      ) {
-      try {
-        // Extraemos emprendimientoId del token
-        const emprendimientoId: number = req.user.emprendimientoId;
-        if (!emprendimientoId) {
-          throw new HttpException('No hay emprendimiento activo', HttpStatus.BAD_REQUEST);
-        }
-
-        // Llamamos al service, pasándole el DTO y el ID
-        return await this.serviciosService.create(createServicioDto, emprendimientoId);
-      } catch (error) {
-        // Re-lanzar si ya es HttpException, o envolver en 400
-        if (error instanceof HttpException) throw error;
-        throw new HttpException('Error al crear el servicio', HttpStatus.BAD_REQUEST);
+  ) {
+    try {
+      // Extraemos emprendimientoId del token
+      const emprendimientoId: number = req.user.emprendimientoId;
+      
+      // LOG para verificar el ID del emprendimiento
+      console.log('Emprendimiento ID extraído del token:', emprendimientoId);
+  
+      if (!emprendimientoId) {
+        throw new HttpException('No hay emprendimiento activo', HttpStatus.BAD_REQUEST);
       }
+  
+      // Llamamos al service, pasándole el DTO y el ID
+      return await this.serviciosService.create(createServicioDto, emprendimientoId);
+    } catch (error) {
+      if (error instanceof HttpException) throw error;
+      throw new HttpException('Error al crear el servicio', HttpStatus.BAD_REQUEST);
     }
+  }
+  
   
     @Get()
     @ApiOperation({ summary: 'Obtener todos los servicios (público)' })

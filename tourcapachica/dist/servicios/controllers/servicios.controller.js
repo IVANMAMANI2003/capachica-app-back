@@ -30,6 +30,7 @@ let ServiciosController = class ServiciosController {
     async create(createServicioDto, req) {
         try {
             const emprendimientoId = req.user.emprendimientoId;
+            console.log('Emprendimiento ID extraído del token:', emprendimientoId);
             if (!emprendimientoId) {
                 throw new common_1.HttpException('No hay emprendimiento activo', common_1.HttpStatus.BAD_REQUEST);
             }

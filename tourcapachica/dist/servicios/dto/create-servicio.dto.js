@@ -64,7 +64,6 @@ __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Precio base del servicio', example: 50.00 }),
     (0, class_transformer_1.Type)(() => Number),
     (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.Min)(0),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
 ], CreateServicioDto.prototype, "precioBase", void 0);
@@ -72,7 +71,6 @@ __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Moneda del precio', example: 'PEN', enum: ['PEN', 'USD'], required: false, default: 'PEN' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsEnum)(['PEN', 'USD']),
     __metadata("design:type", String)
 ], CreateServicioDto.prototype, "moneda", void 0);
 __decorate([
