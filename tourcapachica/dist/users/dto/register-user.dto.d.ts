@@ -4,7 +4,7 @@ export declare class RegisterUserDto {
     telefono?: string;
     direccion?: string;
     fotoPerfilUrl?: string;
-    fechaNacimiento?: Date;
+    fechaNacimiento?: string;
     subdivisionId: number;
     email: string;
     password: string;
