@@ -1,5 +1,4 @@
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { RequestPasswordResetDto } from './dto/request-password-reset.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
@@ -210,7 +209,7 @@ export declare class UsersController {
         createdAt: Date;
         updatedAt: Date;
     }>;
-    update(id: number, updateUserDto: UpdateUserDto): Promise<{
+    update(id: number, user: any, persona: any): Promise<{
         imagenes: {
             id: number;
             url: string;

@@ -5,6 +5,7 @@ import { RegisterUserDto } from './dto/register-user.dto';
 import { RequestPasswordResetDto } from './dto/request-password-reset.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { SupabaseService } from '../supabase/supabase.service';
+import { UpdatePersonaDto } from './dto/update-persona.dto';
 export declare class UsersService {
     private readonly prisma;
     private readonly supabaseService;
@@ -269,7 +270,10 @@ export declare class UsersService {
         createdAt: Date;
         updatedAt: Date;
     }>;
-    update(id: number, updateUserDto: UpdateUserDto): Promise<{
+    update(id: number, updateUserDto: {
+        user: UpdateUserDto;
+        persona: UpdatePersonaDto;
+    }): Promise<{
         imagenes: {
             id: number;
             url: string;

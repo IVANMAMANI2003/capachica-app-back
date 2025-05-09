@@ -19,7 +19,6 @@ const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 const roles_guard_1 = require("../auth/guards/roles.guard");
 const roles_decorator_1 = require("../auth/decorators/roles.decorator");
 const create_user_dto_1 = require("./dto/create-user.dto");
-const update_user_dto_1 = require("./dto/update-user.dto");
 const register_user_dto_1 = require("./dto/register-user.dto");
 const request_password_reset_dto_1 = require("./dto/request-password-reset.dto");
 const reset_password_dto_1 = require("./dto/reset-password.dto");
@@ -93,9 +92,9 @@ let UsersController = class UsersController {
         }
         return this.usersService.findOne(+id);
     }
-    update(id, updateUserDto) {
+    update(id, user, persona) {
         console.log('Solicitud de actualización recibida para ID:', id);
-        return this.usersService.update(id, updateUserDto);
+        return this.usersService.update(id, { user, persona });
     }
     remove(id) {
         return this.usersService.delete(+id);
@@ -212,9 +211,10 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 403, description: 'No tiene permisos' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Usuario no encontrado' }),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
-    __param(1, (0, common_1.Body)()),
+    __param(1, (0, common_1.Body)('user')),
+    __param(2, (0, common_1.Body)('persona')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, update_user_dto_1.UpdateUserDto]),
+    __metadata("design:paramtypes", [Number, Object, Object]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "update", null);
 __decorate([

@@ -12,57 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateUserDto = void 0;
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
-const class_transformer_1 = require("class-transformer");
 class UpdateUserDto {
 }
 exports.UpdateUserDto = UpdateUserDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Nombre del usuario', required: false }),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], UpdateUserDto.prototype, "nombre", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Apellidos del usuario', required: false }),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], UpdateUserDto.prototype, "apellidos", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Correo electrónico del usuario', required: false }),
+    (0, swagger_1.ApiPropertyOptional)({ description: 'Email del usuario' }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsEmail)(),
     __metadata("design:type", String)
 ], UpdateUserDto.prototype, "email", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Teléfono del usuario', required: false }),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], UpdateUserDto.prototype, "telefono", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Dirección del usuario', required: false }),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], UpdateUserDto.prototype, "direccion", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Fecha de nacimiento del usuario', required: false }),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_transformer_1.Type)(() => Date),
-    (0, class_validator_1.IsDate)(),
-    __metadata("design:type", Date)
-], UpdateUserDto.prototype, "fechaNacimiento", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'ID de la subdivisión', required: false }),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsNumber)(),
-    __metadata("design:type", Number)
-], UpdateUserDto.prototype, "subdivisionId", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'URL de la foto de perfil', required: false }),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsUrl)(),
-    __metadata("design:type", String)
-], UpdateUserDto.prototype, "fotoPerfil", void 0);
 //# sourceMappingURL=update-user.dto.js.map

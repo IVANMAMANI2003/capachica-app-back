@@ -161,10 +161,11 @@ export class UsersController {
   @ApiResponse({ status: 404, description: 'Usuario no encontrado' })
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateUserDto: UpdateUserDto,
+    @Body('user') user: any,
+    @Body('persona') persona: any,
   ) {
     console.log('Solicitud de actualización recibida para ID:', id);
-    return this.usersService.update(id, updateUserDto);
+    return this.usersService.update(id, { user, persona });
   }
   
 

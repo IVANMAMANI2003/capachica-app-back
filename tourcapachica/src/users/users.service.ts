@@ -8,6 +8,7 @@ import { RequestPasswordResetDto } from './dto/request-password-reset.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { randomBytes } from 'crypto';
 import { SupabaseService } from '../supabase/supabase.service';
+import { UpdatePersonaDto } from './dto/update-persona.dto';
 
 @Injectable()
 export class UsersService {
@@ -258,109 +259,45 @@ export class UsersService {
     };
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: number, updateUserDto: { user: UpdateUserDto, persona: UpdatePersonaDto }) {
     console.log('--- Iniciando actualización de usuario ---');
     console.log('ID del usuario:', id);
     console.log('DTO recibido:', updateUserDto);
-  
-    const { fotoPerfil, ...userData } = updateUserDto;
-  
-    // Actualizar datos del usuario
-    const user = await this.prisma.usuario.update({
+
+    const { user, persona } = updateUserDto;
+
+    // Actualizar datos del usuario (solo email)
+    const usuarioActualizado = await this.prisma.usuario.update({
       where: { id },
       data: {
-        ...userData,
-        persona: {
-          update: {
-            nombre: userData.nombre,
-            apellidos: userData.apellidos,
-            telefono: userData.telefono,
-            direccion: userData.direccion,
-            fechaNacimiento: userData.fechaNacimiento,
-            subdivisionId: userData.subdivisionId,
-          }
-        }
+        ...(user?.email ? { email: user.email } : {}),
       },
       include: {
         persona: true
       }
     });
-  
-    console.log('Usuario actualizado:', user);
-  
-    if (fotoPerfil) {
-      console.log('Nueva foto de perfil detectada, actualizando imagen...');
-  
-      const imageables = await this.prisma.imageable.findMany({
-        where: {
-          imageable_type: this.IMAGEABLE_TYPE,
-          imageable_id: id,
-        },
-        include: {
-          image: true
-        }
-      });
-  
-      console.log('Relaciones imageables encontradas:', imageables.length);
-  
-      for (const imageable of imageables) {
-        console.log('Eliminando imagen:', imageable.image.url);
-  
-        const { error } = await this.supabaseService.deleteFile(
-          this.BUCKET_NAME,
-          imageable.image.url
-        );
-  
-        if (error) {
-          console.error(`Error al eliminar la imagen de Supabase: ${error.message}`);
-        }
-  
-        await this.prisma.imageable.delete({ where: { id: imageable.id } });
-        console.log('Relación imageable eliminada:', imageable.id);
-  
-        await this.prisma.image.delete({ where: { id: imageable.image.id } });
-        console.log('Imagen eliminada de base de datos:', imageable.image.id);
-      }
-  
-      const filePath = `${id}/${Date.now()}-${fotoPerfil.split('/').pop()}`;
-      console.log('Ruta para nueva imagen:', filePath);
-  
-      const { data, error } = await this.supabaseService.uploadFile(
-        this.BUCKET_NAME,
-        filePath,
-        fotoPerfil
-      );
-  
-      if (error) {
-        throw new BadRequestException(`Error al subir la imagen: ${error.message}`);
-      }
-  
-      console.log('Imagen subida correctamente:', data.path);
-  
-      const imagenDb = await this.prisma.image.create({
-        data: { url: data.path }
-      });
-  
-      console.log('Imagen guardada en BD con ID:', imagenDb.id);
-  
-      await this.prisma.imageable.create({
-        data: {
-          image_id: imagenDb.id,
-          imageable_id: id,
-          imageable_type: this.IMAGEABLE_TYPE
-        }
-      });
-  
-      console.log('Relación imageable creada');
-  
+
+    // Actualizar datos de la persona
+    if (persona) {
       await this.prisma.persona.update({
-        where: { id: user.personaId },
-        data: { fotoPerfilUrl: data.path }
+        where: { id: usuarioActualizado.personaId },
+        data: {
+          ...(persona.nombre && { nombre: persona.nombre }),
+          ...(persona.apellidos && { apellidos: persona.apellidos }),
+          ...(persona.telefono && { telefono: persona.telefono }),
+          ...(persona.direccion && { direccion: persona.direccion }),
+          ...(persona.fotoPerfilUrl && { fotoPerfilUrl: persona.fotoPerfilUrl }),
+          ...(persona.fechaNacimiento && { fechaNacimiento: persona.fechaNacimiento }),
+          ...(persona.subdivisionId && { subdivisionId: persona.subdivisionId })
+        }
       });
-  
-      console.log('Foto de perfil actualizada en entidad persona');
     }
-  
+
+    // Si hay foto de perfil nueva, actualizar imagen (opcional, según lógica previa)
+    if (persona?.fotoPerfilUrl) {
+      // Aquí podrías agregar la lógica de actualización de imagen si es necesario
+    }
+
     console.log('--- Actualización finalizada ---');
     return this.findOne(id);
   }
