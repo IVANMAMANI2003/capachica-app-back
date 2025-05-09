@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, UseGuards, Req } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 import { PaquetesTuristicosService } from './paquetes-turisticos.service';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { CreateDisponibilidadDto } from './dto/create-disponibilidad.dto';
@@ -9,6 +9,7 @@ import { UpdatePaqueteTuristicoDto } from './dto/update-paquete-turistico.dto';
 import { AddServiciosDto } from './dto/add-servicios.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
+import { EstadoPaquete } from './enums/estado-paquete.enum';
 
 @ApiTags('paquetes-turisticos')
 @Controller('paquetes-turisticos')
@@ -74,19 +75,23 @@ export class PaquetesTuristicosController {
     return this.paquetesTuristicosService.remove(+id);
   }
 
-  @Patch(':id/estado')
+  @Patch(':id/estado/:estado')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('Emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar el estado de un paquete turístico' })
+  @ApiParam({ name: 'id', type: Number, description: 'ID del paquete turístico' })
+  @ApiParam({ name: 'estado', enum: EstadoPaquete, description: 'Nuevo estado del paquete' })
   @ApiResponse({ status: 200, description: 'Estado actualizado' })
   @ApiResponse({ status: 400, description: 'Estado inválido' })
   @ApiResponse({ status: 404, description: 'Paquete turístico no encontrado' })
-  updateEstado(
-    @Param('id') id: string, 
-    @Body('estado') estado: string) {
+  updateEstadoRuta(
+    @Param('id') id: string,
+    @Param('estado') estado: EstadoPaquete,
+  ) {
     return this.paquetesTuristicosService.updateEstado(+id, estado);
   }
+  
 
   @Post(':id/servicios')
   @Roles('Emprendedor', 'SuperAdmin')

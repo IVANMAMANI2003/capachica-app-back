@@ -24,6 +24,7 @@ const update_paquete_turistico_dto_1 = require("./dto/update-paquete-turistico.d
 const add_servicios_dto_1 = require("./dto/add-servicios.dto");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 const roles_guard_1 = require("../auth/guards/roles.guard");
+const estado_paquete_enum_1 = require("./enums/estado-paquete.enum");
 let PaquetesTuristicosController = class PaquetesTuristicosController {
     constructor(paquetesTuristicosService) {
         this.paquetesTuristicosService = paquetesTuristicosService;
@@ -46,7 +47,7 @@ let PaquetesTuristicosController = class PaquetesTuristicosController {
     remove(id) {
         return this.paquetesTuristicosService.remove(+id);
     }
-    updateEstado(id, estado) {
+    updateEstadoRuta(id, estado) {
         return this.paquetesTuristicosService.updateEstado(+id, estado);
     }
     async addServicios(id, addServiciosDto, req) {
@@ -147,20 +148,22 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PaquetesTuristicosController.prototype, "remove", null);
 __decorate([
-    (0, common_1.Patch)(':id/estado'),
+    (0, common_1.Patch)(':id/estado/:estado'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Actualizar el estado de un paquete turístico' }),
+    (0, swagger_1.ApiParam)({ name: 'id', type: Number, description: 'ID del paquete turístico' }),
+    (0, swagger_1.ApiParam)({ name: 'estado', enum: estado_paquete_enum_1.EstadoPaquete, description: 'Nuevo estado del paquete' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Estado actualizado' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Estado inválido' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Paquete turístico no encontrado' }),
     __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)('estado')),
+    __param(1, (0, common_1.Param)('estado')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", void 0)
-], PaquetesTuristicosController.prototype, "updateEstado", null);
+], PaquetesTuristicosController.prototype, "updateEstadoRuta", null);
 __decorate([
     (0, common_1.Post)(':id/servicios'),
     (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
