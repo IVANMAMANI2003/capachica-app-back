@@ -7,5 +7,4 @@ export declare class UpdateDisponibilidadDto {
     precioEspecial?: number;
     notas?: string;
     estado?: EstadoDisponibilidad;
-    diasSemana?: string[];
 }

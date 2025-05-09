@@ -58,10 +58,4 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], UpdateDisponibilidadDto.prototype, "estado", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Días de la semana disponibles', required: false, type: [String] }),
-    (0, class_validator_1.IsString)({ each: true }),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", Array)
-], UpdateDisponibilidadDto.prototype, "diasSemana", void 0);
 //# sourceMappingURL=update-disponibilidad.dto.js.map

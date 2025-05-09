@@ -38,8 +38,4 @@ export class UpdateDisponibilidadDto {
   @IsOptional()
   estado?: EstadoDisponibilidad;
 
-  @ApiProperty({ description: 'Días de la semana disponibles', required: false, type: [String] })
-  @IsString({ each: true })
-  @IsOptional()
-  diasSemana?: string[];
 }
