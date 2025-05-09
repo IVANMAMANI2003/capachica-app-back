@@ -63,7 +63,16 @@ let ServiciosService = class ServiciosService {
         return this.findOne(servicio.id);
     }
     async findAll() {
-        const servicios = await this.prisma.servicio.findMany({ include: { tipoServicio: true } });
+        const servicios = await this.prisma.servicio.findMany({
+            include: {
+                tipoServicio: true,
+                serviciosEmprendedores: {
+                    select: {
+                        emprendimientoId: true
+                    }
+                }
+            }
+        });
         return Promise.all(servicios.map(async (s) => {
             const imgs = await this.prisma.imageable.findMany({
                 where: { imageable_type: this.IMAGEABLE_TYPE, imageable_id: s.id },
@@ -75,7 +84,14 @@ let ServiciosService = class ServiciosService {
     async findOne(id) {
         const servicio = await this.prisma.servicio.findUnique({
             where: { id },
-            include: { tipoServicio: true }
+            include: {
+                tipoServicio: true,
+                serviciosEmprendedores: {
+                    select: {
+                        emprendimientoId: true
+                    }
+                }
+            }
         });
         if (!servicio)
             throw new common_1.NotFoundException(`Servicio ${id} no encontrado`);

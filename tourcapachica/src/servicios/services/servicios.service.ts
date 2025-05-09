@@ -71,17 +71,32 @@ export class ServiciosService {
    * Obtiene todos los servicios (públicos).
    */
   async findAll() {
-    const servicios = await this.prisma.servicio.findMany({ include: { tipoServicio: true } });
+    const servicios = await this.prisma.servicio.findMany({
+      include: {
+        tipoServicio: true,
+        serviciosEmprendedores: {
+          select: {
+            emprendimientoId: true
+          }
+        }
+      }
+    });
+  
     return Promise.all(
       servicios.map(async (s) => {
         const imgs = await this.prisma.imageable.findMany({
           where: { imageable_type: this.IMAGEABLE_TYPE, imageable_id: s.id },
           include: { image: true }
         });
-        return { ...s, imagenes: imgs.map(i => ({ id: i.image.id, url: i.image.url })) };
+  
+        return {
+          ...s,
+          imagenes: imgs.map(i => ({ id: i.image.id, url: i.image.url }))
+        };
       })
     );
   }
+  
 
   /**
    * Obtiene un servicio por su ID.
@@ -89,15 +104,27 @@ export class ServiciosService {
   async findOne(id: number) {
     const servicio = await this.prisma.servicio.findUnique({
       where: { id },
-      include: { tipoServicio: true }
+      include: {
+        tipoServicio: true,
+        serviciosEmprendedores: {
+          select: {
+            emprendimientoId: true
+          }
+        }
+      }
     });
+  
     if (!servicio) throw new NotFoundException(`Servicio ${id} no encontrado`);
-
+  
     const imgs = await this.prisma.imageable.findMany({
       where: { imageable_type: this.IMAGEABLE_TYPE, imageable_id: id },
       include: { image: true }
     });
-    return { ...servicio, imagenes: imgs.map(i => ({ id: i.image.id, url: i.image.url })) };
+  
+    return {
+      ...servicio,
+      imagenes: imgs.map(i => ({ id: i.image.id, url: i.image.url }))
+    };
   }
 
   /**

@@ -22,6 +22,9 @@ export declare class ServiciosService {
             updatedAt: Date;
             requiereCupo: boolean;
         };
+        serviciosEmprendedores: {
+            emprendimientoId: number;
+        }[];
         id: number;
         tipoServicioId: number;
         nombre: string;
@@ -46,6 +49,9 @@ export declare class ServiciosService {
             updatedAt: Date;
             requiereCupo: boolean;
         };
+        serviciosEmprendedores: {
+            emprendimientoId: number;
+        }[];
         id: number;
         tipoServicioId: number;
         nombre: string;
@@ -70,6 +76,9 @@ export declare class ServiciosService {
             updatedAt: Date;
             requiereCupo: boolean;
         };
+        serviciosEmprendedores: {
+            emprendimientoId: number;
+        }[];
         id: number;
         tipoServicioId: number;
         nombre: string;
@@ -140,6 +149,9 @@ export declare class ServiciosService {
             updatedAt: Date;
             requiereCupo: boolean;
         };
+        serviciosEmprendedores: {
+            emprendimientoId: number;
+        }[];
         id: number;
         tipoServicioId: number;
         nombre: string;

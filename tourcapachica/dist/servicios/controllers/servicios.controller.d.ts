@@ -18,6 +18,9 @@ export declare class ServiciosController {
             updatedAt: Date;
             requiereCupo: boolean;
         };
+        serviciosEmprendedores: {
+            emprendimientoId: number;
+        }[];
         id: number;
         tipoServicioId: number;
         nombre: string;
@@ -42,6 +45,9 @@ export declare class ServiciosController {
             updatedAt: Date;
             requiereCupo: boolean;
         };
+        serviciosEmprendedores: {
+            emprendimientoId: number;
+        }[];
         id: number;
         tipoServicioId: number;
         nombre: string;
@@ -112,6 +118,9 @@ export declare class ServiciosController {
             updatedAt: Date;
             requiereCupo: boolean;
         };
+        serviciosEmprendedores: {
+            emprendimientoId: number;
+        }[];
         id: number;
         tipoServicioId: number;
         nombre: string;
@@ -136,6 +145,9 @@ export declare class ServiciosController {
             updatedAt: Date;
             requiereCupo: boolean;
         };
+        serviciosEmprendedores: {
+            emprendimientoId: number;
+        }[];
         id: number;
         tipoServicioId: number;
         nombre: string;
