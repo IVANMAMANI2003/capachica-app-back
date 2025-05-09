@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, UseGuards, Req } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiParam, ApiBody } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiParam, ApiBody, ApiProperty } from '@nestjs/swagger';
 import { PaquetesTuristicosService } from './paquetes-turisticos.service';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { CreateDisponibilidadDto } from './dto/create-disponibilidad.dto';
@@ -10,7 +10,11 @@ import { AddServiciosDto } from './dto/add-servicios.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { EstadoPaquete } from './enums/estado-paquete.enum';
+import { IsEnum } from 'class-validator';
 class UpdateEstadoDto {
+  @ApiProperty({ description: 'Estado de la paquete turistico', enum: EstadoPaquete })
+  @IsEnum(EstadoPaquete, { message: 'El estado Debe ser "activo" o "inactivo"' })
+  
   estado: EstadoPaquete;
 }
 @ApiTags('paquetes-turisticos')

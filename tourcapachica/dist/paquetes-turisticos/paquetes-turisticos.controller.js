@@ -24,8 +24,15 @@ const update_paquete_turistico_dto_1 = require("./dto/update-paquete-turistico.d
 const add_servicios_dto_1 = require("./dto/add-servicios.dto");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 const roles_guard_1 = require("../auth/guards/roles.guard");
+const estado_paquete_enum_1 = require("./enums/estado-paquete.enum");
+const class_validator_1 = require("class-validator");
 class UpdateEstadoDto {
 }
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Estado de la paquete turistico', enum: estado_paquete_enum_1.EstadoPaquete }),
+    (0, class_validator_1.IsEnum)(estado_paquete_enum_1.EstadoPaquete, { message: 'El estado Debe ser "activo" o "inactivo"' }),
+    __metadata("design:type", String)
+], UpdateEstadoDto.prototype, "estado", void 0);
 let PaquetesTuristicosController = class PaquetesTuristicosController {
     constructor(paquetesTuristicosService) {
         this.paquetesTuristicosService = paquetesTuristicosService;
