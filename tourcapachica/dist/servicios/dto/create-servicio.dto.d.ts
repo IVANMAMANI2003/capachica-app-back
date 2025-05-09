@@ -3,7 +3,6 @@ export declare class ImageDto {
 }
 export declare class CreateServicioDto {
     tipoServicioId: number;
-    emprendimientoId: number;
     nombre: string;
     descripcion?: string;
     precioBase: number;

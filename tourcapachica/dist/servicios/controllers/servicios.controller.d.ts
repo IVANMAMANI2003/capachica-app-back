@@ -11,13 +11,14 @@ export declare class ServiciosController {
             url: string;
         }[];
         tipoServicio: {
+            id: number;
             nombre: string;
             descripcion: string | null;
-            id: number;
             createdAt: Date;
             updatedAt: Date;
             requiereCupo: boolean;
         };
+        id: number;
         tipoServicioId: number;
         nombre: string;
         descripcion: string | null;
@@ -25,7 +26,6 @@ export declare class ServiciosController {
         moneda: string;
         estado: string;
         detallesServicio: import(".prisma/client/runtime/library").JsonValue;
-        id: number;
         createdAt: Date;
         updatedAt: Date;
     }>;
@@ -35,13 +35,14 @@ export declare class ServiciosController {
             url: string;
         }[];
         tipoServicio: {
+            id: number;
             nombre: string;
             descripcion: string | null;
-            id: number;
             createdAt: Date;
             updatedAt: Date;
             requiereCupo: boolean;
         };
+        id: number;
         tipoServicioId: number;
         nombre: string;
         descripcion: string | null;
@@ -49,25 +50,24 @@ export declare class ServiciosController {
         moneda: string;
         estado: string;
         detallesServicio: import(".prisma/client/runtime/library").JsonValue;
-        id: number;
         createdAt: Date;
         updatedAt: Date;
     }[]>;
     findMine(req: any): Promise<({
         tipoServicio: {
+            id: number;
             nombre: string;
             descripcion: string | null;
-            id: number;
             createdAt: Date;
             updatedAt: Date;
             requiereCupo: boolean;
         };
         serviciosEmprendedores: ({
             emprendimiento: {
+                id: number;
                 nombre: string;
                 descripcion: string | null;
                 estado: string;
-                id: number;
                 createdAt: Date;
                 updatedAt: Date;
                 usuarioId: number;
@@ -81,13 +81,14 @@ export declare class ServiciosController {
                 fechaAprobacion: Date | null;
             };
         } & {
-            emprendimientoId: number;
             id: number;
             createdAt: Date;
             updatedAt: Date;
+            emprendimientoId: number;
             servicioId: number;
         })[];
     } & {
+        id: number;
         tipoServicioId: number;
         nombre: string;
         descripcion: string | null;
@@ -95,7 +96,6 @@ export declare class ServiciosController {
         moneda: string;
         estado: string;
         detallesServicio: import(".prisma/client/runtime/library").JsonValue;
-        id: number;
         createdAt: Date;
         updatedAt: Date;
     })[]>;
@@ -105,13 +105,14 @@ export declare class ServiciosController {
             url: string;
         }[];
         tipoServicio: {
+            id: number;
             nombre: string;
             descripcion: string | null;
-            id: number;
             createdAt: Date;
             updatedAt: Date;
             requiereCupo: boolean;
         };
+        id: number;
         tipoServicioId: number;
         nombre: string;
         descripcion: string | null;
@@ -119,7 +120,6 @@ export declare class ServiciosController {
         moneda: string;
         estado: string;
         detallesServicio: import(".prisma/client/runtime/library").JsonValue;
-        id: number;
         createdAt: Date;
         updatedAt: Date;
     }>;
@@ -129,13 +129,14 @@ export declare class ServiciosController {
             url: string;
         }[];
         tipoServicio: {
+            id: number;
             nombre: string;
             descripcion: string | null;
-            id: number;
             createdAt: Date;
             updatedAt: Date;
             requiereCupo: boolean;
         };
+        id: number;
         tipoServicioId: number;
         nombre: string;
         descripcion: string | null;
@@ -143,11 +144,11 @@ export declare class ServiciosController {
         moneda: string;
         estado: string;
         detallesServicio: import(".prisma/client/runtime/library").JsonValue;
-        id: number;
         createdAt: Date;
         updatedAt: Date;
     }>;
     remove(id: string, req: any): Promise<{
+        id: number;
         tipoServicioId: number;
         nombre: string;
         descripcion: string | null;
@@ -155,25 +156,24 @@ export declare class ServiciosController {
         moneda: string;
         estado: string;
         detallesServicio: import(".prisma/client/runtime/library").JsonValue;
-        id: number;
         createdAt: Date;
         updatedAt: Date;
     }>;
     updateEstado(id: string, updateEstadoDto: UpdateEstadoDto, req: any): Promise<{
         tipoServicio: {
+            id: number;
             nombre: string;
             descripcion: string | null;
-            id: number;
             createdAt: Date;
             updatedAt: Date;
             requiereCupo: boolean;
         };
         serviciosEmprendedores: ({
             emprendimiento: {
+                id: number;
                 nombre: string;
                 descripcion: string | null;
                 estado: string;
-                id: number;
                 createdAt: Date;
                 updatedAt: Date;
                 usuarioId: number;
@@ -187,13 +187,14 @@ export declare class ServiciosController {
                 fechaAprobacion: Date | null;
             };
         } & {
-            emprendimientoId: number;
             id: number;
             createdAt: Date;
             updatedAt: Date;
+            emprendimientoId: number;
             servicioId: number;
         })[];
     } & {
+        id: number;
         tipoServicioId: number;
         nombre: string;
         descripcion: string | null;
@@ -201,7 +202,6 @@ export declare class ServiciosController {
         moneda: string;
         estado: string;
         detallesServicio: import(".prisma/client/runtime/library").JsonValue;
-        id: number;
         createdAt: Date;
         updatedAt: Date;
     }>;
@@ -211,13 +211,14 @@ export declare class ServiciosController {
             url: string;
         }[];
         tipoServicio: {
+            id: number;
             nombre: string;
             descripcion: string | null;
-            id: number;
             createdAt: Date;
             updatedAt: Date;
             requiereCupo: boolean;
         };
+        id: number;
         tipoServicioId: number;
         nombre: string;
         descripcion: string | null;
@@ -225,7 +226,6 @@ export declare class ServiciosController {
         moneda: string;
         estado: string;
         detallesServicio: import(".prisma/client/runtime/library").JsonValue;
-        id: number;
         createdAt: Date;
         updatedAt: Date;
     }[]>;
