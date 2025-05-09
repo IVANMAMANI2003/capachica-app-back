@@ -16,13 +16,13 @@ export class DisponibilidadResponseDto {
 
   @ApiProperty({
     description: 'Fecha de inicio de la disponibilidad',
-    example: '2024-03-20T00:00:00.000Z',
+    example: '2024-03-20',
   })
   fechaInicio: Date;
 
   @ApiProperty({
     description: 'Fecha de fin de la disponibilidad',
-    example: '2024-03-25T00:00:00.000Z',
+    example: '2024-03-25',
   })
   fechaFin: Date;
 

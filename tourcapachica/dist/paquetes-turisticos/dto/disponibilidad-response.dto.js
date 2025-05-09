@@ -32,14 +32,14 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Fecha de inicio de la disponibilidad',
-        example: '2024-03-20T00:00:00.000Z',
+        example: '2024-03-20',
     }),
     __metadata("design:type", Date)
 ], DisponibilidadResponseDto.prototype, "fechaInicio", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Fecha de fin de la disponibilidad',
-        example: '2024-03-25T00:00:00.000Z',
+        example: '2024-03-25',
     }),
     __metadata("design:type", Date)
 ], DisponibilidadResponseDto.prototype, "fechaFin", void 0);

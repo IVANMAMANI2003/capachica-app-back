@@ -1,17 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsNumber, IsString, IsOptional, IsEnum } from 'class-validator';
+import { IsDate, IsNumber, IsString, IsOptional, IsEnum, IsDateString } from 'class-validator';
 import { EstadoDisponibilidad } from '../enums/estado-disponibilidad.enum';
 
 export class UpdateDisponibilidadDto {
   @ApiProperty({ description: 'Fecha de inicio de la disponibilidad', required: false })
-  @IsDate()
+  @IsDateString()
   @IsOptional()
-  fechaInicio?: Date;
+  fechaInicio?: string;
 
   @ApiProperty({ description: 'Fecha de fin de la disponibilidad', required: false })
-  @IsDate()
+  @IsDateString()
   @IsOptional()
-  fechaFin?: Date;
+  fechaFin?: string;
 
   @ApiProperty({ description: 'Cupos disponibles para el período', required: false })
   @IsNumber()
@@ -42,4 +42,4 @@ export class UpdateDisponibilidadDto {
   @IsString({ each: true })
   @IsOptional()
   diasSemana?: string[];
-} 
+}

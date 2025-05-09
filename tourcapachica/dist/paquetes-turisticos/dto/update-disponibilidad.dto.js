@@ -18,15 +18,15 @@ class UpdateDisponibilidadDto {
 exports.UpdateDisponibilidadDto = UpdateDisponibilidadDto;
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Fecha de inicio de la disponibilidad', required: false }),
-    (0, class_validator_1.IsDate)(),
+    (0, class_validator_1.IsDateString)(),
     (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", Date)
+    __metadata("design:type", String)
 ], UpdateDisponibilidadDto.prototype, "fechaInicio", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Fecha de fin de la disponibilidad', required: false }),
-    (0, class_validator_1.IsDate)(),
+    (0, class_validator_1.IsDateString)(),
     (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", Date)
+    __metadata("design:type", String)
 ], UpdateDisponibilidadDto.prototype, "fechaFin", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Cupos disponibles para el período', required: false }),

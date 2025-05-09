@@ -17,14 +17,16 @@ class CreateDisponibilidadDto {
 }
 exports.CreateDisponibilidadDto = CreateDisponibilidadDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Fecha de inicio de la disponibilidad' }),
-    (0, class_validator_1.IsDate)(),
-    __metadata("design:type", Date)
+    (0, swagger_1.ApiProperty)({ description: 'Fecha de inicio de la disponibilidad', example: '2025-05-08' }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsDateString)(),
+    __metadata("design:type", String)
 ], CreateDisponibilidadDto.prototype, "fechaInicio", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Fecha de fin de la disponibilidad' }),
-    (0, class_validator_1.IsDate)(),
-    __metadata("design:type", Date)
+    (0, swagger_1.ApiProperty)({ description: 'Fecha de fin de la disponibilidad', example: '2025-06-08' }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsDateString)(),
+    __metadata("design:type", String)
 ], CreateDisponibilidadDto.prototype, "fechaFin", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Cupos disponibles para el período' }),

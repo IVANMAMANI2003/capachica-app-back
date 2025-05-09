@@ -1,7 +1,7 @@
 import { EstadoDisponibilidad } from '../enums/estado-disponibilidad.enum';
 export declare class UpdateDisponibilidadDto {
-    fechaInicio?: Date;
-    fechaFin?: Date;
+    fechaInicio?: string;
+    fechaFin?: string;
     cuposDisponibles?: number;
     cuposMaximos?: number;
     precioEspecial?: number;
