@@ -5,6 +5,9 @@ import { CreatePaqueteTuristicoDto } from './dto/create-paquete-turistico.dto';
 import { UpdatePaqueteTuristicoDto } from './dto/update-paquete-turistico.dto';
 import { AddServiciosDto } from './dto/add-servicios.dto';
 import { EstadoPaquete } from './enums/estado-paquete.enum';
+declare class UpdateEstadoDto {
+    estado: EstadoPaquete;
+}
 export declare class PaquetesTuristicosController {
     private readonly paquetesTuristicosService;
     constructor(paquetesTuristicosService: PaquetesTuristicosService);
@@ -330,7 +333,7 @@ export declare class PaquetesTuristicosController {
         updatedAt: Date;
         emprendimientoId: number;
     }>;
-    updateEstadoRuta(id: string, estado: EstadoPaquete): Promise<{
+    updateEstado(id: string, body: UpdateEstadoDto): Promise<{
         emprendimiento: {
             id: number;
             nombre: string;
@@ -649,3 +652,4 @@ export declare class PaquetesTuristicosController {
         notas: string | null;
     }>;
 }
+export {};
