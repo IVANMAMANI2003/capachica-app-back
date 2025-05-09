@@ -3,10 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.EstadoDisponibilidad = void 0;
 var EstadoDisponibilidad;
 (function (EstadoDisponibilidad) {
-    EstadoDisponibilidad["ACTIVO"] = "ACTIVO";
-    EstadoDisponibilidad["INACTIVO"] = "INACTIVO";
-    EstadoDisponibilidad["COMPLETO"] = "COMPLETO";
-    EstadoDisponibilidad["CANCELADO"] = "CANCELADO";
-    EstadoDisponibilidad["EN_REVISION"] = "EN_REVISION";
+    EstadoDisponibilidad["activo"] = "activo";
+    EstadoDisponibilidad["inactivo"] = "inactivo";
+    EstadoDisponibilidad["completo"] = "completo";
+    EstadoDisponibilidad["cancelado"] = "cancelado";
+    EstadoDisponibilidad["en_revision"] = "en_revision";
 })(EstadoDisponibilidad || (exports.EstadoDisponibilidad = EstadoDisponibilidad = {}));
 //# sourceMappingURL=estado-disponibilidad.enum.js.map

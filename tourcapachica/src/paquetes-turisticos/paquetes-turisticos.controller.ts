@@ -82,7 +82,9 @@ export class PaquetesTuristicosController {
   @ApiResponse({ status: 200, description: 'Estado actualizado' })
   @ApiResponse({ status: 400, description: 'Estado inválido' })
   @ApiResponse({ status: 404, description: 'Paquete turístico no encontrado' })
-  updateEstado(@Param('id') id: string, @Body('estado') estado: string) {
+  updateEstado(
+    @Param('id') id: string, 
+    @Body('estado') estado: string) {
     return this.paquetesTuristicosService.updateEstado(+id, estado);
   }
 

@@ -1,7 +1,7 @@
 export enum EstadoPaquete {
-  ACTIVO = 'ACTIVO',
-  INACTIVO = 'INACTIVO',
-  EN_REVISION = 'EN_REVISION',
-  RECHAZADO = 'RECHAZADO',
-  AGOTADO = 'AGOTADO',
-} 
+  activo = 'activo',
+  inactivo = 'inactivo',
+  en_revision = 'en_revision',
+  rechazado = 'rechazado',
+  agotado = 'agotado',
+}

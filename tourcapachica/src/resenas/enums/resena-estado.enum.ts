@@ -1,4 +1,4 @@
 export enum ResenaEstado {
-  VISIBLE = 'visible',
-  OCULTO = 'oculto'
+  visble = 'visible',
+  oculto = 'oculto'
 }
