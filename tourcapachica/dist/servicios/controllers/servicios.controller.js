@@ -29,10 +29,13 @@ let ServiciosController = class ServiciosController {
     }
     async create(createServicioDto, req) {
         try {
-            const emprendimientoId = req.user.emprendimientoId;
-            console.log('Emprendimiento ID extraído del token:', emprendimientoId);
+            const user = req.user;
+            let emprendimientoId = createServicioDto.emprendimientoId;
+            if (user.role === 'Emprendedor') {
+                emprendimientoId = user.emprendimientoId;
+            }
             if (!emprendimientoId) {
-                throw new common_1.HttpException('No hay emprendimiento activo', common_1.HttpStatus.BAD_REQUEST);
+                throw new common_1.BadRequestException('Debe especificar un emprendimiento válido');
             }
             return await this.serviciosService.create(createServicioDto, emprendimientoId);
         }

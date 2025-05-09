@@ -21,6 +21,12 @@ export class CreateServicioDto {
   @IsNotEmpty()
   tipoServicioId: number;
 
+  @ApiProperty({ description: 'ID del Emprendimiento (solo si eres Admin)', example: 1 })
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  emprendimientoId?: number;
+
 
   @ApiProperty({ description: 'Nombre del servicio', example: 'Tour guiado por la isla' })
   @IsString()

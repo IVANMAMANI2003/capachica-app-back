@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseIntPipe, Req, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseIntPipe, Req, HttpException, HttpStatus, BadRequestException } from '@nestjs/common';
 import { ServiciosService } from '../services/servicios.service';
 import { CreateServicioDto } from '../dto/create-servicio.dto';
 import { UpdateServicioDto } from '../dto/update-servicio.dto';
@@ -15,34 +15,35 @@ export class ServiciosController {
   constructor(private readonly serviciosService: ServiciosService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('Emprendedor', 'SuperAdmin')
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Crear un nuevo servicio' })
-  @ApiResponse({ status: 201, description: 'Servicio creado exitosamente' })
-  @ApiResponse({ status: 400, description: 'Datos inválidos' })
-  async create(
-    @Body() createServicioDto: CreateServicioDto,
-    @Req() req,
-  ) {
-    try {
-      // Extraemos emprendimientoId del token
-      const emprendimientoId: number = req.user.emprendimientoId;
-      
-      // LOG para verificar el ID del emprendimiento
-      console.log('Emprendimiento ID extraído del token:', emprendimientoId);
-  
-      if (!emprendimientoId) {
-        throw new HttpException('No hay emprendimiento activo', HttpStatus.BAD_REQUEST);
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('Emprendedor', 'SuperAdmin')
+@ApiBearerAuth()
+@ApiOperation({ summary: 'Crear un nuevo servicio' })
+@ApiResponse({ status: 201, description: 'Servicio creado exitosamente' })
+@ApiResponse({ status: 400, description: 'Datos inválidos' })
+async create(
+  @Body() createServicioDto: CreateServicioDto,
+  @Req() req,
+    ) {
+      try {
+        const user = req.user;
+        let emprendimientoId = createServicioDto.emprendimientoId;
+
+        if (user.role === 'Emprendedor') {
+          emprendimientoId = user.emprendimientoId;
+        }
+
+        if (!emprendimientoId) {
+          throw new BadRequestException('Debe especificar un emprendimiento válido');
+        }
+
+        return await this.serviciosService.create(createServicioDto, emprendimientoId);
+      } catch (error) {
+        if (error instanceof HttpException) throw error;
+        throw new HttpException('Error al crear el servicio', HttpStatus.BAD_REQUEST);
       }
-  
-      // Llamamos al service, pasándole el DTO y el ID
-      return await this.serviciosService.create(createServicioDto, emprendimientoId);
-    } catch (error) {
-      if (error instanceof HttpException) throw error;
-      throw new HttpException('Error al crear el servicio', HttpStatus.BAD_REQUEST);
     }
-  }
+
   
   
     @Get()
