@@ -537,6 +537,89 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
             where: { id },
         });
     }
+    async marcarFavorito(createFavoritoDto) {
+        const { usuarioId, paqueteTuristicoId } = createFavoritoDto;
+        const favoritoExistente = await this.prisma.favoritoPaqueteTuristico.findUnique({
+            where: { usuarioId_paqueteTuristicoId: { usuarioId, paqueteTuristicoId } },
+        });
+        if (favoritoExistente) {
+            throw new common_1.BadRequestException('El paquete turístico ya está marcado como favorito.');
+        }
+        return this.prisma.favoritoPaqueteTuristico.create({
+            data: {
+                usuarioId,
+                paqueteTuristicoId,
+            },
+        });
+    }
+    async desmarcarFavorito(id) {
+        const favorito = await this.prisma.favoritoPaqueteTuristico.findUnique({
+            where: { id },
+        });
+        if (!favorito) {
+            throw new common_1.NotFoundException('Favorito no encontrado.');
+        }
+        await this.prisma.favoritoPaqueteTuristico.delete({
+            where: { id },
+        });
+    }
+    async getFavoritos() {
+        return this.prisma.favoritoPaqueteTuristico.findMany();
+    }
+    async getFavoritosPaqueteTuristico(paqueteTuristicoId) {
+        return this.prisma.favoritoPaqueteTuristico.findMany({
+            where: { paqueteTuristicoId },
+        });
+    }
+    async getFavoritosUsuario(usuarioId) {
+        return this.prisma.favoritoPaqueteTuristico.findMany({
+            where: { usuarioId },
+        });
+    }
+    async getFavoritosPaqueteTuristicoPorUsuario(usuarioId, paqueteTuristicoId) {
+        return this.prisma.favoritoPaqueteTuristico.findUnique({
+            where: {
+                usuarioId_paqueteTuristicoId: {
+                    usuarioId,
+                    paqueteTuristicoId,
+                },
+            },
+        });
+    }
+    async getFavoritosPaqueteTuristicoPorUsuarioId(usuarioId) {
+        return this.prisma.favoritoPaqueteTuristico.findMany({
+            where: { usuarioId },
+        });
+    }
+    async getFavoritosPaqueteTuristicoPorPaqueteTuristicoId(paqueteTuristicoId) {
+        return this.prisma.favoritoPaqueteTuristico.findMany({
+            where: { paqueteTuristicoId },
+        });
+    }
+    async getFavoritosPaqueteTuristicoPorUsuarioIdYPaqueteTuristicoId(usuarioId, paqueteTuristicoId) {
+        return this.prisma.favoritoPaqueteTuristico.findUnique({
+            where: {
+                usuarioId_paqueteTuristicoId: {
+                    usuarioId,
+                    paqueteTuristicoId,
+                },
+            },
+        });
+    }
+    async getTopFavoritos() {
+        const topFavoritos = await this.prisma.paqueteTuristico.findMany({
+            orderBy: {
+                favoritosPaqueteTuristico: {
+                    _count: 'desc',
+                },
+            },
+            take: 10,
+            include: {
+                favoritosPaqueteTuristico: true,
+            },
+        });
+        return topFavoritos;
+    }
 };
 exports.PaquetesTuristicosService = PaquetesTuristicosService;
 exports.PaquetesTuristicosService = PaquetesTuristicosService = __decorate([

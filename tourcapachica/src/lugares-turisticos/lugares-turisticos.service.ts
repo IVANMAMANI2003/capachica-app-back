@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateLugarTuristicoDto, ImageDto } from './dto/create-lugar-turistico.dto';
 import { UpdateLugarTuristicoDto } from './dto/update-lugar-turistico.dto';
@@ -23,7 +23,8 @@ export class LugaresTuristicosService {
         nombre: lugarData.nombre,
         descripcion: lugarData.descripcion,
         direccion: lugarData.direccion,
-        coordenadas: lugarData.coordenadas,
+        latitud: lugarData.latitud,
+        longitud: lugarData.longitud,
         horarioApertura: lugarData.horarioApertura,
         horarioCierre: lugarData.horarioCierre,
         costoEntrada: lugarData.costoEntrada,
@@ -136,7 +137,8 @@ export class LugaresTuristicosService {
         nombre: lugarData.nombre,
         descripcion: lugarData.descripcion,
         direccion: lugarData.direccion,
-        coordenadas: lugarData.coordenadas,
+        latitud: lugarData.latitud,
+        longitud: lugarData.longitud,
         horarioApertura: lugarData.horarioApertura,
         horarioCierre: lugarData.horarioCierre,
         costoEntrada: lugarData.costoEntrada,
@@ -261,4 +263,42 @@ export class LugaresTuristicosService {
       where: { esDestacado: true },
     });
   }
-} 
+
+
+
+async markAsFavorite(usuarioId: number, lugarTuristicoId: number) {
+    return this.prisma.favoritoLugarTuristico.create({
+      data: {
+        usuarioId,
+        lugarTuristicoId,
+      },
+    });
+  }
+
+  async unmarkAsFavorite(usuarioId: number, lugarTuristicoId: number) {
+    return this.prisma.favoritoLugarTuristico.deleteMany({
+      where: {
+        usuarioId,
+        lugarTuristicoId,
+      },
+    });
+  }
+
+  async getTopFavoritos() {
+    return this.prisma.lugarTuristico.findMany({
+      take: 10,
+      orderBy: {
+        favoritosLugarTuristico: {
+          _count: 'desc',
+        },
+      },
+      include: {
+        favoritosLugarTuristico: true,
+      },
+    });
+  }
+
+  async countTotalFavoritos() {
+    return this.prisma.favoritoLugarTuristico.count();
+  }
+}

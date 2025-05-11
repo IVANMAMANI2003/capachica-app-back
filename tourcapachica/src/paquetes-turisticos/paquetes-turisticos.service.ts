@@ -7,6 +7,8 @@ import { CreatePaqueteTuristicoDto } from './dto/create-paquete-turistico.dto';
 import { UpdatePaqueteTuristicoDto } from './dto/update-paquete-turistico.dto';
 import { AddServiciosDto } from './dto/add-servicios.dto';
 import { EstadisticasPaqueteDto } from './dto/estadisticas.dto';
+import { CreateFavoritoDto } from './dto/create-favorito.dto';
+import { FavoritoPaqueteTuristico } from '@prisma/client';
 
 @Injectable()
 export class PaquetesTuristicosService {
@@ -649,4 +651,103 @@ export class PaquetesTuristicosService {
       where: { id },
     });
   }
+
+  async marcarFavorito(createFavoritoDto: CreateFavoritoDto): Promise<FavoritoPaqueteTuristico> {
+    const { usuarioId, paqueteTuristicoId } = createFavoritoDto;
+
+    // Verificar si el favorito ya existe
+    const favoritoExistente = await this.prisma.favoritoPaqueteTuristico.findUnique({
+      where: { usuarioId_paqueteTuristicoId: { usuarioId, paqueteTuristicoId } },
+    });
+
+    if (favoritoExistente) {
+      throw new BadRequestException('El paquete turístico ya está marcado como favorito.');
+    }
+
+    // Crear el nuevo favorito
+    return this.prisma.favoritoPaqueteTuristico.create({
+      data: {
+        usuarioId,
+        paqueteTuristicoId,
+      },
+    });
+  }
+
+  async desmarcarFavorito(id: number): Promise<void> {
+    const favorito = await this.prisma.favoritoPaqueteTuristico.findUnique({
+      where: { id },
+    });
+
+    if (!favorito) {
+      throw new NotFoundException('Favorito no encontrado.');
+    }
+
+    await this.prisma.favoritoPaqueteTuristico.delete({
+      where: { id },
+    });
+  }
+
+  
+  async getFavoritos() {
+    return this.prisma.favoritoPaqueteTuristico.findMany();
+  }
+  async getFavoritosPaqueteTuristico(paqueteTuristicoId: number) {
+    return this.prisma.favoritoPaqueteTuristico.findMany({
+      where: { paqueteTuristicoId },
+    });
+  }
+
+  async getFavoritosUsuario(usuarioId: number) {
+    return this.prisma.favoritoPaqueteTuristico.findMany({
+      where: { usuarioId },
+    });
+  }
+  async getFavoritosPaqueteTuristicoPorUsuario(usuarioId: number, paqueteTuristicoId: number) {
+    return this.prisma.favoritoPaqueteTuristico.findUnique({
+      where: {
+        usuarioId_paqueteTuristicoId: {
+          usuarioId,
+          paqueteTuristicoId,
+        },
+      },
+    });
+  }
+
+  async getFavoritosPaqueteTuristicoPorUsuarioId(usuarioId: number) {
+    return this.prisma.favoritoPaqueteTuristico.findMany({
+      where: { usuarioId },
+    }); 
+  }
+
+  async getFavoritosPaqueteTuristicoPorPaqueteTuristicoId(paqueteTuristicoId: number) {
+    return this.prisma.favoritoPaqueteTuristico.findMany({
+      where: { paqueteTuristicoId },
+    });
+  }
+
+  async getFavoritosPaqueteTuristicoPorUsuarioIdYPaqueteTuristicoId(usuarioId: number, paqueteTuristicoId: number) {
+    return this.prisma.favoritoPaqueteTuristico.findUnique({
+      where: {
+        usuarioId_paqueteTuristicoId: {
+          usuarioId,
+          paqueteTuristicoId,
+        },
+      },
+    });
+  }
+  async getTopFavoritos() {
+    const topFavoritos = await this.prisma.paqueteTuristico.findMany({
+      orderBy: {
+        favoritosPaqueteTuristico: {
+          _count: 'desc',
+        },
+      },
+      take: 10,
+      include: {
+        favoritosPaqueteTuristico: true,
+      },
+    });
+    return topFavoritos;
+  }
 }
+

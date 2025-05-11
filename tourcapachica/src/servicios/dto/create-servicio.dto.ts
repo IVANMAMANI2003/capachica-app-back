@@ -21,12 +21,6 @@ export class CreateServicioDto {
   @IsNotEmpty()
   tipoServicioId: number;
 
-  @ApiPropertyOptional({ description: 'ID del Emprendimiento (solo si eres Admin)', example: 1 })
-  @IsOptional()
-  @Type(() => Number)
-  @IsNumber()
-  emprendimientoId?: number;
-
 
   @ApiProperty({ description: 'Nombre del servicio', example: 'Tour guiado por la isla' })
   @IsString()
@@ -37,6 +31,25 @@ export class CreateServicioDto {
   @IsString()
   @IsOptional()
   descripcion?: string;
+  @ApiProperty({
+    description: 'Latitud del servicio',
+    example: -15.7667,
+    required: false,
+    type: Number
+  })
+  @IsNumber()
+  @IsOptional()
+  latitud?: number;
+
+  @ApiProperty({
+    description: 'Longitud del servicio',
+    example: -69.6833,
+    required: false,
+    type: Number
+  })
+  @IsNumber()
+  @IsOptional()
+  longitud?: number;
 
   @ApiProperty({ description: 'Precio base del servicio', example: 50.00 })
   @Type(() => Number)

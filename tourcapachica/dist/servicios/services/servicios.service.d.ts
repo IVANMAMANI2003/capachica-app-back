@@ -29,6 +29,8 @@ export declare class ServiciosService {
         tipoServicioId: number;
         nombre: string;
         descripcion: string | null;
+        latitud: number | null;
+        longitud: number | null;
         precioBase: import(".prisma/client/runtime/library").Decimal;
         moneda: string;
         estado: string;
@@ -56,6 +58,8 @@ export declare class ServiciosService {
         tipoServicioId: number;
         nombre: string;
         descripcion: string | null;
+        latitud: number | null;
+        longitud: number | null;
         precioBase: import(".prisma/client/runtime/library").Decimal;
         moneda: string;
         estado: string;
@@ -83,6 +87,8 @@ export declare class ServiciosService {
         tipoServicioId: number;
         nombre: string;
         descripcion: string | null;
+        latitud: number | null;
+        longitud: number | null;
         precioBase: import(".prisma/client/runtime/library").Decimal;
         moneda: string;
         estado: string;
@@ -104,13 +110,14 @@ export declare class ServiciosService {
                 id: number;
                 nombre: string;
                 descripcion: string | null;
+                latitud: number | null;
+                longitud: number | null;
                 estado: string;
                 createdAt: Date;
                 updatedAt: Date;
                 usuarioId: number;
                 tipo: string;
                 direccion: string | null;
-                coordenadas: string | null;
                 contactoTelefono: string | null;
                 contactoEmail: string | null;
                 sitioWeb: string | null;
@@ -129,6 +136,8 @@ export declare class ServiciosService {
         tipoServicioId: number;
         nombre: string;
         descripcion: string | null;
+        latitud: number | null;
+        longitud: number | null;
         precioBase: import(".prisma/client/runtime/library").Decimal;
         moneda: string;
         estado: string;
@@ -156,6 +165,8 @@ export declare class ServiciosService {
         tipoServicioId: number;
         nombre: string;
         descripcion: string | null;
+        latitud: number | null;
+        longitud: number | null;
         precioBase: import(".prisma/client/runtime/library").Decimal;
         moneda: string;
         estado: string;
@@ -168,6 +179,8 @@ export declare class ServiciosService {
         tipoServicioId: number;
         nombre: string;
         descripcion: string | null;
+        latitud: number | null;
+        longitud: number | null;
         precioBase: import(".prisma/client/runtime/library").Decimal;
         moneda: string;
         estado: string;
@@ -189,13 +202,14 @@ export declare class ServiciosService {
                 id: number;
                 nombre: string;
                 descripcion: string | null;
+                latitud: number | null;
+                longitud: number | null;
                 estado: string;
                 createdAt: Date;
                 updatedAt: Date;
                 usuarioId: number;
                 tipo: string;
                 direccion: string | null;
-                coordenadas: string | null;
                 contactoTelefono: string | null;
                 contactoEmail: string | null;
                 sitioWeb: string | null;
@@ -214,6 +228,8 @@ export declare class ServiciosService {
         tipoServicioId: number;
         nombre: string;
         descripcion: string | null;
+        latitud: number | null;
+        longitud: number | null;
         precioBase: import(".prisma/client/runtime/library").Decimal;
         moneda: string;
         estado: string;
@@ -226,7 +242,7 @@ export declare class ServiciosService {
         createdAt: Date;
         updatedAt: Date;
         servicioId: number;
-        fechaInicio: Date;
+        fechaInicio: Date | null;
         fechaFin: Date | null;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
@@ -237,7 +253,7 @@ export declare class ServiciosService {
         createdAt: Date;
         updatedAt: Date;
         servicioId: number;
-        fechaInicio: Date;
+        fechaInicio: Date | null;
         fechaFin: Date | null;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
@@ -247,7 +263,7 @@ export declare class ServiciosService {
         createdAt: Date;
         updatedAt: Date;
         servicioId: number;
-        fechaInicio: Date;
+        fechaInicio: Date | null;
         fechaFin: Date | null;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
@@ -269,6 +285,8 @@ export declare class ServiciosService {
         tipoServicioId: number;
         nombre: string;
         descripcion: string | null;
+        latitud: number | null;
+        longitud: number | null;
         precioBase: import(".prisma/client/runtime/library").Decimal;
         moneda: string;
         estado: string;

@@ -30,8 +30,8 @@ export class EmprendimientosController {
   @ApiResponse({ status: 201, description: 'Emprendimiento creado exitosamente' })
   @ApiResponse({ status: 400, description: 'Datos inválidos' })
   @ApiResponse({ status: 401, description: 'No autorizado' })
-  create(@Body() createEmprendimientoDto: CreateEmprendimientoDto) {
-    return this.emprendimientosService.create(createEmprendimientoDto);
+  create(@Body() createEmprendimientoDto: CreateEmprendimientoDto, @Request() req: RequestWithUser) {
+    return this.emprendimientosService.create(createEmprendimientoDto, req.user.id);
   }
 
   @Get()
@@ -134,4 +134,4 @@ export class EmprendimientosController {
   isFavorito(@Request() req: RequestWithUser, @Param('id') id: string) {
     return this.emprendimientosService.isFavorito(req.user.id, +id);
   }
-} 
+}

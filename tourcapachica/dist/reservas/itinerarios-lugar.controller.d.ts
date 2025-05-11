@@ -5,28 +5,29 @@ export declare class ItinerariosLugarController {
     create(itinerarioId: number, lugarTuristicoId: number): Promise<{
         lugarTuristico: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             nombre: string;
             descripcion: string;
             direccion: string;
-            coordenadas: string;
+            latitud: number | null;
+            longitud: number | null;
             estado: string;
-            esDestacado: boolean;
+            createdAt: Date;
+            updatedAt: Date;
             horarioApertura: Date | null;
             horarioCierre: Date | null;
             costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
             recomendaciones: string | null;
             restricciones: string | null;
+            esDestacado: boolean;
         };
         itinerarioReserva: {
             id: number;
+            descripcion: string;
             createdAt: Date;
             updatedAt: Date;
-            descripcion: string;
+            horarioCierre: Date | null;
             servicioId: number | null;
             notas: string | null;
-            hora: Date | null;
             fecha: Date;
             tipoEvento: string;
             duracion: number | null;
@@ -36,34 +37,35 @@ export declare class ItinerariosLugarController {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        itinerarioReservaId: number;
         lugarTuristicoId: number;
+        itinerarioReservaId: number;
     }>;
     findAll(): Promise<({
         lugarTuristico: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             nombre: string;
             descripcion: string;
             direccion: string;
-            coordenadas: string;
+            latitud: number | null;
+            longitud: number | null;
             estado: string;
-            esDestacado: boolean;
+            createdAt: Date;
+            updatedAt: Date;
             horarioApertura: Date | null;
             horarioCierre: Date | null;
             costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
             recomendaciones: string | null;
             restricciones: string | null;
+            esDestacado: boolean;
         };
         itinerarioReserva: {
             id: number;
+            descripcion: string;
             createdAt: Date;
             updatedAt: Date;
-            descripcion: string;
+            horarioCierre: Date | null;
             servicioId: number | null;
             notas: string | null;
-            hora: Date | null;
             fecha: Date;
             tipoEvento: string;
             duracion: number | null;
@@ -73,34 +75,35 @@ export declare class ItinerariosLugarController {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        itinerarioReservaId: number;
         lugarTuristicoId: number;
+        itinerarioReservaId: number;
     })[]>;
     findByItinerario(itinerarioId: number): Promise<({
         lugarTuristico: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             nombre: string;
             descripcion: string;
             direccion: string;
-            coordenadas: string;
+            latitud: number | null;
+            longitud: number | null;
             estado: string;
-            esDestacado: boolean;
+            createdAt: Date;
+            updatedAt: Date;
             horarioApertura: Date | null;
             horarioCierre: Date | null;
             costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
             recomendaciones: string | null;
             restricciones: string | null;
+            esDestacado: boolean;
         };
         itinerarioReserva: {
             id: number;
+            descripcion: string;
             createdAt: Date;
             updatedAt: Date;
-            descripcion: string;
+            horarioCierre: Date | null;
             servicioId: number | null;
             notas: string | null;
-            hora: Date | null;
             fecha: Date;
             tipoEvento: string;
             duracion: number | null;
@@ -110,34 +113,35 @@ export declare class ItinerariosLugarController {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        itinerarioReservaId: number;
         lugarTuristicoId: number;
+        itinerarioReservaId: number;
     })[]>;
     findByLugarTuristico(lugarTuristicoId: number): Promise<({
         lugarTuristico: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             nombre: string;
             descripcion: string;
             direccion: string;
-            coordenadas: string;
+            latitud: number | null;
+            longitud: number | null;
             estado: string;
-            esDestacado: boolean;
+            createdAt: Date;
+            updatedAt: Date;
             horarioApertura: Date | null;
             horarioCierre: Date | null;
             costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
             recomendaciones: string | null;
             restricciones: string | null;
+            esDestacado: boolean;
         };
         itinerarioReserva: {
             id: number;
+            descripcion: string;
             createdAt: Date;
             updatedAt: Date;
-            descripcion: string;
+            horarioCierre: Date | null;
             servicioId: number | null;
             notas: string | null;
-            hora: Date | null;
             fecha: Date;
             tipoEvento: string;
             duracion: number | null;
@@ -147,15 +151,15 @@ export declare class ItinerariosLugarController {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        itinerarioReservaId: number;
         lugarTuristicoId: number;
+        itinerarioReservaId: number;
     })[]>;
     remove(itinerarioId: number, lugarTuristicoId: number): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        itinerarioReservaId: number;
         lugarTuristicoId: number;
+        itinerarioReservaId: number;
     }>;
     removeByItinerario(itinerarioId: number): Promise<import(".prisma/client").Prisma.BatchPayload>;
 }

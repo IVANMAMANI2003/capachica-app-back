@@ -6,60 +6,60 @@ export declare class ResenasService {
     constructor(prisma: PrismaService);
     create(createResenaDto: any): Promise<{
         id: number;
+        usuarioId: number | null;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        usuarioId: number;
-        estado: string;
         servicioId: number;
         calificacion: number;
         comentario: string | null;
     }>;
     findAll(): Promise<{
         id: number;
+        usuarioId: number | null;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        usuarioId: number;
-        estado: string;
         servicioId: number;
         calificacion: number;
         comentario: string | null;
     }[]>;
     findOne(id: number): Promise<{
         id: number;
+        usuarioId: number | null;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        usuarioId: number;
-        estado: string;
         servicioId: number;
         calificacion: number;
         comentario: string | null;
     }>;
     update(id: number, updateResenaDto: UpdateResenaDto): Promise<{
         id: number;
+        usuarioId: number | null;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        usuarioId: number;
-        estado: string;
         servicioId: number;
         calificacion: number;
         comentario: string | null;
     }>;
     updateEstado(id: number, estado: string): Promise<{
         id: number;
+        usuarioId: number | null;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        usuarioId: number;
-        estado: string;
         servicioId: number;
         calificacion: number;
         comentario: string | null;
     }>;
     remove(id: number): Promise<{
         id: number;
+        usuarioId: number | null;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        usuarioId: number;
-        estado: string;
         servicioId: number;
         calificacion: number;
         comentario: string | null;

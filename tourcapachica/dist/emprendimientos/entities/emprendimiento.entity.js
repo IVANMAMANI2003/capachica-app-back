@@ -39,9 +39,13 @@ __decorate([
     __metadata("design:type", String)
 ], EmprendimientoEntity.prototype, "direccion", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Coordenadas geográficas del emprendimiento', required: false }),
-    __metadata("design:type", String)
-], EmprendimientoEntity.prototype, "coordenadas", void 0);
+    (0, swagger_1.ApiProperty)({ description: 'Latitud del emprendimiento', required: false }),
+    __metadata("design:type", Number)
+], EmprendimientoEntity.prototype, "latitud", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'Longitud del emprendimiento', required: false }),
+    __metadata("design:type", Number)
+], EmprendimientoEntity.prototype, "longitud", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Teléfono de contacto', required: false }),
     __metadata("design:type", String)

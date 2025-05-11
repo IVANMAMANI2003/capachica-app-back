@@ -37,7 +37,7 @@ __decorate([
 ], CreateItinerarioReservaDto.prototype, "fecha", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Hora del itinerario',
+        description: 'Hora de cierre del itinerario',
         example: '2024-05-15T09:00:00.000Z',
         required: false,
     }),
@@ -45,7 +45,7 @@ __decorate([
     (0, class_validator_1.IsDate)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Date)
-], CreateItinerarioReservaDto.prototype, "hora", void 0);
+], CreateItinerarioReservaDto.prototype, "horarioCierre", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Tipo de evento del itinerario',

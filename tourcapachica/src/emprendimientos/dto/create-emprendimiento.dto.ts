@@ -70,14 +70,24 @@ export class CreateEmprendimientoDto {
   direccion?: string;
 
   @ApiProperty({
-    description: 'Coordenadas geográficas del emprendimiento',
-    example: '-15.7667, -69.6833',
+    description: 'Latitud del emprendimiento',
+    example: -15.7667,
     required: false,
-    type: String
+    type: Number
   })
-  @IsString()
   @IsOptional()
-  coordenadas?: string;
+  @IsNumber()
+  latitud?: number;
+
+  @ApiProperty({
+    description: 'Longitud del emprendimiento',
+    example: -69.6833,
+    required: false,
+    type: Number
+  })
+  @IsOptional()
+  @IsNumber()
+  longitud?: number;
 
   @ApiProperty({
     description: 'Teléfono de contacto',
@@ -162,4 +172,4 @@ export class CreateEmprendimientoDto {
   @IsArray()
   @IsOptional()
   imagenes?: ImageDto[];
-} 
+}

@@ -7,7 +7,8 @@ export declare class UpdateEmprendimientoDto extends UpdateEmprendimientoDto_bas
     descripcion?: string;
     tipo?: string;
     direccion?: string;
-    coordenadas?: string;
+    latitud?: number;
+    longitud?: number;
     contactoTelefono?: string;
     contactoEmail?: string;
     sitioWeb?: string;

@@ -48,14 +48,24 @@ export class CreateLugarTuristicoDto {
   direccion: string;
 
   @ApiProperty({
-    description: 'Coordenadas geográficas del lugar',
-    example: '-15.7667, -69.6833',
+    description: 'Latitud del lugar turístico',
+    example: -15.7667,
     required: true,
-    type: String
+    type: Number
   })
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-  coordenadas: string;
+  latitud: number;
+
+  @ApiProperty({
+    description: 'Longitud del lugar turístico',
+    example: -69.6833,
+    required: true,
+    type: Number
+  })
+  @IsNumber()
+  @IsNotEmpty()
+  longitud: number;
 
   @ApiProperty({
     description: 'Estado del lugar turístico',
@@ -151,4 +161,4 @@ export class CreateLugarTuristicoDto {
   @IsArray()
   @IsOptional()
   imagenes?: ImageDto[];
-} 
+}

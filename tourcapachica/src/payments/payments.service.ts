@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { ReservasService } from '../reservas/reservas.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class PaymentsService {
@@ -18,13 +19,18 @@ export class PaymentsService {
       throw new NotFoundException('Reserva no encontrada');
     }
 
+    // Validar campos requeridos
+    if (!createPaymentDto.paymentGateway) {
+      throw new BadRequestException('Gateway de pago es requerido');
+    }
+
     // Verificar que el monto total coincide con la suma de los detalles
     const totalDetalles = createPaymentDto.detalles.reduce(
-      (sum, detalle) => sum + Number(detalle.monto),
-      0,
+      (sum, detalle) => sum.plus(new Prisma.Decimal(detalle.monto)),
+      new Prisma.Decimal(0)
     );
 
-    if (totalDetalles !== Number(createPaymentDto.montoTotal)) {
+    if (!totalDetalles.equals(new Prisma.Decimal(createPaymentDto.montoTotal))) {
       throw new BadRequestException('El monto total no coincide con la suma de los detalles');
     }
 
@@ -33,10 +39,12 @@ export class PaymentsService {
       const pago = await prisma.pago.create({
         data: {
           reservaId: createPaymentDto.reservaId,
+          paymentGateway: createPaymentDto.paymentGateway,
+          transactionId: createPaymentDto.transactionId,
           montoTotal: createPaymentDto.montoTotal,
           moneda: createPaymentDto.moneda,
           estado: createPaymentDto.estado,
-          fechaPago: new Date(createPaymentDto.fechaPago),
+          fechaPago: createPaymentDto.fechaPago ? new Date(createPaymentDto.fechaPago) : null,
           datosMetodoPago: createPaymentDto.datosMetodoPago,
           metadata: createPaymentDto.metadata,
           detalles: {
@@ -109,9 +117,17 @@ export class PaymentsService {
   async update(id: number, updatePaymentDto: UpdatePaymentDto) {
     await this.findOne(id);
 
+    // Validar estado antes de actualizar
+    const estadosValidos = ['PENDIENTE', 'COMPLETADO', 'CANCELADO'];
+    if (updatePaymentDto.estado && !estadosValidos.includes(updatePaymentDto.estado)) {
+      throw new BadRequestException('Estado de pago no válido');
+    }
+
     return this.prisma.pago.update({
       where: { id },
       data: {
+        paymentGateway: updatePaymentDto.paymentGateway,
+        transactionId: updatePaymentDto.transactionId,
         montoTotal: updatePaymentDto.montoTotal,
         moneda: updatePaymentDto.moneda,
         estado: updatePaymentDto.estado,
@@ -174,4 +190,4 @@ export class PaymentsService {
       reserva: pago.reserva,
     };
   }
-} 
+}

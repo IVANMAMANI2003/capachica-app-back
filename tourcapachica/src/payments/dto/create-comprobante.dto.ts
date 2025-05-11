@@ -1,89 +1,102 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString, IsOptional, IsUrl } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsDate, IsDecimal, IsInt, IsISO8601, IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 
 export class CreateComprobanteDto {
-  @ApiProperty({ description: 'ID del pago asociado al comprobante' })
-  @IsNotEmpty()
-  @IsNumber()
+  @ApiProperty()
+  @IsInt()
   pagoId: number;
 
-  @ApiProperty({ description: 'Serie del comprobante' })
-  @IsNotEmpty()
+  @ApiProperty({ maxLength: 20 })
   @IsString()
+  @MaxLength(20)
+  tipoComprobante: string;
+
+  @ApiProperty({ maxLength: 4 })
+  @IsString()
+  @MaxLength(4)
   serie: string;
 
-  @ApiProperty({ description: 'Número del comprobante' })
-  @IsNotEmpty()
-  @IsNumber()
+  @ApiProperty()
+  @IsInt()
   numero: number;
 
-  @ApiProperty({ description: 'Tipo de comprobante' })
-  @IsNotEmpty()
-  @IsString()
-  tipo: string;
+  @ApiProperty()
+  @IsISO8601()
+  fechaEmision: Date;
 
-  @ApiProperty({ description: 'RUC del cliente', required: false })
+  @ApiProperty({ required: false, maxLength: 11 })
   @IsOptional()
   @IsString()
+  @MaxLength(11)
   rucCliente?: string;
 
-  @ApiProperty({ description: 'Razón social del cliente', required: false })
+  @ApiProperty({ required: false, maxLength: 100 })
   @IsOptional()
   @IsString()
+  @MaxLength(100)
   razonSocial?: string;
 
-  @ApiProperty({ description: 'Dirección del cliente', required: false })
+  @ApiProperty({ required: false })
   @IsOptional()
   @IsString()
   direccionCliente?: string;
 
-  @ApiProperty({ description: 'Subtotal del comprobante' })
-  @IsNotEmpty()
-  @IsNumber()
+  @ApiProperty({ type: Number })
+  @IsDecimal({ decimal_digits: '2' })
+  @Type(() => Number)
   subtotal: number;
 
-  @ApiProperty({ description: 'IGV del comprobante', required: false })
-  @IsOptional()
-  @IsNumber()
-  igv?: number;
+  @ApiProperty({ type: Number, default: 0 })
+  @IsDecimal({ decimal_digits: '2' })
+  @Type(() => Number)
+  igv: number;
 
-  @ApiProperty({ description: 'Total del comprobante' })
-  @IsNotEmpty()
-  @IsNumber()
+  @ApiProperty({ type: Number })
+  @IsDecimal({ decimal_digits: '2' })
+  @Type(() => Number)
   total: number;
 
-  @ApiProperty({ description: 'Moneda del comprobante', default: 'PEN' })
-  @IsOptional()
+  @ApiProperty({ default: 'PEN', maxLength: 3 })
   @IsString()
-  moneda?: string;
+  @MaxLength(3)
+  moneda: string;
 
-  @ApiProperty({ description: 'Estado del comprobante', default: 'emitido' })
-  @IsOptional()
+  @ApiProperty({ default: 'emitido', maxLength: 20 })
   @IsString()
-  estado?: string;
+  @MaxLength(20)
+  estado: string;
 
-  @ApiProperty({ description: 'Código SUNAT', required: false })
+  @ApiProperty({ required: false, maxLength: 100 })
   @IsOptional()
   @IsString()
+  @MaxLength(100)
   codigoSunat?: string;
 
-  @ApiProperty({ description: 'Código hash del comprobante', required: false })
+  @ApiProperty({ required: false, maxLength: 100 })
   @IsOptional()
   @IsString()
+  @MaxLength(100)
   codigoHash?: string;
 
-  @ApiProperty({ description: 'URL del XML del comprobante', required: false })
-  @IsOptional()
-  @IsUrl()
-  xmlUrl?: string;
-
-  @ApiProperty({ description: 'URL del PDF del comprobante', required: false })
-  @IsOptional()
-  @IsUrl()
-  pdfUrl?: string;
-
-  @ApiProperty({ description: 'Notas adicionales', required: false })
+  @ApiProperty({ required: false })
   @IsOptional()
   @IsString()
-  notas?: string;
-} 
+  xmlUrl?: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsString()
+  pdfUrl?: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsString()
+  qrCodeUrl?: string;
+
+  @ApiProperty({ required: false, maxLength: 255 })
+  @IsOptional()
+  @IsString()
+  @MaxLength(255)
+  tokenSunat?: string;
+}

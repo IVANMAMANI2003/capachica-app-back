@@ -6,23 +6,25 @@ export declare class ComprobantesService {
     constructor(prisma: PrismaService);
     create(createComprobanteDto: CreateComprobanteDto): Promise<{
         pago: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            estado: string;
             moneda: string;
+            estado: string;
+            id: number;
             reservaId: number;
+            paymentGateway: string;
+            transactionId: string;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
             fechaPago: Date | null;
             datosMetodoPago: import(".prisma/client/runtime/library").JsonValue | null;
             metadata: import(".prisma/client/runtime/library").JsonValue | null;
+            createdAt: Date;
+            updatedAt: Date;
         };
     } & {
+        moneda: string;
+        estado: string;
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        estado: string;
-        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -38,26 +40,30 @@ export declare class ComprobantesService {
         codigoHash: string | null;
         xmlUrl: string | null;
         pdfUrl: string | null;
+        qrCodeUrl: string | null;
+        tokenSunat: string | null;
     }>;
     findAll(): Promise<({
         pago: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            estado: string;
             moneda: string;
+            estado: string;
+            id: number;
             reservaId: number;
+            paymentGateway: string;
+            transactionId: string;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
             fechaPago: Date | null;
             datosMetodoPago: import(".prisma/client/runtime/library").JsonValue | null;
             metadata: import(".prisma/client/runtime/library").JsonValue | null;
+            createdAt: Date;
+            updatedAt: Date;
         };
     } & {
+        moneda: string;
+        estado: string;
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        estado: string;
-        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -73,26 +79,30 @@ export declare class ComprobantesService {
         codigoHash: string | null;
         xmlUrl: string | null;
         pdfUrl: string | null;
+        qrCodeUrl: string | null;
+        tokenSunat: string | null;
     })[]>;
     findOne(id: number): Promise<{
         pago: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            estado: string;
             moneda: string;
+            estado: string;
+            id: number;
             reservaId: number;
+            paymentGateway: string;
+            transactionId: string;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
             fechaPago: Date | null;
             datosMetodoPago: import(".prisma/client/runtime/library").JsonValue | null;
             metadata: import(".prisma/client/runtime/library").JsonValue | null;
+            createdAt: Date;
+            updatedAt: Date;
         };
     } & {
+        moneda: string;
+        estado: string;
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        estado: string;
-        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -108,26 +118,30 @@ export declare class ComprobantesService {
         codigoHash: string | null;
         xmlUrl: string | null;
         pdfUrl: string | null;
+        qrCodeUrl: string | null;
+        tokenSunat: string | null;
     }>;
     findByPagoId(pagoId: number): Promise<{
         pago: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            estado: string;
             moneda: string;
+            estado: string;
+            id: number;
             reservaId: number;
+            paymentGateway: string;
+            transactionId: string;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
             fechaPago: Date | null;
             datosMetodoPago: import(".prisma/client/runtime/library").JsonValue | null;
             metadata: import(".prisma/client/runtime/library").JsonValue | null;
+            createdAt: Date;
+            updatedAt: Date;
         };
     } & {
+        moneda: string;
+        estado: string;
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        estado: string;
-        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -143,26 +157,30 @@ export declare class ComprobantesService {
         codigoHash: string | null;
         xmlUrl: string | null;
         pdfUrl: string | null;
+        qrCodeUrl: string | null;
+        tokenSunat: string | null;
     }>;
     update(id: number, updateComprobanteDto: UpdateComprobanteDto): Promise<{
         pago: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            estado: string;
             moneda: string;
+            estado: string;
+            id: number;
             reservaId: number;
+            paymentGateway: string;
+            transactionId: string;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
             fechaPago: Date | null;
             datosMetodoPago: import(".prisma/client/runtime/library").JsonValue | null;
             metadata: import(".prisma/client/runtime/library").JsonValue | null;
+            createdAt: Date;
+            updatedAt: Date;
         };
     } & {
+        moneda: string;
+        estado: string;
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        estado: string;
-        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -178,13 +196,15 @@ export declare class ComprobantesService {
         codigoHash: string | null;
         xmlUrl: string | null;
         pdfUrl: string | null;
+        qrCodeUrl: string | null;
+        tokenSunat: string | null;
     }>;
     remove(id: number): Promise<{
+        moneda: string;
+        estado: string;
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        estado: string;
-        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -200,26 +220,30 @@ export declare class ComprobantesService {
         codigoHash: string | null;
         xmlUrl: string | null;
         pdfUrl: string | null;
+        qrCodeUrl: string | null;
+        tokenSunat: string | null;
     }>;
     updateEstado(id: number, estado: string): Promise<{
         pago: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            estado: string;
             moneda: string;
+            estado: string;
+            id: number;
             reservaId: number;
+            paymentGateway: string;
+            transactionId: string;
             montoTotal: import(".prisma/client/runtime/library").Decimal;
             fechaPago: Date | null;
             datosMetodoPago: import(".prisma/client/runtime/library").JsonValue | null;
             metadata: import(".prisma/client/runtime/library").JsonValue | null;
+            createdAt: Date;
+            updatedAt: Date;
         };
     } & {
+        moneda: string;
+        estado: string;
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        estado: string;
-        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -235,5 +259,7 @@ export declare class ComprobantesService {
         codigoHash: string | null;
         xmlUrl: string | null;
         pdfUrl: string | null;
+        qrCodeUrl: string | null;
+        tokenSunat: string | null;
     }>;
 }

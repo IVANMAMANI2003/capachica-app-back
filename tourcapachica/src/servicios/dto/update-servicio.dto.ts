@@ -1,6 +1,7 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { CreateServicioDto } from './create-servicio.dto';
 import { ImageDto } from './create-servicio.dto';
+import { IsNumber, IsOptional } from 'class-validator';
 
 export class UpdateServicioDto extends PartialType(CreateServicioDto) {
   @ApiProperty({
@@ -26,6 +27,26 @@ export class UpdateServicioDto extends PartialType(CreateServicioDto) {
     type: String
   })
   descripcion?: string;
+
+  @ApiProperty({
+    description: 'Latitud del servicio',
+    example: -15.7667,
+    required: false,
+    type: Number
+  })
+  @IsNumber()
+  @IsOptional()
+  latitud?: number;
+
+  @ApiProperty({
+    description: 'Longitud del servicio',
+    example: -69.6833,
+    required: false,
+    type: Number
+  })
+  @IsNumber()
+  @IsOptional()
+  longitud?: number;
 
   @ApiProperty({
     description: 'Precio base del servicio',

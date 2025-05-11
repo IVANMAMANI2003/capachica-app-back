@@ -21,14 +21,14 @@ export class CreateItinerarioReservaDto {
   fecha: Date;
 
   @ApiProperty({
-    description: 'Hora del itinerario',
+    description: 'Hora de cierre del itinerario',
     example: '2024-05-15T09:00:00.000Z',
     required: false,
   })
   @Type(() => Date)
   @IsDate()
   @IsOptional()
-  hora?: Date;
+  horarioCierre?: Date;
 
   @ApiProperty({
     description: 'Tipo de evento del itinerario',

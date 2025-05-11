@@ -11,110 +11,125 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateComprobanteDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
+const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 class CreateComprobanteDto {
 }
 exports.CreateComprobanteDto = CreateComprobanteDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'ID del pago asociado al comprobante' }),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsNumber)(),
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsInt)(),
     __metadata("design:type", Number)
 ], CreateComprobanteDto.prototype, "pagoId", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Serie del comprobante' }),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)({ maxLength: 20 }),
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MaxLength)(20),
+    __metadata("design:type", String)
+], CreateComprobanteDto.prototype, "tipoComprobante", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ maxLength: 4 }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MaxLength)(4),
     __metadata("design:type", String)
 ], CreateComprobanteDto.prototype, "serie", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Número del comprobante' }),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsNumber)(),
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsInt)(),
     __metadata("design:type", Number)
 ], CreateComprobanteDto.prototype, "numero", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Tipo de comprobante' }),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], CreateComprobanteDto.prototype, "tipo", void 0);
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsISO8601)(),
+    __metadata("design:type", Date)
+], CreateComprobanteDto.prototype, "fechaEmision", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'RUC del cliente', required: false }),
+    (0, swagger_1.ApiProperty)({ required: false, maxLength: 11 }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MaxLength)(11),
     __metadata("design:type", String)
 ], CreateComprobanteDto.prototype, "rucCliente", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Razón social del cliente', required: false }),
+    (0, swagger_1.ApiProperty)({ required: false, maxLength: 100 }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MaxLength)(100),
     __metadata("design:type", String)
 ], CreateComprobanteDto.prototype, "razonSocial", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Dirección del cliente', required: false }),
+    (0, swagger_1.ApiProperty)({ required: false }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateComprobanteDto.prototype, "direccionCliente", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Subtotal del comprobante' }),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsNumber)(),
+    (0, swagger_1.ApiProperty)({ type: Number }),
+    (0, class_validator_1.IsDecimal)({ decimal_digits: '2' }),
+    (0, class_transformer_1.Type)(() => Number),
     __metadata("design:type", Number)
 ], CreateComprobanteDto.prototype, "subtotal", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'IGV del comprobante', required: false }),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsNumber)(),
+    (0, swagger_1.ApiProperty)({ type: Number, default: 0 }),
+    (0, class_validator_1.IsDecimal)({ decimal_digits: '2' }),
+    (0, class_transformer_1.Type)(() => Number),
     __metadata("design:type", Number)
 ], CreateComprobanteDto.prototype, "igv", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Total del comprobante' }),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsNumber)(),
+    (0, swagger_1.ApiProperty)({ type: Number }),
+    (0, class_validator_1.IsDecimal)({ decimal_digits: '2' }),
+    (0, class_transformer_1.Type)(() => Number),
     __metadata("design:type", Number)
 ], CreateComprobanteDto.prototype, "total", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Moneda del comprobante', default: 'PEN' }),
-    (0, class_validator_1.IsOptional)(),
+    (0, swagger_1.ApiProperty)({ default: 'PEN', maxLength: 3 }),
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MaxLength)(3),
     __metadata("design:type", String)
 ], CreateComprobanteDto.prototype, "moneda", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Estado del comprobante', default: 'emitido' }),
-    (0, class_validator_1.IsOptional)(),
+    (0, swagger_1.ApiProperty)({ default: 'emitido', maxLength: 20 }),
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MaxLength)(20),
     __metadata("design:type", String)
 ], CreateComprobanteDto.prototype, "estado", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Código SUNAT', required: false }),
+    (0, swagger_1.ApiProperty)({ required: false, maxLength: 100 }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MaxLength)(100),
     __metadata("design:type", String)
 ], CreateComprobanteDto.prototype, "codigoSunat", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Código hash del comprobante', required: false }),
+    (0, swagger_1.ApiProperty)({ required: false, maxLength: 100 }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MaxLength)(100),
     __metadata("design:type", String)
 ], CreateComprobanteDto.prototype, "codigoHash", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'URL del XML del comprobante', required: false }),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsUrl)(),
-    __metadata("design:type", String)
-], CreateComprobanteDto.prototype, "xmlUrl", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'URL del PDF del comprobante', required: false }),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsUrl)(),
-    __metadata("design:type", String)
-], CreateComprobanteDto.prototype, "pdfUrl", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Notas adicionales', required: false }),
+    (0, swagger_1.ApiProperty)({ required: false }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateComprobanteDto.prototype, "notas", void 0);
+], CreateComprobanteDto.prototype, "xmlUrl", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ required: false }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateComprobanteDto.prototype, "pdfUrl", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ required: false }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateComprobanteDto.prototype, "qrCodeUrl", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ required: false, maxLength: 255 }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MaxLength)(255),
+    __metadata("design:type", String)
+], CreateComprobanteDto.prototype, "tokenSunat", void 0);
 //# sourceMappingURL=create-comprobante.dto.js.map

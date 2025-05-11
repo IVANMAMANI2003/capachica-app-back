@@ -16,6 +16,12 @@ class CreateFavoritoDto {
 }
 exports.CreateFavoritoDto = CreateFavoritoDto;
 __decorate([
+    (0, swagger_1.ApiProperty)({ description: 'ID del usuario que marca como favorito', example: 1 }),
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Number)
+], CreateFavoritoDto.prototype, "usuarioId", void 0);
+__decorate([
     (0, swagger_1.ApiProperty)({ description: 'ID del emprendimiento a marcar como favorito', example: 1 }),
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsNotEmpty)(),

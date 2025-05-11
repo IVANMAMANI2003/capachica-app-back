@@ -54,7 +54,7 @@ let ComprobantesService = class ComprobantesService {
                 pago: {
                     connect: { id: createComprobanteDto.pagoId }
                 },
-                tipoComprobante: createComprobanteDto.tipo,
+                tipoComprobante: createComprobanteDto.tipoComprobante,
                 serie: createComprobanteDto.serie,
                 numero: createComprobanteDto.numero,
                 rucCliente: createComprobanteDto.rucCliente,

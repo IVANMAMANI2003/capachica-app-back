@@ -46,7 +46,7 @@ export class ItinerariosReservaService {
       data: {
         reservaId: createItinerarioReservaDto.reservaId,
         fecha: createItinerarioReservaDto.fecha,
-        hora: createItinerarioReservaDto.hora,
+        horarioCierre: createItinerarioReservaDto.horarioCierre,
         tipoEvento: createItinerarioReservaDto.tipoEvento,
         descripcion: createItinerarioReservaDto.descripcion,
         notas: createItinerarioReservaDto.notas,
@@ -148,7 +148,7 @@ export class ItinerariosReservaService {
       data: {
         reservaId: updateItinerarioReservaDto.reservaId,
         fecha: updateItinerarioReservaDto.fecha,
-        hora: updateItinerarioReservaDto.hora,
+        horarioCierre: updateItinerarioReservaDto.horarioCierre,
         tipoEvento: updateItinerarioReservaDto.tipoEvento,
         descripcion: updateItinerarioReservaDto.descripcion,
         notas: updateItinerarioReservaDto.notas,

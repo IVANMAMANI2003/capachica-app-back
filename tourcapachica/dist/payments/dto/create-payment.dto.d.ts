@@ -1,19 +1,13 @@
-export declare class PaymentDetailDto {
-    tipoPagoId: number;
-    concepto: string;
-    monto: number;
-    porcentajeImpuesto?: number;
-    cantidad?: number;
-    descripcion?: string;
-}
+import { CreatePagoDetalleDto } from './create-pago-detalle.dto';
 export declare class CreatePaymentDto {
     reservaId: number;
-    codigoTransaccion: string;
-    montoTotal: number;
+    paymentGateway: string;
+    transactionId: string;
+    montoTotal: string;
     moneda: string;
     estado: string;
-    fechaPago: string;
-    datosMetodoPago?: string;
-    metadata?: string;
-    detalles: PaymentDetailDto[];
+    fechaPago?: Date;
+    datosMetodoPago?: Record<string, any>;
+    metadata?: Record<string, any>;
+    detalles: CreatePagoDetalleDto[];
 }

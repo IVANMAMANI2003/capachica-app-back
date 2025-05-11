@@ -31,16 +31,17 @@ let EmprendimientosService = class EmprendimientosService {
         this.IMAGEABLE_TYPE = 'Emprendimiento';
         this.BUCKET_NAME = 'emprendimientos';
     }
-    async create(createEmprendimientoDto) {
-        const { imagenes } = createEmprendimientoDto, emprendimientoData = __rest(createEmprendimientoDto, ["imagenes"]);
+    async create(createEmprendimientoDto, usuarioId) {
+        const { imagenes, latitud, longitud } = createEmprendimientoDto, emprendimientoData = __rest(createEmprendimientoDto, ["imagenes", "latitud", "longitud"]);
         const emprendimiento = await this.prisma.emprendimiento.create({
             data: {
-                usuarioId: emprendimientoData.usuarioId,
+                usuarioId: usuarioId,
                 nombre: emprendimientoData.nombre,
                 descripcion: emprendimientoData.descripcion,
                 tipo: emprendimientoData.tipo,
                 direccion: emprendimientoData.direccion,
-                coordenadas: emprendimientoData.coordenadas,
+                latitud: latitud,
+                longitud: longitud,
                 contactoTelefono: emprendimientoData.contactoTelefono,
                 contactoEmail: emprendimientoData.contactoEmail,
                 sitioWeb: emprendimientoData.sitioWeb,
@@ -156,7 +157,7 @@ let EmprendimientosService = class EmprendimientosService {
         return emprendimientosWithImages;
     }
     async update(id, updateEmprendimientoDto) {
-        const { imagenes } = updateEmprendimientoDto, emprendimientoData = __rest(updateEmprendimientoDto, ["imagenes"]);
+        const { imagenes, latitud, longitud } = updateEmprendimientoDto, emprendimientoData = __rest(updateEmprendimientoDto, ["imagenes", "latitud", "longitud"]);
         await this.prisma.emprendimiento.update({
             where: { id },
             data: {
@@ -164,7 +165,8 @@ let EmprendimientosService = class EmprendimientosService {
                 descripcion: emprendimientoData.descripcion,
                 tipo: emprendimientoData.tipo,
                 direccion: emprendimientoData.direccion,
-                coordenadas: emprendimientoData.coordenadas,
+                latitud: latitud,
+                longitud: longitud,
                 contactoTelefono: emprendimientoData.contactoTelefono,
                 contactoEmail: emprendimientoData.contactoEmail,
                 sitioWeb: emprendimientoData.sitioWeb,
@@ -265,7 +267,7 @@ let EmprendimientosService = class EmprendimientosService {
         if (!emprendimiento) {
             throw new common_1.NotFoundException(`Emprendimiento con ID ${emprendimientoId} no encontrado`);
         }
-        const favoritoExistente = await this.prisma.favorito.findFirst({
+        const favoritoExistente = await this.prisma.favoritoEmprendimiento.findFirst({
             where: {
                 usuarioId,
                 emprendimientoId
@@ -274,7 +276,7 @@ let EmprendimientosService = class EmprendimientosService {
         if (favoritoExistente) {
             throw new common_1.BadRequestException('El emprendimiento ya está marcado como favorito');
         }
-        const favorito = await this.prisma.favorito.create({
+        const favorito = await this.prisma.favoritoEmprendimiento.create({
             data: {
                 usuarioId,
                 emprendimientoId
@@ -286,7 +288,7 @@ let EmprendimientosService = class EmprendimientosService {
         return favorito;
     }
     async removeFavorito(usuarioId, emprendimientoId) {
-        const favorito = await this.prisma.favorito.findFirst({
+        const favorito = await this.prisma.favoritoEmprendimiento.findFirst({
             where: {
                 usuarioId,
                 emprendimientoId
@@ -295,13 +297,13 @@ let EmprendimientosService = class EmprendimientosService {
         if (!favorito) {
             throw new common_1.NotFoundException('Favorito no encontrado');
         }
-        await this.prisma.favorito.delete({
+        await this.prisma.favoritoEmprendimiento.delete({
             where: { id: favorito.id }
         });
         return { message: 'Favorito eliminado exitosamente' };
     }
     async getFavoritos(usuarioId) {
-        const favoritos = await this.prisma.favorito.findMany({
+        const favoritos = await this.prisma.favoritoEmprendimiento.findMany({
             where: { usuarioId },
             include: {
                 emprendimiento: {
@@ -333,7 +335,7 @@ let EmprendimientosService = class EmprendimientosService {
         return favoritosWithImages;
     }
     async isFavorito(usuarioId, emprendimientoId) {
-        const favorito = await this.prisma.favorito.findFirst({
+        const favorito = await this.prisma.favoritoEmprendimiento.findFirst({
             where: {
                 usuarioId,
                 emprendimientoId

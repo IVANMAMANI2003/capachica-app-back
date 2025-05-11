@@ -19,6 +19,10 @@ __decorate([
     __metadata("design:type", Number)
 ], FavoritoEntity.prototype, "id", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)({ description: 'ID del usuario que marcó como favorito el emprendimiento' }),
+    __metadata("design:type", Number)
+], FavoritoEntity.prototype, "usuarioId", void 0);
+__decorate([
     (0, swagger_1.ApiProperty)({ description: 'ID del emprendimiento favorito' }),
     __metadata("design:type", Number)
 ], FavoritoEntity.prototype, "emprendimientoId", void 0);
@@ -30,8 +34,4 @@ __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Fecha de creación del favorito' }),
     __metadata("design:type", Date)
 ], FavoritoEntity.prototype, "createdAt", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Emprendimiento favorito' }),
-    __metadata("design:type", Object)
-], FavoritoEntity.prototype, "emprendimiento", void 0);
 //# sourceMappingURL=favorito.entity.js.map

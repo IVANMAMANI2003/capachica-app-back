@@ -71,15 +71,26 @@ __decorate([
 ], CreateLugarTuristicoDto.prototype, "direccion", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Coordenadas geográficas del lugar',
-        example: '-15.7667, -69.6833',
+        description: 'Latitud del lugar turístico',
+        example: -15.7667,
         required: true,
-        type: String
+        type: Number
     }),
-    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], CreateLugarTuristicoDto.prototype, "coordenadas", void 0);
+    __metadata("design:type", Number)
+], CreateLugarTuristicoDto.prototype, "latitud", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Longitud del lugar turístico',
+        example: -69.6833,
+        required: true,
+        type: Number
+    }),
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Number)
+], CreateLugarTuristicoDto.prototype, "longitud", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Estado del lugar turístico',

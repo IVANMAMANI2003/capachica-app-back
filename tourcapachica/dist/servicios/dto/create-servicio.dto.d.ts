@@ -3,9 +3,10 @@ export declare class ImageDto {
 }
 export declare class CreateServicioDto {
     tipoServicioId: number;
-    emprendimientoId?: number;
     nombre: string;
     descripcion?: string;
+    latitud?: number;
+    longitud?: number;
     precioBase: number;
     moneda?: string;
     estado?: string;

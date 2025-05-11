@@ -94,15 +94,26 @@ __decorate([
 ], CreateEmprendimientoDto.prototype, "direccion", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Coordenadas geográficas del emprendimiento',
-        example: '-15.7667, -69.6833',
+        description: 'Latitud del emprendimiento',
+        example: -15.7667,
         required: false,
-        type: String
+        type: Number
     }),
-    (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], CreateEmprendimientoDto.prototype, "coordenadas", void 0);
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], CreateEmprendimientoDto.prototype, "latitud", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Longitud del emprendimiento',
+        example: -69.6833,
+        required: false,
+        type: Number
+    }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], CreateEmprendimientoDto.prototype, "longitud", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Teléfono de contacto',

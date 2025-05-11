@@ -55,6 +55,20 @@ let LugaresTuristicosController = class LugaresTuristicosController {
         }
         return this.lugaresTuristicosService.remove(+id);
     }
+    async markAsFavorite(lugarTuristicoId, req) {
+        const userId = req.user.id;
+        return this.lugaresTuristicosService.markAsFavorite(userId, lugarTuristicoId);
+    }
+    async unmarkAsFavorite(lugarTuristicoId, req) {
+        const userId = req.user.id;
+        return this.lugaresTuristicosService.unmarkAsFavorite(userId, lugarTuristicoId);
+    }
+    async getTopFavoritos() {
+        return this.lugaresTuristicosService.getTopFavoritos();
+    }
+    async countTotalFavoritos() {
+        return this.lugaresTuristicosService.countTotalFavoritos();
+    }
 };
 exports.LugaresTuristicosController = LugaresTuristicosController;
 __decorate([
@@ -124,6 +138,46 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], LugaresTuristicosController.prototype, "remove", null);
+__decorate([
+    (0, common_1.Post)('favorito/:lugarTuristicoId'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Marcar un lugar turístico como favorito' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Lugar turístico marcado como favorito' }),
+    __param(0, (0, common_1.Param)('lugarTuristicoId')),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Object]),
+    __metadata("design:returntype", Promise)
+], LugaresTuristicosController.prototype, "markAsFavorite", null);
+__decorate([
+    (0, common_1.Delete)('favorito/:lugarTuristicoId'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Desmarcar un lugar turístico como favorito' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Lugar turístico desmarcado como favorito' }),
+    __param(0, (0, common_1.Param)('lugarTuristicoId')),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Object]),
+    __metadata("design:returntype", Promise)
+], LugaresTuristicosController.prototype, "unmarkAsFavorite", null);
+__decorate([
+    (0, common_1.Get)('favoritos/top'),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener los 10 lugares turísticos más marcados como favoritos' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Lista de los 10 lugares turísticos más favoritos' }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], LugaresTuristicosController.prototype, "getTopFavoritos", null);
+__decorate([
+    (0, common_1.Get)('favoritos/count'),
+    (0, swagger_1.ApiOperation)({ summary: 'Contar el total de favoritos' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Total de favoritos contados' }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], LugaresTuristicosController.prototype, "countTotalFavoritos", null);
 exports.LugaresTuristicosController = LugaresTuristicosController = __decorate([
     (0, swagger_1.ApiTags)('lugares-turisticos'),
     (0, common_1.Controller)('lugares-turisticos'),

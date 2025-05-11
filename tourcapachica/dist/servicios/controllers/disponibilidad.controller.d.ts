@@ -9,7 +9,7 @@ export declare class DisponibilidadController {
         createdAt: Date;
         updatedAt: Date;
         servicioId: number;
-        fechaInicio: Date;
+        fechaInicio: Date | null;
         fechaFin: Date | null;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
@@ -19,7 +19,7 @@ export declare class DisponibilidadController {
         createdAt: Date;
         updatedAt: Date;
         servicioId: number;
-        fechaInicio: Date;
+        fechaInicio: Date | null;
         fechaFin: Date | null;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
@@ -27,11 +27,13 @@ export declare class DisponibilidadController {
     findAll(): Promise<({
         servicio: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             nombre: string;
             descripcion: string | null;
+            latitud: number | null;
+            longitud: number | null;
             estado: string;
+            createdAt: Date;
+            updatedAt: Date;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
@@ -42,7 +44,7 @@ export declare class DisponibilidadController {
         createdAt: Date;
         updatedAt: Date;
         servicioId: number;
-        fechaInicio: Date;
+        fechaInicio: Date | null;
         fechaFin: Date | null;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
@@ -50,11 +52,13 @@ export declare class DisponibilidadController {
     findByServicio(servicioId: string): Promise<({
         servicio: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             nombre: string;
             descripcion: string | null;
+            latitud: number | null;
+            longitud: number | null;
             estado: string;
+            createdAt: Date;
+            updatedAt: Date;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
@@ -65,7 +69,7 @@ export declare class DisponibilidadController {
         createdAt: Date;
         updatedAt: Date;
         servicioId: number;
-        fechaInicio: Date;
+        fechaInicio: Date | null;
         fechaFin: Date | null;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
@@ -73,11 +77,13 @@ export declare class DisponibilidadController {
     findOne(id: string): Promise<{
         servicio: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             nombre: string;
             descripcion: string | null;
+            latitud: number | null;
+            longitud: number | null;
             estado: string;
+            createdAt: Date;
+            updatedAt: Date;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
@@ -88,7 +94,7 @@ export declare class DisponibilidadController {
         createdAt: Date;
         updatedAt: Date;
         servicioId: number;
-        fechaInicio: Date;
+        fechaInicio: Date | null;
         fechaFin: Date | null;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
@@ -96,11 +102,13 @@ export declare class DisponibilidadController {
     update(id: string, updateData: UpdateDisponibilidadDto): Promise<{
         servicio: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             nombre: string;
             descripcion: string | null;
+            latitud: number | null;
+            longitud: number | null;
             estado: string;
+            createdAt: Date;
+            updatedAt: Date;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
@@ -111,7 +119,7 @@ export declare class DisponibilidadController {
         createdAt: Date;
         updatedAt: Date;
         servicioId: number;
-        fechaInicio: Date;
+        fechaInicio: Date | null;
         fechaFin: Date | null;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
@@ -121,7 +129,7 @@ export declare class DisponibilidadController {
         createdAt: Date;
         updatedAt: Date;
         servicioId: number;
-        fechaInicio: Date;
+        fechaInicio: Date | null;
         fechaFin: Date | null;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;

@@ -9,105 +9,66 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreatePaymentDto = exports.PaymentDetailDto = void 0;
+exports.CreatePaymentDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
-const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
-class PaymentDetailDto {
-}
-exports.PaymentDetailDto = PaymentDetailDto;
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'ID del tipo de pago' }),
-    (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Number)
-], PaymentDetailDto.prototype, "tipoPagoId", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Concepto del pago' }),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], PaymentDetailDto.prototype, "concepto", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Monto del pago' }),
-    (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Number)
-], PaymentDetailDto.prototype, "monto", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Porcentaje de impuesto', required: false }),
-    (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", Number)
-], PaymentDetailDto.prototype, "porcentajeImpuesto", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Cantidad', required: false }),
-    (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", Number)
-], PaymentDetailDto.prototype, "cantidad", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Descripción adicional', required: false }),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], PaymentDetailDto.prototype, "descripcion", void 0);
+const class_validator_1 = require("class-validator");
+const create_pago_detalle_dto_1 = require("./create-pago-detalle.dto");
 class CreatePaymentDto {
 }
 exports.CreatePaymentDto = CreatePaymentDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'ID de la reserva' }),
+    (0, swagger_1.ApiProperty)({ description: 'ID de la reserva relacionada' }),
     (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
 ], CreatePaymentDto.prototype, "reservaId", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Código de transacción' }),
+    (0, swagger_1.ApiProperty)({ description: 'Pasarela de pago utilizada', example: 'Visa', maxLength: 50 }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
-], CreatePaymentDto.prototype, "codigoTransaccion", void 0);
+], CreatePaymentDto.prototype, "paymentGateway", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Monto total del pago' }),
-    (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Number)
-], CreatePaymentDto.prototype, "montoTotal", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Moneda del pago' }),
+    (0, swagger_1.ApiProperty)({ description: 'ID único de transacción', example: 'txn_123456789', maxLength: 100 }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreatePaymentDto.prototype, "transactionId", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ type: String, description: 'Monto total del pago' }),
+    (0, class_validator_1.IsDecimal)(),
+    __metadata("design:type", String)
+], CreatePaymentDto.prototype, "montoTotal", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ default: 'PEN', maxLength: 3 }),
+    (0, class_validator_1.IsISO4217CurrencyCode)(),
     __metadata("design:type", String)
 ], CreatePaymentDto.prototype, "moneda", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Estado del pago' }),
+    (0, swagger_1.ApiProperty)({ default: 'pendiente', maxLength: 20 }),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreatePaymentDto.prototype, "estado", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Fecha del pago' }),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
+    (0, swagger_1.ApiProperty)({ type: String, format: 'date-time', required: false }),
+    (0, class_validator_1.IsDateString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", Date)
 ], CreatePaymentDto.prototype, "fechaPago", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Datos del método de pago', required: false }),
-    (0, class_validator_1.IsString)(),
+    (0, swagger_1.ApiProperty)({ type: Object, required: false }),
     (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
+    __metadata("design:type", Object)
 ], CreatePaymentDto.prototype, "datosMetodoPago", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Metadatos adicionales', required: false }),
-    (0, class_validator_1.IsString)(),
+    (0, swagger_1.ApiProperty)({ type: Object, required: false }),
     (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
+    __metadata("design:type", Object)
 ], CreatePaymentDto.prototype, "metadata", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Detalles del pago', type: [PaymentDetailDto] }),
-    (0, class_validator_1.IsArray)(),
+    (0, swagger_1.ApiProperty)({ type: [create_pago_detalle_dto_1.CreatePagoDetalleDto] }),
     (0, class_validator_1.ValidateNested)({ each: true }),
-    (0, class_transformer_1.Type)(() => PaymentDetailDto),
+    (0, class_transformer_1.Type)(() => create_pago_detalle_dto_1.CreatePagoDetalleDto),
     __metadata("design:type", Array)
 ], CreatePaymentDto.prototype, "detalles", void 0);
 //# sourceMappingURL=create-payment.dto.js.map

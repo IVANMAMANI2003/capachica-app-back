@@ -26,6 +26,7 @@ const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 const roles_guard_1 = require("../auth/guards/roles.guard");
 const estado_paquete_enum_1 = require("./enums/estado-paquete.enum");
 const class_validator_1 = require("class-validator");
+const create_favorito_dto_1 = require("./dto/create-favorito.dto");
 class UpdateEstadoDto {
 }
 __decorate([
@@ -86,6 +87,18 @@ let PaquetesTuristicosController = class PaquetesTuristicosController {
     }
     async deleteDisponibilidad(id) {
         return this.paquetesTuristicosService.deleteDisponibilidad(id);
+    }
+    marcarFavorito(createFavoritoDto) {
+        return this.paquetesTuristicosService.marcarFavorito(createFavoritoDto);
+    }
+    desmarcarFavorito(id) {
+        return this.paquetesTuristicosService.desmarcarFavorito(id);
+    }
+    async getTopFavoritos() {
+        return this.paquetesTuristicosService.getTopFavoritos();
+    }
+    getFavoritos() {
+        return this.paquetesTuristicosService.getFavoritos();
     }
 };
 exports.PaquetesTuristicosController = PaquetesTuristicosController;
@@ -304,6 +317,46 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], PaquetesTuristicosController.prototype, "deleteDisponibilidad", null);
+__decorate([
+    (0, common_1.Post)('favorito'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Marcar paquete turístico como favorito' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Paquete turístico marcado como favorito' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [create_favorito_dto_1.CreateFavoritoDto]),
+    __metadata("design:returntype", void 0)
+], PaquetesTuristicosController.prototype, "marcarFavorito", null);
+__decorate([
+    (0, common_1.Delete)('favorito/:id'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Desmarcar paquete turístico como favorito' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Paquete turístico desmarcado como favorito' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Favorito no encontrado' }),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", void 0)
+], PaquetesTuristicosController.prototype, "desmarcarFavorito", null);
+__decorate([
+    (0, common_1.Get)('favoritos/top'),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener los 10 paquetes turísticos más marcados como favoritos' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Lista de los 10 paquetes turísticos más favoritos' }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], PaquetesTuristicosController.prototype, "getTopFavoritos", null);
+__decorate([
+    (0, common_1.Get)('favoritos'),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener todos los favoritos' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Lista de favoritos' }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], PaquetesTuristicosController.prototype, "getFavoritos", null);
 exports.PaquetesTuristicosController = PaquetesTuristicosController = __decorate([
     (0, swagger_1.ApiTags)('paquetes-turisticos'),
     (0, common_1.Controller)('paquetes-turisticos'),

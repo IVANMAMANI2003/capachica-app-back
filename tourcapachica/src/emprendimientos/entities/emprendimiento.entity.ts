@@ -19,8 +19,11 @@ export class EmprendimientoEntity {
   @ApiProperty({ description: 'Dirección física del emprendimiento', required: false })
   direccion?: string;
 
-  @ApiProperty({ description: 'Coordenadas geográficas del emprendimiento', required: false })
-  coordenadas?: string;
+  @ApiProperty({ description: 'Latitud del emprendimiento', required: false })
+  latitud?: number;
+
+  @ApiProperty({ description: 'Longitud del emprendimiento', required: false })
+  longitud?: number;
 
   @ApiProperty({ description: 'Teléfono de contacto', required: false })
   contactoTelefono?: string;
@@ -45,4 +48,4 @@ export class EmprendimientoEntity {
 
   @ApiProperty({ description: 'Fecha de última actualización' })
   updatedAt: Date;
-} 
+}

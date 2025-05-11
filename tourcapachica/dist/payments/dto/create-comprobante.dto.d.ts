@@ -1,19 +1,21 @@
 export declare class CreateComprobanteDto {
     pagoId: number;
+    tipoComprobante: string;
     serie: string;
     numero: number;
-    tipo: string;
+    fechaEmision: Date;
     rucCliente?: string;
     razonSocial?: string;
     direccionCliente?: string;
     subtotal: number;
-    igv?: number;
+    igv: number;
     total: number;
-    moneda?: string;
-    estado?: string;
+    moneda: string;
+    estado: string;
     codigoSunat?: string;
     codigoHash?: string;
     xmlUrl?: string;
     pdfUrl?: string;
-    notas?: string;
+    qrCodeUrl?: string;
+    tokenSunat?: string;
 }

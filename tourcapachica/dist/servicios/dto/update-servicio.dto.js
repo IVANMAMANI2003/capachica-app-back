@@ -13,6 +13,7 @@ exports.UpdateServicioDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const create_servicio_dto_1 = require("./create-servicio.dto");
 const create_servicio_dto_2 = require("./create-servicio.dto");
+const class_validator_1 = require("class-validator");
 class UpdateServicioDto extends (0, swagger_1.PartialType)(create_servicio_dto_1.CreateServicioDto) {
 }
 exports.UpdateServicioDto = UpdateServicioDto;
@@ -43,6 +44,28 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], UpdateServicioDto.prototype, "descripcion", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Latitud del servicio',
+        example: -15.7667,
+        required: false,
+        type: Number
+    }),
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", Number)
+], UpdateServicioDto.prototype, "latitud", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Longitud del servicio',
+        example: -69.6833,
+        required: false,
+        type: Number
+    }),
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", Number)
+], UpdateServicioDto.prototype, "longitud", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Precio base del servicio',

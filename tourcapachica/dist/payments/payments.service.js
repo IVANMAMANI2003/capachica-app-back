@@ -13,6 +13,7 @@ exports.PaymentsService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
 const reservas_service_1 = require("../reservas/reservas.service");
+const client_1 = require("@prisma/client");
 let PaymentsService = class PaymentsService {
     constructor(prisma, reservasService) {
         this.prisma = prisma;
@@ -23,18 +24,23 @@ let PaymentsService = class PaymentsService {
         if (!reserva) {
             throw new common_1.NotFoundException('Reserva no encontrada');
         }
-        const totalDetalles = createPaymentDto.detalles.reduce((sum, detalle) => sum + Number(detalle.monto), 0);
-        if (totalDetalles !== Number(createPaymentDto.montoTotal)) {
+        if (!createPaymentDto.paymentGateway) {
+            throw new common_1.BadRequestException('Gateway de pago es requerido');
+        }
+        const totalDetalles = createPaymentDto.detalles.reduce((sum, detalle) => sum.plus(new client_1.Prisma.Decimal(detalle.monto)), new client_1.Prisma.Decimal(0));
+        if (!totalDetalles.equals(new client_1.Prisma.Decimal(createPaymentDto.montoTotal))) {
             throw new common_1.BadRequestException('El monto total no coincide con la suma de los detalles');
         }
         return this.prisma.$transaction(async (prisma) => {
             const pago = await prisma.pago.create({
                 data: {
                     reservaId: createPaymentDto.reservaId,
+                    paymentGateway: createPaymentDto.paymentGateway,
+                    transactionId: createPaymentDto.transactionId,
                     montoTotal: createPaymentDto.montoTotal,
                     moneda: createPaymentDto.moneda,
                     estado: createPaymentDto.estado,
-                    fechaPago: new Date(createPaymentDto.fechaPago),
+                    fechaPago: createPaymentDto.fechaPago ? new Date(createPaymentDto.fechaPago) : null,
                     datosMetodoPago: createPaymentDto.datosMetodoPago,
                     metadata: createPaymentDto.metadata,
                     detalles: {
@@ -97,9 +103,15 @@ let PaymentsService = class PaymentsService {
     }
     async update(id, updatePaymentDto) {
         await this.findOne(id);
+        const estadosValidos = ['PENDIENTE', 'COMPLETADO', 'CANCELADO'];
+        if (updatePaymentDto.estado && !estadosValidos.includes(updatePaymentDto.estado)) {
+            throw new common_1.BadRequestException('Estado de pago no válido');
+        }
         return this.prisma.pago.update({
             where: { id },
             data: {
+                paymentGateway: updatePaymentDto.paymentGateway,
+                transactionId: updatePaymentDto.transactionId,
                 montoTotal: updatePaymentDto.montoTotal,
                 moneda: updatePaymentDto.moneda,
                 estado: updatePaymentDto.estado,

@@ -15,18 +15,19 @@ export class EmprendimientosService {
     private supabaseService: SupabaseService
   ) {}
 
-  async create(createEmprendimientoDto: CreateEmprendimientoDto) {
-    const { imagenes, ...emprendimientoData } = createEmprendimientoDto;
+  async create(createEmprendimientoDto: CreateEmprendimientoDto, usuarioId: number) {
+    const { imagenes, latitud, longitud, ...emprendimientoData } = createEmprendimientoDto;
     
     // Crear el emprendimiento
     const emprendimiento = await this.prisma.emprendimiento.create({
       data: {
-        usuarioId: emprendimientoData.usuarioId,
+        usuarioId: usuarioId,
         nombre: emprendimientoData.nombre,
         descripcion: emprendimientoData.descripcion,
         tipo: emprendimientoData.tipo,
         direccion: emprendimientoData.direccion,
-        coordenadas: emprendimientoData.coordenadas,
+        latitud: latitud,
+        longitud: longitud,
         contactoTelefono: emprendimientoData.contactoTelefono,
         contactoEmail: emprendimientoData.contactoEmail,
         sitioWeb: emprendimientoData.sitioWeb,
@@ -180,7 +181,7 @@ export class EmprendimientosService {
   }
 
   async update(id: number, updateEmprendimientoDto: UpdateEmprendimientoDto) {
-    const { imagenes, ...emprendimientoData } = updateEmprendimientoDto;
+    const { imagenes, latitud, longitud, ...emprendimientoData } = updateEmprendimientoDto;
 
     // Actualizar datos del emprendimiento
     await this.prisma.emprendimiento.update({
@@ -190,7 +191,8 @@ export class EmprendimientosService {
         descripcion: emprendimientoData.descripcion,
         tipo: emprendimientoData.tipo,
         direccion: emprendimientoData.direccion,
-        coordenadas: emprendimientoData.coordenadas,
+        latitud: latitud,
+        longitud: longitud,
         contactoTelefono: emprendimientoData.contactoTelefono,
         contactoEmail: emprendimientoData.contactoEmail,
         sitioWeb: emprendimientoData.sitioWeb,
@@ -340,7 +342,7 @@ export class EmprendimientosService {
     }
 
     // Verificar si ya existe el favorito
-    const favoritoExistente = await this.prisma.favorito.findFirst({
+    const favoritoExistente = await this.prisma.favoritoEmprendimiento.findFirst({
       where: {
         usuarioId,
         emprendimientoId
@@ -352,7 +354,7 @@ export class EmprendimientosService {
     }
 
     // Crear el favorito
-    const favorito = await this.prisma.favorito.create({
+    const favorito = await this.prisma.favoritoEmprendimiento.create({
       data: {
         usuarioId,
         emprendimientoId
@@ -366,7 +368,7 @@ export class EmprendimientosService {
   }
 
   async removeFavorito(usuarioId: number, emprendimientoId: number) {
-    const favorito = await this.prisma.favorito.findFirst({
+    const favorito = await this.prisma.favoritoEmprendimiento.findFirst({
       where: {
         usuarioId,
         emprendimientoId
@@ -377,7 +379,7 @@ export class EmprendimientosService {
       throw new NotFoundException('Favorito no encontrado');
     }
 
-    await this.prisma.favorito.delete({
+    await this.prisma.favoritoEmprendimiento.delete({
       where: { id: favorito.id }
     });
 
@@ -385,7 +387,7 @@ export class EmprendimientosService {
   }
 
   async getFavoritos(usuarioId: number) {
-    const favoritos = await this.prisma.favorito.findMany({
+    const favoritos = await this.prisma.favoritoEmprendimiento.findMany({
       where: { usuarioId },
       include: {
         emprendimiento: {
@@ -425,7 +427,7 @@ export class EmprendimientosService {
   }
 
   async isFavorito(usuarioId: number, emprendimientoId: number) {
-    const favorito = await this.prisma.favorito.findFirst({
+    const favorito = await this.prisma.favoritoEmprendimiento.findFirst({
       where: {
         usuarioId,
         emprendimientoId
@@ -434,4 +436,4 @@ export class EmprendimientosService {
 
     return !!favorito;
   }
-} 
+}

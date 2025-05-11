@@ -28,8 +28,8 @@ let EmprendimientosController = class EmprendimientosController {
     constructor(emprendimientosService) {
         this.emprendimientosService = emprendimientosService;
     }
-    create(createEmprendimientoDto) {
-        return this.emprendimientosService.create(createEmprendimientoDto);
+    create(createEmprendimientoDto, req) {
+        return this.emprendimientosService.create(createEmprendimientoDto, req.user.id);
     }
     findAll() {
         return this.emprendimientosService.findAll();
@@ -76,8 +76,9 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
     (0, swagger_1.ApiResponse)({ status: 401, description: 'No autorizado' }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_emprendimiento_dto_1.CreateEmprendimientoDto]),
+    __metadata("design:paramtypes", [create_emprendimiento_dto_1.CreateEmprendimientoDto, Object]),
     __metadata("design:returntype", void 0)
 ], EmprendimientosController.prototype, "create", null);
 __decorate([

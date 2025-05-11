@@ -5,6 +5,8 @@ export declare class UpdateServicioDto extends UpdateServicioDto_base {
     tipoServicioId?: number;
     nombre?: string;
     descripcion?: string;
+    latitud?: number;
+    longitud?: number;
     precioBase?: number;
     moneda?: string;
     estado?: string;

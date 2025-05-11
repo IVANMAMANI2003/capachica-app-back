@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, UseGuards, Req } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { LugaresTuristicosService } from './lugares-turisticos.service';
 import { CreateLugarTuristicoDto } from './dto/create-lugar-turistico.dto';
@@ -82,4 +82,40 @@ export class LugaresTuristicosController {
     }
     return this.lugaresTuristicosService.remove(+id);
   }
-} 
+
+
+@Post('favorito/:lugarTuristicoId')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
+@ApiOperation({ summary: 'Marcar un lugar turístico como favorito' })
+@ApiResponse({ status: 201, description: 'Lugar turístico marcado como favorito' })
+async markAsFavorite(@Param('lugarTuristicoId') lugarTuristicoId: number, @Req() req: any) {
+  const userId = req.user.id;
+  return this.lugaresTuristicosService.markAsFavorite(userId, lugarTuristicoId);
+}
+
+@Delete('favorito/:lugarTuristicoId')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
+@ApiOperation({ summary: 'Desmarcar un lugar turístico como favorito' })
+@ApiResponse({ status: 200, description: 'Lugar turístico desmarcado como favorito' })
+async unmarkAsFavorite(@Param('lugarTuristicoId') lugarTuristicoId: number, @Req() req: any) {
+  const userId = req.user.id;
+  return this.lugaresTuristicosService.unmarkAsFavorite(userId, lugarTuristicoId);
+}
+
+@Get('favoritos/top')
+@ApiOperation({ summary: 'Obtener los 10 lugares turísticos más marcados como favoritos' })
+@ApiResponse({ status: 200, description: 'Lista de los 10 lugares turísticos más favoritos' })
+async getTopFavoritos() {
+  return this.lugaresTuristicosService.getTopFavoritos();
+}
+
+@Get('favoritos/count')
+@ApiOperation({ summary: 'Contar el total de favoritos' })
+@ApiResponse({ status: 200, description: 'Total de favoritos contados' })
+async countTotalFavoritos() {
+  return this.lugaresTuristicosService.countTotalFavoritos();
+}
+
+}
