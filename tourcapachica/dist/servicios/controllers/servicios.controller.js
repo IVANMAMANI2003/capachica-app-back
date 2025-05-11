@@ -30,26 +30,33 @@ let ServiciosController = class ServiciosController {
     async create(createServicioDto, req) {
         try {
             const user = req.user;
+            console.log('🔐 Usuario autenticado:', user);
+            console.log('📦 DTO recibido:', createServicioDto);
             let emprendimientoId;
             if (user.role === 'SuperAdmin') {
+                console.log('✅ Usuario es SuperAdmin');
                 if (!createServicioDto.emprendimientoId) {
+                    console.warn('⚠️ Falta emprendimientoId en el body');
                     throw new common_1.BadRequestException('El campo emprendimientoId es obligatorio para SuperAdmin');
                 }
                 emprendimientoId = createServicioDto.emprendimientoId;
             }
             else if (user.role === 'Emprendedor') {
+                console.log('✅ Usuario es Emprendedor');
                 if (!user.emprendimientoId) {
+                    console.warn('⚠️ Emprendedor sin emprendimientoId en el token');
                     throw new common_1.BadRequestException('No se pudo obtener el emprendimiento desde el token');
                 }
                 emprendimientoId = user.emprendimientoId;
             }
             else {
+                console.error('❌ Rol no autorizado:', user.role);
                 throw new common_1.BadRequestException('Rol no autorizado para crear servicios');
             }
             return await this.serviciosService.create(createServicioDto, emprendimientoId);
         }
         catch (error) {
-            console.error('Error al crear el servicio:', error);
+            console.error('🚨 Error al crear el servicio:', error);
             if (error instanceof common_1.HttpException)
                 throw error;
             throw new common_1.HttpException('Error al crear el servicio', common_1.HttpStatus.BAD_REQUEST);
