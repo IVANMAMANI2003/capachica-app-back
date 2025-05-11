@@ -18,51 +18,37 @@ import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 export class ServiciosController {
   constructor(private readonly serviciosService: ServiciosService) {}
 
-  @Post()
+    @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('Emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Crear un nuevo servicio' })
   @ApiResponse({ status: 201, description: 'Servicio creado exitosamente' })
   @ApiResponse({ status: 400, description: 'Datos inválidos' })
-  async create(
-    @Body() createServicioDto: CreateServicioDto,
-    @Req() req,
-  ) {
+  async create(@Body() createServicioDto: CreateServicioDto, @Req() req) {
     try {
       const user = req.user;
-  
-      // 👇 Verifica qué datos llegan desde el token
-      console.log('🔐 Usuario autenticado:', user);
-      console.log('📦 DTO recibido:', createServicioDto);
-  
+      const role = user.roles?.[0]; 
       let emprendimientoId: number;
-  
-      if (user.role === 'SuperAdmin') {
-        console.log('✅ Usuario es SuperAdmin');
-  
+
+      console.log('🧾 Usuario autenticado:', user);
+      console.log('📦 DTO recibido:', createServicioDto);
+      console.log('✅ Rol obtenido:', role);
+
+      if (role === 'SuperAdmin') {
         if (!createServicioDto.emprendimientoId) {
-          console.warn('⚠️ Falta emprendimientoId en el body');
           throw new BadRequestException('El campo emprendimientoId es obligatorio para SuperAdmin');
         }
-  
         emprendimientoId = createServicioDto.emprendimientoId;
-  
-      } else if (user.role === 'Emprendedor') {
-        console.log('✅ Usuario es Emprendedor');
-  
+      } else if (role === 'Emprendedor') {
         if (!user.emprendimientoId) {
-          console.warn('⚠️ Emprendedor sin emprendimientoId en el token');
           throw new BadRequestException('No se pudo obtener el emprendimiento desde el token');
         }
-  
         emprendimientoId = user.emprendimientoId;
-  
       } else {
-        console.error('❌ Rol no autorizado:', user.role);
         throw new BadRequestException('Rol no autorizado para crear servicios');
       }
-  
+
       return await this.serviciosService.create(createServicioDto, emprendimientoId);
     } catch (error) {
       console.error('🚨 Error al crear el servicio:', error);
@@ -70,10 +56,7 @@ export class ServiciosController {
       throw new HttpException('Error al crear el servicio', HttpStatus.BAD_REQUEST);
     }
   }
-  
-  
 
-  
   
     @Get()
     @ApiOperation({ summary: 'Obtener todos los servicios (público)' })
