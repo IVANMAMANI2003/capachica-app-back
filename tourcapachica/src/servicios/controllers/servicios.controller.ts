@@ -11,18 +11,6 @@ import { UpdateEstadoDto } from '../dto/update-estado.dto';
 import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 
-export class EmprendimientoIdDto {
-  @ApiProperty({
-    description: 'ID del emprendimiento',
-    example: 1,
-    required: true,
-  })
-  @IsOptional()
-  @IsNumber()
-  @IsNotEmpty()
-  emprendimientoId: number;
-}
-
 
 
 @ApiTags('servicios')
@@ -30,46 +18,43 @@ export class EmprendimientoIdDto {
 export class ServiciosController {
   constructor(private readonly serviciosService: ServiciosService) {}
 
-  @Post()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('Emprendedor', 'SuperAdmin')
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Crear un nuevo servicio' })
-  @ApiResponse({ status: 201, description: 'Servicio creado exitosamente' })
-  @ApiResponse({ status: 400, description: 'Datos inválidos' })
-  async create(
-    @Body() createServicioDto: CreateServicioDto,
-    @Body() emprendimientoIdDto: EmprendimientoIdDto, // Recibe el DTO especial si el rol es SuperAdmin
-    @Req() req,
-  ) {
-    try {
-      const user = req.user;
-      let emprendimientoId: number;
-
-      // Validación para SuperAdmin: El emprendimientoId debe venir desde el cuerpo
-      if (user.role === 'SuperAdmin') {
-        if (!emprendimientoIdDto?.emprendimientoId) {
-          throw new BadRequestException('El campo emprendimientoId es obligatorio para SuperAdmin');
+    @Post()
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('Emprendedor', 'SuperAdmin')
+    @ApiBearerAuth()
+    @ApiOperation({ summary: 'Crear un nuevo servicio' })
+    @ApiResponse({ status: 201, description: 'Servicio creado exitosamente' })
+    @ApiResponse({ status: 400, description: 'Datos inválidos' })
+    async create(
+      @Body() createServicioDto: CreateServicioDto,
+      @Req() req,
+    ) {
+      try {
+        const user = req.user;
+        let emprendimientoId: number;
+    
+        if (user.role === 'SuperAdmin') {
+          if (!createServicioDto.emprendimientoId) {
+            throw new BadRequestException('El campo emprendimientoId es obligatorio para SuperAdmin');
+          }
+          emprendimientoId = createServicioDto.emprendimientoId;
+        } else if (user.role === 'Emprendedor') {
+          if (!user.emprendimientoId) {
+            throw new BadRequestException('No se pudo obtener el emprendimiento desde el token');
+          }
+          emprendimientoId = user.emprendimientoId;
+        } else {
+          throw new BadRequestException('Rol no autorizado para crear servicios');
         }
-        emprendimientoId = emprendimientoIdDto.emprendimientoId;
+    
+        return await this.serviciosService.create(createServicioDto, emprendimientoId);
+      } catch (error) {
+        console.error('Error al crear el servicio:', error);
+        if (error instanceof HttpException) throw error;
+        throw new HttpException('Error al crear el servicio', HttpStatus.BAD_REQUEST);
       }
-
-      // Validación para Emprendedor: El emprendimientoId debe ser tomado del token
-      if (user.role === 'Emprendedor') {
-        if (!user.emprendimientoId) {
-          throw new BadRequestException('No se pudo obtener el emprendimiento desde el token');
-        }
-        emprendimientoId = user.emprendimientoId;
-      }
-
-      // Llamar al servicio con el emprendimientoId correcto
-      return await this.serviciosService.create(createServicioDto, emprendimientoId);
-    } catch (error) {
-      console.error('Error al crear el servicio:', error);
-      if (error instanceof HttpException) throw error;
-      throw new HttpException('Error al crear el servicio', HttpStatus.BAD_REQUEST);
     }
-  }
+  
 
   
   
