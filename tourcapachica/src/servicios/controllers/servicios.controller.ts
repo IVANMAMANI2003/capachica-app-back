@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseIntPipe, Req, HttpException, HttpStatus, BadRequestException, ForbiddenException, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseIntPipe, Req, HttpException, HttpStatus, BadRequestException, ForbiddenException } from '@nestjs/common';
 import { ServiciosService } from '../services/servicios.service';
 import { CreateServicioDto } from '../dto/create-servicio.dto';
 import { UpdateServicioDto } from '../dto/update-servicio.dto';
@@ -25,27 +25,54 @@ export class ServiciosController {
   @ApiOperation({ summary: 'Crear un nuevo servicio' })
   @ApiResponse({ status: 201, description: 'Servicio creado exitosamente' })
   @ApiResponse({ status: 400, description: 'Datos inválidos' })
-  async create(@Body() createServicioDto: CreateServicioDto, @Request() req) {
-    const user = req.user; // Obtén el usuario autenticado
-    
-    let emprendimientoId: number;
+  @ApiResponse({ status: 403, description: 'Rol no autorizado' })
+  async create(@Body() createServicioDto: CreateServicioDto, @Req() req) {
+    try {
+      const user = req.user; // Obtenemos el usuario autenticado
+      const role = user.roles?.[0]; // Suponemos que el usuario tiene un solo rol, pero puedes adaptarlo si es necesario
+      let emprendimientoId: number;
 
-    // Si es un SuperAdmin, puede enviar el emprendimientoId en el body
-    if (user.roles.includes('SuperAdmin') && createServicioDto.emprendimientoId) {
-      emprendimientoId = createServicioDto.emprendimientoId;
-    } else if (user.roles.includes('Emprendedor')) {
-      // Si es un Emprendedor, tomamos el emprendimientoId del usuario logueado
-      if (!user.emprendimientoId) {
-        throw new BadRequestException('No hay emprendimiento asociado al usuario');
+      console.log('🧾 Usuario autenticado:', user);
+      console.log('📦 DTO recibido:', createServicioDto);
+      console.log('✅ Rol obtenido:', role);
+
+      // Lógica de validación según el rol
+      if (role === 'SuperAdmin') {
+        // Si el usuario es SuperAdmin, el emprendimientoId debe ser obligatorio en el DTO
+        if (!createServicioDto.emprendimientoId) {
+          throw new BadRequestException('El campo emprendimientoId es obligatorio para SuperAdmin');
+        }
+        emprendimientoId = createServicioDto.emprendimientoId;
+      } else if (role === 'Emprendedor') {
+        // Si el usuario es Emprendedor, se toma el emprendimientoId desde el token del usuario
+        if (!user.emprendimientoId) {
+          throw new BadRequestException('No se pudo obtener el emprendimiento desde el token');
+        }
+        emprendimientoId = user.emprendimientoId;
+      } else {
+        // Si el usuario no tiene un rol adecuado, se lanza un error
+        throw new ForbiddenException('Rol no autorizado para crear servicios');
       }
-      emprendimientoId = user.emprendimientoId;
-    } else {
-      // Si no tiene el rol adecuado
-      throw new ForbiddenException('Rol no autorizado para crear servicios');
-    }
 
-    // Llamar al servicio para crear el servicio
-    return this.serviciosService.create(createServicioDto, emprendimientoId);
+      console.log('🔑 Emprendimiento ID:', emprendimientoId);
+
+      // Llamamos al servicio para crear el servicio, pasando el DTO y el emprendimientoId
+      const servicio = await this.serviciosService.create(createServicioDto, emprendimientoId);
+
+      // Respondemos con el servicio creado
+      return servicio;
+      
+    } catch (error) {
+      console.error('🚨 Error al crear el servicio:', error);
+
+      // Si el error es una excepción de NestJS, la lanzamos directamente
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      // En otros casos, lanzamos una excepción genérica
+      throw new HttpException('Error al crear el servicio', HttpStatus.BAD_REQUEST);
+    }
   }
 
 

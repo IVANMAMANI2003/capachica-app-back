@@ -28,21 +28,40 @@ let ServiciosController = class ServiciosController {
         this.serviciosService = serviciosService;
     }
     async create(createServicioDto, req) {
-        const user = req.user;
-        let emprendimientoId;
-        if (user.roles.includes('SuperAdmin') && createServicioDto.emprendimientoId) {
-            emprendimientoId = createServicioDto.emprendimientoId;
-        }
-        else if (user.roles.includes('Emprendedor')) {
-            if (!user.emprendimientoId) {
-                throw new common_1.BadRequestException('No hay emprendimiento asociado al usuario');
+        var _a;
+        try {
+            const user = req.user;
+            const role = (_a = user.roles) === null || _a === void 0 ? void 0 : _a[0];
+            let emprendimientoId;
+            console.log('🧾 Usuario autenticado:', user);
+            console.log('📦 DTO recibido:', createServicioDto);
+            console.log('✅ Rol obtenido:', role);
+            if (role === 'SuperAdmin') {
+                if (!createServicioDto.emprendimientoId) {
+                    throw new common_1.BadRequestException('El campo emprendimientoId es obligatorio para SuperAdmin');
+                }
+                emprendimientoId = createServicioDto.emprendimientoId;
             }
-            emprendimientoId = user.emprendimientoId;
+            else if (role === 'Emprendedor') {
+                if (!user.emprendimientoId) {
+                    throw new common_1.BadRequestException('No se pudo obtener el emprendimiento desde el token');
+                }
+                emprendimientoId = user.emprendimientoId;
+            }
+            else {
+                throw new common_1.ForbiddenException('Rol no autorizado para crear servicios');
+            }
+            console.log('🔑 Emprendimiento ID:', emprendimientoId);
+            const servicio = await this.serviciosService.create(createServicioDto, emprendimientoId);
+            return servicio;
         }
-        else {
-            throw new common_1.ForbiddenException('Rol no autorizado para crear servicios');
+        catch (error) {
+            console.error('🚨 Error al crear el servicio:', error);
+            if (error instanceof common_1.HttpException) {
+                throw error;
+            }
+            throw new common_1.HttpException('Error al crear el servicio', common_1.HttpStatus.BAD_REQUEST);
         }
-        return this.serviciosService.create(createServicioDto, emprendimientoId);
     }
     findAll() {
         return this.serviciosService.findAll();
@@ -79,8 +98,9 @@ __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Crear un nuevo servicio' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Servicio creado exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
+    (0, swagger_1.ApiResponse)({ status: 403, description: 'Rol no autorizado' }),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Request)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_servicio_dto_1.CreateServicioDto, Object]),
     __metadata("design:returntype", Promise)
