@@ -14,21 +14,13 @@ export class ImageDto {
   url: string;
 }
 
+
 export class CreateServicioDto {
   @ApiProperty({ description: 'ID del tipo de servicio', example: 1 })
   @Type(() => Number)
   @IsNumber()
   @IsNotEmpty()
   tipoServicioId: number;
-
-  @ApiPropertyOptional({
-    description: 'ID del emprendimiento (solo SuperAdmin debe enviarlo)',
-    example: 1,
-  })
-  @IsOptional()
-  @IsNumber()
-  emprendimientoId?: number;
-
 
   @ApiProperty({ description: 'Nombre del servicio', example: 'Tour guiado por la isla' })
   @IsString()
@@ -107,4 +99,22 @@ export class CreateServicioDto {
   @IsArray()
   @Type(() => ImageDto)
   imagenes?: ImageDto[];
+}
+
+export class CreateServicioPayloadDto {
+  @ApiProperty({
+    description: 'Datos del servicio',
+    type: CreateServicioDto
+  })
+  @ValidateNested()
+  @Type(() => CreateServicioDto)
+  servicio: CreateServicioDto;
+
+  @ApiPropertyOptional({
+    description: 'ID del emprendimiento (solo SuperAdmin debe enviarlo)',
+    example: 1,
+  })
+  @IsOptional()
+  @IsNumber()
+  emprendimientoId?: number;
 }

@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateServicioDto = exports.ImageDto = void 0;
+exports.CreateServicioPayloadDto = exports.CreateServicioDto = exports.ImageDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
@@ -41,15 +41,6 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
 ], CreateServicioDto.prototype, "tipoServicioId", void 0);
-__decorate([
-    (0, swagger_1.ApiPropertyOptional)({
-        description: 'ID del emprendimiento (solo SuperAdmin debe enviarlo)',
-        example: 1,
-    }),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsNumber)(),
-    __metadata("design:type", Number)
-], CreateServicioDto.prototype, "emprendimientoId", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Nombre del servicio', example: 'Tour guiado por la isla' }),
     (0, class_validator_1.IsString)(),
@@ -138,4 +129,25 @@ __decorate([
     (0, class_transformer_1.Type)(() => ImageDto),
     __metadata("design:type", Array)
 ], CreateServicioDto.prototype, "imagenes", void 0);
+class CreateServicioPayloadDto {
+}
+exports.CreateServicioPayloadDto = CreateServicioPayloadDto;
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Datos del servicio',
+        type: CreateServicioDto
+    }),
+    (0, class_validator_1.ValidateNested)(),
+    (0, class_transformer_1.Type)(() => CreateServicioDto),
+    __metadata("design:type", CreateServicioDto)
+], CreateServicioPayloadDto.prototype, "servicio", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({
+        description: 'ID del emprendimiento (solo SuperAdmin debe enviarlo)',
+        example: 1,
+    }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], CreateServicioPayloadDto.prototype, "emprendimientoId", void 0);
 //# sourceMappingURL=create-servicio.dto.js.map

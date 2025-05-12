@@ -27,24 +27,25 @@ let ServiciosController = class ServiciosController {
     constructor(serviciosService) {
         this.serviciosService = serviciosService;
     }
-    async create(createServicioDto, req) {
-        var _a;
+    async create(createServicioPayloadDto, req) {
         try {
             const user = req.user;
-            const role = (_a = user.roles) === null || _a === void 0 ? void 0 : _a[0];
+            const roles = user.roles || [];
+            const role = roles[0];
             let emprendimientoId;
             console.log('🧾 Usuario autenticado:', user);
-            console.log('📦 DTO recibido:', createServicioDto);
+            console.log('📦 DTO recibido:', createServicioPayloadDto);
             console.log('✅ Rol obtenido:', role);
+            const { servicio } = createServicioPayloadDto;
             if (role === 'SuperAdmin') {
-                if (!createServicioDto.emprendimientoId) {
+                if (!createServicioPayloadDto.emprendimientoId) {
                     throw new common_1.BadRequestException('El campo emprendimientoId es obligatorio para SuperAdmin');
                 }
-                emprendimientoId = createServicioDto.emprendimientoId;
+                emprendimientoId = createServicioPayloadDto.emprendimientoId;
             }
             else if (role === 'Emprendedor') {
                 if (!user.emprendimientoId) {
-                    throw new common_1.BadRequestException('No se pudo obtener el emprendimiento desde el token');
+                    throw new common_1.BadRequestException('No se pudo obtener el emprendimientoId desde el token');
                 }
                 emprendimientoId = user.emprendimientoId;
             }
@@ -52,15 +53,15 @@ let ServiciosController = class ServiciosController {
                 throw new common_1.ForbiddenException('Rol no autorizado para crear servicios');
             }
             console.log('🔑 Emprendimiento ID:', emprendimientoId);
-            const servicio = await this.serviciosService.create(createServicioDto, emprendimientoId);
-            return servicio;
+            const servicioCreado = await this.serviciosService.create(servicio, emprendimientoId);
+            return servicioCreado;
         }
         catch (error) {
             console.error('🚨 Error al crear el servicio:', error);
             if (error instanceof common_1.HttpException) {
                 throw error;
             }
-            throw new common_1.HttpException('Error al crear el servicio', common_1.HttpStatus.BAD_REQUEST);
+            throw new common_1.HttpException('Error interno al crear el servicio', common_1.HttpStatus.BAD_REQUEST);
         }
     }
     findAll() {
@@ -102,7 +103,7 @@ __decorate([
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_servicio_dto_1.CreateServicioDto, Object]),
+    __metadata("design:paramtypes", [create_servicio_dto_1.CreateServicioPayloadDto, Object]),
     __metadata("design:returntype", Promise)
 ], ServiciosController.prototype, "create", null);
 __decorate([

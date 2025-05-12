@@ -1,11 +1,11 @@
 import { ServiciosService } from '../services/servicios.service';
-import { CreateServicioDto } from '../dto/create-servicio.dto';
+import { CreateServicioPayloadDto } from '../dto/create-servicio.dto';
 import { UpdateServicioDto } from '../dto/update-servicio.dto';
 import { UpdateEstadoDto } from '../dto/update-estado.dto';
 export declare class ServiciosController {
     private readonly serviciosService;
     constructor(serviciosService: ServiciosService);
-    create(createServicioDto: CreateServicioDto, req: any): Promise<{
+    create(createServicioPayloadDto: CreateServicioPayloadDto, req: any): Promise<{
         imagenes: {
             id: number;
             url: string;

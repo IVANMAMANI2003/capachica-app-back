@@ -22,45 +22,50 @@ export class ServiciosService {
     if (!emprendimientoId) {
       throw new BadRequestException('No hay emprendimiento asociado al servicio');
     }
-
+  
     const { imagenes, ...servicioData } = createServicioDto;
-
+  
     const servicio = await this.prisma.$transaction(async (tx) => {
       const creado = await tx.servicio.create({
         data: {
           ...servicioData,
           serviciosEmprendedores: {
-            create: { emprendimientoId }
-          }
-        }
+            create: { emprendimientoId },
+          },
+        },
       });
-
+  
       if (imagenes?.length) {
-        for (const img of imagenes) {
+        // Usar Promise.all para subir imágenes de manera paralela
+        const imagePromises = imagenes.map(async (img) => {
           const filePath = `${creado.id}/${Date.now()}-${img.url.split('/').pop()}`;
           const { data, error } = await this.supabaseService.uploadFile(
             this.BUCKET_NAME,
             filePath,
-            img.url
+            img.url,
           );
           if (error) throw new BadRequestException(`Error al subir la imagen: ${error.message}`);
-
+  
           const imageDb = await tx.image.create({ data: { url: data.path } });
           await tx.imageable.create({
             data: {
-              image_id:       imageDb.id,
-              imageable_id:   creado.id,
-              imageable_type: this.IMAGEABLE_TYPE
-            }
+              image_id: imageDb.id,
+              imageable_id: creado.id,
+              imageable_type: this.IMAGEABLE_TYPE,
+            },
           });
-        }
+        });
+  
+        // Ejecutar todas las promesas de imágenes al mismo tiempo
+        await Promise.all(imagePromises);
       }
-
+  
       return creado;
     });
-
+  
     return this.findOne(servicio.id);
   }
+  
 
 
   

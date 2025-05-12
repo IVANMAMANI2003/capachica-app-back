@@ -39,11 +39,11 @@ let ServiciosService = class ServiciosService {
         const servicio = await this.prisma.$transaction(async (tx) => {
             const creado = await tx.servicio.create({
                 data: Object.assign(Object.assign({}, servicioData), { serviciosEmprendedores: {
-                        create: { emprendimientoId }
-                    } })
+                        create: { emprendimientoId },
+                    } }),
             });
             if (imagenes === null || imagenes === void 0 ? void 0 : imagenes.length) {
-                for (const img of imagenes) {
+                const imagePromises = imagenes.map(async (img) => {
                     const filePath = `${creado.id}/${Date.now()}-${img.url.split('/').pop()}`;
                     const { data, error } = await this.supabaseService.uploadFile(this.BUCKET_NAME, filePath, img.url);
                     if (error)
@@ -53,10 +53,11 @@ let ServiciosService = class ServiciosService {
                         data: {
                             image_id: imageDb.id,
                             imageable_id: creado.id,
-                            imageable_type: this.IMAGEABLE_TYPE
-                        }
+                            imageable_type: this.IMAGEABLE_TYPE,
+                        },
                     });
-                }
+                });
+                await Promise.all(imagePromises);
             }
             return creado;
         });

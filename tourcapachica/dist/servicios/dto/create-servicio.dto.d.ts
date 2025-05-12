@@ -3,7 +3,6 @@ export declare class ImageDto {
 }
 export declare class CreateServicioDto {
     tipoServicioId: number;
-    emprendimientoId?: number;
     nombre: string;
     descripcion?: string;
     latitud?: number;
@@ -13,4 +12,8 @@ export declare class CreateServicioDto {
     estado?: string;
     detallesServicio?: Record<string, any>;
     imagenes?: ImageDto[];
+}
+export declare class CreateServicioPayloadDto {
+    servicio: CreateServicioDto;
+    emprendimientoId?: number;
 }
