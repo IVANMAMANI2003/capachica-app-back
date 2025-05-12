@@ -67,7 +67,7 @@ export declare class ServiciosService {
         createdAt: Date;
         updatedAt: Date;
     }[]>;
-    findOne(id: number): Promise<{
+    findOne(id: number, emprendimientoId?: number): Promise<{
         imagenes: {
             id: number;
             url: string;
@@ -105,32 +105,9 @@ export declare class ServiciosService {
             updatedAt: Date;
             requiereCupo: boolean;
         };
-        serviciosEmprendedores: ({
-            emprendimiento: {
-                id: number;
-                nombre: string;
-                descripcion: string | null;
-                latitud: number | null;
-                longitud: number | null;
-                estado: string;
-                createdAt: Date;
-                updatedAt: Date;
-                usuarioId: number;
-                tipo: string;
-                direccion: string | null;
-                contactoTelefono: string | null;
-                contactoEmail: string | null;
-                sitioWeb: string | null;
-                redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
-                fechaAprobacion: Date | null;
-            };
-        } & {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
+        serviciosEmprendedores: {
             emprendimientoId: number;
-            servicioId: number;
-        })[];
+        }[];
     } & {
         id: number;
         tipoServicioId: number;
@@ -174,7 +151,7 @@ export declare class ServiciosService {
         createdAt: Date;
         updatedAt: Date;
     }>;
-    remove(id: number, emprendimientoId: number): Promise<{
+    remove(id: number, emprendimientoId?: number): Promise<{
         id: number;
         tipoServicioId: number;
         nombre: string;

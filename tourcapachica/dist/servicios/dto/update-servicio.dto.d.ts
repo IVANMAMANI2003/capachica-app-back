@@ -1,7 +1,7 @@
-import { CreateServicioDto } from './create-servicio.dto';
-import { ImageDto } from './create-servicio.dto';
-declare const UpdateServicioDto_base: import("@nestjs/common").Type<Partial<CreateServicioDto>>;
-export declare class UpdateServicioDto extends UpdateServicioDto_base {
+export declare class ImageDto {
+    url?: string;
+}
+export declare class UpdateServicioDto {
     tipoServicioId?: number;
     nombre?: string;
     descripcion?: string;
@@ -13,4 +13,7 @@ export declare class UpdateServicioDto extends UpdateServicioDto_base {
     detallesServicio?: Record<string, any>;
     imagenes?: ImageDto[];
 }
-export {};
+export declare class UpdateServicioPayloadDto {
+    servicio: UpdateServicioDto;
+    emprendimientoId?: number;
+}

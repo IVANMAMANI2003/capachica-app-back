@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { SupabaseService } from '../../supabase/supabase.service';
 import { CreateServicioDto } from '../dto/create-servicio.dto';
@@ -104,44 +104,70 @@ export class ServiciosService {
   /**
    * Obtiene un servicio por su ID.
    */
-  async findOne(id: number) {
+  async findOne(id: number, emprendimientoId?: number) {
+    // Buscar el servicio por ID
     const servicio = await this.prisma.servicio.findUnique({
       where: { id },
       include: {
         tipoServicio: true,
         serviciosEmprendedores: {
           select: {
-            emprendimientoId: true
-          }
-        }
-      }
+            emprendimientoId: true,
+          },
+        },
+      },
     });
   
+    // Si no se encuentra el servicio
     if (!servicio) throw new NotFoundException(`Servicio ${id} no encontrado`);
   
+    // Si el usuario no es SuperAdmin, verificar que pertenezca al emprendimiento
+    if (emprendimientoId) {
+      const relation = await this.prisma.servicioEmprendedor.findFirst({
+        where: { servicioId: id, emprendimientoId },
+      });
+      if (!relation) {
+        throw new ForbiddenException('No tienes acceso a este servicio');
+      }
+    }
+  
+    // Obtener las imágenes relacionadas con el servicio
     const imgs = await this.prisma.imageable.findMany({
       where: { imageable_type: this.IMAGEABLE_TYPE, imageable_id: id },
-      include: { image: true }
+      include: { image: true },
     });
   
+    // Retornar el servicio con las imágenes
     return {
       ...servicio,
-      imagenes: imgs.map(i => ({ id: i.image.id, url: i.image.url }))
+      imagenes: imgs.map(i => ({ id: i.image.id, url: i.image.url })),
     };
   }
+  
 
   /**
    * Obtiene servicios de un emprendimiento específico.
    */
   async findByEmprendimiento(emprendimientoId: number) {
     return this.prisma.servicio.findMany({
-      where: { serviciosEmprendedores: { some: { emprendimientoId } } },
+      where: {
+        serviciosEmprendedores: {
+          some: {
+            emprendimientoId,
+          },
+        },
+      },
       include: {
         tipoServicio: true,
-        serviciosEmprendedores: { include: { emprendimiento: true } }
-      }
+        serviciosEmprendedores: {
+          select: {
+            emprendimientoId: true,
+          },
+        },
+      },
     });
   }
+  
 
   /**
    * Actualiza un servicio solo si pertenece al emprendimiento autenticado.
@@ -151,65 +177,111 @@ export class ServiciosService {
     updateDto: UpdateServicioDto,
     emprendimientoId: number
   ) {
-    // Validar existencia y pertenencia
+    // Validar si el servicio pertenece al emprendimiento
     const relation = await this.prisma.servicioEmprendedor.findFirst({
-      where: { servicioId: id, emprendimientoId }
+      where: { servicioId: id, emprendimientoId },
     });
-    if (!relation) throw new NotFoundException('Servicio no encontrado para este emprendimiento');
-
+    if (!relation) {
+      throw new NotFoundException('Servicio no encontrado para este emprendimiento');
+    }
+  
     const { imagenes, ...servicioData } = updateDto;
-    await this.prisma.servicio.update({ where: { id }, data: servicioData });
-
+  
+    // Actualizar datos del servicio (sin imágenes aún)
+    await this.prisma.servicio.update({
+      where: { id },
+      data: servicioData,
+    });
+  
+    // Si se enviaron nuevas imágenes
     if (imagenes) {
-      const old = await this.prisma.imageable.findMany({
-        where: { imageable_type: this.IMAGEABLE_TYPE, imageable_id: id },
-        include: { image: true }
+      // Eliminar imágenes anteriores del bucket y de la BD
+      const oldImageables = await this.prisma.imageable.findMany({
+        where: {
+          imageable_type: this.IMAGEABLE_TYPE,
+          imageable_id: id,
+        },
+        include: { image: true },
       });
-      for (const item of old) {
+  
+      for (const item of oldImageables) {
+        // Borrar archivo del bucket
         await this.supabaseService.deleteFile(this.BUCKET_NAME, item.image.url);
+  
+        // Borrar relaciones e imágenes de la base de datos
         await this.prisma.imageable.delete({ where: { id: item.id } });
         await this.prisma.image.delete({ where: { id: item.image.id } });
       }
+  
+      // Subir nuevas imágenes y registrar en la BD
       for (const img of imagenes) {
-        const filePath = `${id}/${Date.now()}-${img.url.split('/').pop()}`;
-        const { data, error } = await this.supabaseService.uploadFile(this.BUCKET_NAME, filePath, img.url);
-        if (error) throw new BadRequestException(`Error al subir imagen: ${error.message}`);
-        const imageDb = await this.prisma.image.create({ data: { url: data.path } });
-        await this.prisma.imageable.create({ data: {
-          image_id:       imageDb.id,
-          imageable_id:   id,
-          imageable_type: this.IMAGEABLE_TYPE
-        }});
+        const fileName = img.url.split('/').pop();
+        const filePath = `${id}/${Date.now()}-${fileName}`;
+  
+        const { data, error } = await this.supabaseService.uploadFile(
+          this.BUCKET_NAME,
+          filePath,
+          img.url
+        );
+        if (error) {
+          throw new BadRequestException(`Error al subir imagen: ${error.message}`);
+        }
+  
+        const imageDb = await this.prisma.image.create({
+          data: { url: data.path },
+        });
+  
+        await this.prisma.imageable.create({
+          data: {
+            image_id: imageDb.id,
+            imageable_id: id,
+            imageable_type: this.IMAGEABLE_TYPE,
+          },
+        });
       }
     }
-
+  
+    // Retornar servicio actualizado
     return this.findOne(id);
   }
+  
 
   /**
    * Elimina un servicio solo si pertenece al emprendimiento autenticado.
    */
-  async remove(
-    id: number,
-    emprendimientoId: number
-  ) {
-    const relation = await this.prisma.servicioEmprendedor.findFirst({
-      where: { servicioId: id, emprendimientoId }
-    });
-    if (!relation) throw new NotFoundException('Servicio no encontrado para este emprendimiento');
-
+  async remove(id: number, emprendimientoId?: number) {
+    // Validar existencia del servicio
+    const servicio = await this.prisma.servicio.findUnique({ where: { id } });
+    if (!servicio) {
+      throw new NotFoundException('Servicio no encontrado');
+    }
+  
+    // Si no es SuperAdmin, validar relación con el emprendimiento
+    if (emprendimientoId) {
+      const relation = await this.prisma.servicioEmprendedor.findFirst({
+        where: { servicioId: id, emprendimientoId }
+      });
+      if (!relation) {
+        throw new ForbiddenException('No tienes permisos para eliminar este servicio');
+      }
+    }
+  
+    // Eliminar imágenes relacionadas del bucket y base de datos
     const imgs = await this.prisma.imageable.findMany({
       where: { imageable_type: this.IMAGEABLE_TYPE, imageable_id: id },
       include: { image: true }
     });
+  
     for (const item of imgs) {
       await this.supabaseService.deleteFile(this.BUCKET_NAME, item.image.url);
       await this.prisma.imageable.delete({ where: { id: item.id } });
       await this.prisma.image.delete({ where: { id: item.image.id } });
     }
-
+  
+    // Eliminar el servicio
     return this.prisma.servicio.delete({ where: { id } });
   }
+  
 
   /**
    * Actualiza el estado de un servicio si pertenece al emprendimiento autenticado.

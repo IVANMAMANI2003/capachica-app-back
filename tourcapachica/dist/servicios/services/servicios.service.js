@@ -82,74 +82,112 @@ let ServiciosService = class ServiciosService {
             return Object.assign(Object.assign({}, s), { imagenes: imgs.map(i => ({ id: i.image.id, url: i.image.url })) });
         }));
     }
-    async findOne(id) {
+    async findOne(id, emprendimientoId) {
         const servicio = await this.prisma.servicio.findUnique({
             where: { id },
             include: {
                 tipoServicio: true,
                 serviciosEmprendedores: {
                     select: {
-                        emprendimientoId: true
-                    }
-                }
-            }
+                        emprendimientoId: true,
+                    },
+                },
+            },
         });
         if (!servicio)
             throw new common_1.NotFoundException(`Servicio ${id} no encontrado`);
+        if (emprendimientoId) {
+            const relation = await this.prisma.servicioEmprendedor.findFirst({
+                where: { servicioId: id, emprendimientoId },
+            });
+            if (!relation) {
+                throw new common_1.ForbiddenException('No tienes acceso a este servicio');
+            }
+        }
         const imgs = await this.prisma.imageable.findMany({
             where: { imageable_type: this.IMAGEABLE_TYPE, imageable_id: id },
-            include: { image: true }
+            include: { image: true },
         });
         return Object.assign(Object.assign({}, servicio), { imagenes: imgs.map(i => ({ id: i.image.id, url: i.image.url })) });
     }
     async findByEmprendimiento(emprendimientoId) {
         return this.prisma.servicio.findMany({
-            where: { serviciosEmprendedores: { some: { emprendimientoId } } },
+            where: {
+                serviciosEmprendedores: {
+                    some: {
+                        emprendimientoId,
+                    },
+                },
+            },
             include: {
                 tipoServicio: true,
-                serviciosEmprendedores: { include: { emprendimiento: true } }
-            }
+                serviciosEmprendedores: {
+                    select: {
+                        emprendimientoId: true,
+                    },
+                },
+            },
         });
     }
     async update(id, updateDto, emprendimientoId) {
         const relation = await this.prisma.servicioEmprendedor.findFirst({
-            where: { servicioId: id, emprendimientoId }
+            where: { servicioId: id, emprendimientoId },
         });
-        if (!relation)
+        if (!relation) {
             throw new common_1.NotFoundException('Servicio no encontrado para este emprendimiento');
+        }
         const { imagenes } = updateDto, servicioData = __rest(updateDto, ["imagenes"]);
-        await this.prisma.servicio.update({ where: { id }, data: servicioData });
+        await this.prisma.servicio.update({
+            where: { id },
+            data: servicioData,
+        });
         if (imagenes) {
-            const old = await this.prisma.imageable.findMany({
-                where: { imageable_type: this.IMAGEABLE_TYPE, imageable_id: id },
-                include: { image: true }
+            const oldImageables = await this.prisma.imageable.findMany({
+                where: {
+                    imageable_type: this.IMAGEABLE_TYPE,
+                    imageable_id: id,
+                },
+                include: { image: true },
             });
-            for (const item of old) {
+            for (const item of oldImageables) {
                 await this.supabaseService.deleteFile(this.BUCKET_NAME, item.image.url);
                 await this.prisma.imageable.delete({ where: { id: item.id } });
                 await this.prisma.image.delete({ where: { id: item.image.id } });
             }
             for (const img of imagenes) {
-                const filePath = `${id}/${Date.now()}-${img.url.split('/').pop()}`;
+                const fileName = img.url.split('/').pop();
+                const filePath = `${id}/${Date.now()}-${fileName}`;
                 const { data, error } = await this.supabaseService.uploadFile(this.BUCKET_NAME, filePath, img.url);
-                if (error)
+                if (error) {
                     throw new common_1.BadRequestException(`Error al subir imagen: ${error.message}`);
-                const imageDb = await this.prisma.image.create({ data: { url: data.path } });
-                await this.prisma.imageable.create({ data: {
+                }
+                const imageDb = await this.prisma.image.create({
+                    data: { url: data.path },
+                });
+                await this.prisma.imageable.create({
+                    data: {
                         image_id: imageDb.id,
                         imageable_id: id,
-                        imageable_type: this.IMAGEABLE_TYPE
-                    } });
+                        imageable_type: this.IMAGEABLE_TYPE,
+                    },
+                });
             }
         }
         return this.findOne(id);
     }
     async remove(id, emprendimientoId) {
-        const relation = await this.prisma.servicioEmprendedor.findFirst({
-            where: { servicioId: id, emprendimientoId }
-        });
-        if (!relation)
-            throw new common_1.NotFoundException('Servicio no encontrado para este emprendimiento');
+        const servicio = await this.prisma.servicio.findUnique({ where: { id } });
+        if (!servicio) {
+            throw new common_1.NotFoundException('Servicio no encontrado');
+        }
+        if (emprendimientoId) {
+            const relation = await this.prisma.servicioEmprendedor.findFirst({
+                where: { servicioId: id, emprendimientoId }
+            });
+            if (!relation) {
+                throw new common_1.ForbiddenException('No tienes permisos para eliminar este servicio');
+            }
+        }
         const imgs = await this.prisma.imageable.findMany({
             where: { imageable_type: this.IMAGEABLE_TYPE, imageable_id: id },
             include: { image: true }
