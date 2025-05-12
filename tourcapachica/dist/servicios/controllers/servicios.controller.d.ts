@@ -5,7 +5,7 @@ import { UpdateEstadoDto } from '../dto/update-estado.dto';
 export declare class ServiciosController {
     private readonly serviciosService;
     constructor(serviciosService: ServiciosService);
-    create(createServicioPayloadDto: CreateServicioPayloadDto, req: any): Promise<{
+    create(payload: CreateServicioPayloadDto, req: any): Promise<{
         imagenes: {
             id: number;
             url: string;

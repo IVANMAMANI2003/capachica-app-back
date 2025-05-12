@@ -19,75 +19,65 @@ export class ServiciosController {
   constructor(private readonly serviciosService: ServiciosService) {}
 
   @Post()
-@UseGuards(JwtAuthGuard, RolesGuard)
-@Roles('Emprendedor', 'SuperAdmin')
-@ApiBearerAuth()
-@ApiOperation({ summary: 'Crear un nuevo servicio' })
-@ApiResponse({ status: 201, description: 'Servicio creado exitosamente' })
-@ApiResponse({ status: 400, description: 'Datos inválidos' })
-@ApiResponse({ status: 403, description: 'Rol no autorizado' })
-async create(
-  @Body() createServicioPayloadDto: CreateServicioPayloadDto, // Cambio aquí
-  @Req() req
-) {
-  try {
-    const user = req.user;
-    const roles = user.roles || [];
-    const role = roles[0]; // Ajusta si necesitas soporte para múltiples roles
-    let emprendimientoId: number;
-
-    console.log('🧾 Usuario autenticado:', user);
-    console.log('📦 DTO recibido:', createServicioPayloadDto);
-    console.log('✅ Rol obtenido:', role);
-
-    // Obtener el servicio desde el payload
-    const { servicio } = createServicioPayloadDto;
-
-    if (role === 'SuperAdmin') {
-      if (!createServicioPayloadDto.emprendimientoId) {
-        throw new BadRequestException(
-          'El campo emprendimientoId es obligatorio para SuperAdmin'
-        );
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('Emprendedor', 'SuperAdmin')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Crear un nuevo servicio' })
+  @ApiResponse({ status: 201, description: 'Servicio creado exitosamente' })
+  @ApiResponse({ status: 400, description: 'Datos inválidos' })
+  @ApiResponse({ status: 403, description: 'Rol no autorizado' })
+  async create(
+    @Body() payload: CreateServicioPayloadDto,
+    @Req() req
+  ) {
+    try {
+      const user = req.user;
+      const roles = user.roles || [];
+      const role = roles[0]; // Asume un solo rol
+      let emprendimientoId: number;
+  
+      console.log('🧾 Usuario autenticado:', user);
+      console.log('📦 Payload recibido:', payload);
+      console.log('✅ Rol obtenido:', role);
+  
+      if (role === 'SuperAdmin') {
+        if (!payload.emprendimientoId) {
+          throw new BadRequestException(
+            'El campo emprendimientoId es obligatorio para SuperAdmin'
+          );
+        }
+        emprendimientoId = payload.emprendimientoId;
+      } else if (role === 'Emprendedor') {
+        if (!user.emprendimientoId) {
+          throw new BadRequestException(
+            'No se pudo obtener el emprendimientoId desde el token'
+          );
+        }
+        emprendimientoId = user.emprendimientoId;
+      } else {
+        throw new ForbiddenException('Rol no autorizado para crear servicios');
       }
-      emprendimientoId = createServicioPayloadDto.emprendimientoId;
-    } else if (role === 'Emprendedor') {
-      if (!user.emprendimientoId) {
-        throw new BadRequestException(
-          'No se pudo obtener el emprendimientoId desde el token'
-        );
+  
+      console.log('🔑 Emprendimiento ID usado:', emprendimientoId);
+  
+      const servicio = await this.serviciosService.create(
+        payload.servicio,
+        emprendimientoId
+      );
+  
+      return servicio;
+    } catch (error) {
+      console.error('🚨 Error al crear el servicio:', error);
+      if (error instanceof HttpException) {
+        throw error;
       }
-      emprendimientoId = user.emprendimientoId;
-    } else {
-      throw new ForbiddenException(
-        'Rol no autorizado para crear servicios'
+      throw new HttpException(
+        'Error interno al crear el servicio',
+        HttpStatus.BAD_REQUEST
       );
     }
-
-    console.log('🔑 Emprendimiento ID:', emprendimientoId);
-
-    // Aquí ya se crea el servicio con el emprendimientoId correspondiente
-    const servicioCreado = await this.serviciosService.create(
-      servicio, // Enviamos el servicio extraído del DTO
-      emprendimientoId
-    );
-
-    return servicioCreado;
-  } catch (error) {
-    console.error('🚨 Error al crear el servicio:', error);
-
-    if (error instanceof HttpException) {
-      throw error;
-    }
-
-    throw new HttpException(
-      'Error interno al crear el servicio',
-      HttpStatus.BAD_REQUEST
-    );
   }
-}
-
-
-
+  
 
   
     @Get()

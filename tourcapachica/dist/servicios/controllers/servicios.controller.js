@@ -27,21 +27,20 @@ let ServiciosController = class ServiciosController {
     constructor(serviciosService) {
         this.serviciosService = serviciosService;
     }
-    async create(createServicioPayloadDto, req) {
+    async create(payload, req) {
         try {
             const user = req.user;
             const roles = user.roles || [];
             const role = roles[0];
             let emprendimientoId;
             console.log('🧾 Usuario autenticado:', user);
-            console.log('📦 DTO recibido:', createServicioPayloadDto);
+            console.log('📦 Payload recibido:', payload);
             console.log('✅ Rol obtenido:', role);
-            const { servicio } = createServicioPayloadDto;
             if (role === 'SuperAdmin') {
-                if (!createServicioPayloadDto.emprendimientoId) {
+                if (!payload.emprendimientoId) {
                     throw new common_1.BadRequestException('El campo emprendimientoId es obligatorio para SuperAdmin');
                 }
-                emprendimientoId = createServicioPayloadDto.emprendimientoId;
+                emprendimientoId = payload.emprendimientoId;
             }
             else if (role === 'Emprendedor') {
                 if (!user.emprendimientoId) {
@@ -52,9 +51,9 @@ let ServiciosController = class ServiciosController {
             else {
                 throw new common_1.ForbiddenException('Rol no autorizado para crear servicios');
             }
-            console.log('🔑 Emprendimiento ID:', emprendimientoId);
-            const servicioCreado = await this.serviciosService.create(servicio, emprendimientoId);
-            return servicioCreado;
+            console.log('🔑 Emprendimiento ID usado:', emprendimientoId);
+            const servicio = await this.serviciosService.create(payload.servicio, emprendimientoId);
+            return servicio;
         }
         catch (error) {
             console.error('🚨 Error al crear el servicio:', error);
