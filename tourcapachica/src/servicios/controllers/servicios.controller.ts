@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseIntPipe, Req, HttpException, HttpStatus, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseIntPipe, Req, HttpException, HttpStatus, BadRequestException, ForbiddenException, Request } from '@nestjs/common';
 import { ServiciosService } from '../services/servicios.service';
 import { CreateServicioDto } from '../dto/create-servicio.dto';
 import { UpdateServicioDto } from '../dto/update-servicio.dto';
@@ -18,44 +18,36 @@ import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 export class ServiciosController {
   constructor(private readonly serviciosService: ServiciosService) {}
 
-    @Post()
+  @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('Emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Crear un nuevo servicio' })
   @ApiResponse({ status: 201, description: 'Servicio creado exitosamente' })
   @ApiResponse({ status: 400, description: 'Datos inválidos' })
-  async create(@Body() createServicioDto: CreateServicioDto, @Req() req) {
-    try {
-      const user = req.user;
-      const role = user.roles?.[0]; 
-      let emprendimientoId: number;
+  async create(@Body() createServicioDto: CreateServicioDto, @Request() req) {
+    const user = req.user; // Obtén el usuario autenticado
+    
+    let emprendimientoId: number;
 
-      console.log('🧾 Usuario autenticado:', user);
-      console.log('📦 DTO recibido:', createServicioDto);
-      console.log('✅ Rol obtenido:', role);
-
-      if (role === 'SuperAdmin') {
-        if (!createServicioDto.emprendimientoId) {
-          throw new BadRequestException('El campo emprendimientoId es obligatorio para SuperAdmin');
-        }
-        emprendimientoId = createServicioDto.emprendimientoId;
-      } else if (role === 'Emprendedor') {
-        if (!user.emprendimientoId) {
-          throw new BadRequestException('No se pudo obtener el emprendimiento desde el token');
-        }
-        emprendimientoId = user.emprendimientoId;
-      } else {
-        throw new BadRequestException('Rol no autorizado para crear servicios');
+    // Si es un SuperAdmin, puede enviar el emprendimientoId en el body
+    if (user.roles.includes('SuperAdmin') && createServicioDto.emprendimientoId) {
+      emprendimientoId = createServicioDto.emprendimientoId;
+    } else if (user.roles.includes('Emprendedor')) {
+      // Si es un Emprendedor, tomamos el emprendimientoId del usuario logueado
+      if (!user.emprendimientoId) {
+        throw new BadRequestException('No hay emprendimiento asociado al usuario');
       }
-
-      return await this.serviciosService.create(createServicioDto, emprendimientoId);
-    } catch (error) {
-      console.error('🚨 Error al crear el servicio:', error);
-      if (error instanceof HttpException) throw error;
-      throw new HttpException('Error al crear el servicio', HttpStatus.BAD_REQUEST);
+      emprendimientoId = user.emprendimientoId;
+    } else {
+      // Si no tiene el rol adecuado
+      throw new ForbiddenException('Rol no autorizado para crear servicios');
     }
+
+    // Llamar al servicio para crear el servicio
+    return this.serviciosService.create(createServicioDto, emprendimientoId);
   }
+
 
   
     @Get()

@@ -18,12 +18,9 @@ export class ServiciosService {
   /**
    * Crea un servicio y lo asocia al emprendimiento indicado.
    */
-  async create(
-    createServicioDto: CreateServicioDto,
-    emprendimientoId: number
-  ) {
+  async create(createServicioDto: CreateServicioDto, emprendimientoId: number) {
     if (!emprendimientoId) {
-      throw new BadRequestException('No hay emprendimiento activo');
+      throw new BadRequestException('No hay emprendimiento asociado al servicio');
     }
 
     const { imagenes, ...servicioData } = createServicioDto;
@@ -32,8 +29,6 @@ export class ServiciosService {
       const creado = await tx.servicio.create({
         data: {
           ...servicioData,
-          moneda: servicioData.moneda || 'PEN',
-          estado: servicioData.estado || 'activo',
           serviciosEmprendedores: {
             create: { emprendimientoId }
           }
@@ -66,6 +61,9 @@ export class ServiciosService {
 
     return this.findOne(servicio.id);
   }
+
+
+  
 
   /**
    * Obtiene todos los servicios (públicos).

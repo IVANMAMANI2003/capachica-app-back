@@ -33,12 +33,12 @@ let ServiciosService = class ServiciosService {
     }
     async create(createServicioDto, emprendimientoId) {
         if (!emprendimientoId) {
-            throw new common_1.BadRequestException('No hay emprendimiento activo');
+            throw new common_1.BadRequestException('No hay emprendimiento asociado al servicio');
         }
         const { imagenes } = createServicioDto, servicioData = __rest(createServicioDto, ["imagenes"]);
         const servicio = await this.prisma.$transaction(async (tx) => {
             const creado = await tx.servicio.create({
-                data: Object.assign(Object.assign({}, servicioData), { moneda: servicioData.moneda || 'PEN', estado: servicioData.estado || 'activo', serviciosEmprendedores: {
+                data: Object.assign(Object.assign({}, servicioData), { serviciosEmprendedores: {
                         create: { emprendimientoId }
                     } })
             });
