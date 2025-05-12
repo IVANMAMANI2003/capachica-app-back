@@ -206,12 +206,20 @@ let ServiciosService = class ServiciosService {
         const relation = await this.prisma.servicioEmprendedor.findFirst({
             where: { servicioId: id, emprendimientoId }
         });
-        if (!relation)
+        if (!relation) {
             throw new common_1.NotFoundException('Servicio no encontrado para este emprendimiento');
+        }
         return this.prisma.servicio.update({
             where: { id },
             data: { estado },
-            include: { tipoServicio: true, serviciosEmprendedores: { include: { emprendimiento: true } } }
+            include: {
+                tipoServicio: true,
+                serviciosEmprendedores: {
+                    include: {
+                        emprendimiento: true
+                    }
+                }
+            }
         });
     }
     async createDisponibilidad(dto) {

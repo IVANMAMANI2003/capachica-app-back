@@ -196,19 +196,21 @@ export class ServiciosController {
     @ApiResponse({ status: 200, description: 'Estado actualizado', type: ServicioEntity })
     @ApiResponse({ status: 400, description: 'Estado inválido' })
     @ApiResponse({ status: 404, description: 'Servicio no encontrado' })
-    updateEstado(
+    async updateEstado(
       @Param('id') id: string,
       @Body() updateEstadoDto: UpdateEstadoDto,
-      @Req() req
+      @Req() req: any
     ) {
       const emprendimientoId: number = req.user.emprendimientoId;
       return this.serviciosService.updateEstado(+id, updateEstadoDto.estado, emprendimientoId);
     }
+
+    
   
     @Get('tipo-servicio/:tipoServicioId')
     @ApiOperation({ summary: 'Obtener servicios por tipo de servicio' })
     @ApiResponse({ status: 200, description: 'Lista de servicios del tipo especificado', type: [ServicioEntity] })
-    findByTipoServicio(@Param('tipoServicioId') tipoServicioId: string) {
+    async findByTipoServicio(@Param('tipoServicioId') tipoServicioId: string) {
       return this.serviciosService.findByTipoServicio(+tipoServicioId);
     }
   }

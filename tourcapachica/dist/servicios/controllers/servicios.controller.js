@@ -124,11 +124,11 @@ let ServiciosController = class ServiciosController {
         }
         return this.serviciosService.remove(+id, emprendimientoId);
     }
-    updateEstado(id, updateEstadoDto, req) {
+    async updateEstado(id, updateEstadoDto, req) {
         const emprendimientoId = req.user.emprendimientoId;
         return this.serviciosService.updateEstado(+id, updateEstadoDto.estado, emprendimientoId);
     }
-    findByTipoServicio(tipoServicioId) {
+    async findByTipoServicio(tipoServicioId) {
         return this.serviciosService.findByTipoServicio(+tipoServicioId);
     }
 };
@@ -212,7 +212,7 @@ __decorate([
     __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, update_estado_dto_1.UpdateEstadoDto, Object]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], ServiciosController.prototype, "updateEstado", null);
 __decorate([
     (0, common_1.Get)('tipo-servicio/:tipoServicioId'),
@@ -221,7 +221,7 @@ __decorate([
     __param(0, (0, common_1.Param)('tipoServicioId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], ServiciosController.prototype, "findByTipoServicio", null);
 exports.ServiciosController = ServiciosController = __decorate([
     (0, swagger_1.ApiTags)('servicios'),

@@ -291,18 +291,31 @@ export class ServiciosService {
     estado: string,
     emprendimientoId: number
   ) {
-    if (!['activo','inactivo'].includes(estado)) {
+    // Validación de estado
+    if (!['activo', 'inactivo'].includes(estado)) {
       throw new BadRequestException('Estado inválido');
     }
+  
+    // Verificación de existencia y relación con el emprendimiento
     const relation = await this.prisma.servicioEmprendedor.findFirst({
       where: { servicioId: id, emprendimientoId }
     });
-    if (!relation) throw new NotFoundException('Servicio no encontrado para este emprendimiento');
-
+    if (!relation) {
+      throw new NotFoundException('Servicio no encontrado para este emprendimiento');
+    }
+  
+    // Actualización del servicio
     return this.prisma.servicio.update({
       where: { id },
-      data: { estado },
-      include: { tipoServicio: true, serviciosEmprendedores:{ include:{ emprendimiento:true } } }
+      data: { estado },  // Solo actualizamos el estado
+      include: {
+        tipoServicio: true,  // Incluimos información sobre el tipo de servicio
+        serviciosEmprendedores: { 
+          include: {
+            emprendimiento: true  // Incluimos el emprendimiento relacionado
+          }
+        }
+      }
     });
   }
 
