@@ -138,4 +138,81 @@ export class ReservasService {
       },
     });
   }
-} 
+
+  async validateDisponibilidad(carrito: any[]) {
+    for (const item of carrito) {
+      if (item.tipo === 'servicio') {
+        const disponibilidad = await this.prisma.servicioDisponibilidad.findMany({
+          where: {
+            servicioId: item.id,
+            fechaInicio: item.fechaInicio,
+            fechaFin: item.fechaFin,
+            cuposDisponibles: {
+              gte: item.cantidadPersonas,
+            },
+          },
+        });
+        if (disponibilidad.length === 0) {
+          throw new BadRequestException(`No hay disponibilidad para el servicio con ID ${item.id}`);
+        }
+      } else if (item.tipo === 'paquete') {
+        const disponibilidad = await this.prisma.disponibilidadPaquete.findMany({
+          where: {
+            paqueteId: item.id,
+            fechaInicio: item.fechaInicio,
+            fechaFin: item.fechaFin,
+            cuposDisponibles: {
+              gte: item.cantidadPersonas,
+            },
+          },
+        });
+        if (disponibilidad.length === 0) {
+          throw new BadRequestException(`No hay disponibilidad para el paquete con ID ${item.id}`);
+        }
+      }
+    }
+  }
+
+  async recalculatePrices(carrito: any[]) {
+    let precioTotal = 0;
+    for (const item of carrito) {
+      if (item.tipo === 'servicio') {
+        const servicio = await this.prisma.servicio.findUnique({
+          where: { id: item.id },
+        });
+        if (!servicio) {
+          throw new NotFoundException(`Servicio con ID ${item.id} no encontrado`);
+        }
+        precioTotal = Number(precioTotal) + (Number(servicio.precioBase) * Number(item.cantidadPersonas));
+      } else if (item.tipo === 'paquete') {
+        const paquete = await this.prisma.paqueteTuristico.findUnique({
+          where: { id: item.id },
+        });
+        if (!paquete) {
+          throw new NotFoundException(`Paquete con ID ${item.id} no encontrado`);
+        }
+        precioTotal = Number(precioTotal) + (Number(paquete.precio) * Number(item.cantidadPersonas));
+      }
+    }
+    const impuestos = precioTotal * 0.18; // Ejemplo de cálculo de impuestos
+    const comisiones = precioTotal * 0.05; // Ejemplo de cálculo de comisiones
+    return precioTotal + impuestos + comisiones;
+  }
+
+  async createItinerarioVinculado(reservaId: number, itinerarios: any[]) {
+    for (const itinerario of itinerarios) {
+      await this.prisma.itinerarioReserva.create({
+        data: {
+          reservaId,
+          fecha: itinerario.fecha,
+          horarioCierre: itinerario.horarioCierre,
+          tipoEvento: itinerario.tipoEvento,
+          descripcion: itinerario.descripcion,
+          notas: itinerario.notas,
+          duracion: itinerario.duracion,
+          servicioId: itinerario.servicioId,
+        },
+      });
+    }
+  }
+}

@@ -120,6 +120,82 @@ let ReservasService = class ReservasService {
             },
         });
     }
+    async validateDisponibilidad(carrito) {
+        for (const item of carrito) {
+            if (item.tipo === 'servicio') {
+                const disponibilidad = await this.prisma.servicioDisponibilidad.findMany({
+                    where: {
+                        servicioId: item.id,
+                        fechaInicio: item.fechaInicio,
+                        fechaFin: item.fechaFin,
+                        cuposDisponibles: {
+                            gte: item.cantidadPersonas,
+                        },
+                    },
+                });
+                if (disponibilidad.length === 0) {
+                    throw new common_1.BadRequestException(`No hay disponibilidad para el servicio con ID ${item.id}`);
+                }
+            }
+            else if (item.tipo === 'paquete') {
+                const disponibilidad = await this.prisma.disponibilidadPaquete.findMany({
+                    where: {
+                        paqueteId: item.id,
+                        fechaInicio: item.fechaInicio,
+                        fechaFin: item.fechaFin,
+                        cuposDisponibles: {
+                            gte: item.cantidadPersonas,
+                        },
+                    },
+                });
+                if (disponibilidad.length === 0) {
+                    throw new common_1.BadRequestException(`No hay disponibilidad para el paquete con ID ${item.id}`);
+                }
+            }
+        }
+    }
+    async recalculatePrices(carrito) {
+        let precioTotal = 0;
+        for (const item of carrito) {
+            if (item.tipo === 'servicio') {
+                const servicio = await this.prisma.servicio.findUnique({
+                    where: { id: item.id },
+                });
+                if (!servicio) {
+                    throw new common_1.NotFoundException(`Servicio con ID ${item.id} no encontrado`);
+                }
+                precioTotal = Number(precioTotal) + (Number(servicio.precioBase) * Number(item.cantidadPersonas));
+            }
+            else if (item.tipo === 'paquete') {
+                const paquete = await this.prisma.paqueteTuristico.findUnique({
+                    where: { id: item.id },
+                });
+                if (!paquete) {
+                    throw new common_1.NotFoundException(`Paquete con ID ${item.id} no encontrado`);
+                }
+                precioTotal = Number(precioTotal) + (Number(paquete.precio) * Number(item.cantidadPersonas));
+            }
+        }
+        const impuestos = precioTotal * 0.18;
+        const comisiones = precioTotal * 0.05;
+        return precioTotal + impuestos + comisiones;
+    }
+    async createItinerarioVinculado(reservaId, itinerarios) {
+        for (const itinerario of itinerarios) {
+            await this.prisma.itinerarioReserva.create({
+                data: {
+                    reservaId,
+                    fecha: itinerario.fecha,
+                    horarioCierre: itinerario.horarioCierre,
+                    tipoEvento: itinerario.tipoEvento,
+                    descripcion: itinerario.descripcion,
+                    notas: itinerario.notas,
+                    duracion: itinerario.duracion,
+                    servicioId: itinerario.servicioId,
+                },
+            });
+        }
+    }
 };
 exports.ReservasService = ReservasService;
 exports.ReservasService = ReservasService = __decorate([
