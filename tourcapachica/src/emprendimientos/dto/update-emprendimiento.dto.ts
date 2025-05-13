@@ -1,6 +1,7 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { CreateEmprendimientoDto } from './create-emprendimiento.dto';
 import { ImageDto } from './create-emprendimiento.dto';
+import { IsObject, IsOptional } from 'class-validator';
 
 export class UpdateEmprendimientoDto extends PartialType(CreateEmprendimientoDto) {
   @ApiProperty({
@@ -93,15 +94,20 @@ export class UpdateEmprendimientoDto extends PartialType(CreateEmprendimientoDto
   sitioWeb?: string;
 
   @ApiProperty({
-    description: 'Redes sociales del emprendimiento',
+    description: 'Redes sociales del emprendimiento. Cada clave es el nombre de la red social y el valor es su URL.',
     example: {
       facebook: 'https://facebook.com/restaurante',
-      instagram: 'https://instagram.com/restaurante'
+      instagram: 'https://instagram.com/restaurante',
+      tiktok: 'https://tiktok.com/@restaurante',
+      youtube: 'https://youtube.com/c/restaurante'
     },
     required: false,
-    type: Object
+    type: 'object',
+    additionalProperties: { type: 'string' }
   })
-  redesSociales?: string;
+  @IsOptional()
+  @IsObject()
+  redesSociales?: { [key: string]: string };
 
   @ApiProperty({
     description: 'Estado del emprendimiento',

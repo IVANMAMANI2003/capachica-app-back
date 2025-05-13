@@ -160,17 +160,20 @@ __decorate([
 ], CreateEmprendimientoDto.prototype, "sitioWeb", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Redes sociales del emprendimiento',
+        description: 'Redes sociales del emprendimiento. Cada clave es el nombre de la red social y el valor es su URL.',
         example: {
             facebook: 'https://facebook.com/restaurante',
-            instagram: 'https://instagram.com/restaurante'
+            instagram: 'https://instagram.com/restaurante',
+            tiktok: 'https://tiktok.com/@restaurante',
+            youtube: 'https://youtube.com/c/restaurante'
         },
         required: false,
-        type: Object
+        type: 'object',
+        additionalProperties: { type: 'string' }
     }),
-    (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
+    (0, class_validator_1.IsObject)(),
+    __metadata("design:type", Object)
 ], CreateEmprendimientoDto.prototype, "redesSociales", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({

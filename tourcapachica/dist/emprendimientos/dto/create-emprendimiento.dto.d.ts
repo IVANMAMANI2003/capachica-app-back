@@ -13,7 +13,9 @@ export declare class CreateEmprendimientoDto {
     contactoTelefono?: string;
     contactoEmail?: string;
     sitioWeb?: string;
-    redesSociales?: string;
+    redesSociales?: {
+        [key: string]: string;
+    };
     estado?: string;
     fechaAprobacion?: Date;
     imagenes?: ImageDto[];

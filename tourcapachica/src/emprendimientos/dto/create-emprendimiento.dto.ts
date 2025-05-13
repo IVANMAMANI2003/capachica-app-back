@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsOptional, IsBoolean, IsNumber, IsUrl, IsEnum, IsArray, MaxLength, IsEmail, IsDate } from 'class-validator';
+import {IsObject, IsString, IsNotEmpty, IsOptional, IsBoolean, IsNumber, IsUrl, IsEnum, IsArray, MaxLength, IsEmail, IsDate } from 'class-validator';
 import { Type } from 'class-transformer';
-
+import {  } from 'class-validator';
 export class ImageDto {
   @ApiProperty({
     description: 'URL de la imagen',
@@ -13,6 +13,9 @@ export class ImageDto {
   @IsNotEmpty()
   url: string;
 }
+
+
+
 
 export class CreateEmprendimientoDto {
   @ApiProperty({
@@ -131,17 +134,20 @@ export class CreateEmprendimientoDto {
   sitioWeb?: string;
 
   @ApiProperty({
-    description: 'Redes sociales del emprendimiento',
+    description: 'Redes sociales del emprendimiento. Cada clave es el nombre de la red social y el valor es su URL.',
     example: {
       facebook: 'https://facebook.com/restaurante',
-      instagram: 'https://instagram.com/restaurante'
+      instagram: 'https://instagram.com/restaurante',
+      tiktok: 'https://tiktok.com/@restaurante',
+      youtube: 'https://youtube.com/c/restaurante'
     },
     required: false,
-    type: Object
+    type: 'object',
+    additionalProperties: { type: 'string' }
   })
-  @IsString()
   @IsOptional()
-  redesSociales?: string;
+  @IsObject()
+  redesSociales?: { [key: string]: string };
 
   @ApiProperty({
     description: 'Estado del emprendimiento',

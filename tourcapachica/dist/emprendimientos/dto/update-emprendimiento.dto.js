@@ -13,6 +13,7 @@ exports.UpdateEmprendimientoDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const create_emprendimiento_dto_1 = require("./create-emprendimiento.dto");
 const create_emprendimiento_dto_2 = require("./create-emprendimiento.dto");
+const class_validator_1 = require("class-validator");
 class UpdateEmprendimientoDto extends (0, swagger_1.PartialType)(create_emprendimiento_dto_1.CreateEmprendimientoDto) {
 }
 exports.UpdateEmprendimientoDto = UpdateEmprendimientoDto;
@@ -119,15 +120,20 @@ __decorate([
 ], UpdateEmprendimientoDto.prototype, "sitioWeb", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'Redes sociales del emprendimiento',
+        description: 'Redes sociales del emprendimiento. Cada clave es el nombre de la red social y el valor es su URL.',
         example: {
             facebook: 'https://facebook.com/restaurante',
-            instagram: 'https://instagram.com/restaurante'
+            instagram: 'https://instagram.com/restaurante',
+            tiktok: 'https://tiktok.com/@restaurante',
+            youtube: 'https://youtube.com/c/restaurante'
         },
         required: false,
-        type: Object
+        type: 'object',
+        additionalProperties: { type: 'string' }
     }),
-    __metadata("design:type", String)
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsObject)(),
+    __metadata("design:type", Object)
 ], UpdateEmprendimientoDto.prototype, "redesSociales", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
