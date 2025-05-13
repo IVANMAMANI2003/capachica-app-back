@@ -18,9 +18,9 @@ export declare class EmprendimientosController {
         }[];
         usuario: {
             persona: {
+                id: number;
                 nombre: string;
                 direccion: string | null;
-                id: number;
                 createdAt: Date;
                 updatedAt: Date;
                 apellidos: string;
@@ -44,6 +44,7 @@ export declare class EmprendimientosController {
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue | null;
         };
+        id: number;
         usuarioId: number;
         lugarTuristicoId: number | null;
         nombre: string;
@@ -58,7 +59,6 @@ export declare class EmprendimientosController {
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
         estado: string;
         fechaAprobacion: Date | null;
-        id: number;
         createdAt: Date;
         updatedAt: Date;
     }>;
@@ -69,9 +69,9 @@ export declare class EmprendimientosController {
         }[];
         usuario: {
             persona: {
+                id: number;
                 nombre: string;
                 direccion: string | null;
-                id: number;
                 createdAt: Date;
                 updatedAt: Date;
                 apellidos: string;
@@ -95,6 +95,7 @@ export declare class EmprendimientosController {
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue | null;
         };
+        id: number;
         usuarioId: number;
         lugarTuristicoId: number | null;
         nombre: string;
@@ -109,7 +110,6 @@ export declare class EmprendimientosController {
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
         estado: string;
         fechaAprobacion: Date | null;
-        id: number;
         createdAt: Date;
         updatedAt: Date;
     }[]>;
@@ -120,9 +120,9 @@ export declare class EmprendimientosController {
         }[];
         usuario: {
             persona: {
+                id: number;
                 nombre: string;
                 direccion: string | null;
-                id: number;
                 createdAt: Date;
                 updatedAt: Date;
                 apellidos: string;
@@ -146,6 +146,7 @@ export declare class EmprendimientosController {
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue | null;
         };
+        id: number;
         usuarioId: number;
         lugarTuristicoId: number | null;
         nombre: string;
@@ -160,7 +161,6 @@ export declare class EmprendimientosController {
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
         estado: string;
         fechaAprobacion: Date | null;
-        id: number;
         createdAt: Date;
         updatedAt: Date;
     }[]>;
@@ -171,9 +171,9 @@ export declare class EmprendimientosController {
         }[];
         usuario: {
             persona: {
+                id: number;
                 nombre: string;
                 direccion: string | null;
-                id: number;
                 createdAt: Date;
                 updatedAt: Date;
                 apellidos: string;
@@ -197,6 +197,7 @@ export declare class EmprendimientosController {
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue | null;
         };
+        id: number;
         usuarioId: number;
         lugarTuristicoId: number | null;
         nombre: string;
@@ -211,7 +212,6 @@ export declare class EmprendimientosController {
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
         estado: string;
         fechaAprobacion: Date | null;
-        id: number;
         createdAt: Date;
         updatedAt: Date;
     }[]>;
@@ -222,9 +222,9 @@ export declare class EmprendimientosController {
         }[];
         usuario: {
             persona: {
+                id: number;
                 nombre: string;
                 direccion: string | null;
-                id: number;
                 createdAt: Date;
                 updatedAt: Date;
                 apellidos: string;
@@ -248,6 +248,7 @@ export declare class EmprendimientosController {
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue | null;
         };
+        id: number;
         usuarioId: number;
         lugarTuristicoId: number | null;
         nombre: string;
@@ -262,7 +263,6 @@ export declare class EmprendimientosController {
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
         estado: string;
         fechaAprobacion: Date | null;
-        id: number;
         createdAt: Date;
         updatedAt: Date;
     }>;
@@ -273,9 +273,9 @@ export declare class EmprendimientosController {
         }[];
         usuario: {
             persona: {
+                id: number;
                 nombre: string;
                 direccion: string | null;
-                id: number;
                 createdAt: Date;
                 updatedAt: Date;
                 apellidos: string;
@@ -299,6 +299,7 @@ export declare class EmprendimientosController {
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue | null;
         };
+        id: number;
         usuarioId: number;
         lugarTuristicoId: number | null;
         nombre: string;
@@ -313,34 +314,15 @@ export declare class EmprendimientosController {
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
         estado: string;
         fechaAprobacion: Date | null;
-        id: number;
         createdAt: Date;
         updatedAt: Date;
     }>;
     remove(id: string): Promise<{
         message: string;
     }>;
-    updateEstado(id: string, estado: string): Promise<{
-        usuarioId: number;
-        lugarTuristicoId: number | null;
-        nombre: string;
-        descripcion: string | null;
-        tipo: string;
-        direccion: string | null;
-        latitud: number | null;
-        longitud: number | null;
-        contactoTelefono: string | null;
-        contactoEmail: string | null;
-        sitioWeb: string | null;
-        redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
-        estado: string;
-        fechaAprobacion: Date | null;
-        id: number;
-        createdAt: Date;
-        updatedAt: Date;
-    }>;
     addFavorito(req: RequestWithUser, createFavoritoDto: CreateFavoritoDto): Promise<{
         emprendimiento: {
+            id: number;
             usuarioId: number;
             lugarTuristicoId: number | null;
             nombre: string;
@@ -355,13 +337,12 @@ export declare class EmprendimientosController {
             redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
             estado: string;
             fechaAprobacion: Date | null;
-            id: number;
             createdAt: Date;
             updatedAt: Date;
         };
     } & {
-        usuarioId: number;
         id: number;
+        usuarioId: number;
         createdAt: Date;
         updatedAt: Date;
         emprendimientoId: number;
@@ -376,9 +357,9 @@ export declare class EmprendimientosController {
         }[];
         usuario: {
             persona: {
+                id: number;
                 nombre: string;
                 direccion: string | null;
-                id: number;
                 createdAt: Date;
                 updatedAt: Date;
                 apellidos: string;
@@ -402,6 +383,7 @@ export declare class EmprendimientosController {
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue | null;
         };
+        id: number;
         usuarioId: number;
         lugarTuristicoId: number | null;
         nombre: string;
@@ -416,7 +398,6 @@ export declare class EmprendimientosController {
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
         estado: string;
         fechaAprobacion: Date | null;
-        id: number;
         createdAt: Date;
         updatedAt: Date;
     }[]>;

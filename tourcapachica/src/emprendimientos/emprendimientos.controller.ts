@@ -92,16 +92,6 @@ export class EmprendimientosController {
     return this.emprendimientosService.remove(+id);
   }
 
-  @Patch(':id/estado')
-  @Roles('SuperAdmin')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Actualizar el estado de un emprendimiento' })
-  @ApiResponse({ status: 200, description: 'Estado actualizado', type: EmprendimientoEntity })
-  @ApiResponse({ status: 404, description: 'Emprendimiento no encontrado' })
-  updateEstado(@Param('id') id: string, @Body('estado') estado: string) {
-    return this.emprendimientosService.updateEstado(+id, estado);
-  }
 
   // Endpoints para favoritos
   @Post('favoritos')

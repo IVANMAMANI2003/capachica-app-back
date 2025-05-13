@@ -49,9 +49,6 @@ let EmprendimientosController = class EmprendimientosController {
     remove(id) {
         return this.emprendimientosService.remove(+id);
     }
-    updateEstado(id, estado) {
-        return this.emprendimientosService.updateEstado(+id, estado);
-    }
     addFavorito(req, createFavoritoDto) {
         return this.emprendimientosService.addFavorito(req.user.id, createFavoritoDto);
     }
@@ -148,20 +145,6 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], EmprendimientosController.prototype, "remove", null);
-__decorate([
-    (0, common_1.Patch)(':id/estado'),
-    (0, roles_decorator_1.Roles)('SuperAdmin'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, swagger_1.ApiBearerAuth)(),
-    (0, swagger_1.ApiOperation)({ summary: 'Actualizar el estado de un emprendimiento' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Estado actualizado', type: emprendimiento_entity_1.EmprendimientoEntity }),
-    (0, swagger_1.ApiResponse)({ status: 404, description: 'Emprendimiento no encontrado' }),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)('estado')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
-    __metadata("design:returntype", void 0)
-], EmprendimientosController.prototype, "updateEstado", null);
 __decorate([
     (0, common_1.Post)('favoritos'),
     (0, swagger_1.ApiOperation)({ summary: 'Marcar un emprendimiento como favorito' }),
