@@ -6,20 +6,20 @@ export declare class TipoPagoController {
     constructor(tipoPagoService: TipoPagoService);
     create(createTipoPagoDto: CreateTipoPagoDto): Promise<{
         id: number;
-        nombre: string;
-        descripcion: string | null;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        descripcion: string | null;
+        activo: boolean;
         requiereVerificacion: boolean;
         comisionPorcentaje: import(".prisma/client/runtime/library").Decimal;
-        activo: boolean;
     }>;
     findAll(): Promise<({
         pagoDetalles: {
             id: number;
-            descripcion: string | null;
             createdAt: Date;
             updatedAt: Date;
+            descripcion: string | null;
             concepto: string;
             monto: import(".prisma/client/runtime/library").Decimal;
             porcentajeImpuesto: import(".prisma/client/runtime/library").Decimal;
@@ -29,20 +29,20 @@ export declare class TipoPagoController {
         }[];
     } & {
         id: number;
-        nombre: string;
-        descripcion: string | null;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        descripcion: string | null;
+        activo: boolean;
         requiereVerificacion: boolean;
         comisionPorcentaje: import(".prisma/client/runtime/library").Decimal;
-        activo: boolean;
     })[]>;
     findOne(id: string): Promise<{
         pagoDetalles: {
             id: number;
-            descripcion: string | null;
             createdAt: Date;
             updatedAt: Date;
+            descripcion: string | null;
             concepto: string;
             monto: import(".prisma/client/runtime/library").Decimal;
             porcentajeImpuesto: import(".prisma/client/runtime/library").Decimal;
@@ -52,32 +52,32 @@ export declare class TipoPagoController {
         }[];
     } & {
         id: number;
-        nombre: string;
-        descripcion: string | null;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        descripcion: string | null;
+        activo: boolean;
         requiereVerificacion: boolean;
         comisionPorcentaje: import(".prisma/client/runtime/library").Decimal;
-        activo: boolean;
     }>;
     update(id: string, updateTipoPagoDto: UpdateTipoPagoDto): Promise<{
         id: number;
-        nombre: string;
-        descripcion: string | null;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        descripcion: string | null;
+        activo: boolean;
         requiereVerificacion: boolean;
         comisionPorcentaje: import(".prisma/client/runtime/library").Decimal;
-        activo: boolean;
     }>;
     remove(id: string): Promise<{
         id: number;
-        nombre: string;
-        descripcion: string | null;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        descripcion: string | null;
+        activo: boolean;
         requiereVerificacion: boolean;
         comisionPorcentaje: import(".prisma/client/runtime/library").Decimal;
-        activo: boolean;
     }>;
 }

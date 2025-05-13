@@ -6,19 +6,19 @@ export declare class PermissionsService {
     constructor(prisma: PrismaService);
     create(createPermissionDto: CreatePermissionDto): Promise<{
         id: number;
-        nombre: string;
-        descripcion: string | null;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        descripcion: string | null;
     }>;
     findAll(): Promise<({
         rolesPermisos: ({
             rol: {
                 id: number;
-                nombre: string;
-                descripcion: string | null;
                 createdAt: Date;
                 updatedAt: Date;
+                nombre: string;
+                descripcion: string | null;
             };
         } & {
             id: number;
@@ -29,19 +29,19 @@ export declare class PermissionsService {
         })[];
     } & {
         id: number;
-        nombre: string;
-        descripcion: string | null;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        descripcion: string | null;
     })[]>;
     findOne(id: number): Promise<{
         rolesPermisos: ({
             rol: {
                 id: number;
-                nombre: string;
-                descripcion: string | null;
                 createdAt: Date;
                 updatedAt: Date;
+                nombre: string;
+                descripcion: string | null;
             };
         } & {
             id: number;
@@ -52,23 +52,23 @@ export declare class PermissionsService {
         })[];
     } & {
         id: number;
-        nombre: string;
-        descripcion: string | null;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        descripcion: string | null;
     }>;
     update(id: number, updatePermissionDto: UpdatePermissionDto): Promise<{
         id: number;
-        nombre: string;
-        descripcion: string | null;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        descripcion: string | null;
     }>;
     remove(id: number): Promise<{
         id: number;
-        nombre: string;
-        descripcion: string | null;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        descripcion: string | null;
     }>;
 }

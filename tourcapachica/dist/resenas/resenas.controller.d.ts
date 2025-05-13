@@ -8,60 +8,60 @@ export declare class ResenasController {
     constructor(resenasService: ResenasService);
     create(createResenaDto: CreateResenaDto, req: any): Promise<{
         id: number;
-        usuarioId: number | null;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        usuarioId: number | null;
+        estado: string;
         servicioId: number;
         calificacion: number;
         comentario: string | null;
     }>;
     findAll(): Promise<{
         id: number;
-        usuarioId: number | null;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        usuarioId: number | null;
+        estado: string;
         servicioId: number;
         calificacion: number;
         comentario: string | null;
     }[]>;
     findByServicio(servicioId: string): Promise<{
         id: number;
-        usuarioId: number | null;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        usuarioId: number | null;
+        estado: string;
         servicioId: number;
         calificacion: number;
         comentario: string | null;
     }[]>;
     findOne(id: string): Promise<{
         id: number;
-        usuarioId: number | null;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        usuarioId: number | null;
+        estado: string;
         servicioId: number;
         calificacion: number;
         comentario: string | null;
     }>;
     partialUpdate(id: string, updateResenaDto: UpdateResenaDto): Promise<{
         id: number;
-        usuarioId: number | null;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        usuarioId: number | null;
+        estado: string;
         servicioId: number;
         calificacion: number;
         comentario: string | null;
     }>;
     remove(id: string): Promise<{
         id: number;
-        usuarioId: number | null;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        usuarioId: number | null;
+        estado: string;
         servicioId: number;
         calificacion: number;
         comentario: string | null;
@@ -69,10 +69,10 @@ export declare class ResenasController {
     promedio(servicioId: string): Promise<PromedioResponseDto>;
     updateEstado(id: string, updateEstadoDto: UpdateEstadoDto): Promise<{
         id: number;
-        usuarioId: number | null;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        usuarioId: number | null;
+        estado: string;
         servicioId: number;
         calificacion: number;
         comentario: string | null;

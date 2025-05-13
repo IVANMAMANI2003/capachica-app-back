@@ -10,10 +10,10 @@ export declare class SlidersController {
             url: string;
         }[];
         id: number;
-        nombre: string;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        estado: string;
         description: string | null;
     }>;
     findAll(): Promise<{
@@ -22,10 +22,10 @@ export declare class SlidersController {
             url: string;
         }[];
         id: number;
-        nombre: string;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        estado: string;
         description: string | null;
     }[]>;
     findOne(id: string): Promise<{
@@ -34,10 +34,10 @@ export declare class SlidersController {
             url: string;
         }[];
         id: number;
-        nombre: string;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        estado: string;
         description: string | null;
     }>;
     update(id: string, updateSliderDto: UpdateSliderDto): Promise<{
@@ -46,18 +46,18 @@ export declare class SlidersController {
             url: string;
         }[];
         id: number;
-        nombre: string;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        estado: string;
         description: string | null;
     }>;
     remove(id: string): Promise<{
         id: number;
-        nombre: string;
-        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        estado: string;
         description: string | null;
     }>;
 }
