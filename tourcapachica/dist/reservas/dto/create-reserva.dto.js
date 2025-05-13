@@ -9,29 +9,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateReservaDto = exports.EstadoReserva = void 0;
+exports.CreateReservaDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
-var EstadoReserva;
-(function (EstadoReserva) {
-    EstadoReserva["PENDIENTE"] = "pendiente";
-    EstadoReserva["CONFIRMADA"] = "confirmada";
-    EstadoReserva["CANCELADA"] = "cancelada";
-    EstadoReserva["COMPLETADA"] = "completada";
-})(EstadoReserva || (exports.EstadoReserva = EstadoReserva = {}));
+const estado_reserva_enum_1 = require("../enums/estado-reserva.enum");
 class CreateReservaDto {
 }
 exports.CreateReservaDto = CreateReservaDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
-        description: 'ID del turista que realiza la reserva',
+        description: 'ID del usuario que realiza la reserva',
         example: 1,
     }),
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
-], CreateReservaDto.prototype, "turistaId", void 0);
+], CreateReservaDto.prototype, "usuarioId", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Código único de la reserva',
@@ -106,10 +100,10 @@ __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Estado de la reserva',
         example: 'pendiente',
-        enum: EstadoReserva,
-        default: EstadoReserva.PENDIENTE,
+        enum: estado_reserva_enum_1.EstadoReserva,
+        default: estado_reserva_enum_1.EstadoReserva.PENDIENTE,
     }),
-    (0, class_validator_1.IsEnum)(EstadoReserva),
+    (0, class_validator_1.IsEnum)(estado_reserva_enum_1.EstadoReserva),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateReservaDto.prototype, "estado", void 0);

@@ -94,16 +94,4 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Number)
 ], CreateItinerarioReservaDto.prototype, "servicioId", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'IDs de los lugares turísticos incluidos en el itinerario',
-        example: [1, 2, 3],
-        required: false,
-        type: [Number],
-    }),
-    (0, class_validator_1.IsArray)(),
-    (0, class_validator_1.IsNumber)({}, { each: true }),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", Array)
-], CreateItinerarioReservaDto.prototype, "lugaresTuristicosIds", void 0);
 //# sourceMappingURL=create-itinerario-reserva.dto.js.map

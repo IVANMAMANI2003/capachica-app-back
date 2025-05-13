@@ -27,6 +27,15 @@ __decorate([
 ], UpdateEmprendimientoDto.prototype, "usuarioId", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
+        description: 'ID del Lugarturistico en la que esta el emprendimiento',
+        example: 1,
+        required: false,
+        type: Number
+    }),
+    __metadata("design:type", Number)
+], UpdateEmprendimientoDto.prototype, "lugarTuristicoIdId", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
         description: 'Nombre del emprendimiento',
         example: 'Restaurante La Isla',
         required: false,

@@ -73,14 +73,5 @@ export class CreateItinerarioReservaDto {
   @IsOptional()
   servicioId?: number;
 
-  @ApiProperty({
-    description: 'IDs de los lugares turísticos incluidos en el itinerario',
-    example: [1, 2, 3],
-    required: false,
-    type: [Number],
-  })
-  @IsArray()
-  @IsNumber({}, { each: true })
-  @IsOptional()
-  lugaresTuristicosIds?: number[];
+
 } 

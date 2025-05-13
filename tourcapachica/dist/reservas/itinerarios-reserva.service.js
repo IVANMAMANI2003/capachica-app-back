@@ -17,7 +17,6 @@ let ItinerariosReservaService = class ItinerariosReservaService {
         this.prisma = prisma;
     }
     async create(createItinerarioReservaDto) {
-        var _a, _b;
         const reserva = await this.prisma.reserva.findUnique({
             where: { id: createItinerarioReservaDto.reservaId },
         });
@@ -30,16 +29,6 @@ let ItinerariosReservaService = class ItinerariosReservaService {
             });
             if (!servicio) {
                 throw new common_1.NotFoundException(`Servicio con ID ${createItinerarioReservaDto.servicioId} no encontrado`);
-            }
-        }
-        if ((_a = createItinerarioReservaDto.lugaresTuristicosIds) === null || _a === void 0 ? void 0 : _a.length) {
-            for (const lugarId of createItinerarioReservaDto.lugaresTuristicosIds) {
-                const lugar = await this.prisma.lugarTuristico.findUnique({
-                    where: { id: lugarId },
-                });
-                if (!lugar) {
-                    throw new common_1.NotFoundException(`Lugar turístico con ID ${lugarId} no encontrado`);
-                }
             }
         }
         const itinerario = await this.prisma.itinerarioReserva.create({
@@ -56,21 +45,8 @@ let ItinerariosReservaService = class ItinerariosReservaService {
             include: {
                 reserva: true,
                 servicio: true,
-                itinerarioLugares: {
-                    include: {
-                        lugarTuristico: true,
-                    },
-                },
             },
         });
-        if ((_b = createItinerarioReservaDto.lugaresTuristicosIds) === null || _b === void 0 ? void 0 : _b.length) {
-            await Promise.all(createItinerarioReservaDto.lugaresTuristicosIds.map((lugarId) => this.prisma.itinerarioLugar.create({
-                data: {
-                    itinerarioReservaId: itinerario.id,
-                    lugarTuristicoId: lugarId,
-                },
-            })));
-        }
         return this.findOne(itinerario.id);
     }
     async findAll() {
@@ -78,11 +54,6 @@ let ItinerariosReservaService = class ItinerariosReservaService {
             include: {
                 reserva: true,
                 servicio: true,
-                itinerarioLugares: {
-                    include: {
-                        lugarTuristico: true,
-                    },
-                },
             },
         });
     }
@@ -92,11 +63,6 @@ let ItinerariosReservaService = class ItinerariosReservaService {
             include: {
                 reserva: true,
                 servicio: true,
-                itinerarioLugares: {
-                    include: {
-                        lugarTuristico: true,
-                    },
-                },
             },
         });
         if (!itinerario) {
@@ -137,31 +103,12 @@ let ItinerariosReservaService = class ItinerariosReservaService {
             include: {
                 reserva: true,
                 servicio: true,
-                itinerarioLugares: {
-                    include: {
-                        lugarTuristico: true,
-                    },
-                },
             },
         });
-        if (updateItinerarioReservaDto.lugaresTuristicosIds) {
-            await this.prisma.itinerarioLugar.deleteMany({
-                where: { itinerarioReservaId: id },
-            });
-            await Promise.all(updateItinerarioReservaDto.lugaresTuristicosIds.map((lugarId) => this.prisma.itinerarioLugar.create({
-                data: {
-                    itinerarioReservaId: id,
-                    lugarTuristicoId: lugarId,
-                },
-            })));
-        }
         return this.findOne(id);
     }
     async remove(id) {
         await this.findOne(id);
-        await this.prisma.itinerarioLugar.deleteMany({
-            where: { itinerarioReservaId: id },
-        });
         return this.prisma.itinerarioReserva.delete({
             where: { id },
         });
@@ -178,11 +125,6 @@ let ItinerariosReservaService = class ItinerariosReservaService {
             include: {
                 reserva: true,
                 servicio: true,
-                itinerarioLugares: {
-                    include: {
-                        lugarTuristico: true,
-                    },
-                },
             },
         });
     }

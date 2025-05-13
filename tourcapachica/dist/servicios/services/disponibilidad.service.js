@@ -28,8 +28,11 @@ let DisponibilidadService = class DisponibilidadService {
                 servicioId: createDisponibilidadDto.servicioId,
                 fechaInicio: new Date(createDisponibilidadDto.fechaInicio),
                 fechaFin: new Date(createDisponibilidadDto.fechaFin),
+                cuposMaximos: createDisponibilidadDto.cuposMaximos,
                 cuposDisponibles: createDisponibilidadDto.cuposDisponibles,
                 precioEspecial: createDisponibilidadDto.precioEspecial,
+                estado: createDisponibilidadDto.estado,
+                notas: createDisponibilidadDto.notas,
             },
         });
     }
@@ -47,8 +50,11 @@ let DisponibilidadService = class DisponibilidadService {
                 servicioId: disponibilidad.servicioId,
                 fechaInicio: new Date(disponibilidad.fechaInicio),
                 fechaFin: new Date(disponibilidad.fechaFin),
+                cuposMaximos: disponibilidad.cuposMaximos,
                 cuposDisponibles: disponibilidad.cuposDisponibles,
                 precioEspecial: disponibilidad.precioEspecial,
+                estado: disponibilidad.estado,
+                notas: disponibilidad.notas,
             },
         })));
     }

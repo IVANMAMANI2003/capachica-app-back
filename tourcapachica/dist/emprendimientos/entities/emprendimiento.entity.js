@@ -23,6 +23,10 @@ __decorate([
     __metadata("design:type", Number)
 ], EmprendimientoEntity.prototype, "usuarioId", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)({ description: 'ID del Lugar turistico en la que esta el emprendimiento' }),
+    __metadata("design:type", Number)
+], EmprendimientoEntity.prototype, "lugarTuristicoId", void 0);
+__decorate([
     (0, swagger_1.ApiProperty)({ description: 'Nombre del emprendimiento' }),
     __metadata("design:type", String)
 ], EmprendimientoEntity.prototype, "nombre", void 0);

@@ -36,6 +36,7 @@ let EmprendimientosService = class EmprendimientosService {
         const emprendimiento = await this.prisma.emprendimiento.create({
             data: {
                 usuarioId: usuarioId,
+                lugarTuristicoId: emprendimientoData.lugarTuristicoId,
                 nombre: emprendimientoData.nombre,
                 descripcion: emprendimientoData.descripcion,
                 tipo: emprendimientoData.tipo,
@@ -161,6 +162,7 @@ let EmprendimientosService = class EmprendimientosService {
         await this.prisma.emprendimiento.update({
             where: { id },
             data: {
+                lugarTuristicoId: emprendimientoData.lugarTuristicoId,
                 nombre: emprendimientoData.nombre,
                 descripcion: emprendimientoData.descripcion,
                 tipo: emprendimientoData.tipo,

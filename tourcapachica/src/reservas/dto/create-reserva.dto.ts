@@ -1,22 +1,18 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsOptional, IsNumber, IsDate, IsEnum, Min } from 'class-validator';
 import { Type } from 'class-transformer';
+import { EstadoReserva } from '../enums/estado-reserva.enum';
 
-export enum EstadoReserva {
-  PENDIENTE = 'pendiente',
-  CONFIRMADA = 'confirmada',
-  CANCELADA = 'cancelada',
-  COMPLETADA = 'completada'
-}
+
 
 export class CreateReservaDto {
   @ApiProperty({
-    description: 'ID del turista que realiza la reserva',
+    description: 'ID del usuario que realiza la reserva',
     example: 1,
   })
   @IsNumber()
   @IsNotEmpty()
-  turistaId: number;
+  usuarioId: number;
 
   @ApiProperty({
     description: 'Código único de la reserva',

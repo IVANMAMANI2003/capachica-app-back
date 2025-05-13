@@ -462,9 +462,9 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
                         servicio: true,
                     },
                 },
-                turista: {
+                usuario: {
                     include: {
-                        usuario: true,
+                        persona: true,
                     },
                 },
             },

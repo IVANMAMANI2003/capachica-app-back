@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsNotEmpty, IsOptional, IsDateString, Min } from 'class-validator';
+import { IsNumber, IsNotEmpty, IsOptional, IsDateString, Min, IsString } from 'class-validator';
 
 export class CreateServicioDisponibilidadDto {
   @ApiProperty({
@@ -30,6 +30,16 @@ export class CreateServicioDisponibilidadDto {
   fechaFin: string;
 
   @ApiProperty({
+    description: 'Cupos máximos para la fecha',
+    example: 20,
+    required: false
+  })
+  @IsNumber()
+  @IsOptional()
+  @Min(0)
+  cuposMaximos?: number;
+
+  @ApiProperty({
     description: 'Cupos disponibles para la fecha',
     example: 10,
     required: true,
@@ -48,4 +58,23 @@ export class CreateServicioDisponibilidadDto {
   @IsOptional()
   @Min(0)
   precioEspecial?: number;
-} 
+
+
+  @ApiProperty({
+    description: 'Estado de la disponibilidad',
+    example: 'Disponible',
+    required: false
+  })
+  @IsString()
+  @IsOptional()
+  estado?: string;
+  
+  @ApiProperty({
+    description: 'Notas adicionales sobre la disponibilidad',
+    example: 'Precio especial por temporada baja',
+    required: false
+  })
+  @IsString()
+  @IsOptional()
+  notas?: string;
+}

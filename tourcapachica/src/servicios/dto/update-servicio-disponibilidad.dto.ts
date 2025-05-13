@@ -1,4 +1,4 @@
-import { IsDateString, IsNumber, IsOptional } from 'class-validator';
+import { IsDateString, IsNumber, IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateServicioDisponibilidadDto {
@@ -11,6 +11,11 @@ export class UpdateServicioDisponibilidadDto {
   @IsDateString()
   @IsOptional()
   fechaFin?: string;
+  
+  @ApiProperty({ description: 'Cupos máximos', required: false })
+  @IsNumber()
+  @IsOptional()
+  cuposMaximos?: number;
 
   @ApiProperty({ description: 'Cupos disponibles', required: false })
   @IsNumber()
@@ -21,4 +26,17 @@ export class UpdateServicioDisponibilidadDto {
   @IsNumber()
   @IsOptional()
   precioEspecial?: number;
+
+  
+  @ApiProperty({ description: 'Estado de la disponibilidad', required: false })
+  @IsString()
+  @IsOptional()
+  estado?: string;
+
+  @ApiProperty({ description: 'Notas adicionales', required: false })
+  @IsString()
+  @IsOptional()
+  notas?: string;
+
+  
 }

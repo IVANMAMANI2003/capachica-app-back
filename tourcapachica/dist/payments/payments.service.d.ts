@@ -9,12 +9,11 @@ export declare class PaymentsService {
     constructor(prisma: PrismaService, reservasService: ReservasService);
     create(createPaymentDto: CreatePaymentDto): Promise<{
         reserva: {
-            moneda: string;
-            estado: string;
             id: number;
+            usuarioId: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
-            turistaId: number;
             codigoReserva: string;
             tipoReserva: string;
             fechaReserva: Date;
@@ -23,6 +22,7 @@ export declare class PaymentsService {
             fechaFin: Date | null;
             cantidadPersonas: number;
             precioTotal: Prisma.Decimal;
+            moneda: string;
             metodoPago: string | null;
             datosPago: Prisma.JsonValue | null;
             notas: string | null;
@@ -30,8 +30,8 @@ export declare class PaymentsService {
             fechaCancelacion: Date | null;
         };
         detalles: {
-            descripcion: string | null;
             id: number;
+            descripcion: string | null;
             createdAt: Date;
             updatedAt: Date;
             concepto: string;
@@ -42,9 +42,11 @@ export declare class PaymentsService {
             pagoId: number;
         }[];
     } & {
-        moneda: string;
-        estado: string;
         id: number;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        moneda: string;
         reservaId: number;
         paymentGateway: string;
         transactionId: string;
@@ -52,17 +54,14 @@ export declare class PaymentsService {
         fechaPago: Date | null;
         datosMetodoPago: Prisma.JsonValue | null;
         metadata: Prisma.JsonValue | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     findAll(): Promise<({
         reserva: {
-            moneda: string;
-            estado: string;
             id: number;
+            usuarioId: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
-            turistaId: number;
             codigoReserva: string;
             tipoReserva: string;
             fechaReserva: Date;
@@ -71,6 +70,7 @@ export declare class PaymentsService {
             fechaFin: Date | null;
             cantidadPersonas: number;
             precioTotal: Prisma.Decimal;
+            moneda: string;
             metodoPago: string | null;
             datosPago: Prisma.JsonValue | null;
             notas: string | null;
@@ -78,8 +78,8 @@ export declare class PaymentsService {
             fechaCancelacion: Date | null;
         };
         detalles: {
-            descripcion: string | null;
             id: number;
+            descripcion: string | null;
             createdAt: Date;
             updatedAt: Date;
             concepto: string;
@@ -90,9 +90,11 @@ export declare class PaymentsService {
             pagoId: number;
         }[];
     } & {
-        moneda: string;
-        estado: string;
         id: number;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        moneda: string;
         reservaId: number;
         paymentGateway: string;
         transactionId: string;
@@ -100,17 +102,14 @@ export declare class PaymentsService {
         fechaPago: Date | null;
         datosMetodoPago: Prisma.JsonValue | null;
         metadata: Prisma.JsonValue | null;
-        createdAt: Date;
-        updatedAt: Date;
     })[]>;
     findOne(id: number): Promise<{
         reserva: {
-            moneda: string;
-            estado: string;
             id: number;
+            usuarioId: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
-            turistaId: number;
             codigoReserva: string;
             tipoReserva: string;
             fechaReserva: Date;
@@ -119,6 +118,7 @@ export declare class PaymentsService {
             fechaFin: Date | null;
             cantidadPersonas: number;
             precioTotal: Prisma.Decimal;
+            moneda: string;
             metodoPago: string | null;
             datosPago: Prisma.JsonValue | null;
             notas: string | null;
@@ -126,8 +126,8 @@ export declare class PaymentsService {
             fechaCancelacion: Date | null;
         };
         detalles: {
-            descripcion: string | null;
             id: number;
+            descripcion: string | null;
             createdAt: Date;
             updatedAt: Date;
             concepto: string;
@@ -138,9 +138,11 @@ export declare class PaymentsService {
             pagoId: number;
         }[];
     } & {
-        moneda: string;
-        estado: string;
         id: number;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        moneda: string;
         reservaId: number;
         paymentGateway: string;
         transactionId: string;
@@ -148,24 +150,22 @@ export declare class PaymentsService {
         fechaPago: Date | null;
         datosMetodoPago: Prisma.JsonValue | null;
         metadata: Prisma.JsonValue | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     findByReservaId(reservaId: number): Promise<({
         detalles: ({
             tipoPago: {
+                id: number;
                 nombre: string;
                 descripcion: string | null;
-                activo: boolean;
-                id: number;
                 createdAt: Date;
                 updatedAt: Date;
                 requiereVerificacion: boolean;
                 comisionPorcentaje: Prisma.Decimal;
+                activo: boolean;
             };
         } & {
-            descripcion: string | null;
             id: number;
+            descripcion: string | null;
             createdAt: Date;
             updatedAt: Date;
             concepto: string;
@@ -176,9 +176,11 @@ export declare class PaymentsService {
             pagoId: number;
         })[];
     } & {
-        moneda: string;
-        estado: string;
         id: number;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        moneda: string;
         reservaId: number;
         paymentGateway: string;
         transactionId: string;
@@ -186,17 +188,14 @@ export declare class PaymentsService {
         fechaPago: Date | null;
         datosMetodoPago: Prisma.JsonValue | null;
         metadata: Prisma.JsonValue | null;
-        createdAt: Date;
-        updatedAt: Date;
     })[]>;
     update(id: number, updatePaymentDto: UpdatePaymentDto): Promise<{
         reserva: {
-            moneda: string;
-            estado: string;
             id: number;
+            usuarioId: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
-            turistaId: number;
             codigoReserva: string;
             tipoReserva: string;
             fechaReserva: Date;
@@ -205,6 +204,7 @@ export declare class PaymentsService {
             fechaFin: Date | null;
             cantidadPersonas: number;
             precioTotal: Prisma.Decimal;
+            moneda: string;
             metodoPago: string | null;
             datosPago: Prisma.JsonValue | null;
             notas: string | null;
@@ -213,18 +213,18 @@ export declare class PaymentsService {
         };
         detalles: ({
             tipoPago: {
+                id: number;
                 nombre: string;
                 descripcion: string | null;
-                activo: boolean;
-                id: number;
                 createdAt: Date;
                 updatedAt: Date;
                 requiereVerificacion: boolean;
                 comisionPorcentaje: Prisma.Decimal;
+                activo: boolean;
             };
         } & {
-            descripcion: string | null;
             id: number;
+            descripcion: string | null;
             createdAt: Date;
             updatedAt: Date;
             concepto: string;
@@ -235,9 +235,11 @@ export declare class PaymentsService {
             pagoId: number;
         })[];
     } & {
-        moneda: string;
-        estado: string;
         id: number;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        moneda: string;
         reservaId: number;
         paymentGateway: string;
         transactionId: string;
@@ -245,13 +247,13 @@ export declare class PaymentsService {
         fechaPago: Date | null;
         datosMetodoPago: Prisma.JsonValue | null;
         metadata: Prisma.JsonValue | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     remove(id: number): Promise<{
-        moneda: string;
-        estado: string;
         id: number;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        moneda: string;
         reservaId: number;
         paymentGateway: string;
         transactionId: string;
@@ -259,13 +261,11 @@ export declare class PaymentsService {
         fechaPago: Date | null;
         datosMetodoPago: Prisma.JsonValue | null;
         metadata: Prisma.JsonValue | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     updateEstado(id: number, estado: string): Promise<{
         detalles: {
-            descripcion: string | null;
             id: number;
+            descripcion: string | null;
             createdAt: Date;
             updatedAt: Date;
             concepto: string;
@@ -276,9 +276,11 @@ export declare class PaymentsService {
             pagoId: number;
         }[];
     } & {
-        moneda: string;
-        estado: string;
         id: number;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        moneda: string;
         reservaId: number;
         paymentGateway: string;
         transactionId: string;
@@ -286,16 +288,14 @@ export declare class PaymentsService {
         fechaPago: Date | null;
         datosMetodoPago: Prisma.JsonValue | null;
         metadata: Prisma.JsonValue | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     generateReceipt(id: number): Promise<{
         numeroRecibo: string;
         fecha: Date;
         monto: Prisma.Decimal;
         detalles: {
-            descripcion: string | null;
             id: number;
+            descripcion: string | null;
             createdAt: Date;
             updatedAt: Date;
             concepto: string;
@@ -306,12 +306,11 @@ export declare class PaymentsService {
             pagoId: number;
         }[];
         reserva: {
-            moneda: string;
-            estado: string;
             id: number;
+            usuarioId: number;
+            estado: string;
             createdAt: Date;
             updatedAt: Date;
-            turistaId: number;
             codigoReserva: string;
             tipoReserva: string;
             fechaReserva: Date;
@@ -320,6 +319,7 @@ export declare class PaymentsService {
             fechaFin: Date | null;
             cantidadPersonas: number;
             precioTotal: Prisma.Decimal;
+            moneda: string;
             metodoPago: string | null;
             datosPago: Prisma.JsonValue | null;
             notas: string | null;

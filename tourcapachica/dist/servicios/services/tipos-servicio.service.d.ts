@@ -21,9 +21,9 @@ export declare class TiposServicioService {
             estado: string;
             createdAt: Date;
             updatedAt: Date;
+            moneda: string;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
-            moneda: string;
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
         }[];
     } & {
@@ -44,9 +44,9 @@ export declare class TiposServicioService {
             estado: string;
             createdAt: Date;
             updatedAt: Date;
+            moneda: string;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
-            moneda: string;
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
         }[];
     } & {

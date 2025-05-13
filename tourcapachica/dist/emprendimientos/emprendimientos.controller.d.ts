@@ -46,6 +46,7 @@ export declare class EmprendimientosController {
         };
         id: number;
         usuarioId: number;
+        lugarTuristicoId: number;
         nombre: string;
         descripcion: string | null;
         tipo: string;
@@ -96,6 +97,7 @@ export declare class EmprendimientosController {
         };
         id: number;
         usuarioId: number;
+        lugarTuristicoId: number;
         nombre: string;
         descripcion: string | null;
         tipo: string;
@@ -146,6 +148,7 @@ export declare class EmprendimientosController {
         };
         id: number;
         usuarioId: number;
+        lugarTuristicoId: number;
         nombre: string;
         descripcion: string | null;
         tipo: string;
@@ -196,6 +199,7 @@ export declare class EmprendimientosController {
         };
         id: number;
         usuarioId: number;
+        lugarTuristicoId: number;
         nombre: string;
         descripcion: string | null;
         tipo: string;
@@ -246,6 +250,7 @@ export declare class EmprendimientosController {
         };
         id: number;
         usuarioId: number;
+        lugarTuristicoId: number;
         nombre: string;
         descripcion: string | null;
         tipo: string;
@@ -296,6 +301,7 @@ export declare class EmprendimientosController {
         };
         id: number;
         usuarioId: number;
+        lugarTuristicoId: number;
         nombre: string;
         descripcion: string | null;
         tipo: string;
@@ -317,6 +323,7 @@ export declare class EmprendimientosController {
     updateEstado(id: string, estado: string): Promise<{
         id: number;
         usuarioId: number;
+        lugarTuristicoId: number;
         nombre: string;
         descripcion: string | null;
         tipo: string;
@@ -336,6 +343,7 @@ export declare class EmprendimientosController {
         emprendimiento: {
             id: number;
             usuarioId: number;
+            lugarTuristicoId: number;
             nombre: string;
             descripcion: string | null;
             tipo: string;
@@ -396,6 +404,7 @@ export declare class EmprendimientosController {
         };
         id: number;
         usuarioId: number;
+        lugarTuristicoId: number;
         nombre: string;
         descripcion: string | null;
         tipo: string;

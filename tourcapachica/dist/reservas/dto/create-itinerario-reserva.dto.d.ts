@@ -7,5 +7,4 @@ export declare class CreateItinerarioReservaDto {
     notas?: string;
     duracion?: number;
     servicioId?: number;
-    lugaresTuristicosIds?: number[];
 }

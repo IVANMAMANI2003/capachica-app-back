@@ -18,7 +18,7 @@ const reservas_service_1 = require("./reservas.service");
 const create_reserva_dto_1 = require("./dto/create-reserva.dto");
 const update_reserva_dto_1 = require("./dto/update-reserva.dto");
 const swagger_1 = require("@nestjs/swagger");
-const create_reserva_dto_2 = require("./dto/create-reserva.dto");
+const estado_reserva_enum_1 = require("./enums/estado-reserva.enum");
 let ReservasController = class ReservasController {
     constructor(reservasService) {
         this.reservasService = reservasService;
@@ -39,7 +39,7 @@ let ReservasController = class ReservasController {
         return this.reservasService.remove(id);
     }
     findByTurista(turistaId) {
-        return this.reservasService.findByTurista(turistaId);
+        return this.reservasService.findByUsuario(turistaId);
     }
     updateEstado(id, estado) {
         return this.reservasService.updateEstado(id, estado);

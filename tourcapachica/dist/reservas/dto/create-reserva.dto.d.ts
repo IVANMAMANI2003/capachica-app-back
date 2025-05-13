@@ -1,11 +1,6 @@
-export declare enum EstadoReserva {
-    PENDIENTE = "pendiente",
-    CONFIRMADA = "confirmada",
-    CANCELADA = "cancelada",
-    COMPLETADA = "completada"
-}
+import { EstadoReserva } from '../enums/estado-reserva.enum';
 export declare class CreateReservaDto {
-    turistaId: number;
+    usuarioId: number;
     codigoReserva: string;
     tipoReserva: string;
     fechaReserva: Date;

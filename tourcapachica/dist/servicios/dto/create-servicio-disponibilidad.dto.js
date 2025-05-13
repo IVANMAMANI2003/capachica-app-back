@@ -47,6 +47,17 @@ __decorate([
 ], CreateServicioDisponibilidadDto.prototype, "fechaFin", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
+        description: 'Cupos máximos para la fecha',
+        example: 20,
+        required: false
+    }),
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.Min)(0),
+    __metadata("design:type", Number)
+], CreateServicioDisponibilidadDto.prototype, "cuposMaximos", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
         description: 'Cupos disponibles para la fecha',
         example: 10,
         required: true,
@@ -67,4 +78,24 @@ __decorate([
     (0, class_validator_1.Min)(0),
     __metadata("design:type", Number)
 ], CreateServicioDisponibilidadDto.prototype, "precioEspecial", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Estado de la disponibilidad',
+        example: 'Disponible',
+        required: false
+    }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateServicioDisponibilidadDto.prototype, "estado", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Notas adicionales sobre la disponibilidad',
+        example: 'Precio especial por temporada baja',
+        required: false
+    }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateServicioDisponibilidadDto.prototype, "notas", void 0);
 //# sourceMappingURL=create-servicio-disponibilidad.dto.js.map

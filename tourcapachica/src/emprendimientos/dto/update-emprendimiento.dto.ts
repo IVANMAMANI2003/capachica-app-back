@@ -10,6 +10,13 @@ export class UpdateEmprendimientoDto extends PartialType(CreateEmprendimientoDto
     type: Number
   })
   usuarioId?: number;
+  @ApiProperty({
+    description: 'ID del Lugarturistico en la que esta el emprendimiento',
+    example: 1,
+    required: false,
+    type: Number
+  })
+  lugarTuristicoIdId?: number;
 
   @ApiProperty({
     description: 'Nombre del emprendimiento',

@@ -105,13 +105,13 @@ model Usuario {
   resenas                Resena[]
   tokensInvalidados      TokenInvalidado[]
   guia                   Tour[]
-  turista                Turista?
   persona                Persona           @relation(fields: [personaId], references: [id])
   usuariosRoles          UsuariosRoles[]
   favoritosEmprendimiento FavoritoEmprendimiento[]
   favoritosServicio      FavoritoServicio[]
   favoritosLugarTuristico FavoritoLugarTuristico[]
   favoritosPaquete       FavoritoPaqueteTuristico[]
+  reservas Reserva[]
   
 
   @@map("usuarios")
@@ -133,6 +133,7 @@ model UsuariosRoles {
 model Emprendimiento {
   id                 Int                   @id @default(autoincrement())
   usuarioId          Int                   @map("usuario_id")
+  lugarTuristicoId    Int               @map("lugares_turisticos_id")
   nombre             String                @db.VarChar(200)
   descripcion        String?
   tipo               String                @db.VarChar(50)
@@ -148,6 +149,7 @@ model Emprendimiento {
   createdAt          DateTime              @default(now()) @map("created_at")
   updatedAt          DateTime              @default(now()) @map("updated_at")
   usuario            Usuario               @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  lugarTuristico      LugarTuristico    @relation(fields: [lugarTuristicoId], references: [id], onDelete: Restrict)
   paquetesTuristicos PaqueteTuristico[]
   servicios          ServicioEmprendedor[]
   favoritosEmprendimiento FavoritoEmprendimiento[]
@@ -197,17 +199,6 @@ model TokenInvalidado {
   @@map("tokens_invalidados")
 }
 
-model Turista {
-  id        Int       @id @default(autoincrement())
-  usuarioId Int       @unique @map("usuario_id")
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @default(now()) @map("updated_at")
-  reservas  Reserva[]
-  usuario   Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Restrict)
-  tours     Tour[]    @relation("TourToTurista")
-
-  @@map("turistas")
-}
 
 model LugarTuristico {
   id                Int               @id @default(autoincrement())
@@ -225,8 +216,8 @@ model LugarTuristico {
   estado            String            @default("activo") @db.VarChar(20)
   createdAt         DateTime          @default(now()) @map("created_at")
   updatedAt         DateTime          @default(now()) @map("updated_at")
-  itinerarioLugares ItinerarioLugar[]
   favoritosLugarTuristico FavoritoLugarTuristico[]
+  emprendimientos Emprendimiento[]
 
   @@map("lugares_turisticos")
 }
@@ -361,8 +352,11 @@ model ServicioDisponibilidad {
   servicioId       Int      @map("servicio_id")
   fechaInicio      DateTime?    @db.Date
   fechaFin         DateTime?    @db.Date
+  cuposMaximos     Int @default(0) @map("cupos_maximos")
   cuposDisponibles Int      @map("cupos_disponibles")
   precioEspecial   Decimal? @map("precio_especial") @db.Decimal(10, 2)
+  notas            String?
+  estado           String           @default("activo") @db.VarChar(20)
   servicio         Servicio @relation(fields: [servicioId], references: [id], onDelete: Cascade)
   createdAt        DateTime        @default(now()) @map("created_at")
   updatedAt        DateTime        @default(now()) @map("updated_at")
@@ -402,7 +396,7 @@ model FavoritoServicio {
 
 model Reserva {
   id                Int                 @id @default(autoincrement())
-  turistaId         Int                 @map("turista_id")
+  usuarioId         Int                 @map("usuario_id")
   codigoReserva     String              @unique @map("codigo_reserva")
   tipoReserva       String              @map("tipo_reserva")
   fechaReserva      DateTime            @map("fecha_reserva")
@@ -422,7 +416,7 @@ model Reserva {
   updatedAt         DateTime            @default(now()) @map("updated_at")
   itinerarios       ItinerarioReserva[]
   pagos             Pago[]
-  turista           Turista             @relation(fields: [turistaId], references: [id])
+  usuario           Usuario             @relation(fields: [usuarioId], references: [id])
 
   @@map("reservas")
 }
@@ -439,24 +433,12 @@ model ItinerarioReserva {
   servicioId        Int?              @map("servicio_id")
   createdAt         DateTime          @default(now()) @map("created_at")
   updatedAt         DateTime          @default(now()) @map("updated_at")
-  itinerarioLugares ItinerarioLugar[]
   reserva           Reserva           @relation(fields: [reservaId], references: [id], onDelete: Restrict)
   servicio          Servicio?         @relation(fields: [servicioId], references: [id])
 
   @@map("itinerarios_reserva")
 }
 
-model ItinerarioLugar {
-  id                  Int               @id @default(autoincrement())
-  itinerarioReservaId Int               @map("itinerarios_reserva_id")
-  lugarTuristicoId    Int               @map("lugares_turisticos_id")
-  createdAt           DateTime          @default(now()) @map("created_at")
-  updatedAt           DateTime          @default(now()) @map("updated_at")
-  itinerarioReserva   ItinerarioReserva @relation(fields: [itinerarioReservaId], references: [id], onDelete: Restrict)
-  lugarTuristico      LugarTuristico    @relation(fields: [lugarTuristicoId], references: [id], onDelete: Restrict)
-
-  @@map("itinerario_lugares")
-}
 
 model Pago {
   id              Int           @id @default(autoincrement())
@@ -549,7 +531,6 @@ model Tour {
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @default(now()) @map("updated_at")
   guide       Usuario   @relation(fields: [guideId], references: [id])
-  tourists    Turista[] @relation("TourToTurista")
 
   @@map("tours")
 }

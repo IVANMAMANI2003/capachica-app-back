@@ -13,16 +13,14 @@ const reservas_controller_1 = require("./reservas.controller");
 const prisma_service_1 = require("../prisma/prisma.service");
 const itinerarios_reserva_service_1 = require("./itinerarios-reserva.service");
 const itinerarios_reserva_controller_1 = require("./itinerarios-reserva.controller");
-const itinerarios_lugar_service_1 = require("./itinerarios-lugar.service");
-const itinerarios_lugar_controller_1 = require("./itinerarios-lugar.controller");
 let ReservasModule = class ReservasModule {
 };
 exports.ReservasModule = ReservasModule;
 exports.ReservasModule = ReservasModule = __decorate([
     (0, common_1.Module)({
-        controllers: [reservas_controller_1.ReservasController, itinerarios_reserva_controller_1.ItinerariosReservaController, itinerarios_lugar_controller_1.ItinerariosLugarController],
-        providers: [reservas_service_1.ReservasService, itinerarios_reserva_service_1.ItinerariosReservaService, itinerarios_lugar_service_1.ItinerariosLugarService, prisma_service_1.PrismaService],
-        exports: [reservas_service_1.ReservasService, itinerarios_reserva_service_1.ItinerariosReservaService, itinerarios_lugar_service_1.ItinerariosLugarService],
+        controllers: [reservas_controller_1.ReservasController, itinerarios_reserva_controller_1.ItinerariosReservaController,],
+        providers: [reservas_service_1.ReservasService, itinerarios_reserva_service_1.ItinerariosReservaService, prisma_service_1.PrismaService],
+        exports: [reservas_service_1.ReservasService, itinerarios_reserva_service_1.ItinerariosReservaService,],
     })
 ], ReservasModule);
 //# sourceMappingURL=reservas.module.js.map

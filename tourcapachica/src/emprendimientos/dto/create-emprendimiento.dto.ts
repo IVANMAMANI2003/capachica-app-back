@@ -26,6 +26,17 @@ export class CreateEmprendimientoDto {
   usuarioId: number;
 
   @ApiProperty({
+    description: 'ID del Lugarturistico en la que esta el emprendimiento',
+    example: 1,
+    required: true,
+    type: Number
+  })
+  @IsNumber()
+  @IsNotEmpty()
+  lugarTuristicoId: number;
+  
+
+  @ApiProperty({
     description: 'Nombre del emprendimiento',
     example: 'Restaurante La Isla',
     required: true,

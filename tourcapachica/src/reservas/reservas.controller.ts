@@ -3,7 +3,7 @@ import { ReservasService } from './reservas.service';
 import { CreateReservaDto } from './dto/create-reserva.dto';
 import { UpdateReservaDto } from './dto/update-reserva.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
-import { EstadoReserva } from './dto/create-reserva.dto';
+import { EstadoReserva } from './enums/estado-reserva.enum';
 
 @ApiTags('reservas')
 @Controller('reservas')
@@ -61,7 +61,7 @@ export class ReservasController {
   @ApiResponse({ status: 200, description: 'Lista de reservas obtenida exitosamente' })
   @ApiResponse({ status: 404, description: 'Turista no encontrado' })
   findByTurista(@Param('turistaId', ParseIntPipe) turistaId: number) {
-    return this.reservasService.findByTurista(turistaId);
+    return this.reservasService.findByUsuario(turistaId);
   }
 
   @Patch(':id/estado')

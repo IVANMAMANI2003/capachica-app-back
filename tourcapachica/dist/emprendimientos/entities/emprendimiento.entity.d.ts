@@ -1,6 +1,7 @@
 export declare class EmprendimientoEntity {
     id: number;
     usuarioId: number;
+    lugarTuristicoId: number;
     nombre: string;
     descripcion?: string;
     tipo: string;

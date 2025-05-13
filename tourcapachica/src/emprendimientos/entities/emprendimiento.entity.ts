@@ -7,6 +7,9 @@ export class EmprendimientoEntity {
   @ApiProperty({ description: 'ID del usuario propietario del emprendimiento' })
   usuarioId: number;
 
+  @ApiProperty({ description: 'ID del Lugar turistico en la que esta el emprendimiento' })
+  lugarTuristicoId: number;
+
   @ApiProperty({ description: 'Nombre del emprendimiento' })
   nombre: string;
 

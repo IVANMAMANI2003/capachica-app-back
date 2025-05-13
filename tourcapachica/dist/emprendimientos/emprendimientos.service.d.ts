@@ -44,6 +44,7 @@ export declare class EmprendimientosService {
         };
         id: number;
         usuarioId: number;
+        lugarTuristicoId: number;
         nombre: string;
         descripcion: string | null;
         tipo: string;
@@ -94,6 +95,7 @@ export declare class EmprendimientosService {
         };
         id: number;
         usuarioId: number;
+        lugarTuristicoId: number;
         nombre: string;
         descripcion: string | null;
         tipo: string;
@@ -144,6 +146,7 @@ export declare class EmprendimientosService {
         };
         id: number;
         usuarioId: number;
+        lugarTuristicoId: number;
         nombre: string;
         descripcion: string | null;
         tipo: string;
@@ -194,6 +197,7 @@ export declare class EmprendimientosService {
         };
         id: number;
         usuarioId: number;
+        lugarTuristicoId: number;
         nombre: string;
         descripcion: string | null;
         tipo: string;
@@ -244,6 +248,7 @@ export declare class EmprendimientosService {
         };
         id: number;
         usuarioId: number;
+        lugarTuristicoId: number;
         nombre: string;
         descripcion: string | null;
         tipo: string;
@@ -265,6 +270,7 @@ export declare class EmprendimientosService {
     updateEstado(id: number, estado: string): Promise<{
         id: number;
         usuarioId: number;
+        lugarTuristicoId: number;
         nombre: string;
         descripcion: string | null;
         tipo: string;
@@ -284,6 +290,7 @@ export declare class EmprendimientosService {
         emprendimiento: {
             id: number;
             usuarioId: number;
+            lugarTuristicoId: number;
             nombre: string;
             descripcion: string | null;
             tipo: string;
@@ -344,6 +351,7 @@ export declare class EmprendimientosService {
         };
         id: number;
         usuarioId: number;
+        lugarTuristicoId: number;
         nombre: string;
         descripcion: string | null;
         tipo: string;

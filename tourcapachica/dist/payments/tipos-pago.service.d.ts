@@ -10,9 +10,9 @@ export declare class TipoPagoService {
         descripcion: string | null;
         createdAt: Date;
         updatedAt: Date;
-        activo: boolean;
         requiereVerificacion: boolean;
         comisionPorcentaje: import(".prisma/client/runtime/library").Decimal;
+        activo: boolean;
     }>;
     findAll(): Promise<({
         pagoDetalles: {
@@ -33,9 +33,9 @@ export declare class TipoPagoService {
         descripcion: string | null;
         createdAt: Date;
         updatedAt: Date;
-        activo: boolean;
         requiereVerificacion: boolean;
         comisionPorcentaje: import(".prisma/client/runtime/library").Decimal;
+        activo: boolean;
     })[]>;
     findOne(id: number): Promise<{
         pagoDetalles: {
@@ -56,9 +56,9 @@ export declare class TipoPagoService {
         descripcion: string | null;
         createdAt: Date;
         updatedAt: Date;
-        activo: boolean;
         requiereVerificacion: boolean;
         comisionPorcentaje: import(".prisma/client/runtime/library").Decimal;
+        activo: boolean;
     }>;
     update(id: number, updateTipoPagoDto: UpdateTipoPagoDto): Promise<{
         id: number;
@@ -66,9 +66,9 @@ export declare class TipoPagoService {
         descripcion: string | null;
         createdAt: Date;
         updatedAt: Date;
-        activo: boolean;
         requiereVerificacion: boolean;
         comisionPorcentaje: import(".prisma/client/runtime/library").Decimal;
+        activo: boolean;
     }>;
     remove(id: number): Promise<{
         id: number;
@@ -76,8 +76,8 @@ export declare class TipoPagoService {
         descripcion: string | null;
         createdAt: Date;
         updatedAt: Date;
-        activo: boolean;
         requiereVerificacion: boolean;
         comisionPorcentaje: import(".prisma/client/runtime/library").Decimal;
+        activo: boolean;
     }>;
 }

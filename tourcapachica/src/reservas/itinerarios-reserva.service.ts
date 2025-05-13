@@ -28,18 +28,7 @@ export class ItinerariosReservaService {
       }
     }
 
-    // Verificar que los lugares turísticos existen si se proporcionan
-    if (createItinerarioReservaDto.lugaresTuristicosIds?.length) {
-      for (const lugarId of createItinerarioReservaDto.lugaresTuristicosIds) {
-        const lugar = await this.prisma.lugarTuristico.findUnique({
-          where: { id: lugarId },
-        });
-
-        if (!lugar) {
-          throw new NotFoundException(`Lugar turístico con ID ${lugarId} no encontrado`);
-        }
-      }
-    }
+  
 
     // Crear el itinerario
     const itinerario = await this.prisma.itinerarioReserva.create({
@@ -56,27 +45,10 @@ export class ItinerariosReservaService {
       include: {
         reserva: true,
         servicio: true,
-        itinerarioLugares: {
-          include: {
-            lugarTuristico: true,
-          },
-        },
+        
       },
     });
 
-    // Crear las relaciones con lugares turísticos si se proporcionan
-    if (createItinerarioReservaDto.lugaresTuristicosIds?.length) {
-      await Promise.all(
-        createItinerarioReservaDto.lugaresTuristicosIds.map((lugarId) =>
-          this.prisma.itinerarioLugar.create({
-            data: {
-              itinerarioReservaId: itinerario.id,
-              lugarTuristicoId: lugarId,
-            },
-          }),
-        ),
-      );
-    }
 
     return this.findOne(itinerario.id);
   }
@@ -86,11 +58,7 @@ export class ItinerariosReservaService {
       include: {
         reserva: true,
         servicio: true,
-        itinerarioLugares: {
-          include: {
-            lugarTuristico: true,
-          },
-        },
+        
       },
     });
   }
@@ -101,11 +69,7 @@ export class ItinerariosReservaService {
       include: {
         reserva: true,
         servicio: true,
-        itinerarioLugares: {
-          include: {
-            lugarTuristico: true,
-          },
-        },
+        
       },
     });
 
@@ -158,33 +122,10 @@ export class ItinerariosReservaService {
       include: {
         reserva: true,
         servicio: true,
-        itinerarioLugares: {
-          include: {
-            lugarTuristico: true,
-          },
-        },
+        
       },
     });
 
-    // Actualizar las relaciones con lugares turísticos si se proporcionan
-    if (updateItinerarioReservaDto.lugaresTuristicosIds) {
-      // Eliminar las relaciones existentes
-      await this.prisma.itinerarioLugar.deleteMany({
-        where: { itinerarioReservaId: id },
-      });
-
-      // Crear las nuevas relaciones
-      await Promise.all(
-        updateItinerarioReservaDto.lugaresTuristicosIds.map((lugarId) =>
-          this.prisma.itinerarioLugar.create({
-            data: {
-              itinerarioReservaId: id,
-              lugarTuristicoId: lugarId,
-            },
-          }),
-        ),
-      );
-    }
 
     return this.findOne(id);
   }
@@ -193,10 +134,6 @@ export class ItinerariosReservaService {
     // Verificar que el itinerario existe
     await this.findOne(id);
 
-    // Eliminar las relaciones con lugares turísticos
-    await this.prisma.itinerarioLugar.deleteMany({
-      where: { itinerarioReservaId: id },
-    });
 
     // Eliminar el itinerario
     return this.prisma.itinerarioReserva.delete({
@@ -219,11 +156,7 @@ export class ItinerariosReservaService {
       include: {
         reserva: true,
         servicio: true,
-        itinerarioLugares: {
-          include: {
-            lugarTuristico: true,
-          },
-        },
+        
       },
     });
   }

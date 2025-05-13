@@ -22,6 +22,7 @@ export declare class PaquetesTuristicosService {
         emprendimiento: {
             id: number;
             usuarioId: number;
+            lugarTuristicoId: number;
             nombre: string;
             descripcion: string | null;
             tipo: string;
@@ -47,9 +48,9 @@ export declare class PaquetesTuristicosService {
                 estado: string;
                 createdAt: Date;
                 updatedAt: Date;
+                moneda: string;
                 tipoServicioId: number;
                 precioBase: import(".prisma/client/runtime/library").Decimal;
-                moneda: string;
                 detallesServicio: import(".prisma/client/runtime/library").JsonValue;
             };
         } & {
@@ -67,11 +68,11 @@ export declare class PaquetesTuristicosService {
             updatedAt: Date;
             fechaInicio: Date;
             fechaFin: Date;
+            notas: string | null;
+            cuposMaximos: number;
             cuposDisponibles: number;
             precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
             paqueteId: number;
-            cuposMaximos: number;
-            notas: string | null;
         }[];
         id: number;
         nombre: string;
@@ -90,6 +91,7 @@ export declare class PaquetesTuristicosService {
         emprendimiento: {
             id: number;
             usuarioId: number;
+            lugarTuristicoId: number;
             nombre: string;
             descripcion: string | null;
             tipo: string;
@@ -115,9 +117,9 @@ export declare class PaquetesTuristicosService {
                 estado: string;
                 createdAt: Date;
                 updatedAt: Date;
+                moneda: string;
                 tipoServicioId: number;
                 precioBase: import(".prisma/client/runtime/library").Decimal;
-                moneda: string;
                 detallesServicio: import(".prisma/client/runtime/library").JsonValue;
             };
         } & {
@@ -145,6 +147,7 @@ export declare class PaquetesTuristicosService {
         emprendimiento: {
             id: number;
             usuarioId: number;
+            lugarTuristicoId: number;
             nombre: string;
             descripcion: string | null;
             tipo: string;
@@ -170,9 +173,9 @@ export declare class PaquetesTuristicosService {
                 estado: string;
                 createdAt: Date;
                 updatedAt: Date;
+                moneda: string;
                 tipoServicioId: number;
                 precioBase: import(".prisma/client/runtime/library").Decimal;
-                moneda: string;
                 detallesServicio: import(".prisma/client/runtime/library").JsonValue;
             };
         } & {
@@ -190,11 +193,11 @@ export declare class PaquetesTuristicosService {
             updatedAt: Date;
             fechaInicio: Date;
             fechaFin: Date;
+            notas: string | null;
+            cuposMaximos: number;
             cuposDisponibles: number;
             precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
             paqueteId: number;
-            cuposMaximos: number;
-            notas: string | null;
         }[];
         id: number;
         nombre: string;
@@ -213,6 +216,7 @@ export declare class PaquetesTuristicosService {
         emprendimiento: {
             id: number;
             usuarioId: number;
+            lugarTuristicoId: number;
             nombre: string;
             descripcion: string | null;
             tipo: string;
@@ -238,9 +242,9 @@ export declare class PaquetesTuristicosService {
                 estado: string;
                 createdAt: Date;
                 updatedAt: Date;
+                moneda: string;
                 tipoServicioId: number;
                 precioBase: import(".prisma/client/runtime/library").Decimal;
-                moneda: string;
                 detallesServicio: import(".prisma/client/runtime/library").JsonValue;
             };
         } & {
@@ -258,11 +262,11 @@ export declare class PaquetesTuristicosService {
             updatedAt: Date;
             fechaInicio: Date;
             fechaFin: Date;
+            notas: string | null;
+            cuposMaximos: number;
             cuposDisponibles: number;
             precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
             paqueteId: number;
-            cuposMaximos: number;
-            notas: string | null;
         }[];
         id: number;
         nombre: string;
@@ -281,6 +285,7 @@ export declare class PaquetesTuristicosService {
         emprendimiento: {
             id: number;
             usuarioId: number;
+            lugarTuristicoId: number;
             nombre: string;
             descripcion: string | null;
             tipo: string;
@@ -306,9 +311,9 @@ export declare class PaquetesTuristicosService {
                 estado: string;
                 createdAt: Date;
                 updatedAt: Date;
+                moneda: string;
                 tipoServicioId: number;
                 precioBase: import(".prisma/client/runtime/library").Decimal;
-                moneda: string;
                 detallesServicio: import(".prisma/client/runtime/library").JsonValue;
             };
         } & {
@@ -326,11 +331,11 @@ export declare class PaquetesTuristicosService {
             updatedAt: Date;
             fechaInicio: Date;
             fechaFin: Date;
+            notas: string | null;
+            cuposMaximos: number;
             cuposDisponibles: number;
             precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
             paqueteId: number;
-            cuposMaximos: number;
-            notas: string | null;
         }[];
         id: number;
         nombre: string;
@@ -355,6 +360,7 @@ export declare class PaquetesTuristicosService {
         emprendimiento: {
             id: number;
             usuarioId: number;
+            lugarTuristicoId: number;
             nombre: string;
             descripcion: string | null;
             tipo: string;
@@ -380,9 +386,9 @@ export declare class PaquetesTuristicosService {
                 estado: string;
                 createdAt: Date;
                 updatedAt: Date;
+                moneda: string;
                 tipoServicioId: number;
                 precioBase: import(".prisma/client/runtime/library").Decimal;
-                moneda: string;
                 detallesServicio: import(".prisma/client/runtime/library").JsonValue;
             };
         } & {
@@ -414,9 +420,9 @@ export declare class PaquetesTuristicosService {
                 estado: string;
                 createdAt: Date;
                 updatedAt: Date;
+                moneda: string;
                 tipoServicioId: number;
                 precioBase: import(".prisma/client/runtime/library").Decimal;
-                moneda: string;
                 detallesServicio: import(".prisma/client/runtime/library").JsonValue;
             };
         } & {
@@ -455,6 +461,7 @@ export declare class PaquetesTuristicosService {
             emprendimiento: {
                 id: number;
                 usuarioId: number;
+                lugarTuristicoId: number;
                 nombre: string;
                 descripcion: string | null;
                 tipo: string;
@@ -480,9 +487,9 @@ export declare class PaquetesTuristicosService {
                     estado: string;
                     createdAt: Date;
                     updatedAt: Date;
+                    moneda: string;
                     tipoServicioId: number;
                     precioBase: import(".prisma/client/runtime/library").Decimal;
-                    moneda: string;
                     detallesServicio: import(".prisma/client/runtime/library").JsonValue;
                 };
             } & {
@@ -500,11 +507,11 @@ export declare class PaquetesTuristicosService {
                 updatedAt: Date;
                 fechaInicio: Date;
                 fechaFin: Date;
+                notas: string | null;
+                cuposMaximos: number;
                 cuposDisponibles: number;
                 precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
                 paqueteId: number;
-                cuposMaximos: number;
-                notas: string | null;
             }[];
             id: number;
             nombre: string;
@@ -516,27 +523,33 @@ export declare class PaquetesTuristicosService {
             precio: import(".prisma/client/runtime/library").Decimal | null;
         };
         reservas: ({
-            turista: {
-                usuario: {
+            usuario: {
+                persona: {
                     id: number;
+                    nombre: string;
+                    direccion: string | null;
                     createdAt: Date;
                     updatedAt: Date;
-                    personaId: number;
-                    email: string;
-                    passwordHash: string;
-                    recoveryToken: string | null;
-                    recoveryTokenExpiresAt: Date | null;
-                    emailVerificationToken: string | null;
-                    emailVerified: boolean | null;
-                    estaActivo: boolean | null;
-                    ultimoAcceso: Date | null;
-                    preferencias: import(".prisma/client/runtime/library").JsonValue | null;
+                    apellidos: string;
+                    telefono: string | null;
+                    fotoPerfilUrl: string | null;
+                    fechaNacimiento: Date | null;
+                    subdivisionId: number;
                 };
             } & {
                 id: number;
-                usuarioId: number;
                 createdAt: Date;
                 updatedAt: Date;
+                personaId: number;
+                email: string;
+                passwordHash: string;
+                recoveryToken: string | null;
+                recoveryTokenExpiresAt: Date | null;
+                emailVerificationToken: string | null;
+                emailVerified: boolean | null;
+                estaActivo: boolean | null;
+                ultimoAcceso: Date | null;
+                preferencias: import(".prisma/client/runtime/library").JsonValue | null;
             };
             itinerarios: ({
                 servicio: {
@@ -548,9 +561,9 @@ export declare class PaquetesTuristicosService {
                     estado: string;
                     createdAt: Date;
                     updatedAt: Date;
+                    moneda: string;
                     tipoServicioId: number;
                     precioBase: import(".prisma/client/runtime/library").Decimal;
-                    moneda: string;
                     detallesServicio: import(".prisma/client/runtime/library").JsonValue;
                 };
             } & {
@@ -558,32 +571,32 @@ export declare class PaquetesTuristicosService {
                 descripcion: string;
                 createdAt: Date;
                 updatedAt: Date;
-                horarioCierre: Date | null;
-                servicioId: number | null;
                 notas: string | null;
+                reservaId: number;
                 fecha: Date;
+                horarioCierre: Date | null;
                 tipoEvento: string;
                 duracion: number | null;
-                reservaId: number;
+                servicioId: number | null;
             })[];
         } & {
             id: number;
+            usuarioId: number;
             estado: string;
             createdAt: Date;
             updatedAt: Date;
-            moneda: string;
-            fechaInicio: Date;
-            fechaFin: Date | null;
-            notas: string | null;
-            turistaId: number;
             codigoReserva: string;
             tipoReserva: string;
             fechaReserva: Date;
+            fechaInicio: Date;
             hora: string | null;
+            fechaFin: Date | null;
             cantidadPersonas: number;
             precioTotal: import(".prisma/client/runtime/library").Decimal;
+            moneda: string;
             metodoPago: string | null;
             datosPago: import(".prisma/client/runtime/library").JsonValue | null;
+            notas: string | null;
             motivoCancelacion: string | null;
             fechaCancelacion: Date | null;
         })[];
@@ -621,11 +634,11 @@ export declare class PaquetesTuristicosService {
         updatedAt: Date;
         fechaInicio: Date;
         fechaFin: Date;
+        notas: string | null;
+        cuposMaximos: number;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
         paqueteId: number;
-        cuposMaximos: number;
-        notas: string | null;
     }>;
     getDisponibilidadesPaquete(id: number): Promise<{
         id: number;
@@ -634,11 +647,11 @@ export declare class PaquetesTuristicosService {
         updatedAt: Date;
         fechaInicio: Date;
         fechaFin: Date;
+        notas: string | null;
+        cuposMaximos: number;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
         paqueteId: number;
-        cuposMaximos: number;
-        notas: string | null;
     }[]>;
     getDisponibilidad(paqueteId: number): Promise<{
         id: number;
@@ -647,11 +660,11 @@ export declare class PaquetesTuristicosService {
         updatedAt: Date;
         fechaInicio: Date;
         fechaFin: Date;
+        notas: string | null;
+        cuposMaximos: number;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
         paqueteId: number;
-        cuposMaximos: number;
-        notas: string | null;
     }[]>;
     updateDisponibilidad(id: number, updateDisponibilidadDto: UpdateDisponibilidadDto): Promise<{
         id: number;
@@ -660,11 +673,11 @@ export declare class PaquetesTuristicosService {
         updatedAt: Date;
         fechaInicio: Date;
         fechaFin: Date;
+        notas: string | null;
+        cuposMaximos: number;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
         paqueteId: number;
-        cuposMaximos: number;
-        notas: string | null;
     }>;
     deleteDisponibilidad(id: number): Promise<{
         id: number;
@@ -673,11 +686,11 @@ export declare class PaquetesTuristicosService {
         updatedAt: Date;
         fechaInicio: Date;
         fechaFin: Date;
+        notas: string | null;
+        cuposMaximos: number;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
         paqueteId: number;
-        cuposMaximos: number;
-        notas: string | null;
     }>;
     marcarFavorito(createFavoritoDto: CreateFavoritoDto): Promise<FavoritoPaqueteTuristico>;
     desmarcarFavorito(id: number): Promise<void>;

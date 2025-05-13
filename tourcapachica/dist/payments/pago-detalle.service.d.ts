@@ -25,9 +25,9 @@ export declare class PagoDetalleService {
             descripcion: string | null;
             createdAt: Date;
             updatedAt: Date;
-            activo: boolean;
             requiereVerificacion: boolean;
             comisionPorcentaje: import(".prisma/client/runtime/library").Decimal;
+            activo: boolean;
         };
     } & {
         id: number;
@@ -62,9 +62,9 @@ export declare class PagoDetalleService {
             descripcion: string | null;
             createdAt: Date;
             updatedAt: Date;
-            activo: boolean;
             requiereVerificacion: boolean;
             comisionPorcentaje: import(".prisma/client/runtime/library").Decimal;
+            activo: boolean;
         };
     } & {
         id: number;
@@ -99,9 +99,9 @@ export declare class PagoDetalleService {
             descripcion: string | null;
             createdAt: Date;
             updatedAt: Date;
-            activo: boolean;
             requiereVerificacion: boolean;
             comisionPorcentaje: import(".prisma/client/runtime/library").Decimal;
+            activo: boolean;
         };
     } & {
         id: number;
@@ -122,9 +122,9 @@ export declare class PagoDetalleService {
             descripcion: string | null;
             createdAt: Date;
             updatedAt: Date;
-            activo: boolean;
             requiereVerificacion: boolean;
             comisionPorcentaje: import(".prisma/client/runtime/library").Decimal;
+            activo: boolean;
         };
     } & {
         id: number;
@@ -159,9 +159,9 @@ export declare class PagoDetalleService {
             descripcion: string | null;
             createdAt: Date;
             updatedAt: Date;
-            activo: boolean;
             requiereVerificacion: boolean;
             comisionPorcentaje: import(".prisma/client/runtime/library").Decimal;
+            activo: boolean;
         };
     } & {
         id: number;

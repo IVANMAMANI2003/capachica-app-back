@@ -1,26 +1,27 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateReservaDto, EstadoReserva } from './dto/create-reserva.dto';
+import { CreateReservaDto } from './dto/create-reserva.dto';
 import { UpdateReservaDto } from './dto/update-reserva.dto';
+import { EstadoReserva } from './enums/estado-reserva.enum';
 
 @Injectable()
 export class ReservasService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createReservaDto: CreateReservaDto) {
-    // Verificar que el turista existe
-    const turista = await this.prisma.turista.findUnique({
-      where: { id: createReservaDto.turistaId },
+    // Verificar que el usuario existe
+    const usuario = await this.prisma.usuario.findUnique({
+      where: { id: createReservaDto.usuarioId },
     });
 
-    if (!turista) {
-      throw new NotFoundException(`Turista con ID ${createReservaDto.turistaId} no encontrado`);
+    if (!usuario) {
+      throw new NotFoundException(`usuario con ID ${createReservaDto.usuarioId} no encontrado`);
     }
 
     // Crear la reserva
     return this.prisma.reserva.create({
       data: {
-        turistaId: createReservaDto.turistaId,
+        usuarioId: createReservaDto.usuarioId,
         codigoReserva: createReservaDto.codigoReserva,
         tipoReserva: createReservaDto.tipoReserva,
         fechaReserva: createReservaDto.fechaReserva,
@@ -38,8 +39,8 @@ export class ReservasService {
         fechaCancelacion: createReservaDto.fechaCancelacion,
       },
       include: {
-        turista: true,
-        itinerarios: true,
+        usuario: true,
+        
         pagos: true,
       },
     });
@@ -48,8 +49,8 @@ export class ReservasService {
   async findAll() {
     return this.prisma.reserva.findMany({
       include: {
-        turista: true,
-        itinerarios: true,
+        usuario: true,
+        
         pagos: true,
       },
     });
@@ -59,17 +60,7 @@ export class ReservasService {
     const reserva = await this.prisma.reserva.findUnique({
       where: { id },
       include: {
-        turista: true,
-        itinerarios: {
-          include: {
-            itinerarioLugares: {
-              include: {
-                lugarTuristico: true,
-              },
-            },
-            servicio: true,
-          },
-        },
+        
         pagos: true,
       },
     });
@@ -85,14 +76,14 @@ export class ReservasService {
     // Verificar que la reserva existe
     await this.findOne(id);
 
-    // Si se actualiza el turista, verificar que existe
-    if (updateReservaDto.turistaId) {
-      const turista = await this.prisma.turista.findUnique({
-        where: { id: updateReservaDto.turistaId },
+    // Si se actualiza el usuario, verificar que existe
+    if (updateReservaDto.usuarioId) {
+      const usuario = await this.prisma.usuario.findUnique({
+        where: { id: updateReservaDto.usuarioId },
       });
 
-      if (!turista) {
-        throw new NotFoundException(`Turista con ID ${updateReservaDto.turistaId} no encontrado`);
+      if (!usuario) {
+        throw new NotFoundException(`Usuario con ID ${updateReservaDto.usuarioId} no encontrado`);
       }
     }
 
@@ -100,8 +91,7 @@ export class ReservasService {
       where: { id },
       data: updateReservaDto,
       include: {
-        turista: true,
-        itinerarios: true,
+        usuario: true,
         pagos: true,
       },
     });
@@ -116,21 +106,20 @@ export class ReservasService {
     });
   }
 
-  async findByTurista(turistaId: number) {
-    // Verificar que el turista existe
-    const turista = await this.prisma.turista.findUnique({
-      where: { id: turistaId },
+  async findByUsuario(usuarioId: number) {
+    // Verificar que el usuario existe
+    const usuario = await this.prisma.usuario.findUnique({
+      where: { id: usuarioId },
     });
 
-    if (!turista) {
-      throw new NotFoundException(`Turista con ID ${turistaId} no encontrado`);
+    if (!usuario) {
+      throw new NotFoundException(`Usuario con ID ${usuarioId} no encontrado`);
     }
 
     return this.prisma.reserva.findMany({
-      where: { turistaId },
+      where: { usuarioId },
       include: {
-        turista: true,
-        itinerarios: true,
+        usuario: true,
         pagos: true,
       },
     });
@@ -144,8 +133,7 @@ export class ReservasService {
       where: { id },
       data: { estado },
       include: {
-        turista: true,
-        itinerarios: true,
+        usuario: true,
         pagos: true,
       },
     });

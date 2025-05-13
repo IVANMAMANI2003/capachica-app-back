@@ -6,9 +6,11 @@ export declare class ComprobantesController {
     constructor(comprobantesService: ComprobantesService);
     create(createComprobanteDto: CreateComprobanteDto): Promise<{
         pago: {
-            moneda: string;
-            estado: string;
             id: number;
+            estado: string;
+            createdAt: Date;
+            updatedAt: Date;
+            moneda: string;
             reservaId: number;
             paymentGateway: string;
             transactionId: string;
@@ -16,15 +18,13 @@ export declare class ComprobantesController {
             fechaPago: Date | null;
             datosMetodoPago: import(".prisma/client/runtime/library").JsonValue | null;
             metadata: import(".prisma/client/runtime/library").JsonValue | null;
-            createdAt: Date;
-            updatedAt: Date;
         };
     } & {
-        moneda: string;
-        estado: string;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -45,9 +45,11 @@ export declare class ComprobantesController {
     }>;
     findAll(): Promise<({
         pago: {
-            moneda: string;
-            estado: string;
             id: number;
+            estado: string;
+            createdAt: Date;
+            updatedAt: Date;
+            moneda: string;
             reservaId: number;
             paymentGateway: string;
             transactionId: string;
@@ -55,15 +57,13 @@ export declare class ComprobantesController {
             fechaPago: Date | null;
             datosMetodoPago: import(".prisma/client/runtime/library").JsonValue | null;
             metadata: import(".prisma/client/runtime/library").JsonValue | null;
-            createdAt: Date;
-            updatedAt: Date;
         };
     } & {
-        moneda: string;
-        estado: string;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -84,9 +84,11 @@ export declare class ComprobantesController {
     })[]>;
     findOne(id: string): Promise<{
         pago: {
-            moneda: string;
-            estado: string;
             id: number;
+            estado: string;
+            createdAt: Date;
+            updatedAt: Date;
+            moneda: string;
             reservaId: number;
             paymentGateway: string;
             transactionId: string;
@@ -94,15 +96,13 @@ export declare class ComprobantesController {
             fechaPago: Date | null;
             datosMetodoPago: import(".prisma/client/runtime/library").JsonValue | null;
             metadata: import(".prisma/client/runtime/library").JsonValue | null;
-            createdAt: Date;
-            updatedAt: Date;
         };
     } & {
-        moneda: string;
-        estado: string;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -123,9 +123,11 @@ export declare class ComprobantesController {
     }>;
     findByPagoId(pagoId: string): Promise<{
         pago: {
-            moneda: string;
-            estado: string;
             id: number;
+            estado: string;
+            createdAt: Date;
+            updatedAt: Date;
+            moneda: string;
             reservaId: number;
             paymentGateway: string;
             transactionId: string;
@@ -133,15 +135,13 @@ export declare class ComprobantesController {
             fechaPago: Date | null;
             datosMetodoPago: import(".prisma/client/runtime/library").JsonValue | null;
             metadata: import(".prisma/client/runtime/library").JsonValue | null;
-            createdAt: Date;
-            updatedAt: Date;
         };
     } & {
-        moneda: string;
-        estado: string;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -162,9 +162,11 @@ export declare class ComprobantesController {
     }>;
     update(id: string, updateComprobanteDto: UpdateComprobanteDto): Promise<{
         pago: {
-            moneda: string;
-            estado: string;
             id: number;
+            estado: string;
+            createdAt: Date;
+            updatedAt: Date;
+            moneda: string;
             reservaId: number;
             paymentGateway: string;
             transactionId: string;
@@ -172,15 +174,13 @@ export declare class ComprobantesController {
             fechaPago: Date | null;
             datosMetodoPago: import(".prisma/client/runtime/library").JsonValue | null;
             metadata: import(".prisma/client/runtime/library").JsonValue | null;
-            createdAt: Date;
-            updatedAt: Date;
         };
     } & {
-        moneda: string;
-        estado: string;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -200,11 +200,11 @@ export declare class ComprobantesController {
         tokenSunat: string | null;
     }>;
     remove(id: string): Promise<{
-        moneda: string;
-        estado: string;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -225,9 +225,11 @@ export declare class ComprobantesController {
     }>;
     updateEstado(id: string, estado: string): Promise<{
         pago: {
-            moneda: string;
-            estado: string;
             id: number;
+            estado: string;
+            createdAt: Date;
+            updatedAt: Date;
+            moneda: string;
             reservaId: number;
             paymentGateway: string;
             transactionId: string;
@@ -235,15 +237,13 @@ export declare class ComprobantesController {
             fechaPago: Date | null;
             datosMetodoPago: import(".prisma/client/runtime/library").JsonValue | null;
             metadata: import(".prisma/client/runtime/library").JsonValue | null;
-            createdAt: Date;
-            updatedAt: Date;
         };
     } & {
-        moneda: string;
-        estado: string;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
