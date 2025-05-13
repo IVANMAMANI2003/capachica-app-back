@@ -95,6 +95,7 @@ export class EmprendimientosController {
 
   // Endpoints para favoritos
   @Post('favoritos')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Marcar un emprendimiento como favorito' })
   @ApiResponse({ status: 201, description: 'Emprendimiento marcado como favorito', type: FavoritoEntity })
   @ApiResponse({ status: 400, description: 'Datos inválidos o emprendimiento ya marcado como favorito' })
