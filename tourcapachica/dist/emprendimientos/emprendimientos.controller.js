@@ -151,6 +151,7 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Emprendimiento marcado como favorito', type: favorito_entity_1.FavoritoEntity }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos o emprendimiento ya marcado como favorito' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Emprendimiento no encontrado' }),
+    (0, swagger_1.ApiBody)({ type: create_favorito_dto_1.CreateFavoritoDto }),
     __param(0, (0, common_1.Request)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),

@@ -7,7 +7,7 @@ import { CreateFavoritoDto } from './dto/create-favorito.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { EmprendimientoEntity } from './entities/emprendimiento.entity';
 import { FavoritoEntity } from './entities/favorito.entity';
 
@@ -99,6 +99,7 @@ export class EmprendimientosController {
   @ApiResponse({ status: 201, description: 'Emprendimiento marcado como favorito', type: FavoritoEntity })
   @ApiResponse({ status: 400, description: 'Datos inválidos o emprendimiento ya marcado como favorito' })
   @ApiResponse({ status: 404, description: 'Emprendimiento no encontrado' })
+  @ApiBody({ type: CreateFavoritoDto })
   addFavorito(@Request() req: RequestWithUser, @Body() createFavoritoDto: CreateFavoritoDto) {
     return this.emprendimientosService.addFavorito(req.user.id, createFavoritoDto);
   }
