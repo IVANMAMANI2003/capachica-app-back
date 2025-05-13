@@ -2,7 +2,7 @@ import { Request as ExpressRequest } from 'express';
 import { EmprendimientosService } from './emprendimientos.service';
 import { CreateEmprendimientoDto } from './dto/create-emprendimiento.dto';
 import { UpdateEmprendimientoDto } from './dto/update-emprendimiento.dto';
-import { CreateFavoritoDto } from './dto/create-favorito.dto';
+import { CreateFavoritoDto } from './dto/create-favorito-emprendimiento.dto';
 interface RequestWithUser extends ExpressRequest {
     user: {
         id: number;

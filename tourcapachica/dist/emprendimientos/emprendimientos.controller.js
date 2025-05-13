@@ -22,8 +22,8 @@ const roles_guard_1 = require("../auth/guards/roles.guard");
 const roles_decorator_1 = require("../auth/decorators/roles.decorator");
 const swagger_1 = require("@nestjs/swagger");
 const emprendimiento_entity_1 = require("./entities/emprendimiento.entity");
+const create_favorito_emprendimiento_dto_1 = require("./dto/create-favorito-emprendimiento.dto");
 const favorito_entity_1 = require("./entities/favorito.entity");
-const create_favorito_dto_1 = require("./dto/create-favorito.dto");
 let EmprendimientosController = class EmprendimientosController {
     constructor(emprendimientosService) {
         this.emprendimientosService = emprendimientosService;
@@ -154,11 +154,11 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Emprendimiento marcado como favorito', type: favorito_entity_1.FavoritoEntity }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos o emprendimiento ya marcado como favorito' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Emprendimiento no encontrado' }),
-    (0, swagger_1.ApiBody)({ type: create_favorito_dto_1.CreateFavoritoDto }),
+    (0, swagger_1.ApiBody)({ type: create_favorito_emprendimiento_dto_1.CreateFavoritoDto }),
     __param(0, (0, common_1.Request)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, create_favorito_dto_1.CreateFavoritoDto]),
+    __metadata("design:paramtypes", [Object, create_favorito_emprendimiento_dto_1.CreateFavoritoDto]),
     __metadata("design:returntype", void 0)
 ], EmprendimientosController.prototype, "addFavorito", null);
 __decorate([

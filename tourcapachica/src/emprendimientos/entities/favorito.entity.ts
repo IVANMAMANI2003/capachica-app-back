@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Emprendimiento, Usuario } from '@prisma/client';
 
 export class FavoritoEntity {
   @ApiProperty({ description: 'ID único del favorito' })
@@ -9,5 +10,12 @@ export class FavoritoEntity {
 
   @ApiProperty({ description: 'ID del emprendimiento favorito' })
   emprendimientoId: number;
+
+  @ApiProperty({ description: 'Fecha de creación del favorito' })
+  createdAt: Date;
+
+  @ApiProperty({ description: 'Fecha de actualización del favorito' })
+  updatedAt: Date;
+
 
 }

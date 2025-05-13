@@ -11,7 +11,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { EstadoPaquete } from './enums/estado-paquete.enum';
 import { IsEnum } from 'class-validator';
-import { CreateFavoritoDto } from './dto/create-favorito.dto';
+import { CreateFavoritoDto } from './dto/create-favorito-paquete.dto';
 class UpdateEstadoDto {
   @ApiProperty({ description: 'Estado de la paquete turistico', enum: EstadoPaquete })
   @IsEnum(EstadoPaquete, { message: 'El estado Debe ser "activo" o "inactivo"' })

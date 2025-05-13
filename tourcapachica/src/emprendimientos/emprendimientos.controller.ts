@@ -8,8 +8,8 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { EmprendimientoEntity } from './entities/emprendimiento.entity';
+import { CreateFavoritoDto } from './dto/create-favorito-emprendimiento.dto';
 import { FavoritoEntity } from './entities/favorito.entity';
-import { CreateFavoritoDto } from './dto/create-favorito.dto';
 
 interface RequestWithUser extends ExpressRequest {
   user: {

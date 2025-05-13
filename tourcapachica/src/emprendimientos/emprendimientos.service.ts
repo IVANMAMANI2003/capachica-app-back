@@ -2,7 +2,7 @@ import { Injectable, NotFoundException, BadRequestException } from '@nestjs/comm
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateEmprendimientoDto } from './dto/create-emprendimiento.dto';
 import { UpdateEmprendimientoDto } from './dto/update-emprendimiento.dto';
-import { CreateFavoritoDto } from './dto/create-favorito.dto';
+import { CreateFavoritoDto } from './dto/create-favorito-emprendimiento.dto';
 import { SupabaseService } from '../supabase/supabase.service';
 
 @Injectable()

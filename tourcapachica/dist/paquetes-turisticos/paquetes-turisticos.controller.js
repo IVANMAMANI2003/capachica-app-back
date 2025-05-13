@@ -26,7 +26,7 @@ const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 const roles_guard_1 = require("../auth/guards/roles.guard");
 const estado_paquete_enum_1 = require("./enums/estado-paquete.enum");
 const class_validator_1 = require("class-validator");
-const create_favorito_dto_1 = require("./dto/create-favorito.dto");
+const create_favorito_paquete_dto_1 = require("./dto/create-favorito-paquete.dto");
 class UpdateEstadoDto {
 }
 __decorate([
@@ -326,7 +326,7 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_favorito_dto_1.CreateFavoritoDto]),
+    __metadata("design:paramtypes", [create_favorito_paquete_dto_1.CreateFavoritoDto]),
     __metadata("design:returntype", void 0)
 ], PaquetesTuristicosController.prototype, "marcarFavorito", null);
 __decorate([
