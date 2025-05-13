@@ -1,109 +1,77 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { CreateEmprendimientoDto } from './create-emprendimiento.dto';
-import { ImageDto } from './create-emprendimiento.dto';
-import { IsObject, IsOptional } from 'class-validator';
+import { CreateEmprendimientoDto, ImageDto } from './create-emprendimiento.dto';
+import {IsOptional, IsString, IsNumber, IsEnum, IsEmail, IsUrl, IsObject, ValidateNested, IsArray
+} from 'class-validator';
+import { Type } from 'class-transformer';
+
 
 export class UpdateEmprendimientoDto extends PartialType(CreateEmprendimientoDto) {
-  @ApiProperty({
-    description: 'ID del usuario propietario del emprendimiento',
-    example: 1,
-    required: false,
-    type: Number
-  })
+  @ApiProperty({ description: 'ID del usuario propietario', example: 1, required: false })
+  @IsOptional()
+  @IsNumber()
   usuarioId?: number;
-  @ApiProperty({
-    description: 'ID del Lugarturistico en la que esta el emprendimiento',
-    example: 1,
-    required: false,
-    type: Number
-  })
+
+  @ApiProperty({ description: 'ID adicional del lugar turístico', example: 1, required: false })
+  @IsOptional()
+  @IsNumber()
   lugarTuristicoIdId?: number;
 
-  @ApiProperty({
-    description: 'Nombre del emprendimiento',
-    example: 'Restaurante La Isla',
-    required: false,
-    maxLength: 200,
-    type: String
-  })
+  @ApiProperty({ description: 'Nombre del emprendimiento', example: 'Restaurante La Isla', required: false })
+  @IsOptional()
+  @IsString()
   nombre?: string;
 
-  @ApiProperty({
-    description: 'Descripción del emprendimiento',
-    example: 'Restaurante especializado en comida local',
-    required: false,
-    type: String
-  })
+  @ApiProperty({ description: 'Descripción del emprendimiento', example: 'Comida local', required: false })
+  @IsOptional()
+  @IsString()
   descripcion?: string;
 
   @ApiProperty({
     description: 'Tipo de emprendimiento',
-    example: 'restaurante',
+    example: 'Turismo',
     required: false,
-    enum: ['restaurante', 'hospedaje', 'artesania', 'otro'],
-    type: String
   })
+  @IsOptional()
   tipo?: string;
 
-  @ApiProperty({
-    description: 'Dirección del emprendimiento',
-    example: 'Av. Principal 123, Capachica',
-    required: false,
-    type: String
-  })
+  @ApiProperty({ description: 'Dirección', example: 'Av. Principal 123', required: false })
+  @IsOptional()
+  @IsString()
   direccion?: string;
 
-  @ApiProperty({
-    description: 'Latitud del emprendimiento',
-    example: -15.7667,
-    required: false,
-    type: Number
-  })
+  @ApiProperty({ description: 'Latitud', example: -15.7667, required: false })
+  @IsOptional()
+  @IsNumber()
   latitud?: number;
 
-  @ApiProperty({
-    description: 'Longitud del emprendimiento',
-    example: -69.6833,
-    required: false,
-    type: Number
-  })
+  @ApiProperty({ description: 'Longitud', example: -69.6833, required: false })
+  @IsOptional()
+  @IsNumber()
   longitud?: number;
 
-  @ApiProperty({
-    description: 'Teléfono de contacto',
-    example: '+51 987654321',
-    required: false,
-    type: String
-  })
+  @ApiProperty({ description: 'Teléfono de contacto', example: '+51 987654321', required: false })
+  @IsOptional()
+  @IsString()
   contactoTelefono?: string;
 
-  @ApiProperty({
-    description: 'Correo electrónico de contacto',
-    example: 'contacto@restaurante.com',
-    required: false,
-    type: String
-  })
+  @ApiProperty({ description: 'Correo electrónico', example: 'correo@ejemplo.com', required: false })
+  @IsOptional()
+  @IsEmail()
   contactoEmail?: string;
 
-  @ApiProperty({
-    description: 'Sitio web del emprendimiento',
-    example: 'https://restaurante.com',
-    required: false,
-    type: String
-  })
+  @ApiProperty({ description: 'Sitio web', example: 'https://miweb.com', required: false })
+  @IsOptional()
+  @IsUrl()
   sitioWeb?: string;
 
   @ApiProperty({
-    description: 'Redes sociales del emprendimiento. Cada clave es el nombre de la red social y el valor es su URL.',
+    description: 'Redes sociales como objeto clave:valor',
     example: {
-      facebook: 'https://facebook.com/restaurante',
-      instagram: 'https://instagram.com/restaurante',
-      tiktok: 'https://tiktok.com/@restaurante',
-      youtube: 'https://youtube.com/c/restaurante'
+      facebook: 'https://facebook.com/ejemplo',
+      instagram: 'https://instagram.com/ejemplo'
     },
     required: false,
-    type: 'object',
-    additionalProperties: { type: 'string' }
+    type: 'object'
   })
   @IsOptional()
   @IsObject()
@@ -111,33 +79,31 @@ export class UpdateEmprendimientoDto extends PartialType(CreateEmprendimientoDto
 
   @ApiProperty({
     description: 'Estado del emprendimiento',
-    example: 'pendiente',
+    example: 'Activo',
     required: false,
-    enum: ['pendiente', 'aprobado', 'rechazado'],
-    type: String
+    enum: ['Activo', 'Inactivo', 'Suspendido', 'Eliminado',  'Rechazado']
   })
+  @IsOptional()
+  @IsEnum(['Activo', 'Inactivo', 'Suspendido', 'Eliminado',  'Rechazado'])
   estado?: string;
 
   @ApiProperty({
-    description: 'Fecha de aprobación del emprendimiento',
+    description: 'Fecha de aprobación',
     example: '2024-03-20T00:00:00.000Z',
     required: false,
     type: Date
   })
+  @IsOptional()
   fechaAprobacion?: Date;
 
   @ApiProperty({
-    description: 'Lista de imágenes del emprendimiento',
+    description: 'Lista de imágenes',
     type: [ImageDto],
-    required: false,
-    example: [
-      {
-        url: 'https://example.com/image1.jpg'
-      },
-      {
-        url: 'https://example.com/image2.jpg'
-      }
-    ]
+    required: false
   })
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ImageDto)
   imagenes?: ImageDto[];
 }

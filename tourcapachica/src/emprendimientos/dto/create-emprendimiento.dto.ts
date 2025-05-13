@@ -65,12 +65,10 @@ export class CreateEmprendimientoDto {
     description: 'Tipo de emprendimiento',
     example: 'restaurante',
     required: true,
-    enum: ['restaurante', 'hospedaje', 'artesania', 'otro'],
     type: String
   })
   @IsString()
   @IsNotEmpty()
-  @IsEnum(['restaurante', 'hospedaje', 'artesania', 'otro'])
   tipo: string;
 
   @ApiProperty({
@@ -151,16 +149,16 @@ export class CreateEmprendimientoDto {
 
   @ApiProperty({
     description: 'Estado del emprendimiento',
-    example: 'pendiente',
-    default: 'pendiente',
+    example: 'Activo',
+    default: 'Activo',
     required: false,
-    enum: ['pendiente', 'aprobado', 'rechazado'],
+    enum: ['Activo', 'Inactivo', 'Suspendido', 'Eliminado',  'Rechazado'],
     type: String
   })
   @IsString()
   @IsOptional()
-  @IsEnum(['pendiente', 'aprobado', 'rechazado'])
-  estado?: string = 'pendiente';
+  @IsEnum(['Activo', 'Inactivo', 'Suspendido', 'Eliminado',  'Rechazado'])
+  estado?: string = 'Activo';
 
   @ApiProperty({
     description: 'Fecha de aprobación del emprendimiento',

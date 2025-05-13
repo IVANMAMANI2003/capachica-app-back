@@ -29,7 +29,7 @@ __decorate([
 ], ImageDto.prototype, "url", void 0);
 class CreateEmprendimientoDto {
     constructor() {
-        this.estado = 'pendiente';
+        this.estado = 'Activo';
     }
 }
 exports.CreateEmprendimientoDto = CreateEmprendimientoDto;
@@ -84,12 +84,10 @@ __decorate([
         description: 'Tipo de emprendimiento',
         example: 'restaurante',
         required: true,
-        enum: ['restaurante', 'hospedaje', 'artesania', 'otro'],
         type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsEnum)(['restaurante', 'hospedaje', 'artesania', 'otro']),
     __metadata("design:type", String)
 ], CreateEmprendimientoDto.prototype, "tipo", void 0);
 __decorate([
@@ -178,15 +176,15 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Estado del emprendimiento',
-        example: 'pendiente',
-        default: 'pendiente',
+        example: 'Activo',
+        default: 'Activo',
         required: false,
-        enum: ['pendiente', 'aprobado', 'rechazado'],
+        enum: ['Activo', 'Inactivo', 'Suspendido', 'Eliminado', 'Rechazado'],
         type: String
     }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsEnum)(['pendiente', 'aprobado', 'rechazado']),
+    (0, class_validator_1.IsEnum)(['Activo', 'Inactivo', 'Suspendido', 'Eliminado', 'Rechazado']),
     __metadata("design:type", String)
 ], CreateEmprendimientoDto.prototype, "estado", void 0);
 __decorate([
