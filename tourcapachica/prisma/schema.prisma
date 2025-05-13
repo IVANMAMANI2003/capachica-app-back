@@ -133,7 +133,7 @@ model UsuariosRoles {
 model Emprendimiento {
   id                 Int                   @id @default(autoincrement())
   usuarioId          Int                   @map("usuario_id")
-  lugarTuristicoId   Int               
+  lugarTuristicoId   Int?               
   nombre             String                @db.VarChar(200)
   descripcion        String?
   tipo               String                @db.VarChar(50)
@@ -149,7 +149,7 @@ model Emprendimiento {
   createdAt          DateTime              @default(now()) @map("created_at")
   updatedAt          DateTime              @default(now()) @map("updated_at")
   usuario            Usuario               @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
-  lugarTuristico     LugarTuristico    @relation(fields: [lugarTuristicoId], references: [id], onDelete: Restrict)
+  lugarTuristico     LugarTuristico?    @relation(fields: [lugarTuristicoId], references: [id], onDelete: Restrict)
   paquetesTuristicos PaqueteTuristico[]
   servicios          ServicioEmprendedor[]
   favoritosEmprendimiento FavoritoEmprendimiento[]
