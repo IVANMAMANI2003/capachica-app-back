@@ -17,13 +17,13 @@ const common_1 = require("@nestjs/common");
 const emprendimientos_service_1 = require("./emprendimientos.service");
 const create_emprendimiento_dto_1 = require("./dto/create-emprendimiento.dto");
 const update_emprendimiento_dto_1 = require("./dto/update-emprendimiento.dto");
-const create_favorito_dto_1 = require("./dto/create-favorito.dto");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 const roles_guard_1 = require("../auth/guards/roles.guard");
 const roles_decorator_1 = require("../auth/decorators/roles.decorator");
 const swagger_1 = require("@nestjs/swagger");
 const emprendimiento_entity_1 = require("./entities/emprendimiento.entity");
 const favorito_entity_1 = require("./entities/favorito.entity");
+const create_favorito_dto_1 = require("./dto/create-favorito.dto");
 let EmprendimientosController = class EmprendimientosController {
     constructor(emprendimientosService) {
         this.emprendimientosService = emprendimientosService;

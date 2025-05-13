@@ -3,13 +3,13 @@ import { Request as ExpressRequest } from 'express';
 import { EmprendimientosService } from './emprendimientos.service';
 import { CreateEmprendimientoDto } from './dto/create-emprendimiento.dto';
 import { UpdateEmprendimientoDto } from './dto/update-emprendimiento.dto';
-import { CreateFavoritoDto } from './dto/create-favorito.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { EmprendimientoEntity } from './entities/emprendimiento.entity';
 import { FavoritoEntity } from './entities/favorito.entity';
+import { CreateFavoritoDto } from './dto/create-favorito.dto';
 
 interface RequestWithUser extends ExpressRequest {
   user: {
