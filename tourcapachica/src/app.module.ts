@@ -17,6 +17,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PersonasModule } from './personas/personas.module';
 import { ResenasModule } from './resenas/resenas.module';
+import { ComprobantesModule } from './comprobantes/comprobantes.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { ResenasModule } from './resenas/resenas.module';
     SupabaseModule,
     ReservasModule,
     PaymentsModule,
+    ComprobantesModule,
     
   ],
   controllers: [AppController],

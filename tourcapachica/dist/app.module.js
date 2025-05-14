@@ -26,6 +26,7 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const personas_module_1 = require("./personas/personas.module");
 const resenas_module_1 = require("./resenas/resenas.module");
+const comprobantes_module_1 = require("./comprobantes/comprobantes.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -50,6 +51,7 @@ exports.AppModule = AppModule = __decorate([
             supabase_module_1.SupabaseModule,
             reservas_module_1.ReservasModule,
             payments_module_1.PaymentsModule,
+            comprobantes_module_1.ComprobantesModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
