@@ -8,7 +8,6 @@ import {
   IsArray,
   ValidateNested
 } from 'class-validator';
-import { EstadoPago } from '../enums/estado-pago.enum';
 import { CreatePaymentDetailDto } from './create-payment-detail.dto';
 
 export class CreatePaymentDto {
@@ -22,18 +21,10 @@ export class CreatePaymentDto {
   @IsNotEmpty()
   paymentGateway: string;
 
-  @ApiProperty({ description: 'ID único de la transacción', example: 'txn_1234567890' })
-  @IsString()
-  @IsNotEmpty()
-  transactionId: string;
-
   @ApiProperty({ description: 'Moneda utilizada', example: 'PEN', default: 'PEN' })
   @IsString()
   @IsOptional()
   moneda?: string;
-
-
-
 
   @ApiProperty({ description: 'Datos del método de pago', example: { numero: '123456789' }, required: false })
   @IsOptional()
@@ -43,6 +34,28 @@ export class CreatePaymentDto {
   @IsOptional()
   metadata?: any;
 
+  @ApiProperty({
+    description: 'Lista de detalles del pago',
+    type: [CreatePaymentDetailDto],
+    example: [
+      {
+        tipoPagoId: 1,
+        concepto: 'Pago inicial',
+        monto: 50.0,
+        porcentajeImpuesto: 0,
+        cantidad: 1,
+        descripcion: 'Pago realizado con Yape',
+      },
+      {
+        tipoPagoId: 2,
+        concepto: 'Pago final',
+        monto: 50.0,
+        porcentajeImpuesto: 0,
+        cantidad: 1,
+        descripcion: 'Pago realizado en efectivo',
+      },
+    ],
+  })
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })

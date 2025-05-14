@@ -12,22 +12,23 @@ export class PaymentService {
   async create(createPagoDto: CreatePaymentDto) {
     return this.prisma.$transaction(async (prisma) => {
       const totalDetalles = createPagoDto.detalles.reduce((total, detalle) => total + detalle.monto, 0);
-      // Obtener la reserva y su monto total
-    const reserva = await this.prisma.reserva.findUnique({
-      where: { id: createPagoDto.reservaId },
-    });
+      const reserva = await this.prisma.reserva.findUnique({
+        where: { id: createPagoDto.reservaId },
+      });
 
-    // Comparar el total pagado con el monto de la reserva
-    let estado: EstadoPago = EstadoPago.PENDIENTE;
-    if (Number(totalDetalles) >= Number(reserva.precioTotal)) {
-      estado = EstadoPago.COMPLETADO;
-    }
-      
+      let estado: EstadoPago = EstadoPago.PENDIENTE;
+      if (Number(totalDetalles) >= Number(reserva.precioTotal)) {
+        estado = EstadoPago.COMPLETADO;
+      }
+
+      // Generar transactionId único
+      const transactionId = `TXN-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${Math.floor(Math.random() * 1000000).toString().padStart(6, '0')}`;
+
       const pago = await prisma.pago.create({
         data: {
           reservaId: createPagoDto.reservaId,
           paymentGateway: createPagoDto.paymentGateway,
-          transactionId: createPagoDto.transactionId,
+          transactionId: transactionId,
           montoTotal: totalDetalles,
           moneda: createPagoDto.moneda ?? 'PEN',
           estado: estado,
@@ -108,7 +109,6 @@ export class PaymentService {
       data: {
         reservaId: updatePaymentDto.reservaId,
         paymentGateway: updatePaymentDto.paymentGateway,
-        transactionId: updatePaymentDto.transactionId,
         montoTotal: totalDetalles,
         moneda: updatePaymentDto.moneda,
         estado: estado,
@@ -122,6 +122,11 @@ export class PaymentService {
         comprobante: true,
         reserva: true,
       },
+    });
+
+    await this.prisma.reserva.update({
+      where: { id: updatePaymentDto.reservaId },
+      data: { estado: Number(totalDetalles) >= Number(reserva.precioTotal) ? 'confirmada' : 'pendiente' }
     });
 
     return pagoActualizado;
@@ -158,12 +163,14 @@ export class PaymentService {
   
     const estadoPago = Number(totalPagado) >= Number(reserva.precioTotal) ? 'completado' : 'pendiente';
     const estadoReserva = Number(totalPagado) >= Number(reserva.precioTotal) ? 'confirmada' : 'pendiente';
-  
+  // Generar transactionId único
+  const transactionId = `TXN-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${Math.floor(Math.random() * 1000000).toString().padStart(6, '0')}`;
+
     const pago = await this.prisma.pago.create({
       data: {
         reservaId: createPagoDto.reservaId,
         paymentGateway: createPagoDto.paymentGateway,
-        transactionId: createPagoDto.transactionId,
+        transactionId: transactionId,
         montoTotal: totalDetalles,
         moneda: createPagoDto.moneda ?? 'PEN',
         estado: estadoPago,

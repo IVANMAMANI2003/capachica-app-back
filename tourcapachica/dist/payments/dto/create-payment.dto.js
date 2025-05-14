@@ -30,12 +30,6 @@ __decorate([
     __metadata("design:type", String)
 ], CreatePaymentDto.prototype, "paymentGateway", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'ID único de la transacción', example: 'txn_1234567890' }),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], CreatePaymentDto.prototype, "transactionId", void 0);
-__decorate([
     (0, swagger_1.ApiProperty)({ description: 'Moneda utilizada', example: 'PEN', default: 'PEN' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
@@ -52,6 +46,28 @@ __decorate([
     __metadata("design:type", Object)
 ], CreatePaymentDto.prototype, "metadata", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Lista de detalles del pago',
+        type: [create_payment_detail_dto_1.CreatePaymentDetailDto],
+        example: [
+            {
+                tipoPagoId: 1,
+                concepto: 'Pago inicial',
+                monto: 50.0,
+                porcentajeImpuesto: 0,
+                cantidad: 1,
+                descripcion: 'Pago realizado con Yape',
+            },
+            {
+                tipoPagoId: 2,
+                concepto: 'Pago final',
+                monto: 50.0,
+                porcentajeImpuesto: 0,
+                cantidad: 1,
+                descripcion: 'Pago realizado en efectivo',
+            },
+        ],
+    }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsArray)(),
     (0, class_validator_1.ValidateNested)({ each: true }),

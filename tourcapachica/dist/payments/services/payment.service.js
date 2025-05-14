@@ -28,11 +28,12 @@ let PaymentService = class PaymentService {
             if (Number(totalDetalles) >= Number(reserva.precioTotal)) {
                 estado = estado_pago_enum_1.EstadoPago.COMPLETADO;
             }
+            const transactionId = `TXN-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${Math.floor(Math.random() * 1000000).toString().padStart(6, '0')}`;
             const pago = await prisma.pago.create({
                 data: {
                     reservaId: createPagoDto.reservaId,
                     paymentGateway: createPagoDto.paymentGateway,
-                    transactionId: createPagoDto.transactionId,
+                    transactionId: transactionId,
                     montoTotal: totalDetalles,
                     moneda: (_a = createPagoDto.moneda) !== null && _a !== void 0 ? _a : 'PEN',
                     estado: estado,
@@ -101,7 +102,6 @@ let PaymentService = class PaymentService {
             data: {
                 reservaId: updatePaymentDto.reservaId,
                 paymentGateway: updatePaymentDto.paymentGateway,
-                transactionId: updatePaymentDto.transactionId,
                 montoTotal: totalDetalles,
                 moneda: updatePaymentDto.moneda,
                 estado: estado,
@@ -114,6 +114,10 @@ let PaymentService = class PaymentService {
                 comprobante: true,
                 reserva: true,
             },
+        });
+        await this.prisma.reserva.update({
+            where: { id: updatePaymentDto.reservaId },
+            data: { estado: Number(totalDetalles) >= Number(reserva.precioTotal) ? 'confirmada' : 'pendiente' }
         });
         return pagoActualizado;
     }
@@ -143,11 +147,12 @@ let PaymentService = class PaymentService {
         }
         const estadoPago = Number(totalPagado) >= Number(reserva.precioTotal) ? 'completado' : 'pendiente';
         const estadoReserva = Number(totalPagado) >= Number(reserva.precioTotal) ? 'confirmada' : 'pendiente';
+        const transactionId = `TXN-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${Math.floor(Math.random() * 1000000).toString().padStart(6, '0')}`;
         const pago = await this.prisma.pago.create({
             data: {
                 reservaId: createPagoDto.reservaId,
                 paymentGateway: createPagoDto.paymentGateway,
-                transactionId: createPagoDto.transactionId,
+                transactionId: transactionId,
                 montoTotal: totalDetalles,
                 moneda: (_a = createPagoDto.moneda) !== null && _a !== void 0 ? _a : 'PEN',
                 estado: estadoPago,
