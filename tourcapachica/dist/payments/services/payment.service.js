@@ -19,21 +19,21 @@ let PaymentService = class PaymentService {
     async create(createPagoDto) {
         return this.prisma.$transaction(async (prisma) => {
             var _a, _b, _c, _d;
+            const totalDetalles = createPagoDto.detalles.reduce((total, detalle) => total + detalle.monto, 0);
             const pago = await prisma.pago.create({
                 data: {
                     reservaId: createPagoDto.reservaId,
                     paymentGateway: createPagoDto.paymentGateway,
                     transactionId: createPagoDto.transactionId,
-                    montoTotal: createPagoDto.montoTotal,
+                    montoTotal: totalDetalles,
                     moneda: (_a = createPagoDto.moneda) !== null && _a !== void 0 ? _a : 'PEN',
                     estado: (_b = createPagoDto.estado) !== null && _b !== void 0 ? _b : 'pendiente',
-                    fechaPago: createPagoDto.fechaPago,
+                    fechaPago: new Date(),
                     datosMetodoPago: createPagoDto.datosMetodoPago,
                     metadata: createPagoDto.metadata,
                 },
             });
-            const totalDetalles = createPagoDto.detalles.reduce((total, detalle) => total + detalle.monto, 0);
-            if (totalDetalles !== createPagoDto.montoTotal) {
+            if (totalDetalles !== totalDetalles) {
                 throw new Error('La suma de los montos en los detalles no coincide con el montoTotal del pago principal.');
             }
             for (const detalle of createPagoDto.detalles) {
@@ -76,6 +76,7 @@ let PaymentService = class PaymentService {
         return pago;
     }
     async update(id, updatePaymentDto) {
+        var _a, _b;
         const existe = await this.prisma.pago.findUnique({ where: { id } });
         if (!existe) {
             throw new common_1.NotFoundException(`Pago con ID ${id} no encontrado`);
@@ -86,10 +87,10 @@ let PaymentService = class PaymentService {
                 reservaId: updatePaymentDto.reservaId,
                 paymentGateway: updatePaymentDto.paymentGateway,
                 transactionId: updatePaymentDto.transactionId,
-                montoTotal: updatePaymentDto.montoTotal,
+                montoTotal: (_b = (_a = updatePaymentDto.detalles) === null || _a === void 0 ? void 0 : _a.reduce((total, detalle) => total + detalle.monto, 0)) !== null && _b !== void 0 ? _b : existe.montoTotal,
                 moneda: updatePaymentDto.moneda,
                 estado: updatePaymentDto.estado,
-                fechaPago: updatePaymentDto.fechaPago,
+                fechaPago: new Date(),
                 datosMetodoPago: updatePaymentDto.datosMetodoPago,
                 metadata: updatePaymentDto.metadata,
             },
@@ -119,7 +120,8 @@ let PaymentService = class PaymentService {
     }
     async registerPayment(createPagoDto) {
         var _a;
-        const totalPagado = await this.calculateTotalPaid(createPagoDto.reservaId) + createPagoDto.montoTotal;
+        const totalDetalles = createPagoDto.detalles.reduce((total, detalle) => total + detalle.monto, 0);
+        const totalPagado = await this.calculateTotalPaid(createPagoDto.reservaId) + totalDetalles;
         const reserva = await this.prisma.reserva.findUnique({ where: { id: createPagoDto.reservaId } });
         if (!reserva) {
             throw new common_1.NotFoundException(`Reserva con ID ${createPagoDto.reservaId} no encontrada`);
@@ -131,10 +133,10 @@ let PaymentService = class PaymentService {
                 reservaId: createPagoDto.reservaId,
                 paymentGateway: createPagoDto.paymentGateway,
                 transactionId: createPagoDto.transactionId,
-                montoTotal: createPagoDto.montoTotal,
+                montoTotal: totalDetalles,
                 moneda: (_a = createPagoDto.moneda) !== null && _a !== void 0 ? _a : 'PEN',
                 estado: estadoPago,
-                fechaPago: createPagoDto.fechaPago,
+                fechaPago: new Date(),
                 datosMetodoPago: createPagoDto.datosMetodoPago,
                 metadata: createPagoDto.metadata,
             },

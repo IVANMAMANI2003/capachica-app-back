@@ -10,25 +10,25 @@ export class PaymentService {
 
   async create(createPagoDto: CreatePaymentDto) {
     return this.prisma.$transaction(async (prisma) => {
+      const totalDetalles = createPagoDto.detalles.reduce((total, detalle) => total + detalle.monto, 0);
       const pago = await prisma.pago.create({
         data: {
           reservaId: createPagoDto.reservaId,
           paymentGateway: createPagoDto.paymentGateway,
           transactionId: createPagoDto.transactionId,
-          montoTotal: createPagoDto.montoTotal,
+          montoTotal: totalDetalles,
           moneda: createPagoDto.moneda ?? 'PEN',
           estado: createPagoDto.estado ?? 'pendiente',
-          fechaPago: createPagoDto.fechaPago,
+          fechaPago: new Date(),
           datosMetodoPago: createPagoDto.datosMetodoPago,
           metadata: createPagoDto.metadata,
         },
       });
-  
-      const totalDetalles = createPagoDto.detalles.reduce((total, detalle) => total + detalle.monto, 0);
-      if (totalDetalles !== createPagoDto.montoTotal) {
+
+      if (totalDetalles !== totalDetalles) {
         throw new Error('La suma de los montos en los detalles no coincide con el montoTotal del pago principal.');
       }
-  
+
       for (const detalle of createPagoDto.detalles) {
         await prisma.pagoDetalle.create({
           data: {
@@ -42,7 +42,7 @@ export class PaymentService {
           },
         });
       }
-  
+
       return pago;
     });
   }
@@ -87,10 +87,10 @@ export class PaymentService {
         reservaId: updatePaymentDto.reservaId,
         paymentGateway: updatePaymentDto.paymentGateway,
         transactionId: updatePaymentDto.transactionId,
-        montoTotal: updatePaymentDto.montoTotal,
+        montoTotal: updatePaymentDto.detalles?.reduce((total, detalle) => total + detalle.monto, 0) ?? existe.montoTotal,
         moneda: updatePaymentDto.moneda,
         estado: updatePaymentDto.estado,
-        fechaPago: updatePaymentDto.fechaPago,
+        fechaPago: new Date(),
         datosMetodoPago: updatePaymentDto.datosMetodoPago,
         metadata: updatePaymentDto.metadata,
 
@@ -126,7 +126,8 @@ export class PaymentService {
   }
 
   async registerPayment(createPagoDto: CreatePaymentDto) {
-    const totalPagado = await this.calculateTotalPaid(createPagoDto.reservaId) + createPagoDto.montoTotal;
+    const totalDetalles = createPagoDto.detalles.reduce((total, detalle) => total + detalle.monto, 0);
+    const totalPagado = await this.calculateTotalPaid(createPagoDto.reservaId) + totalDetalles;
     const reserva = await this.prisma.reserva.findUnique({ where: { id: createPagoDto.reservaId } });
   
     if (!reserva) {
@@ -141,10 +142,10 @@ export class PaymentService {
         reservaId: createPagoDto.reservaId,
         paymentGateway: createPagoDto.paymentGateway,
         transactionId: createPagoDto.transactionId,
-        montoTotal: createPagoDto.montoTotal,
+        montoTotal: totalDetalles,
         moneda: createPagoDto.moneda ?? 'PEN',
         estado: estadoPago,
-        fechaPago: createPagoDto.fechaPago,
+        fechaPago: new Date(),
         datosMetodoPago: createPagoDto.datosMetodoPago,
         metadata: createPagoDto.metadata,
       },

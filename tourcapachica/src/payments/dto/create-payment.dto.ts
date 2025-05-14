@@ -27,11 +27,6 @@ export class CreatePaymentDto {
   @IsNotEmpty()
   transactionId: string;
 
-  @ApiProperty({ description: 'Monto total pagado', example: 150.00 })
-  @IsNumber()
-  @IsNotEmpty()
-  montoTotal: number;
-
   @ApiProperty({ description: 'Moneda utilizada', example: 'PEN', default: 'PEN' })
   @IsString()
   @IsOptional()
@@ -41,11 +36,7 @@ export class CreatePaymentDto {
   @IsEnum(EstadoPago, { message: 'El estado debe ser uno válido del enum EstadoPago' })
   estado: EstadoPago;
 
-  @ApiProperty({ description: 'Fecha de pago (si aplica)', example: '2024-05-15T10:30:00.000Z', required: false })
-  @Type(() => Date)
-  @IsDate()
-  @IsOptional()
-  fechaPago?: Date;
+
 
   @ApiProperty({ description: 'Datos del método de pago', example: { numero: '123456789' }, required: false })
   @IsOptional()

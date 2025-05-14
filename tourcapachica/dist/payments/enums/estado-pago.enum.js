@@ -5,6 +5,8 @@ var EstadoPago;
 (function (EstadoPago) {
     EstadoPago["PENDIENTE"] = "pendiente";
     EstadoPago["COMPLETADO"] = "completado";
+    EstadoPago["PROCESANDO"] = "procesando";
+    EstadoPago["EXEDIDO"] = "exedido";
     EstadoPago["FALLIDO"] = "fallido";
     EstadoPago["REEMBOLSADO"] = "reembolsado";
     EstadoPago["CANCELADO"] = "cancelado";

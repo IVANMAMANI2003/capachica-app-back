@@ -40,12 +40,12 @@ export declare class PaymentController {
             fechaCancelacion: Date | null;
         };
         comprobante: {
-            pagoId: number;
             id: number;
             moneda: string;
             estado: string;
             createdAt: Date;
             updatedAt: Date;
+            pagoId: number;
             tipoComprobante: string;
             serie: string;
             numero: number;
@@ -64,6 +64,9 @@ export declare class PaymentController {
             tokenSunat: string | null;
         };
         detalles: {
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
             pagoId: number;
             tipoPagoId: number;
             concepto: string;
@@ -71,9 +74,6 @@ export declare class PaymentController {
             porcentajeImpuesto: import(".prisma/client/runtime/library").Decimal;
             cantidad: number;
             descripcion: string | null;
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
         }[];
     } & {
         id: number;
@@ -111,12 +111,12 @@ export declare class PaymentController {
             fechaCancelacion: Date | null;
         };
         comprobante: {
-            pagoId: number;
             id: number;
             moneda: string;
             estado: string;
             createdAt: Date;
             updatedAt: Date;
+            pagoId: number;
             tipoComprobante: string;
             serie: string;
             numero: number;
@@ -135,6 +135,9 @@ export declare class PaymentController {
             tokenSunat: string | null;
         };
         detalles: {
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
             pagoId: number;
             tipoPagoId: number;
             concepto: string;
@@ -142,9 +145,6 @@ export declare class PaymentController {
             porcentajeImpuesto: import(".prisma/client/runtime/library").Decimal;
             cantidad: number;
             descripcion: string | null;
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
         }[];
     } & {
         id: number;
@@ -182,12 +182,12 @@ export declare class PaymentController {
             fechaCancelacion: Date | null;
         };
         comprobante: {
-            pagoId: number;
             id: number;
             moneda: string;
             estado: string;
             createdAt: Date;
             updatedAt: Date;
+            pagoId: number;
             tipoComprobante: string;
             serie: string;
             numero: number;
@@ -206,6 +206,9 @@ export declare class PaymentController {
             tokenSunat: string | null;
         };
         detalles: {
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
             pagoId: number;
             tipoPagoId: number;
             concepto: string;
@@ -213,9 +216,6 @@ export declare class PaymentController {
             porcentajeImpuesto: import(".prisma/client/runtime/library").Decimal;
             cantidad: number;
             descripcion: string | null;
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
         }[];
     } & {
         id: number;

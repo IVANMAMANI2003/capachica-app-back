@@ -1,6 +1,8 @@
 export enum EstadoPago {
     PENDIENTE = 'pendiente',
     COMPLETADO = 'completado',
+    PROCESANDO = 'procesando',
+    EXEDIDO = 'exedido',
     FALLIDO = 'fallido',
     REEMBOLSADO = 'reembolsado',
     CANCELADO = 'cancelado',

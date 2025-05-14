@@ -37,12 +37,6 @@ __decorate([
     __metadata("design:type", String)
 ], CreatePaymentDto.prototype, "transactionId", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Monto total pagado', example: 150.00 }),
-    (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Number)
-], CreatePaymentDto.prototype, "montoTotal", void 0);
-__decorate([
     (0, swagger_1.ApiProperty)({ description: 'Moneda utilizada', example: 'PEN', default: 'PEN' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
@@ -53,13 +47,6 @@ __decorate([
     (0, class_validator_1.IsEnum)(estado_pago_enum_1.EstadoPago, { message: 'El estado debe ser uno válido del enum EstadoPago' }),
     __metadata("design:type", String)
 ], CreatePaymentDto.prototype, "estado", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Fecha de pago (si aplica)', example: '2024-05-15T10:30:00.000Z', required: false }),
-    (0, class_transformer_1.Type)(() => Date),
-    (0, class_validator_1.IsDate)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", Date)
-], CreatePaymentDto.prototype, "fechaPago", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Datos del método de pago', example: { numero: '123456789' }, required: false }),
     (0, class_validator_1.IsOptional)(),
