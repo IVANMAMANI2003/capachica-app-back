@@ -6,6 +6,7 @@ export declare class ReservaService {
     private readonly prisma;
     private readonly itinerarioReservaService;
     constructor(prisma: PrismaService, itinerarioReservaService: ItinerarioReservaService);
+    private generarCodigoReserva;
     create(createReservaDto: CreateReservaDto): Promise<{
         id: number;
         usuarioId: number;

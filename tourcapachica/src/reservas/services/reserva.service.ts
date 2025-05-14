@@ -11,10 +11,22 @@ export class ReservaService {
     private readonly itinerarioReservaService: ItinerarioReservaService,
   ) {}
 
+  private generarCodigoReserva(): string {
+    const prefix = 'RES';
+    const date = new Date();
+    const yyyyMMdd = date.toISOString().slice(0, 10).replace(/-/g, '');
+    const letters = String.fromCharCode(65 + Math.floor(Math.random() * 26)) +
+                    String.fromCharCode(65 + Math.floor(Math.random() * 26));
+    const numbers = Math.floor(1000 + Math.random() * 9000).toString();
+    return `${prefix}-${yyyyMMdd}-${letters}${numbers}`;
+  }
+
   async create(createReservaDto: CreateReservaDto) {
+    const codigoReserva = this.generarCodigoReserva();
     const reserva = await this.prisma.reserva.create({
       data:{
         ...createReservaDto,
+        codigoReserva,
         fechaReserva: new Date(createReservaDto.fechaReserva),
         fechaInicio: new Date(createReservaDto.fechaInicio),
         fechaFin: new Date(createReservaDto.fechaFin),

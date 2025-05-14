@@ -7,10 +7,7 @@ export class CreateReservaDto {
   @IsNotEmpty()
   usuarioId: number;
 
-  @ApiProperty({ example: 'ABC123' })
-  @IsString()
-  @IsNotEmpty()
-  codigoReserva: string;
+  // Removed codigoReserva field
 
   @ApiProperty({ example: 'tipo_reserva' })
   @IsString()

@@ -22,12 +22,6 @@ __decorate([
     __metadata("design:type", Number)
 ], CreateReservaDto.prototype, "usuarioId", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: 'ABC123' }),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], CreateReservaDto.prototype, "codigoReserva", void 0);
-__decorate([
     (0, swagger_1.ApiProperty)({ example: 'tipo_reserva' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),

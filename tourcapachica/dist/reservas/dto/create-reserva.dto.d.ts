@@ -1,6 +1,5 @@
 export declare class CreateReservaDto {
     usuarioId: number;
-    codigoReserva: string;
     tipoReserva: string;
     fechaReserva: string;
     fechaInicio: string;
