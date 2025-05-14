@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateItinerarioReservaDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
+const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 class CreateItinerarioReservaDto {
 }
@@ -29,26 +30,32 @@ __decorate([
 ], CreateItinerarioReservaDto.prototype, "servicioId", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ example: '2023-10-01' }),
-    (0, class_validator_1.IsDate)(),
+    (0, class_validator_1.IsDateString)(),
     (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Date)
+    __metadata("design:type", String)
 ], CreateItinerarioReservaDto.prototype, "fechaInicioActividad", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ example: '2023-10-02' }),
-    (0, class_validator_1.IsDate)(),
+    (0, class_validator_1.IsDateString)(),
     (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Date)
+    __metadata("design:type", String)
 ], CreateItinerarioReservaDto.prototype, "fechaFinActividad", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ example: '08:00:00' }),
-    (0, class_validator_1.IsDate)(),
     (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.Matches)(/^([0-1]\d|2[0-3]):([0-5]\d):([0-5]\d)$/, {
+        message: 'La hora debe estar en formato HH:mm:ss',
+    }),
+    (0, class_transformer_1.Transform)(({ value }) => value ? new Date(`1970-01-01T${value}`) : null),
     __metadata("design:type", Date)
 ], CreateItinerarioReservaDto.prototype, "horaInicio", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ example: '17:00:00' }),
-    (0, class_validator_1.IsDate)(),
     (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.Matches)(/^([0-1]\d|2[0-3]):([0-5]\d):([0-5]\d)$/, {
+        message: 'La hora debe estar en formato HH:mm:ss',
+    }),
+    (0, class_transformer_1.Transform)(({ value }) => value ? new Date(`1970-01-01T${value}`) : null),
     __metadata("design:type", Date)
 ], CreateItinerarioReservaDto.prototype, "horaFin", void 0);
 __decorate([

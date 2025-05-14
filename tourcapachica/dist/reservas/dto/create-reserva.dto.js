@@ -35,21 +35,22 @@ __decorate([
 ], CreateReservaDto.prototype, "tipoReserva", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ example: '2023-10-0' }),
-    (0, class_validator_1.IsDate)(),
+    (0, class_validator_1.IsDateString)(),
     (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Date)
+    __metadata("design:type", String)
 ], CreateReservaDto.prototype, "fechaReserva", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ example: '2023-10-01' }),
-    (0, class_validator_1.IsDate)(),
+    (0, class_validator_1.IsDateString)(),
     (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Date)
+    __metadata("design:type", String)
 ], CreateReservaDto.prototype, "fechaInicio", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ example: '2023-10-02' }),
-    (0, class_validator_1.IsDate)(),
+    (0, class_validator_1.IsDateString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", Date)
+    __metadata("design:type", String)
 ], CreateReservaDto.prototype, "fechaFin", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ example: 2 }),
@@ -100,8 +101,8 @@ __decorate([
 ], CreateReservaDto.prototype, "motivoCancelacion", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ example: '2023-10-01' }),
-    (0, class_validator_1.IsDate)(),
+    (0, class_validator_1.IsDateString)(),
     (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", Date)
+    __metadata("design:type", String)
 ], CreateReservaDto.prototype, "fechaCancelacion", void 0);
 //# sourceMappingURL=create-reserva.dto.js.map

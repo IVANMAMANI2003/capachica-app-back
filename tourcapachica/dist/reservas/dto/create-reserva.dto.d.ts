@@ -2,9 +2,9 @@ export declare class CreateReservaDto {
     usuarioId: number;
     codigoReserva: string;
     tipoReserva: string;
-    fechaReserva: Date;
-    fechaInicio: Date;
-    fechaFin: Date | null;
+    fechaReserva: string;
+    fechaInicio: string;
+    fechaFin: string | null;
     cantidadPersonas: number;
     precioTotal: number;
     moneda: string;
@@ -13,5 +13,5 @@ export declare class CreateReservaDto {
     estado: string;
     notas: string | null;
     motivoCancelacion: string | null;
-    fechaCancelacion: Date | null;
+    fechaCancelacion: string | null;
 }

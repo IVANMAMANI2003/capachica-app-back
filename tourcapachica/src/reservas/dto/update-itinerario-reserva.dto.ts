@@ -1,17 +1,21 @@
-import { IsOptional, IsString, IsDate } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsOptional, IsString, IsDate, IsDateString, IsNotEmpty } from 'class-validator';
 
 export class UpdateItinerarioReservaDto {
+  @ApiProperty({ example: 'Plaza Mayor' })
   @IsOptional()
   @IsString()
   lugarEncuentro?: string;
 
-  @IsOptional()
-  @IsDate()
-  fechaInicioActividad?: Date;
+  @ApiProperty({ example: '2023-10-01' })
+  @IsDateString()
+  @IsNotEmpty()
+  fechaInicioActividad: string;
 
-  @IsOptional()
-  @IsDate()
-  fechaFinActividad?: Date;
+  @ApiProperty({ example: '2023-10-02' })
+  @IsDateString()
+  @IsNotEmpty()
+  fechaFinActividad: string;
 
   // Agrega más campos según sea necesario
 }

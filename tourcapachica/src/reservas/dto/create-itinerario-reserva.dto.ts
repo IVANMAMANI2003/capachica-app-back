@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsNumber, IsOptional, IsDate } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsNotEmpty, IsString, IsNumber, IsOptional, IsDate, Matches, IsDateString } from 'class-validator';
 
 export class CreateItinerarioReservaDto {
   @ApiProperty({ example: 1 })
@@ -13,24 +14,30 @@ export class CreateItinerarioReservaDto {
   servicioId: number;
 
   @ApiProperty({ example: '2023-10-01' })
-  @IsDate()
+  @IsDateString()
   @IsNotEmpty()
-  fechaInicioActividad: Date;
+  fechaInicioActividad: string;
 
   @ApiProperty({ example: '2023-10-02' })
-  @IsDate()
+  @IsDateString()
   @IsNotEmpty()
-  fechaFinActividad: Date;
+  fechaFinActividad: string;
 
   @ApiProperty({ example: '08:00:00' })
-  @IsDate()
   @IsOptional()
-  horaInicio: Date | null;
+  @Matches(/^([0-1]\d|2[0-3]):([0-5]\d):([0-5]\d)$/, {
+    message: 'La hora debe estar en formato HH:mm:ss',
+  })
+  @Transform(({ value }) => value ? new Date(`1970-01-01T${value}`) : null)
+  horaInicio?: Date;
 
   @ApiProperty({ example: '17:00:00' })
-  @IsDate()
   @IsOptional()
-  horaFin: Date | null;
+  @Matches(/^([0-1]\d|2[0-3]):([0-5]\d):([0-5]\d)$/, {
+    message: 'La hora debe estar en formato HH:mm:ss',
+  })
+  @Transform(({ value }) => value ? new Date(`1970-01-01T${value}`) : null)
+  horaFin?: Date;
 
   @ApiProperty({ example: 'Plaza Mayor' })
   @IsString()

@@ -10,23 +10,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateItinerarioReservaDto = void 0;
+const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class UpdateItinerarioReservaDto {
 }
 exports.UpdateItinerarioReservaDto = UpdateItinerarioReservaDto;
 __decorate([
+    (0, swagger_1.ApiProperty)({ example: 'Plaza Mayor' }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], UpdateItinerarioReservaDto.prototype, "lugarEncuentro", void 0);
 __decorate([
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsDate)(),
-    __metadata("design:type", Date)
+    (0, swagger_1.ApiProperty)({ example: '2023-10-01' }),
+    (0, class_validator_1.IsDateString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
 ], UpdateItinerarioReservaDto.prototype, "fechaInicioActividad", void 0);
 __decorate([
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsDate)(),
-    __metadata("design:type", Date)
+    (0, swagger_1.ApiProperty)({ example: '2023-10-02' }),
+    (0, class_validator_1.IsDateString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
 ], UpdateItinerarioReservaDto.prototype, "fechaFinActividad", void 0);
 //# sourceMappingURL=update-itinerario-reserva.dto.js.map

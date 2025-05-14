@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsNumber, IsOptional, IsDate, IsArray } from 'class-validator';
+import { IsNotEmpty, IsString, IsNumber, IsOptional, IsDate, IsArray, IsDateString } from 'class-validator';
 
 export class CreateReservaDto {
   @ApiProperty({ example: 1 })
@@ -18,19 +18,20 @@ export class CreateReservaDto {
   tipoReserva: string;
 
   @ApiProperty({ example: '2023-10-0' })
-  @IsDate()
+  @IsDateString()
   @IsNotEmpty()
-  fechaReserva: Date;
+  fechaReserva: string;
 
   @ApiProperty({ example: '2023-10-01' })
-  @IsDate()
+  @IsDateString()
   @IsNotEmpty()
-  fechaInicio: Date;
+  fechaInicio: string;
 
   @ApiProperty({ example: '2023-10-02' })
-  @IsDate()
+  @IsDateString()
+  @IsNotEmpty()
   @IsOptional()
-  fechaFin: Date | null;
+  fechaFin: string | null;
 
   @ApiProperty({ example: 2 })
   @IsNumber()
@@ -72,7 +73,7 @@ export class CreateReservaDto {
   motivoCancelacion: string | null;
 
   @ApiProperty({ example: '2023-10-01' })
-  @IsDate()
+  @IsDateString()
   @IsOptional()
-  fechaCancelacion: Date | null;
+  fechaCancelacion: string | null;
   }

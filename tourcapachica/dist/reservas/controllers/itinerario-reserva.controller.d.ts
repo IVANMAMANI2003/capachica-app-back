@@ -6,7 +6,6 @@ export declare class ItinerarioReservaController {
     constructor(itinerarioReservaService: ItinerarioReservaService);
     create(CreateItinerarioReservaDto: CreateItinerarioReservaDto): Promise<import(".prisma/client").Prisma.BatchPayload>;
     findAll(): import(".prisma/client").Prisma.PrismaPromise<{
-        descripcion: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
@@ -19,9 +18,9 @@ export declare class ItinerarioReservaController {
         lugarEncuentro: string;
         observaciones: string | null;
         tipoEvento: string;
+        descripcion: string | null;
     }[]>;
     findOne(id: string): import(".prisma/client").Prisma.Prisma__ItinerarioReservaClient<{
-        descripcion: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
@@ -34,9 +33,9 @@ export declare class ItinerarioReservaController {
         lugarEncuentro: string;
         observaciones: string | null;
         tipoEvento: string;
+        descripcion: string | null;
     }, null, import(".prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     update(id: string, updateItinerarioReservaDto: UpdateItinerarioReservaDto): import(".prisma/client").Prisma.Prisma__ItinerarioReservaClient<{
-        descripcion: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
@@ -49,9 +48,9 @@ export declare class ItinerarioReservaController {
         lugarEncuentro: string;
         observaciones: string | null;
         tipoEvento: string;
+        descripcion: string | null;
     }, never, import(".prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     remove(id: string): import(".prisma/client").Prisma.Prisma__ItinerarioReservaClient<{
-        descripcion: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
@@ -64,5 +63,6 @@ export declare class ItinerarioReservaController {
         lugarEncuentro: string;
         observaciones: string | null;
         tipoEvento: string;
+        descripcion: string | null;
     }, never, import(".prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
 }
