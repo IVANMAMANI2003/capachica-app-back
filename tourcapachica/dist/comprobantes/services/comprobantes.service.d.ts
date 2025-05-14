@@ -1,7 +1,7 @@
-import { PrismaService } from "@/prisma/prisma.service";
-import { CreateComprobanteDto } from "../dto/create-comprobante.dto";
-import { UpdateComprobanteDto } from "../dto/update-comprobante.dto";
-import { Comprobante } from "@prisma/client";
+import { PrismaService } from '@/prisma/prisma.service';
+import { CreateComprobanteDto } from '../dto/create-comprobante.dto';
+import { UpdateComprobanteDto } from '../dto/update-comprobante.dto';
+import { Comprobante } from '@prisma/client';
 export declare class ComprobantesService {
     private prisma;
     constructor(prisma: PrismaService);
@@ -38,6 +38,7 @@ export declare class ComprobantesService {
         createdAt: Date;
         updatedAt: Date;
     }>;
+    validateComprobanteUniqueness(serie: string, numero: number): Promise<void>;
     findAll(): Promise<{
         id: number;
         pagoId: number;
@@ -135,5 +136,4 @@ export declare class ComprobantesService {
         updatedAt: Date;
     }>;
     private getNextNumero;
-    private calculateIgv;
 }
