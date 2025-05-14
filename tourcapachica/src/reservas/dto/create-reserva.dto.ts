@@ -75,5 +75,5 @@ export class CreateReservaDto {
   @ApiProperty({ example: '2023-10-01' })
   @IsDateString()
   @IsOptional()
-  fechaCancelacion: string | null;
+  fechaCancelacion?: string | null;
   }

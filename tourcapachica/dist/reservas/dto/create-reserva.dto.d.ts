@@ -13,5 +13,5 @@ export declare class CreateReservaDto {
     estado: string;
     notas: string | null;
     motivoCancelacion: string | null;
-    fechaCancelacion: string | null;
+    fechaCancelacion?: string | null;
 }

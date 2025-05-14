@@ -18,6 +18,7 @@ export class ReservaService {
         fechaReserva: new Date(createReservaDto.fechaReserva),
         fechaInicio: new Date(createReservaDto.fechaInicio),
         fechaFin: new Date(createReservaDto.fechaFin),
+        fechaCancelacion: new Date(createReservaDto.fechaCancelacion),
       } ,
     });
     await this.itinerarioReservaService.createForReserva(reserva.id);
