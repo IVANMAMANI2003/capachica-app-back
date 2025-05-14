@@ -5,7 +5,10 @@ var EstadoReserva;
 (function (EstadoReserva) {
     EstadoReserva["PENDIENTE"] = "pendiente";
     EstadoReserva["CONFIRMADA"] = "confirmada";
+    EstadoReserva["EN_PROGRESO"] = "en_progreso";
     EstadoReserva["CANCELADA"] = "cancelada";
+    EstadoReserva["RECHAZADA"] = "rechazada";
     EstadoReserva["COMPLETADA"] = "completada";
+    EstadoReserva["EXPIRADA"] = "expirada";
 })(EstadoReserva || (exports.EstadoReserva = EstadoReserva = {}));
 //# sourceMappingURL=estado-reserva.enum.js.map

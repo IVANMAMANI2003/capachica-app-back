@@ -1,6 +1,10 @@
 export enum EstadoReserva {
     PENDIENTE = 'pendiente',
     CONFIRMADA = 'confirmada',
+    EN_PROGRESO = 'en_progreso',
     CANCELADA = 'cancelada',
-    COMPLETADA = 'completada'
+    RECHAZADA = 'rechazada',
+    COMPLETADA = 'completada',
+    EXPIRADA = 'expirada',
+    
   }

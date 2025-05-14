@@ -1,24 +1,31 @@
+import { Type } from 'class-transformer';
 import {
   IsInt, Min, IsString, MaxLength, IsNumber, IsPositive,
-  IsOptional
+  IsOptional,
+  IsArray,
+  ValidateNested
 } from 'class-validator';
 
 export class CreatePaymentDetailDto {
   @IsInt()
   @Min(1)
-  pagoId: number;
+  @IsOptional()
+  pagoId?: number;
 
   @IsInt()
   @Min(1)
-  tipoPagoId: number;
+  @IsOptional()
+  tipoPagoId?: number;
 
   @IsString()
   @MaxLength(100)
-  concepto: string;
+  @IsOptional()
+  concepto?: string;
 
   @IsNumber({ maxDecimalPlaces: 2 })
   @IsPositive()
-  monto: number;
+  @IsOptional()
+  monto?: number;
 
   @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0)
@@ -33,4 +40,6 @@ export class CreatePaymentDetailDto {
   @IsString()
   @IsOptional()
   descripcion?: string;
+
+
 }

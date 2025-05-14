@@ -3,8 +3,13 @@ import { Type } from 'class-transformer';
 import {
   IsString, IsNotEmpty, IsNumber, IsPositive, IsOptional, IsDateString,
   IsObject, MaxLength, IsInt, Min,
-  IsDate
+  IsDate,
+  IsEnum,
+  IsArray,
+  ValidateNested
 } from 'class-validator';
+import { EstadoPago } from '../enums/estado-pago.enum';
+import { CreatePaymentDetailDto } from './create-payment-detail.dto';
 
 export class CreatePaymentDto {
   @ApiProperty({ description: 'ID de la reserva asociada', example: 1 })
@@ -32,10 +37,9 @@ export class CreatePaymentDto {
   @IsOptional()
   moneda?: string;
 
-  @ApiProperty({ description: 'Estado del pago', example: 'pendiente', default: 'pendiente' })
-  @IsString()
-  @IsOptional()
-  estado?: string;
+  @ApiProperty({ enum: EstadoPago, example: EstadoPago.PENDIENTE })
+  @IsEnum(EstadoPago, { message: 'El estado debe ser uno válido del enum EstadoPago' })
+  estado: EstadoPago;
 
   @ApiProperty({ description: 'Fecha de pago (si aplica)', example: '2024-05-15T10:30:00.000Z', required: false })
   @Type(() => Date)
@@ -50,4 +54,10 @@ export class CreatePaymentDto {
   @ApiProperty({ description: 'Metadatos adicionales', example: { ip: '127.0.0.1' }, required: false })
   @IsOptional()
   metadata?: any;
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreatePaymentDetailDto)
+  detalles?: CreatePaymentDetailDto[];
 }

@@ -9,6 +9,10 @@ export declare class ReservaService {
     private generarCodigoReserva;
     create(createReservaDto: CreateReservaDto): Promise<{
         id: number;
+        moneda: string;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
         usuarioId: number;
         codigoReserva: string;
         tipoReserva: string;
@@ -17,18 +21,18 @@ export declare class ReservaService {
         fechaFin: Date | null;
         cantidadPersonas: number;
         precioTotal: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
         metodoPago: string | null;
         datosPago: import(".prisma/client/runtime/library").JsonValue | null;
-        estado: string;
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     findAll(): import(".prisma/client").Prisma.PrismaPromise<{
         id: number;
+        moneda: string;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
         usuarioId: number;
         codigoReserva: string;
         tipoReserva: string;
@@ -37,18 +41,18 @@ export declare class ReservaService {
         fechaFin: Date | null;
         cantidadPersonas: number;
         precioTotal: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
         metodoPago: string | null;
         datosPago: import(".prisma/client/runtime/library").JsonValue | null;
-        estado: string;
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
-        createdAt: Date;
-        updatedAt: Date;
     }[]>;
     findOne(id: number): import(".prisma/client").Prisma.Prisma__ReservaClient<{
         id: number;
+        moneda: string;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
         usuarioId: number;
         codigoReserva: string;
         tipoReserva: string;
@@ -57,18 +61,18 @@ export declare class ReservaService {
         fechaFin: Date | null;
         cantidadPersonas: number;
         precioTotal: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
         metodoPago: string | null;
         datosPago: import(".prisma/client/runtime/library").JsonValue | null;
-        estado: string;
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
-        createdAt: Date;
-        updatedAt: Date;
     }, null, import(".prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     update(id: number, updateReservaDto: UpdateReservaDto): import(".prisma/client").Prisma.Prisma__ReservaClient<{
         id: number;
+        moneda: string;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
         usuarioId: number;
         codigoReserva: string;
         tipoReserva: string;
@@ -77,18 +81,18 @@ export declare class ReservaService {
         fechaFin: Date | null;
         cantidadPersonas: number;
         precioTotal: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
         metodoPago: string | null;
         datosPago: import(".prisma/client/runtime/library").JsonValue | null;
-        estado: string;
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
-        createdAt: Date;
-        updatedAt: Date;
     }, never, import(".prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     remove(id: number): import(".prisma/client").Prisma.Prisma__ReservaClient<{
         id: number;
+        moneda: string;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
         usuarioId: number;
         codigoReserva: string;
         tipoReserva: string;
@@ -97,14 +101,10 @@ export declare class ReservaService {
         fechaFin: Date | null;
         cantidadPersonas: number;
         precioTotal: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
         metodoPago: string | null;
         datosPago: import(".prisma/client/runtime/library").JsonValue | null;
-        estado: string;
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
-        createdAt: Date;
-        updatedAt: Date;
     }, never, import(".prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
 }

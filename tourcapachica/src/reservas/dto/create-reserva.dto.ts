@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsNumber, IsOptional, IsDate, IsArray, IsDateString } from 'class-validator';
+import { IsNotEmpty, IsString, IsNumber, IsOptional, IsDate, IsArray, IsDateString, IsEnum } from 'class-validator';
+import { EstadoReserva } from '../enums/estado-reserva.enum';
 
 export class CreateReservaDto {
   @ApiProperty({ example: 1 })
@@ -54,10 +55,9 @@ export class CreateReservaDto {
   @IsOptional()
   datosPago: object | null;
 
-  @ApiProperty({ example: 'pendiente' })
-  @IsString()
-  @IsNotEmpty()
-  estado: string;
+  @ApiProperty({ enum: EstadoReserva, example: EstadoReserva.PENDIENTE })
+  @IsEnum(EstadoReserva, { message: 'El estado debe ser uno válido del enum EstadoReserva' })
+  estado: EstadoReserva;
 
   @ApiProperty({ example: 'Notas adicionales' })
   @IsString()

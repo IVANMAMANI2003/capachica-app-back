@@ -9,25 +9,42 @@ export class PaymentService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createPagoDto: CreatePaymentDto) {
-    const pago = await this.prisma.pago.create({
-      data: {
-        reservaId: createPagoDto.reservaId,
-        paymentGateway: createPagoDto.paymentGateway,
-        transactionId: createPagoDto.transactionId,
-        montoTotal: createPagoDto.montoTotal,
-        moneda: createPagoDto.moneda ?? 'PEN',
-        estado: createPagoDto.estado ?? 'pendiente',
-        fechaPago: createPagoDto.fechaPago,
-        datosMetodoPago: createPagoDto.datosMetodoPago,
-        metadata: createPagoDto.metadata,
-      },
-      include: {
-        detalles: true,
-        comprobante: true,
-        reserva: true,
-      },
+    return this.prisma.$transaction(async (prisma) => {
+      const pago = await prisma.pago.create({
+        data: {
+          reservaId: createPagoDto.reservaId,
+          paymentGateway: createPagoDto.paymentGateway,
+          transactionId: createPagoDto.transactionId,
+          montoTotal: createPagoDto.montoTotal,
+          moneda: createPagoDto.moneda ?? 'PEN',
+          estado: createPagoDto.estado ?? 'pendiente',
+          fechaPago: createPagoDto.fechaPago,
+          datosMetodoPago: createPagoDto.datosMetodoPago,
+          metadata: createPagoDto.metadata,
+        },
+      });
+  
+      const totalDetalles = createPagoDto.detalles.reduce((total, detalle) => total + detalle.monto, 0);
+      if (totalDetalles !== createPagoDto.montoTotal) {
+        throw new Error('La suma de los montos en los detalles no coincide con el montoTotal del pago principal.');
+      }
+  
+      for (const detalle of createPagoDto.detalles) {
+        await prisma.pagoDetalle.create({
+          data: {
+            pagoId: pago.id,
+            tipoPagoId: detalle.tipoPagoId,
+            concepto: detalle.concepto,
+            monto: detalle.monto,
+            porcentajeImpuesto: detalle.porcentajeImpuesto ?? 0,
+            cantidad: detalle.cantidad ?? 1,
+            descripcion: detalle.descripcion,
+          },
+        });
+      }
+  
+      return pago;
     });
-    return pago;
   }
 
   async findAll() {
@@ -98,5 +115,51 @@ export class PaymentService {
     return this.prisma.pago.delete({
       where: { id },
     });
+  }
+
+  async calculateTotalPaid(reservaId: number): Promise<number> {
+    const pagos = await this.prisma.pago.findMany({
+      where: { reservaId },
+      select: { montoTotal: true }
+    });
+    return pagos.reduce((total, pago) => Number(total) + Number(pago.montoTotal), 0);
+  }
+
+  async registerPayment(createPagoDto: CreatePaymentDto) {
+    const totalPagado = await this.calculateTotalPaid(createPagoDto.reservaId) + createPagoDto.montoTotal;
+    const reserva = await this.prisma.reserva.findUnique({ where: { id: createPagoDto.reservaId } });
+  
+    if (!reserva) {
+      throw new NotFoundException(`Reserva con ID ${createPagoDto.reservaId} no encontrada`);
+    }
+  
+    const estadoPago = Number(totalPagado) >= Number(reserva.precioTotal) ? 'completado' : 'pendiente';
+    const estadoReserva = Number(totalPagado) >= Number(reserva.precioTotal) ? 'confirmada' : 'pendiente';
+  
+    const pago = await this.prisma.pago.create({
+      data: {
+        reservaId: createPagoDto.reservaId,
+        paymentGateway: createPagoDto.paymentGateway,
+        transactionId: createPagoDto.transactionId,
+        montoTotal: createPagoDto.montoTotal,
+        moneda: createPagoDto.moneda ?? 'PEN',
+        estado: estadoPago,
+        fechaPago: createPagoDto.fechaPago,
+        datosMetodoPago: createPagoDto.datosMetodoPago,
+        metadata: createPagoDto.metadata,
+      },
+      include: {
+        detalles: true,
+        comprobante: true,
+        reserva: true,
+      },
+    });
+  
+    await this.prisma.reserva.update({
+      where: { id: createPagoDto.reservaId },
+      data: { estado: estadoReserva }
+    });
+  
+    return pago;
   }
 }

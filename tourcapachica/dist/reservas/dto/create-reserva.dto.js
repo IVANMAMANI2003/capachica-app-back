@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateReservaDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
+const estado_reserva_enum_1 = require("../enums/estado-reserva.enum");
 class CreateReservaDto {
 }
 exports.CreateReservaDto = CreateReservaDto;
@@ -76,9 +77,8 @@ __decorate([
     __metadata("design:type", Object)
 ], CreateReservaDto.prototype, "datosPago", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: 'pendiente' }),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)({ enum: estado_reserva_enum_1.EstadoReserva, example: estado_reserva_enum_1.EstadoReserva.PENDIENTE }),
+    (0, class_validator_1.IsEnum)(estado_reserva_enum_1.EstadoReserva, { message: 'El estado debe ser uno válido del enum EstadoReserva' }),
     __metadata("design:type", String)
 ], CreateReservaDto.prototype, "estado", void 0);
 __decorate([

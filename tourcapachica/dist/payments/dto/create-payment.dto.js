@@ -13,6 +13,8 @@ exports.CreatePaymentDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
+const estado_pago_enum_1 = require("../enums/estado-pago.enum");
+const create_payment_detail_dto_1 = require("./create-payment-detail.dto");
 class CreatePaymentDto {
 }
 exports.CreatePaymentDto = CreatePaymentDto;
@@ -47,9 +49,8 @@ __decorate([
     __metadata("design:type", String)
 ], CreatePaymentDto.prototype, "moneda", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Estado del pago', example: 'pendiente', default: 'pendiente' }),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
+    (0, swagger_1.ApiProperty)({ enum: estado_pago_enum_1.EstadoPago, example: estado_pago_enum_1.EstadoPago.PENDIENTE }),
+    (0, class_validator_1.IsEnum)(estado_pago_enum_1.EstadoPago, { message: 'El estado debe ser uno válido del enum EstadoPago' }),
     __metadata("design:type", String)
 ], CreatePaymentDto.prototype, "estado", void 0);
 __decorate([
@@ -69,4 +70,11 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Object)
 ], CreatePaymentDto.prototype, "metadata", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.ValidateNested)({ each: true }),
+    (0, class_transformer_1.Type)(() => create_payment_detail_dto_1.CreatePaymentDetailDto),
+    __metadata("design:type", Array)
+], CreatePaymentDto.prototype, "detalles", void 0);
 //# sourceMappingURL=create-payment.dto.js.map

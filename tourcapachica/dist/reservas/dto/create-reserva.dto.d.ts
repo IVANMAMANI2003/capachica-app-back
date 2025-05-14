@@ -1,3 +1,4 @@
+import { EstadoReserva } from '../enums/estado-reserva.enum';
 export declare class CreateReservaDto {
     usuarioId: number;
     tipoReserva: string;
@@ -9,7 +10,7 @@ export declare class CreateReservaDto {
     moneda: string;
     metodoPago: string | null;
     datosPago: object | null;
-    estado: string;
+    estado: EstadoReserva;
     notas: string | null;
     motivoCancelacion: string | null;
     fechaCancelacion?: string | null;
