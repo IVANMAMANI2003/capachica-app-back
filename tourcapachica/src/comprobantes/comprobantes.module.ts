@@ -1,13 +1,11 @@
 import { Module } from '@nestjs/common';
-import { ComprobanteController } from './controllers/comprobante.controller';
-import { ComprobanteService } from './services/comprobante.service';
-import { PrismaModule } from '@/prisma/prisma.module';
-import { SupabaseModule } from '@/supabase/supabase.module';
+import { ComprobantesController } from './controllers/comprobantes.controller';
+import { ComprobantesService } from './services/comprobantes.service';
+import { PrismaModule } from '../prisma/prisma.module';
 
 @Module({
-  imports: [PrismaModule, SupabaseModule],
-  controllers: [ComprobanteController],
-  providers: [ComprobanteService],
-  exports: [ComprobanteService],
+  imports: [PrismaModule],
+  controllers: [ComprobantesController],
+  providers: [ComprobantesService],
 })
 export class ComprobantesModule {}

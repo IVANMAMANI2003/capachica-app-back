@@ -3,11 +3,12 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePaymentDto } from '../dto/create-payment.dto';
 import { UpdatePaymentDto } from '../dto/update-payment.dto';
 import { EstadoPago } from '../enums/estado-pago.enum';
+import { ComprobantesService } from '@/comprobantes/services/comprobantes.service';
 
 
 @Injectable()
 export class PaymentService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService, private readonly comprobantesService: ComprobantesService) {}
 
   async create(createPagoDto: CreatePaymentDto) {
     return this.prisma.$transaction(async (prisma) => {
@@ -192,4 +193,36 @@ export class PaymentService {
   
     return pago;
   }
+
+  async captureCompletedPayment(paymentId: number) {
+    const pago = await this.prisma.pago.findUnique({
+      where: { id: paymentId },
+      include: {
+        detalles: true,
+        reserva: true,
+        // datosMetodoPago is stored directly in the Pago model, not as a relation
+      },
+    });
+  
+    if (!pago || pago.estado !== EstadoPago.COMPLETADO) {
+      throw new NotFoundException(`Pago con ID ${paymentId} no encontrado o no está completado`);
+    }
+  
+    // Convertimos Decimal a number (profundamente si es necesario)
+    const pagoConvertido = {
+      id: pago.id,
+      montoTotal: Number(pago.montoTotal),
+      datosMetodoPago: pago.datosMetodoPago
+        ? {
+            rucCliente: typeof pago.datosMetodoPago === 'object' ? (pago.datosMetodoPago as any).rucCliente ?? null : null,
+            razonSocial: typeof pago.datosMetodoPago === 'object' ? (pago.datosMetodoPago as any).razonSocial ?? null : null,
+            direccion: typeof pago.datosMetodoPago === 'object' ? (pago.datosMetodoPago as any).direccion ?? null : null,
+          }
+        : null,
+    };
+  
+    const comprobante = await this.comprobantesService.generateAutomaticComprobante(pagoConvertido);
+    return comprobante;
+  }
+  
 }

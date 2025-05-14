@@ -1,39 +1,52 @@
 import { Injectable } from '@nestjs/common';
-import { ComprobanteDto } from '../dto/comprobante.dto';
-import { Comprobante } from '../entities/comprobante.entity';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class ComprobanteService {
-  private comprobantes: Comprobante[] = [];
+  constructor(private prisma: PrismaService) {}
 
-  create(comprobanteDto: ComprobanteDto): Comprobante {
-    const newComprobante: Comprobante = {
-      id: this.comprobantes.length + 1,
-      ...comprobanteDto,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-    this.comprobantes.push(newComprobante);
-    return newComprobante;
-  }
+  async createComprobante(pagoId: number, total: number, rucCliente?: string) {
+    const pago = await this.prisma.pago.findUnique({
+      where: { id: pagoId },
+    });
 
-  findAll(): Comprobante[] {
-    return this.comprobantes;
-  }
-
-  findOne(id: number): Comprobante | undefined {
-    return this.comprobantes.find(comprobante => comprobante.id === id);
-  }
-
-  update(id: number, updateComprobanteDto: Partial<ComprobanteDto>): Comprobante | undefined {
-    const comprobante = this.findOne(id);
-    if (comprobante) {
-      Object.assign(comprobante, updateComprobanteDto, { updatedAt: new Date() });
+    if (!pago || pago.estado !== 'completado') {
+      throw new Error('Pago no encontrado o no está completado');
     }
-    return comprobante;
+
+    const tipoComprobante = rucCliente ? 'factura' : 'boleta';
+    const serie = rucCliente ? 'F001' : 'B001';
+
+    const ultimoComprobante = await this.prisma.comprobante.findFirst({
+      where: { serie },
+      orderBy: { numero: 'desc' },
+    });
+
+    const numero = ultimoComprobante ? ultimoComprobante.numero + 1 : 1;
+
+    const igv = tipoComprobante === 'factura' ? total * 0.18 : 0;
+    const subtotal = tipoComprobante === 'factura' ? total / 1.18 : total;
+
+    return this.prisma.comprobante.create({
+      data: {
+        pagoId,
+        tipoComprobante,
+        serie,
+        numero,
+        subtotal,
+        igv,
+        total,
+      },
+    });
   }
 
-  remove(id: number): void {
-    this.comprobantes = this.comprobantes.filter(comprobante => comprobante.id !== id);
+  async validateComprobanteUniqueness(serie: string, numero: number) {
+    const comprobante = await this.prisma.comprobante.findUnique({
+      where: { serie_numero: { serie, numero } },
+    });
+
+    if (comprobante) {
+      throw new Error('La combinación de serie y número ya existe');
+    }
   }
 }

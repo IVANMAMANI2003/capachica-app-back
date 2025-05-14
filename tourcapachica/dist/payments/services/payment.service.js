@@ -13,9 +13,11 @@ exports.PaymentService = void 0;
 const prisma_service_1 = require("../../prisma/prisma.service");
 const common_1 = require("@nestjs/common");
 const estado_pago_enum_1 = require("../enums/estado-pago.enum");
+const comprobantes_service_1 = require("../../comprobantes/services/comprobantes.service");
 let PaymentService = class PaymentService {
-    constructor(prisma) {
+    constructor(prisma, comprobantesService) {
         this.prisma = prisma;
+        this.comprobantesService = comprobantesService;
     }
     async create(createPagoDto) {
         return this.prisma.$transaction(async (prisma) => {
@@ -172,10 +174,36 @@ let PaymentService = class PaymentService {
         });
         return pago;
     }
+    async captureCompletedPayment(paymentId) {
+        var _a, _b, _c;
+        const pago = await this.prisma.pago.findUnique({
+            where: { id: paymentId },
+            include: {
+                detalles: true,
+                reserva: true,
+            },
+        });
+        if (!pago || pago.estado !== estado_pago_enum_1.EstadoPago.COMPLETADO) {
+            throw new common_1.NotFoundException(`Pago con ID ${paymentId} no encontrado o no está completado`);
+        }
+        const pagoConvertido = {
+            id: pago.id,
+            montoTotal: Number(pago.montoTotal),
+            datosMetodoPago: pago.datosMetodoPago
+                ? {
+                    rucCliente: typeof pago.datosMetodoPago === 'object' ? (_a = pago.datosMetodoPago.rucCliente) !== null && _a !== void 0 ? _a : null : null,
+                    razonSocial: typeof pago.datosMetodoPago === 'object' ? (_b = pago.datosMetodoPago.razonSocial) !== null && _b !== void 0 ? _b : null : null,
+                    direccion: typeof pago.datosMetodoPago === 'object' ? (_c = pago.datosMetodoPago.direccion) !== null && _c !== void 0 ? _c : null : null,
+                }
+                : null,
+        };
+        const comprobante = await this.comprobantesService.generateAutomaticComprobante(pagoConvertido);
+        return comprobante;
+    }
 };
 exports.PaymentService = PaymentService;
 exports.PaymentService = PaymentService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService, comprobantes_service_1.ComprobantesService])
 ], PaymentService);
 //# sourceMappingURL=payment.service.js.map

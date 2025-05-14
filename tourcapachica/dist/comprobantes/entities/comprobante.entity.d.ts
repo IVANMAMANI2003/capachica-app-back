@@ -1,15 +1,18 @@
 export declare class Comprobante {
     id: number;
-    paymentId: number;
-    userId: number;
-    reservationCode: string;
-    reservationType: string;
-    reservationDate: Date;
-    startDate: Date;
-    endDate: Date | null;
-    totalAmount: number;
-    currency: string;
-    paymentMethod: string | null;
+    pagoId: number;
+    tipoComprobante: string;
+    serie: string;
+    numero: number;
+    fechaEmision: Date;
+    rucCliente?: string;
+    razonSocial?: string;
+    direccionCliente?: string;
+    subtotal: number;
+    igv: number;
+    total: number;
+    moneda: string;
+    estado: string;
     createdAt: Date;
     updatedAt: Date;
 }

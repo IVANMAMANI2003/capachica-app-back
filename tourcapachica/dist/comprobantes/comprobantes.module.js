@@ -8,19 +8,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ComprobantesModule = void 0;
 const common_1 = require("@nestjs/common");
-const comprobante_controller_1 = require("./controllers/comprobante.controller");
-const comprobante_service_1 = require("./services/comprobante.service");
+const comprobantes_controller_1 = require("./controllers/comprobantes.controller");
+const comprobantes_service_1 = require("./services/comprobantes.service");
 const prisma_module_1 = require("../prisma/prisma.module");
-const supabase_module_1 = require("../supabase/supabase.module");
 let ComprobantesModule = class ComprobantesModule {
 };
 exports.ComprobantesModule = ComprobantesModule;
 exports.ComprobantesModule = ComprobantesModule = __decorate([
     (0, common_1.Module)({
-        imports: [prisma_module_1.PrismaModule, supabase_module_1.SupabaseModule],
-        controllers: [comprobante_controller_1.ComprobanteController],
-        providers: [comprobante_service_1.ComprobanteService],
-        exports: [comprobante_service_1.ComprobanteService],
+        imports: [prisma_module_1.PrismaModule],
+        controllers: [comprobantes_controller_1.ComprobantesController],
+        providers: [comprobantes_service_1.ComprobantesService],
     })
 ], ComprobantesModule);
 //# sourceMappingURL=comprobantes.module.js.map
