@@ -401,14 +401,13 @@ model Reserva {
   tipoReserva       String              @map("tipo_reserva")
   fechaReserva      DateTime            @map("fecha_reserva")
   fechaInicio       DateTime            @map("fecha_inicio")
-  hora              String?             @db.VarChar(8)
   fechaFin          DateTime?           @map("fecha_fin")
   cantidadPersonas  Int                 @default(1) @map("cantidad_personas")
-  estado            String              @default("pendiente") @db.VarChar(20)
   precioTotal       Decimal             @map("precio_total") @db.Decimal(12, 2)
   moneda            String              @default("PEN") @db.VarChar(3)
   metodoPago        String?             @map("metodo_pago") @db.VarChar(50)
   datosPago         Json?               @map("datos_pago")
+  estado            String              @default("pendiente") @db.VarChar(20)
   notas             String?
   motivoCancelacion String?             @map("motivo_cancelacion")
   fechaCancelacion  DateTime?           @map("fecha_cancelacion")
@@ -423,14 +422,16 @@ model Reserva {
 
 model ItinerarioReserva {
   id                Int               @id @default(autoincrement())
-  fecha             DateTime          @db.Date
-  horarioCierre     DateTime?         @map("hora")   @db.Time
-  tipoEvento        String            @map("tipo_evento") @db.VarChar(100)
-  descripcion       String
-  notas             String?
-  duracion          Int?
   reservaId         Int               @map("reserva_id")
-  servicioId        Int?              @map("servicio_id")
+  servicioId        Int               @map("servicio_id")
+  fechaInicioActividad    DateTime          @db.Date
+  fechaFinActividad    DateTime          @db.Date
+  horaInicio        DateTime?         @map("hora_inicio") @db.Time
+  horaFin           DateTime?         @map("hora_fin")    @db.Time
+  lugarEncuentro    String
+  observaciones     String?
+  tipoEvento        String            @map("tipo_evento") @db.VarChar(100)
+  descripcion       String?
   createdAt         DateTime          @default(now()) @map("created_at")
   updatedAt         DateTime          @default(now()) @map("updated_at")
   reserva           Reserva           @relation(fields: [reservaId], references: [id], onDelete: Restrict)

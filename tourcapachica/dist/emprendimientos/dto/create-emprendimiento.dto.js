@@ -82,7 +82,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Tipo de emprendimiento',
-        example: 'restaurante',
+        example: 'Turismo',
         required: true,
         type: String
     }),

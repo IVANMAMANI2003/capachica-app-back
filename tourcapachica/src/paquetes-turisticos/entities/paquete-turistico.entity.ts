@@ -48,4 +48,5 @@ export class PaqueteTuristicoEntity {
 
   @ApiProperty({ description: 'Imágenes del paquete', type: [ImageEntity] })
   images?: ImageEntity[];
+
 } 

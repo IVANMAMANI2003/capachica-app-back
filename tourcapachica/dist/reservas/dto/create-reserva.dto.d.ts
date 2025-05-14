@@ -1,19 +1,17 @@
-import { EstadoReserva } from '../enums/estado-reserva.enum';
 export declare class CreateReservaDto {
     usuarioId: number;
     codigoReserva: string;
     tipoReserva: string;
     fechaReserva: Date;
     fechaInicio: Date;
-    hora?: string;
-    fechaFin?: Date;
-    cantidadPersonas?: number;
-    estado?: EstadoReserva;
+    fechaFin: Date | null;
+    cantidadPersonas: number;
     precioTotal: number;
-    moneda?: string;
-    metodoPago?: string;
-    datosPago?: any;
-    notas?: string;
-    motivoCancelacion?: string;
-    fechaCancelacion?: Date;
+    moneda: string;
+    metodoPago: string | null;
+    datosPago: object | null;
+    estado: string;
+    notas: string | null;
+    motivoCancelacion: string | null;
+    fechaCancelacion: Date | null;
 }

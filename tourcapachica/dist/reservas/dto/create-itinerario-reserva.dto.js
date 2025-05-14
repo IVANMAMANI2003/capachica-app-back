@@ -12,86 +12,67 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateItinerarioReservaDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
-const class_transformer_1 = require("class-transformer");
 class CreateItinerarioReservaDto {
 }
 exports.CreateItinerarioReservaDto = CreateItinerarioReservaDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'ID de la reserva a la que pertenece el itinerario',
-        example: 1,
-    }),
+    (0, swagger_1.ApiProperty)({ example: 1 }),
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
 ], CreateItinerarioReservaDto.prototype, "reservaId", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Fecha del itinerario',
-        example: '2024-05-15T00:00:00.000Z',
-    }),
-    (0, class_transformer_1.Type)(() => Date),
+    (0, swagger_1.ApiProperty)({ example: 1 }),
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Number)
+], CreateItinerarioReservaDto.prototype, "servicioId", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: '2023-10-01' }),
     (0, class_validator_1.IsDate)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Date)
-], CreateItinerarioReservaDto.prototype, "fecha", void 0);
+], CreateItinerarioReservaDto.prototype, "fechaInicioActividad", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Hora de cierre del itinerario',
-        example: '2024-05-15T09:00:00.000Z',
-        required: false,
-    }),
-    (0, class_transformer_1.Type)(() => Date),
+    (0, swagger_1.ApiProperty)({ example: '2023-10-02' }),
+    (0, class_validator_1.IsDate)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Date)
+], CreateItinerarioReservaDto.prototype, "fechaFinActividad", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: '08:00:00' }),
     (0, class_validator_1.IsDate)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Date)
-], CreateItinerarioReservaDto.prototype, "horarioCierre", void 0);
+], CreateItinerarioReservaDto.prototype, "horaInicio", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Tipo de evento del itinerario',
-        example: 'Visita guiada',
-    }),
+    (0, swagger_1.ApiProperty)({ example: '17:00:00' }),
+    (0, class_validator_1.IsDate)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", Date)
+], CreateItinerarioReservaDto.prototype, "horaFin", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: 'Plaza Mayor' }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateItinerarioReservaDto.prototype, "lugarEncuentro", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: 'Observaciones del itinerario' }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateItinerarioReservaDto.prototype, "observaciones", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: 'Evento especial' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateItinerarioReservaDto.prototype, "tipoEvento", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Descripción del itinerario',
-        example: 'Visita guiada a la Isla Taquile',
-    }),
+    (0, swagger_1.ApiProperty)({ example: 'Descripción del evento' }),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateItinerarioReservaDto.prototype, "descripcion", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Notas adicionales sobre el itinerario',
-        example: 'Llevar protector solar',
-        required: false,
-    }),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], CreateItinerarioReservaDto.prototype, "notas", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Duración del itinerario en minutos',
-        example: 120,
-        required: false,
-    }),
-    (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", Number)
-], CreateItinerarioReservaDto.prototype, "duracion", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'ID del servicio asociado al itinerario',
-        example: 1,
-        required: false,
-    }),
-    (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", Number)
-], CreateItinerarioReservaDto.prototype, "servicioId", void 0);
 //# sourceMappingURL=create-itinerario-reserva.dto.js.map

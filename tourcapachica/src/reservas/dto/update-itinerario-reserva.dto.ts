@@ -1,4 +1,17 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateItinerarioReservaDto } from './create-itinerario-reserva.dto';
+import { IsOptional, IsString, IsDate } from 'class-validator';
 
-export class UpdateItinerarioReservaDto extends PartialType(CreateItinerarioReservaDto) {} 
+export class UpdateItinerarioReservaDto {
+  @IsOptional()
+  @IsString()
+  lugarEncuentro?: string;
+
+  @IsOptional()
+  @IsDate()
+  fechaInicioActividad?: Date;
+
+  @IsOptional()
+  @IsDate()
+  fechaFinActividad?: Date;
+
+  // Agrega más campos según sea necesario
+}

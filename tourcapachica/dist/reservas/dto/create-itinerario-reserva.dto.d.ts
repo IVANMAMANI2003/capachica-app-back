@@ -1,10 +1,12 @@
 export declare class CreateItinerarioReservaDto {
     reservaId: number;
-    fecha: Date;
-    horarioCierre?: Date;
+    servicioId: number;
+    fechaInicioActividad: Date;
+    fechaFinActividad: Date;
+    horaInicio: Date | null;
+    horaFin: Date | null;
+    lugarEncuentro: string;
+    observaciones: string | null;
     tipoEvento: string;
-    descripcion: string;
-    notas?: string;
-    duracion?: number;
-    servicioId?: number;
+    descripcion: string | null;
 }

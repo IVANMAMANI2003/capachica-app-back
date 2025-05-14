@@ -8,19 +8,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReservasModule = void 0;
 const common_1 = require("@nestjs/common");
-const reservas_service_1 = require("./reservas.service");
-const reservas_controller_1 = require("./reservas.controller");
-const prisma_service_1 = require("../prisma/prisma.service");
-const itinerarios_reserva_service_1 = require("./itinerarios-reserva.service");
-const itinerarios_reserva_controller_1 = require("./itinerarios-reserva.controller");
+const reserva_service_1 = require("./services/reserva.service");
+const itinerario_reserva_service_1 = require("./services/itinerario-reserva.service");
 let ReservasModule = class ReservasModule {
 };
 exports.ReservasModule = ReservasModule;
 exports.ReservasModule = ReservasModule = __decorate([
     (0, common_1.Module)({
-        controllers: [reservas_controller_1.ReservasController, itinerarios_reserva_controller_1.ItinerariosReservaController,],
-        providers: [reservas_service_1.ReservasService, itinerarios_reserva_service_1.ItinerariosReservaService, prisma_service_1.PrismaService],
-        exports: [reservas_service_1.ReservasService, itinerarios_reserva_service_1.ItinerariosReservaService,],
+        providers: [reserva_service_1.ReservaService, itinerario_reserva_service_1.ItinerarioReservaService],
+        exports: [reserva_service_1.ReservaService, itinerario_reserva_service_1.ItinerarioReservaService],
     })
 ], ReservasModule);
 //# sourceMappingURL=reservas.module.js.map

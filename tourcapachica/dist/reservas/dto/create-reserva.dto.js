@@ -12,167 +12,94 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateReservaDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
-const class_transformer_1 = require("class-transformer");
-const estado_reserva_enum_1 = require("../enums/estado-reserva.enum");
 class CreateReservaDto {
 }
 exports.CreateReservaDto = CreateReservaDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'ID del usuario que realiza la reserva',
-        example: 1,
-    }),
+    (0, swagger_1.ApiProperty)({ example: 1 }),
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
 ], CreateReservaDto.prototype, "usuarioId", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Código único de la reserva',
-        example: 'RES-202403150001',
-    }),
+    (0, swagger_1.ApiProperty)({ example: 'ABC123' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateReservaDto.prototype, "codigoReserva", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Tipo de reserva',
-        example: 'estandar',
-    }),
+    (0, swagger_1.ApiProperty)({ example: 'tipo_reserva' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateReservaDto.prototype, "tipoReserva", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Fecha de la reserva',
-        example: '2024-05-15T00:00:00.000Z',
-    }),
-    (0, class_transformer_1.Type)(() => Date),
+    (0, swagger_1.ApiProperty)({ example: '2023-10-0' }),
     (0, class_validator_1.IsDate)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Date)
 ], CreateReservaDto.prototype, "fechaReserva", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Fecha de inicio de la reserva',
-        example: '2024-05-15T00:00:00.000Z',
-    }),
-    (0, class_transformer_1.Type)(() => Date),
+    (0, swagger_1.ApiProperty)({ example: '2023-10-01' }),
     (0, class_validator_1.IsDate)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Date)
 ], CreateReservaDto.prototype, "fechaInicio", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Hora de la reserva',
-        example: '09:00:00',
-        required: false,
-    }),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], CreateReservaDto.prototype, "hora", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Fecha de fin de la reserva',
-        example: '2024-05-15T00:00:00.000Z',
-        required: false,
-    }),
-    (0, class_transformer_1.Type)(() => Date),
+    (0, swagger_1.ApiProperty)({ example: '2023-10-02' }),
     (0, class_validator_1.IsDate)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Date)
 ], CreateReservaDto.prototype, "fechaFin", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Cantidad de personas',
-        example: 2,
-        default: 1,
-    }),
+    (0, swagger_1.ApiProperty)({ example: 2 }),
     (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.Min)(1),
-    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
 ], CreateReservaDto.prototype, "cantidadPersonas", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Estado de la reserva',
-        example: 'pendiente',
-        enum: estado_reserva_enum_1.EstadoReserva,
-        default: estado_reserva_enum_1.EstadoReserva.PENDIENTE,
-    }),
-    (0, class_validator_1.IsEnum)(estado_reserva_enum_1.EstadoReserva),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], CreateReservaDto.prototype, "estado", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Precio total de la reserva',
-        example: 150.00,
-    }),
+    (0, swagger_1.ApiProperty)({ example: 100.00 }),
     (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.Min)(0),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
 ], CreateReservaDto.prototype, "precioTotal", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Moneda del precio total',
-        example: 'PEN',
-        required: false,
-    }),
+    (0, swagger_1.ApiProperty)({ example: 'PEN' }),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateReservaDto.prototype, "moneda", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Método de pago',
-        example: 'tarjeta',
-        required: false,
-    }),
+    (0, swagger_1.ApiProperty)({ example: 'tarjeta' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateReservaDto.prototype, "metodoPago", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Datos del pago',
-        example: { 'numeroTarjeta': '****1234' },
-        required: false,
-    }),
+    (0, swagger_1.ApiProperty)({ example: '{}' }),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Object)
 ], CreateReservaDto.prototype, "datosPago", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Notas adicionales sobre la reserva',
-        example: 'Cliente con necesidades especiales',
-        required: false,
-    }),
+    (0, swagger_1.ApiProperty)({ example: 'pendiente' }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateReservaDto.prototype, "estado", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: 'Notas adicionales' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateReservaDto.prototype, "notas", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Motivo de cancelación',
-        example: 'Cambio de planes',
-        required: false,
-    }),
+    (0, swagger_1.ApiProperty)({ example: 'Motivo de cancelación' }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateReservaDto.prototype, "motivoCancelacion", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Fecha de cancelación',
-        example: '2024-05-15T00:00:00.000Z',
-        required: false,
-    }),
-    (0, class_transformer_1.Type)(() => Date),
+    (0, swagger_1.ApiProperty)({ example: '2023-10-01' }),
     (0, class_validator_1.IsDate)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Date)

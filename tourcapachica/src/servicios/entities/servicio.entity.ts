@@ -1,4 +1,6 @@
+
 import { ApiProperty } from '@nestjs/swagger';
+import { OneToMany } from 'typeorm';
 
 export class ServicioEntity {
   @ApiProperty({ description: 'ID único del servicio' })
@@ -39,4 +41,5 @@ export class ServicioEntity {
 
   @ApiProperty({ description: 'Disponibilidad del servicio' })
   disponibilidad?: any[];
+
 } 

@@ -1,1 +1,1 @@
-{"version":3,"file":"update-reserva.dto.js","sourceRoot":"","sources":["../../../src/reservas/dto/update-reserva.dto.ts"],"names":[],"mappings":";;;AAAA,6CAA8C;AAC9C,6DAAwD;AAExD,MAAa,gBAAiB,SAAQ,IAAA,qBAAW,EAAC,qCAAgB,CAAC;CAAG;AAAtE,4CAAsE"}
+{"version":3,"file":"update-reserva.dto.js","sourceRoot":"","sources":["../../../src/reservas/dto/update-reserva.dto.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,qDAAiE;AAEjE,MAAa,gBAAgB;CAU5B;AAVD,4CAUC;AAPC;IAFC,IAAA,4BAAU,GAAE;IACZ,IAAA,0BAAQ,GAAE;;gDACK;AAIhB;IAFC,IAAA,4BAAU,GAAE;IACZ,IAAA,0BAAQ,GAAE;;0DACe"}

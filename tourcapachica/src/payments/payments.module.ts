@@ -1,19 +1,9 @@
 import { Module } from '@nestjs/common';
-import { PaymentsService } from './payments.service';
-import { PaymentsController } from './payments.controller';
-import { PrismaService } from '../prisma/prisma.service';
-import { TipoPagoService } from './tipos-pago.service';
-import { TipoPagoController } from './tipos-pago.controller';
-import { PagoDetalleService } from './pago-detalle.service';
-import { PagoDetalleController } from './pago-detalle.controller';
-import { ComprobantesService } from './comprobantes.service';
-import { ComprobantesController } from './comprobantes.controller';
-import { ReservasModule } from '../reservas/reservas.module';
+import { PaymentController } from './controllers/payment.controller';
+import { PaymentService } from './services/payment.service';
 
 @Module({
-  imports: [ReservasModule],
-  controllers: [PaymentsController, TipoPagoController, PagoDetalleController, ComprobantesController],
-  providers: [PaymentsService, TipoPagoService, PagoDetalleService, ComprobantesService, PrismaService],
-  exports: [PaymentsService, TipoPagoService, PagoDetalleService, ComprobantesService],
+  controllers: [PaymentController],
+  providers: [PaymentService],
 })
-export class PaymentsModule {} 
+export class PaymentsModule {}

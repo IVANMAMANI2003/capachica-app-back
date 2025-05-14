@@ -63,7 +63,7 @@ export class CreateEmprendimientoDto {
 
   @ApiProperty({
     description: 'Tipo de emprendimiento',
-    example: 'restaurante',
+    example: 'Turismo',
     required: true,
     type: String
   })

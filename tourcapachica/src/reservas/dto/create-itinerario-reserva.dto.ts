@@ -1,77 +1,54 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsOptional, IsNumber, IsDate, IsArray } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsNotEmpty, IsString, IsNumber, IsOptional, IsDate } from 'class-validator';
 
 export class CreateItinerarioReservaDto {
-  @ApiProperty({
-    description: 'ID de la reserva a la que pertenece el itinerario',
-    example: 1,
-  })
+  @ApiProperty({ example: 1 })
   @IsNumber()
   @IsNotEmpty()
   reservaId: number;
 
-  @ApiProperty({
-    description: 'Fecha del itinerario',
-    example: '2024-05-15T00:00:00.000Z',
-  })
-  @Type(() => Date)
+  @ApiProperty({ example: 1 })
+  @IsNumber()
+  @IsNotEmpty()
+  servicioId: number;
+
+  @ApiProperty({ example: '2023-10-01' })
   @IsDate()
   @IsNotEmpty()
-  fecha: Date;
+  fechaInicioActividad: Date;
 
-  @ApiProperty({
-    description: 'Hora de cierre del itinerario',
-    example: '2024-05-15T09:00:00.000Z',
-    required: false,
-  })
-  @Type(() => Date)
+  @ApiProperty({ example: '2023-10-02' })
+  @IsDate()
+  @IsNotEmpty()
+  fechaFinActividad: Date;
+
+  @ApiProperty({ example: '08:00:00' })
   @IsDate()
   @IsOptional()
-  horarioCierre?: Date;
+  horaInicio: Date | null;
 
-  @ApiProperty({
-    description: 'Tipo de evento del itinerario',
-    example: 'Visita guiada',
-  })
+  @ApiProperty({ example: '17:00:00' })
+  @IsDate()
+  @IsOptional()
+  horaFin: Date | null;
+
+  @ApiProperty({ example: 'Plaza Mayor' })
+  @IsString()
+  @IsNotEmpty()
+  lugarEncuentro: string;
+
+  @ApiProperty({ example: 'Observaciones del itinerario' })
+  @IsString()
+  @IsOptional()
+  observaciones: string | null;
+
+  @ApiProperty({ example: 'Evento especial' })
   @IsString()
   @IsNotEmpty()
   tipoEvento: string;
 
-  @ApiProperty({
-    description: 'Descripción del itinerario',
-    example: 'Visita guiada a la Isla Taquile',
-  })
-  @IsString()
-  @IsNotEmpty()
-  descripcion: string;
-
-  @ApiProperty({
-    description: 'Notas adicionales sobre el itinerario',
-    example: 'Llevar protector solar',
-    required: false,
-  })
+  @ApiProperty({ example: 'Descripción del evento' })
   @IsString()
   @IsOptional()
-  notas?: string;
-
-  @ApiProperty({
-    description: 'Duración del itinerario en minutos',
-    example: 120,
-    required: false,
-  })
-  @IsNumber()
-  @IsOptional()
-  duracion?: number;
-
-  @ApiProperty({
-    description: 'ID del servicio asociado al itinerario',
-    example: 1,
-    required: false,
-  })
-  @IsNumber()
-  @IsOptional()
-  servicioId?: number;
-
-
-} 
+  descripcion: string | null;
+}

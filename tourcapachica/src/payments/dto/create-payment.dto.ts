@@ -1,51 +1,53 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsDateString, IsDecimal, IsISO4217CurrencyCode, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID, ValidateNested } from 'class-validator';
-import { CreatePagoDetalleDto } from './create-pago-detalle.dto';
-
+import {
+  IsString, IsNotEmpty, IsNumber, IsPositive, IsOptional, IsDateString,
+  IsObject, MaxLength, IsInt, Min,
+  IsDate
+} from 'class-validator';
 
 export class CreatePaymentDto {
-  @ApiProperty({ description: 'ID de la reserva relacionada' })
+  @ApiProperty({ description: 'ID de la reserva asociada', example: 1 })
   @IsNumber()
+  @IsNotEmpty()
   reservaId: number;
 
-  @ApiProperty({ description: 'Pasarela de pago utilizada', example: 'Visa', maxLength: 50 })
+  @ApiProperty({ description: 'Pasarela de pago utilizada', example: 'Yape' })
   @IsString()
   @IsNotEmpty()
   paymentGateway: string;
 
-  @ApiProperty({ description: 'ID único de transacción', example: 'txn_123456789', maxLength: 100 })
+  @ApiProperty({ description: 'ID único de la transacción', example: 'txn_1234567890' })
   @IsString()
   @IsNotEmpty()
   transactionId: string;
 
-  @ApiProperty({ type: String, description: 'Monto total del pago' })
-  @IsDecimal()
-  montoTotal: string;
+  @ApiProperty({ description: 'Monto total pagado', example: 150.00 })
+  @IsNumber()
+  @IsNotEmpty()
+  montoTotal: number;
 
-  @ApiProperty({ default: 'PEN', maxLength: 3 })
-  @IsISO4217CurrencyCode()
-  moneda: string;
-
-  @ApiProperty({ default: 'pendiente', maxLength: 20 })
+  @ApiProperty({ description: 'Moneda utilizada', example: 'PEN', default: 'PEN' })
   @IsString()
-  estado: string;
+  @IsOptional()
+  moneda?: string;
 
-  @ApiProperty({ type: String, format: 'date-time', required: false })
-  @IsDateString()
+  @ApiProperty({ description: 'Estado del pago', example: 'pendiente', default: 'pendiente' })
+  @IsString()
+  @IsOptional()
+  estado?: string;
+
+  @ApiProperty({ description: 'Fecha de pago (si aplica)', example: '2024-05-15T10:30:00.000Z', required: false })
+  @Type(() => Date)
+  @IsDate()
   @IsOptional()
   fechaPago?: Date;
 
-  @ApiProperty({ type: Object, required: false })
+  @ApiProperty({ description: 'Datos del método de pago', example: { numero: '123456789' }, required: false })
   @IsOptional()
-  datosMetodoPago?: Record<string, any>;
+  datosMetodoPago?: any;
 
-  @ApiProperty({ type: Object, required: false })
+  @ApiProperty({ description: 'Metadatos adicionales', example: { ip: '127.0.0.1' }, required: false })
   @IsOptional()
-  metadata?: Record<string, any>;
-
-  @ApiProperty({ type: [CreatePagoDetalleDto] })
-  @ValidateNested({ each: true })
-  @Type(() => CreatePagoDetalleDto)
-  detalles: CreatePagoDetalleDto[];
+  metadata?: any;
 }

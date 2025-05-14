@@ -9,55 +9,55 @@ export declare class SlidersController {
             id: number;
             url: string;
         }[];
+        description: string | null;
+        nombre: string;
+        estado: string;
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
-        estado: string;
-        description: string | null;
     }>;
     findAll(): Promise<{
         imagenes: {
             id: number;
             url: string;
         }[];
+        description: string | null;
+        nombre: string;
+        estado: string;
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
-        estado: string;
-        description: string | null;
     }[]>;
     findOne(id: string): Promise<{
         imagenes: {
             id: number;
             url: string;
         }[];
+        description: string | null;
+        nombre: string;
+        estado: string;
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
-        estado: string;
-        description: string | null;
     }>;
     update(id: string, updateSliderDto: UpdateSliderDto): Promise<{
         imagenes: {
             id: number;
             url: string;
         }[];
+        description: string | null;
+        nombre: string;
+        estado: string;
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
-        estado: string;
-        description: string | null;
     }>;
     remove(id: string): Promise<{
+        description: string | null;
+        nombre: string;
+        estado: string;
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
-        estado: string;
-        description: string | null;
     }>;
 }

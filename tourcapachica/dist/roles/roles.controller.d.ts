@@ -6,20 +6,20 @@ export declare class RolesController {
     private readonly rolesService;
     constructor(rolesService: RolesService);
     create(createRoleDto: CreateRoleDto): Promise<{
+        nombre: string;
+        descripcion: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
-        descripcion: string | null;
     }>;
     findAll(): Promise<({
         rolesPermisos: ({
             permiso: {
+                nombre: string;
+                descripcion: string | null;
                 id: number;
                 createdAt: Date;
                 updatedAt: Date;
-                nombre: string;
-                descripcion: string | null;
             };
         } & {
             id: number;
@@ -29,20 +29,20 @@ export declare class RolesController {
             permisoId: number;
         })[];
     } & {
+        nombre: string;
+        descripcion: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
-        descripcion: string | null;
     })[]>;
     findOne(id: string): Promise<{
         rolesPermisos: ({
             permiso: {
+                nombre: string;
+                descripcion: string | null;
                 id: number;
                 createdAt: Date;
                 updatedAt: Date;
-                nombre: string;
-                descripcion: string | null;
             };
         } & {
             id: number;
@@ -52,40 +52,40 @@ export declare class RolesController {
             permisoId: number;
         })[];
     } & {
+        nombre: string;
+        descripcion: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
-        descripcion: string | null;
     }>;
     update(id: string, updateRoleDto: UpdateRoleDto): Promise<{
+        nombre: string;
+        descripcion: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
-        descripcion: string | null;
     }>;
     remove(id: string): Promise<{
+        nombre: string;
+        descripcion: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
-        descripcion: string | null;
     }>;
     assignPermission(id: string, assignPermissionDto: AssignPermissionDto): Promise<{
         permiso: {
+            nombre: string;
+            descripcion: string | null;
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            nombre: string;
-            descripcion: string | null;
         };
         rol: {
+            nombre: string;
+            descripcion: string | null;
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            nombre: string;
-            descripcion: string | null;
         };
     } & {
         id: number;

@@ -1,152 +1,78 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsOptional, IsNumber, IsDate, IsEnum, Min } from 'class-validator';
-import { Type } from 'class-transformer';
-import { EstadoReserva } from '../enums/estado-reserva.enum';
-
-
+import { IsNotEmpty, IsString, IsNumber, IsOptional, IsDate, IsArray } from 'class-validator';
 
 export class CreateReservaDto {
-  @ApiProperty({
-    description: 'ID del usuario que realiza la reserva',
-    example: 1,
-  })
+  @ApiProperty({ example: 1 })
   @IsNumber()
   @IsNotEmpty()
   usuarioId: number;
 
-  @ApiProperty({
-    description: 'Código único de la reserva',
-    example: 'RES-202403150001',
-  })
+  @ApiProperty({ example: 'ABC123' })
   @IsString()
   @IsNotEmpty()
   codigoReserva: string;
 
-  @ApiProperty({
-    description: 'Tipo de reserva',
-    example: 'estandar',
-  })
+  @ApiProperty({ example: 'tipo_reserva' })
   @IsString()
   @IsNotEmpty()
   tipoReserva: string;
 
-  @ApiProperty({
-    description: 'Fecha de la reserva',
-    example: '2024-05-15T00:00:00.000Z',
-  })
-  @Type(() => Date)
+  @ApiProperty({ example: '2023-10-0' })
   @IsDate()
   @IsNotEmpty()
   fechaReserva: Date;
 
-  @ApiProperty({
-    description: 'Fecha de inicio de la reserva',
-    example: '2024-05-15T00:00:00.000Z',
-  })
-  @Type(() => Date)
+  @ApiProperty({ example: '2023-10-01' })
   @IsDate()
   @IsNotEmpty()
   fechaInicio: Date;
 
-  @ApiProperty({
-    description: 'Hora de la reserva',
-    example: '09:00:00',
-    required: false,
-  })
-  @IsString()
-  @IsOptional()
-  hora?: string;
-
-  @ApiProperty({
-    description: 'Fecha de fin de la reserva',
-    example: '2024-05-15T00:00:00.000Z',
-    required: false,
-  })
-  @Type(() => Date)
+  @ApiProperty({ example: '2023-10-02' })
   @IsDate()
   @IsOptional()
-  fechaFin?: Date;
+  fechaFin: Date | null;
 
-  @ApiProperty({
-    description: 'Cantidad de personas',
-    example: 2,
-    default: 1,
-  })
+  @ApiProperty({ example: 2 })
   @IsNumber()
-  @Min(1)
-  @IsOptional()
-  cantidadPersonas?: number;
+  @IsNotEmpty()
+  cantidadPersonas: number;
 
-  @ApiProperty({
-    description: 'Estado de la reserva',
-    example: 'pendiente',
-    enum: EstadoReserva,
-    default: EstadoReserva.PENDIENTE,
-  })
-  @IsEnum(EstadoReserva)
-  @IsOptional()
-  estado?: EstadoReserva;
-
-  @ApiProperty({
-    description: 'Precio total de la reserva',
-    example: 150.00,
-  })
+  @ApiProperty({ example: 100.00 })
   @IsNumber()
-  @Min(0)
   @IsNotEmpty()
   precioTotal: number;
 
-  @ApiProperty({
-    description: 'Moneda del precio total',
-    example: 'PEN',
-    required: false,
-  })
+  @ApiProperty({ example: 'PEN' })
+  @IsString()
+  @IsNotEmpty()
+  moneda: string;
+
+  @ApiProperty({ example: 'tarjeta' })
   @IsString()
   @IsOptional()
-  moneda?: string;
+  metodoPago: string | null;
 
-  @ApiProperty({
-    description: 'Método de pago',
-    example: 'tarjeta',
-    required: false,
-  })
+  @ApiProperty({ example: '{}' })
+  @IsOptional()
+  datosPago: object | null;
+
+  @ApiProperty({ example: 'pendiente' })
+  @IsString()
+  @IsNotEmpty()
+  estado: string;
+
+  @ApiProperty({ example: 'Notas adicionales' })
   @IsString()
   @IsOptional()
-  metodoPago?: string;
+  notas: string | null;
 
-  @ApiProperty({
-    description: 'Datos del pago',
-    example: { 'numeroTarjeta': '****1234' },
-    required: false,
-  })
-  @IsOptional()
-  datosPago?: any;
-
-  @ApiProperty({
-    description: 'Notas adicionales sobre la reserva',
-    example: 'Cliente con necesidades especiales',
-    required: false,
-  })
+  @ApiProperty({ example: 'Motivo de cancelación' })
   @IsString()
   @IsOptional()
-  notas?: string;
+  motivoCancelacion: string | null;
 
-  @ApiProperty({
-    description: 'Motivo de cancelación',
-    example: 'Cambio de planes',
-    required: false,
-  })
-  @IsString()
-  @IsOptional()
-  motivoCancelacion?: string;
-
-  @ApiProperty({
-    description: 'Fecha de cancelación',
-    example: '2024-05-15T00:00:00.000Z',
-    required: false,
-  })
-  @Type(() => Date)
+  @ApiProperty({ example: '2023-10-01' })
   @IsDate()
   @IsOptional()
-  fechaCancelacion?: Date;
-} 
+  fechaCancelacion: Date | null;
+  }
