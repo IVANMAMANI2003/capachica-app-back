@@ -186,6 +186,7 @@ let PaymentService = class PaymentService {
         if (!pago || pago.estado !== estado_pago_enum_1.EstadoPago.COMPLETADO) {
             throw new common_1.NotFoundException(`Pago con ID ${paymentId} no encontrado o no está completado`);
         }
+        console.log('Pago encontrado y completado:', pago);
         const pagoConvertido = {
             id: pago.id,
             montoTotal: Number(pago.montoTotal),
@@ -197,8 +198,12 @@ let PaymentService = class PaymentService {
                 }
                 : null,
         };
-        const comprobante = await this.comprobantesService.generateAutomaticComprobante(pagoConvertido);
-        return comprobante;
+        if (pago.estado === estado_pago_enum_1.EstadoPago.COMPLETADO) {
+            const comprobante = await this.comprobantesService.generateAutomaticComprobante(pagoConvertido);
+            console.log('Comprobante generado después de pago completado:', comprobante);
+            return comprobante;
+        }
+        throw new Error('El pago no está en estado completado, no se puede generar el comprobante.');
     }
 };
 exports.PaymentService = PaymentService;

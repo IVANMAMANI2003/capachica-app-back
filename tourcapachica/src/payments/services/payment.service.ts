@@ -208,6 +208,9 @@ export class PaymentService {
       throw new NotFoundException(`Pago con ID ${paymentId} no encontrado o no está completado`);
     }
   
+    // Log para depurar el estado del pago y sus datos
+    console.log('Pago encontrado y completado:', pago);
+  
     // Convertimos Decimal a number (profundamente si es necesario)
     const pagoConvertido = {
       id: pago.id,
@@ -221,8 +224,17 @@ export class PaymentService {
         : null,
     };
   
-    const comprobante = await this.comprobantesService.generateAutomaticComprobante(pagoConvertido);
-    return comprobante;
+    // Verificar que el estado del pago sea COMPLETADO antes de generar el comprobante
+    if (pago.estado === EstadoPago.COMPLETADO) {
+      // Asegúrate de que el pago esté marcado como completado antes de intentar generar el comprobante
+      const comprobante = await this.comprobantesService.generateAutomaticComprobante(pagoConvertido);
+      console.log('Comprobante generado después de pago completado:', comprobante);
+      return comprobante;
+    }
+  
+    throw new Error('El pago no está en estado completado, no se puede generar el comprobante.');
   }
+  
+  
   
 }
