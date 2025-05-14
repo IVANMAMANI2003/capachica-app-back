@@ -19,6 +19,7 @@ exports.ComprobantesModule = ComprobantesModule = __decorate([
         imports: [prisma_module_1.PrismaModule],
         controllers: [comprobantes_controller_1.ComprobantesController],
         providers: [comprobantes_service_1.ComprobantesService],
+        exports: [comprobantes_service_1.ComprobantesService],
     })
 ], ComprobantesModule);
 //# sourceMappingURL=comprobantes.module.js.map
