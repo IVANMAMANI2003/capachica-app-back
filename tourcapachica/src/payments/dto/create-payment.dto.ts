@@ -32,9 +32,6 @@ export class CreatePaymentDto {
   @IsOptional()
   moneda?: string;
 
-  @ApiProperty({ enum: EstadoPago, example: EstadoPago.PENDIENTE })
-  @IsEnum(EstadoPago, { message: 'El estado debe ser uno válido del enum EstadoPago' })
-  estado: EstadoPago;
 
 
 

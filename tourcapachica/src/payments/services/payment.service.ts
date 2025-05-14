@@ -2,6 +2,7 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePaymentDto } from '../dto/create-payment.dto';
 import { UpdatePaymentDto } from '../dto/update-payment.dto';
+import { EstadoPago } from '../enums/estado-pago.enum';
 
 
 @Injectable()
@@ -11,6 +12,17 @@ export class PaymentService {
   async create(createPagoDto: CreatePaymentDto) {
     return this.prisma.$transaction(async (prisma) => {
       const totalDetalles = createPagoDto.detalles.reduce((total, detalle) => total + detalle.monto, 0);
+      // Obtener la reserva y su monto total
+    const reserva = await this.prisma.reserva.findUnique({
+      where: { id: createPagoDto.reservaId },
+    });
+
+    // Comparar el total pagado con el monto de la reserva
+    let estado: EstadoPago = EstadoPago.PENDIENTE;
+    if (Number(totalDetalles) >= Number(reserva.precioTotal)) {
+      estado = EstadoPago.COMPLETADO;
+    }
+      
       const pago = await prisma.pago.create({
         data: {
           reservaId: createPagoDto.reservaId,
@@ -18,7 +30,7 @@ export class PaymentService {
           transactionId: createPagoDto.transactionId,
           montoTotal: totalDetalles,
           moneda: createPagoDto.moneda ?? 'PEN',
-          estado: createPagoDto.estado ?? 'pendiente',
+          estado: estado,
           fechaPago: new Date(),
           datosMetodoPago: createPagoDto.datosMetodoPago,
           metadata: createPagoDto.metadata,
@@ -76,10 +88,20 @@ export class PaymentService {
 
   async update(id: number, updatePaymentDto: UpdatePaymentDto) {
     const existe = await this.prisma.pago.findUnique({ where: { id } });
-
+    const totalDetalles = updatePaymentDto.detalles.reduce((total, detalle) => total + detalle.monto, 0);
     if (!existe) {
       throw new NotFoundException(`Pago con ID ${id} no encontrado`);
     }
+          // Obtener la reserva y su monto total
+          const reserva = await this.prisma.reserva.findUnique({
+            where: { id: updatePaymentDto.reservaId },
+          });
+      
+          // Comparar el total pagado con el monto de la reserva
+          let estado: EstadoPago = EstadoPago.PENDIENTE;
+          if (Number(totalDetalles) >= Number(reserva.precioTotal)) {
+            estado = EstadoPago.COMPLETADO;
+          }
 
     const pagoActualizado = await this.prisma.pago.update({
       where: { id },
@@ -87,9 +109,9 @@ export class PaymentService {
         reservaId: updatePaymentDto.reservaId,
         paymentGateway: updatePaymentDto.paymentGateway,
         transactionId: updatePaymentDto.transactionId,
-        montoTotal: updatePaymentDto.detalles?.reduce((total, detalle) => total + detalle.monto, 0) ?? existe.montoTotal,
+        montoTotal: totalDetalles,
         moneda: updatePaymentDto.moneda,
-        estado: updatePaymentDto.estado,
+        estado: estado,
         fechaPago: new Date(),
         datosMetodoPago: updatePaymentDto.datosMetodoPago,
         metadata: updatePaymentDto.metadata,

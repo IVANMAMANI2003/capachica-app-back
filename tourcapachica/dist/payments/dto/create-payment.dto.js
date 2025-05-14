@@ -13,7 +13,6 @@ exports.CreatePaymentDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
-const estado_pago_enum_1 = require("../enums/estado-pago.enum");
 const create_payment_detail_dto_1 = require("./create-payment-detail.dto");
 class CreatePaymentDto {
 }
@@ -42,11 +41,6 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreatePaymentDto.prototype, "moneda", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ enum: estado_pago_enum_1.EstadoPago, example: estado_pago_enum_1.EstadoPago.PENDIENTE }),
-    (0, class_validator_1.IsEnum)(estado_pago_enum_1.EstadoPago, { message: 'El estado debe ser uno válido del enum EstadoPago' }),
-    __metadata("design:type", String)
-], CreatePaymentDto.prototype, "estado", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Datos del método de pago', example: { numero: '123456789' }, required: false }),
     (0, class_validator_1.IsOptional)(),

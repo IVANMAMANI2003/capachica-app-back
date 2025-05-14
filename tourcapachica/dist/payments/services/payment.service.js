@@ -12,14 +12,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PaymentService = void 0;
 const prisma_service_1 = require("../../prisma/prisma.service");
 const common_1 = require("@nestjs/common");
+const estado_pago_enum_1 = require("../enums/estado-pago.enum");
 let PaymentService = class PaymentService {
     constructor(prisma) {
         this.prisma = prisma;
     }
     async create(createPagoDto) {
         return this.prisma.$transaction(async (prisma) => {
-            var _a, _b, _c, _d;
+            var _a, _b, _c;
             const totalDetalles = createPagoDto.detalles.reduce((total, detalle) => total + detalle.monto, 0);
+            const reserva = await this.prisma.reserva.findUnique({
+                where: { id: createPagoDto.reservaId },
+            });
+            let estado = estado_pago_enum_1.EstadoPago.PENDIENTE;
+            if (Number(totalDetalles) >= Number(reserva.precioTotal)) {
+                estado = estado_pago_enum_1.EstadoPago.COMPLETADO;
+            }
             const pago = await prisma.pago.create({
                 data: {
                     reservaId: createPagoDto.reservaId,
@@ -27,7 +35,7 @@ let PaymentService = class PaymentService {
                     transactionId: createPagoDto.transactionId,
                     montoTotal: totalDetalles,
                     moneda: (_a = createPagoDto.moneda) !== null && _a !== void 0 ? _a : 'PEN',
-                    estado: (_b = createPagoDto.estado) !== null && _b !== void 0 ? _b : 'pendiente',
+                    estado: estado,
                     fechaPago: new Date(),
                     datosMetodoPago: createPagoDto.datosMetodoPago,
                     metadata: createPagoDto.metadata,
@@ -43,8 +51,8 @@ let PaymentService = class PaymentService {
                         tipoPagoId: detalle.tipoPagoId,
                         concepto: detalle.concepto,
                         monto: detalle.monto,
-                        porcentajeImpuesto: (_c = detalle.porcentajeImpuesto) !== null && _c !== void 0 ? _c : 0,
-                        cantidad: (_d = detalle.cantidad) !== null && _d !== void 0 ? _d : 1,
+                        porcentajeImpuesto: (_b = detalle.porcentajeImpuesto) !== null && _b !== void 0 ? _b : 0,
+                        cantidad: (_c = detalle.cantidad) !== null && _c !== void 0 ? _c : 1,
                         descripcion: detalle.descripcion,
                     },
                 });
@@ -76,10 +84,17 @@ let PaymentService = class PaymentService {
         return pago;
     }
     async update(id, updatePaymentDto) {
-        var _a, _b;
         const existe = await this.prisma.pago.findUnique({ where: { id } });
+        const totalDetalles = updatePaymentDto.detalles.reduce((total, detalle) => total + detalle.monto, 0);
         if (!existe) {
             throw new common_1.NotFoundException(`Pago con ID ${id} no encontrado`);
+        }
+        const reserva = await this.prisma.reserva.findUnique({
+            where: { id: updatePaymentDto.reservaId },
+        });
+        let estado = estado_pago_enum_1.EstadoPago.PENDIENTE;
+        if (Number(totalDetalles) >= Number(reserva.precioTotal)) {
+            estado = estado_pago_enum_1.EstadoPago.COMPLETADO;
         }
         const pagoActualizado = await this.prisma.pago.update({
             where: { id },
@@ -87,9 +102,9 @@ let PaymentService = class PaymentService {
                 reservaId: updatePaymentDto.reservaId,
                 paymentGateway: updatePaymentDto.paymentGateway,
                 transactionId: updatePaymentDto.transactionId,
-                montoTotal: (_b = (_a = updatePaymentDto.detalles) === null || _a === void 0 ? void 0 : _a.reduce((total, detalle) => total + detalle.monto, 0)) !== null && _b !== void 0 ? _b : existe.montoTotal,
+                montoTotal: totalDetalles,
                 moneda: updatePaymentDto.moneda,
-                estado: updatePaymentDto.estado,
+                estado: estado,
                 fechaPago: new Date(),
                 datosMetodoPago: updatePaymentDto.datosMetodoPago,
                 metadata: updatePaymentDto.metadata,
