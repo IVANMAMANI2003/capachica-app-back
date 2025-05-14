@@ -17,7 +17,7 @@ export class CreateReservaDto {
   @IsNotEmpty()
   tipoReserva: string;
 
-  @ApiProperty({ example: '2023-10-0' })
+  @ApiProperty({ example: '2023-10-01' })
   @IsDateString()
   @IsNotEmpty()
   fechaReserva: string;

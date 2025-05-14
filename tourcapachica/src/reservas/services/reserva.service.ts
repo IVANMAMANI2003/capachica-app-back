@@ -13,7 +13,12 @@ export class ReservaService {
 
   async create(createReservaDto: CreateReservaDto) {
     const reserva = await this.prisma.reserva.create({
-      data: createReservaDto,
+      data:{
+        ...createReservaDto,
+        fechaReserva: new Date(createReservaDto.fechaReserva),
+        fechaInicio: new Date(createReservaDto.fechaInicio),
+        fechaFin: new Date(createReservaDto.fechaFin),
+      } ,
     });
     await this.itinerarioReservaService.createForReserva(reserva.id);
     return reserva;

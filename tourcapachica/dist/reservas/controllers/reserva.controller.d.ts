@@ -5,7 +5,6 @@ export declare class ReservaController {
     private readonly reservaService;
     constructor(reservaService: ReservaService);
     create(createReservaDto: CreateReservaDto): Promise<{
-        id: number;
         usuarioId: number;
         codigoReserva: string;
         tipoReserva: string;
@@ -21,11 +20,11 @@ export declare class ReservaController {
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
+        id: number;
         createdAt: Date;
         updatedAt: Date;
     }>;
     findAll(): import(".prisma/client").Prisma.PrismaPromise<{
-        id: number;
         usuarioId: number;
         codigoReserva: string;
         tipoReserva: string;
@@ -41,11 +40,11 @@ export declare class ReservaController {
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
+        id: number;
         createdAt: Date;
         updatedAt: Date;
     }[]>;
     findOne(id: string): import(".prisma/client").Prisma.Prisma__ReservaClient<{
-        id: number;
         usuarioId: number;
         codigoReserva: string;
         tipoReserva: string;
@@ -61,11 +60,11 @@ export declare class ReservaController {
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
+        id: number;
         createdAt: Date;
         updatedAt: Date;
     }, null, import(".prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     update(id: string, updateReservaDto: UpdateReservaDto): import(".prisma/client").Prisma.Prisma__ReservaClient<{
-        id: number;
         usuarioId: number;
         codigoReserva: string;
         tipoReserva: string;
@@ -81,11 +80,11 @@ export declare class ReservaController {
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
+        id: number;
         createdAt: Date;
         updatedAt: Date;
     }, never, import(".prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     remove(id: string): import(".prisma/client").Prisma.Prisma__ReservaClient<{
-        id: number;
         usuarioId: number;
         codigoReserva: string;
         tipoReserva: string;
@@ -101,6 +100,7 @@ export declare class ReservaController {
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
+        id: number;
         createdAt: Date;
         updatedAt: Date;
     }, never, import(".prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;

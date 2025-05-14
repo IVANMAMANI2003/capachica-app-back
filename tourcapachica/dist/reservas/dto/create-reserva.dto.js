@@ -34,7 +34,7 @@ __decorate([
     __metadata("design:type", String)
 ], CreateReservaDto.prototype, "tipoReserva", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: '2023-10-0' }),
+    (0, swagger_1.ApiProperty)({ example: '2023-10-01' }),
     (0, class_validator_1.IsDateString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
