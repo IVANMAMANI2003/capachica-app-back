@@ -84,29 +84,7 @@ export class PaymentService {
     });
   }
 
-  async getEstadoPagoReserva(reservaId: number) {
-    const reserva = await this.prisma.reserva.findUnique({
-      where: { id: reservaId },
-      include: {
-        pagos: true, // incluye todos los pagos
-      },
-    });
-  
-    if (!reserva) {
-      throw new Error('Reserva no encontrada');
-    }
-  
-    const totalPagado = reserva.pagos.reduce((acc, pago) => acc + Number(pago.montoTotal), 0);
-    const restante = Number(reserva.precioTotal) - totalPagado;
-  
-    return {
-      reservaId: reserva.id,
-      precioTotal: Number(reserva.precioTotal),
-      totalPagado,
-      restante,
-      pagos: reserva.pagos, // por si quieres mostrar el detalle
-    };
-  }
+
 
   
 

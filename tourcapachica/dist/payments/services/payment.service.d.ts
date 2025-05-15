@@ -20,26 +20,6 @@ export declare class PaymentService {
         createdAt: Date;
         updatedAt: Date;
     }>;
-    getEstadoPagoReserva(reservaId: number): Promise<{
-        reservaId: number;
-        precioTotal: number;
-        totalPagado: number;
-        restante: number;
-        pagos: {
-            id: number;
-            reservaId: number;
-            paymentGateway: string;
-            transactionId: string;
-            montoTotal: import(".prisma/client/runtime/library").Decimal;
-            moneda: string;
-            estado: string;
-            fechaPago: Date | null;
-            datosMetodoPago: import(".prisma/client/runtime/library").JsonValue | null;
-            metadata: import(".prisma/client/runtime/library").JsonValue | null;
-            createdAt: Date;
-            updatedAt: Date;
-        }[];
-    }>;
     findAll(): Promise<({
         reserva: {
             id: number;

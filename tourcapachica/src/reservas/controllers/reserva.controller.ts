@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, NotFoundException } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { ReservaService } from '../services/reserva.service';
 import { CreateReservaDto } from '../dto/create-reserva.dto';
@@ -31,40 +31,21 @@ export class ReservaController {
   }
 
   @Get(':reservaId/estado-pago')
-  @ApiOperation({
-    summary: 'Obtener estado de pago de una reserva',
-    description:
-      'Devuelve cuánto ya se pagó, cuánto falta pagar y los pagos realizados para una reserva.',
-  })
-  @ApiParam({
-    name: 'reservaId',
-    type: Number,
-    description: 'ID de la reserva',
-    example: 1,
-  })
+  @ApiOperation({ summary: 'Obtener el estado general de pago de una reserva' })
+  @ApiParam({ name: 'reservaId', type: Number, description: 'ID de la reserva' })
   @ApiResponse({
     status: 200,
-    description: 'Estado de pago retornado correctamente',
-    schema: {
-      example: {
-        reservaId: 1,
-        precioTotal: 200.0,
-        totalPagado: 100.0,
-        restante: 100.0,
-        pagos: [
-          {
-            id: 10,
-            montoTotal: 100.0,
-            fechaPago: '2025-05-14T12:00:00.000Z',
-            estado: 'COMPLETADO',
-          },
-        ],
-      },
-    },
+    description: 'Estado general del pago de la reserva retornado exitosamente.'
   })
-  @ApiResponse({ status: 404, description: 'Reserva no encontrada' })
-  async getEstadoPago(@Param('reservaId', ParseIntPipe) reservaId: number) {
-    return this.reservaService.getEstadoPagoReserva(reservaId);
+  @ApiResponse({ status: 404, description: 'Reserva no encontrada.' })
+  async getEstadoPagoReserva(
+    @Param('reservaId', ParseIntPipe) reservaId: number
+  ) {
+    const reserva = await this.reservaService.getEstadoPagoReserva(reservaId);
+    if (!reserva) {
+      throw new NotFoundException('Reserva no encontrada');
+    }
+    return reserva;
   }
 
   @Patch(':id')
