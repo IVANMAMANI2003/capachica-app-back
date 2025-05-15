@@ -17,8 +17,7 @@ const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const itinerario_reserva_service_1 = require("../services/itinerario-reserva.service");
 const update_itinerario_reserva_dto_1 = require("../dto/update-itinerario-reserva.dto");
-class CreateItinerariosForReservaDto {
-}
+const create_itinerarios_for_reserva_dto_1 = require("../dto/create-itinerarios-for-reserva.dto");
 let ItinerarioReservaController = class ItinerarioReservaController {
     constructor(itinerarioReservaService) {
         this.itinerarioReservaService = itinerarioReservaService;
@@ -46,7 +45,7 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Itinerarios creados exitosamente.' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [CreateItinerariosForReservaDto]),
+    __metadata("design:paramtypes", [create_itinerarios_for_reserva_dto_1.CreateItinerariosForReservaDto]),
     __metadata("design:returntype", void 0)
 ], ItinerarioReservaController.prototype, "createMany", null);
 __decorate([

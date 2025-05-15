@@ -1,10 +1,6 @@
 import { ItinerarioReservaService } from '../services/itinerario-reserva.service';
-import { CreateItinerarioReservaDto } from '../dto/create-itinerario-reserva.dto';
 import { UpdateItinerarioReservaDto } from '../dto/update-itinerario-reserva.dto';
-declare class CreateItinerariosForReservaDto {
-    reservaId: number;
-    itinerarios: CreateItinerarioReservaDto[];
-}
+import { CreateItinerariosForReservaDto } from '../dto/create-itinerarios-for-reserva.dto';
 export declare class ItinerarioReservaController {
     private readonly itinerarioReservaService;
     constructor(itinerarioReservaService: ItinerarioReservaService);
@@ -62,4 +58,3 @@ export declare class ItinerarioReservaController {
         updatedAt: Date;
     }, never, import(".prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
 }
-export {};

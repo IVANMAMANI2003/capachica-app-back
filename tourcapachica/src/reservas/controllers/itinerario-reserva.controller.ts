@@ -3,10 +3,9 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ItinerarioReservaService } from '../services/itinerario-reserva.service';
 import { CreateItinerarioReservaDto } from '../dto/create-itinerario-reserva.dto';
 import { UpdateItinerarioReservaDto } from '../dto/update-itinerario-reserva.dto';
-class CreateItinerariosForReservaDto {
-  reservaId: number;
-  itinerarios: CreateItinerarioReservaDto[];
-}
+import { CreateItinerariosForReservaDto } from '../dto/create-itinerarios-for-reserva.dto';
+
+
 
 @ApiTags('itinerarios')
 @Controller('itinerarios')
