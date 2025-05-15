@@ -30,7 +30,7 @@ let ReservaService = class ReservaService {
     async create(createReservaDto) {
         const codigoReserva = this.generarCodigoReserva();
         const reserva = await this.prisma.reserva.create({
-            data: Object.assign(Object.assign({}, createReservaDto), { codigoReserva, fechaReserva: new Date(createReservaDto.fechaReserva), fechaInicio: new Date(createReservaDto.fechaInicio), fechaFin: new Date(createReservaDto.fechaFin), fechaCancelacion: new Date(createReservaDto.fechaCancelacion) }),
+            data: Object.assign(Object.assign({}, createReservaDto), { codigoReserva, fechaReserva: new Date(createReservaDto.fechaReserva), fechaInicio: new Date(createReservaDto.fechaInicio), fechaFin: new Date(createReservaDto.fechaFin) }),
         });
         return reserva;
     }
@@ -58,6 +58,24 @@ let ReservaService = class ReservaService {
                 fechaPago: pago.fechaPago,
             })),
         };
+    }
+    async cancelarReserva(reservaId, motivo) {
+        const reserva = await this.prisma.reserva.findUnique({
+            where: { id: reservaId },
+        });
+        if (!reserva)
+            throw new common_1.NotFoundException('Reserva no encontrada');
+        if (reserva.estado === 'cancelada') {
+            throw new common_1.BadRequestException('La reserva ya está cancelada.');
+        }
+        return this.prisma.reserva.update({
+            where: { id: reservaId },
+            data: {
+                estado: 'cancelada',
+                fechaCancelacion: new Date(),
+                motivoCancelacion: motivo,
+            },
+        });
     }
     findAll() {
         return this.prisma.reserva.findMany();

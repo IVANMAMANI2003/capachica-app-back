@@ -76,16 +76,4 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateReservaDto.prototype, "notas", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ example: 'Motivo de cancelación' }),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], CreateReservaDto.prototype, "motivoCancelacion", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ example: '2023-10-01' }),
-    (0, class_validator_1.IsDateString)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], CreateReservaDto.prototype, "fechaCancelacion", void 0);
 //# sourceMappingURL=create-reserva.dto.js.map

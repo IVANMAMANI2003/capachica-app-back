@@ -37,6 +37,24 @@ export declare class ReservaService {
             fechaPago: Date;
         }[];
     }>;
+    cancelarReserva(reservaId: number, motivo: string): Promise<{
+        id: number;
+        usuarioId: number;
+        codigoReserva: string;
+        tipoReserva: string;
+        fechaReserva: Date;
+        fechaInicio: Date;
+        fechaFin: Date | null;
+        cantidadPersonas: number;
+        precioTotal: import(".prisma/client/runtime/library").Decimal;
+        moneda: string;
+        estado: string;
+        notas: string | null;
+        motivoCancelacion: string | null;
+        fechaCancelacion: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
     findAll(): import(".prisma/client").Prisma.PrismaPromise<{
         id: number;
         usuarioId: number;

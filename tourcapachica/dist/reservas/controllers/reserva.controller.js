@@ -41,6 +41,9 @@ let ReservaController = class ReservaController {
     update(id, updateReservaDto) {
         return this.reservaService.update(+id, updateReservaDto);
     }
+    async cancelarReserva(reservaId, body) {
+        return this.reservaService.cancelarReserva(reservaId, body.motivo);
+    }
     remove(id) {
         return this.reservaService.remove(+id);
     }
@@ -96,6 +99,22 @@ __decorate([
     __metadata("design:paramtypes", [String, update_reserva_dto_1.UpdateReservaDto]),
     __metadata("design:returntype", void 0)
 ], ReservaController.prototype, "update", null);
+__decorate([
+    (0, common_1.Patch)(':reservaId/cancelar'),
+    (0, swagger_1.ApiOperation)({ summary: 'Cancelar una reserva' }),
+    (0, swagger_1.ApiBody)({
+        schema: {
+            example: {
+                motivo: 'El cliente no podrá viajar',
+            }
+        }
+    }),
+    __param(0, (0, common_1.Param)('reservaId', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Object]),
+    __metadata("design:returntype", Promise)
+], ReservaController.prototype, "cancelarReserva", null);
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, swagger_1.ApiOperation)({ summary: 'Eliminar una reserva' }),

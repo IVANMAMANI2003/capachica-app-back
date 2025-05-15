@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateReservaDto } from '../dto/create-reserva.dto';
 import { UpdateReservaDto } from '../dto/update-reserva.dto';
@@ -30,7 +30,6 @@ export class ReservaService {
         fechaReserva: new Date(createReservaDto.fechaReserva),
         fechaInicio: new Date(createReservaDto.fechaInicio),
         fechaFin: new Date(createReservaDto.fechaFin),
-        fechaCancelacion: new Date(createReservaDto.fechaCancelacion),
       } ,
     });
     return reserva;
@@ -69,6 +68,28 @@ export class ReservaService {
     };
   }
 
+  async cancelarReserva(reservaId: number, motivo: string) {
+    const reserva = await this.prisma.reserva.findUnique({
+      where: { id: reservaId },
+    });
+  
+    if (!reserva) throw new NotFoundException('Reserva no encontrada');
+  
+    if (reserva.estado === 'cancelada') {
+      throw new BadRequestException('La reserva ya está cancelada.');
+    }
+  
+    return this.prisma.reserva.update({
+      where: { id: reservaId },
+      data: {
+        estado: 'cancelada',
+        fechaCancelacion: new Date(),
+        motivoCancelacion: motivo,
+      },
+    });
+  }
+  
+
   findAll() {
     return this.prisma.reserva.findMany();
   }
@@ -91,4 +112,6 @@ export class ReservaService {
       where: { id },
     });
   }
+
+  
 }

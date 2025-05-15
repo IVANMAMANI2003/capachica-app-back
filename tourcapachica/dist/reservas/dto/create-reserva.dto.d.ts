@@ -10,6 +10,4 @@ export declare class CreateReservaDto {
     moneda: string;
     estado: EstadoReserva;
     notas: string | null;
-    motivoCancelacion: string | null;
-    fechaCancelacion?: string | null;
 }

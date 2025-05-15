@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, NotFoundException } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
 import { ReservaService } from '../services/reserva.service';
 import { CreateReservaDto } from '../dto/create-reserva.dto';
 import { UpdateReservaDto } from '../dto/update-reserva.dto';
@@ -54,6 +54,22 @@ export class ReservaController {
   update(@Param('id') id: string, @Body() updateReservaDto: UpdateReservaDto) {
     return this.reservaService.update(+id, updateReservaDto);
   }
+
+  @Patch(':reservaId/cancelar')
+@ApiOperation({ summary: 'Cancelar una reserva' })
+@ApiBody({
+  schema: {
+    example: {
+      motivo: 'El cliente no podrá viajar',
+    }
+  }
+})
+async cancelarReserva(
+  @Param('reservaId', ParseIntPipe) reservaId: number,
+  @Body() body: { motivo: string; userId: number }
+) {
+  return this.reservaService.cancelarReserva(reservaId, body.motivo);
+}
 
   @Delete(':id')
   @ApiOperation({ summary: 'Eliminar una reserva' })
