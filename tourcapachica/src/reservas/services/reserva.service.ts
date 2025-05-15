@@ -53,7 +53,7 @@ export class ReservaService {
     const precioTotal = Number(reserva.precioTotal);
     const restante = precioTotal - totalPagado;
   
-    const estado = totalPagado >= precioTotal ? 'COMPLETADO' : 'PENDIENTE';
+    const estado = totalPagado >= precioTotal ? 'completado' : 'pendiente';
   
     return {
       reservaId: reserva.id,

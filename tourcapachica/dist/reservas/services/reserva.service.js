@@ -45,7 +45,7 @@ let ReservaService = class ReservaService {
         const totalPagado = reserva.pagos.reduce((acc, pago) => acc + Number(pago.montoTotal), 0);
         const precioTotal = Number(reserva.precioTotal);
         const restante = precioTotal - totalPagado;
-        const estado = totalPagado >= precioTotal ? 'COMPLETADO' : 'PENDIENTE';
+        const estado = totalPagado >= precioTotal ? 'completado' : 'pendiente';
         return {
             reservaId: reserva.id,
             precioTotal,
