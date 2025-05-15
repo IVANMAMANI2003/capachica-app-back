@@ -57,9 +57,32 @@ export class PaymentService {
         });
       }
 
+      const totalPagado = await prisma.pago.aggregate({
+        where: { reservaId: createPagoDto.reservaId },
+        _sum: { montoTotal: true },
+      });
+      
+      const montoAcumulado = Number(totalPagado._sum.montoTotal ?? 0);
+      
+      if (montoAcumulado >= Number(reserva.precioTotal)) {
+        // Actualizar todos los pagos de esa reserva a COMPLETADO
+        await prisma.pago.updateMany({
+          where: { reservaId: createPagoDto.reservaId },
+          data: { estado: EstadoPago.COMPLETADO },
+        });
+      
+        // Actualizar estado de la reserva
+        await prisma.reserva.update({
+          where: { id: createPagoDto.reservaId },
+          data: { estado: 'confirmada' },
+        });
+      }
+
       return pago;
     });
   }
+
+  
 
   async findAll() {
     return this.prisma.pago.findMany({
@@ -153,45 +176,19 @@ export class PaymentService {
     return pagos.reduce((total, pago) => Number(total) + Number(pago.montoTotal), 0);
   }
 
-  async registerPayment(createPagoDto: CreatePaymentDto) {
-    const totalDetalles = createPagoDto.detalles.reduce((total, detalle) => total + detalle.monto, 0);
-    const totalPagado = await this.calculateTotalPaid(createPagoDto.reservaId) + totalDetalles;
-    const reserva = await this.prisma.reserva.findUnique({ where: { id: createPagoDto.reservaId } });
-  
-    if (!reserva) {
-      throw new NotFoundException(`Reserva con ID ${createPagoDto.reservaId} no encontrada`);
-    }
-  
-    const estadoPago = Number(totalPagado) >= Number(reserva.precioTotal) ? 'completado' : 'pendiente';
-    const estadoReserva = Number(totalPagado) >= Number(reserva.precioTotal) ? 'confirmada' : 'pendiente';
-  // Generar transactionId único
-  const transactionId = `TXN-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${Math.floor(Math.random() * 1000000).toString().padStart(6, '0')}`;
-
-    const pago = await this.prisma.pago.create({
-      data: {
-        reservaId: createPagoDto.reservaId,
-        paymentGateway: createPagoDto.paymentGateway,
-        transactionId: transactionId,
-        montoTotal: totalDetalles,
-        moneda: createPagoDto.moneda ?? 'PEN',
-        estado: estadoPago,
-        fechaPago: new Date(),
-        datosMetodoPago: createPagoDto.datosMetodoPago,
-        metadata: createPagoDto.metadata,
-      },
+  async getPaymentDetails(paymentId: number) {
+    const payment = await this.prisma.pago.findUnique({
+      where: { id: paymentId },
       include: {
         detalles: true,
-        comprobante: true,
         reserva: true,
+        // datosMetodoPago is stored directly in the Pago model, not as a relation
       },
     });
-  
-    await this.prisma.reserva.update({
-      where: { id: createPagoDto.reservaId },
-      data: { estado: estadoReserva }
-    });
-  
-    return pago;
+
+    if (!payment) {
+      throw new NotFoundException(`Pago con ID ${paymentId} no encontrado`);
+    }
   }
 
   async captureCompletedPayment(paymentId: number) {
