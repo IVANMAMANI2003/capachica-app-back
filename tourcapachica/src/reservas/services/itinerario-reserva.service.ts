@@ -11,8 +11,8 @@ export class ItinerarioReservaService {
     const data = itinerarios.map(itinerario => ({
       reservaId,
       servicioId: itinerario.servicioId,
-      fechaInicioActividad: itinerario.fechaInicioActividad,
-      fechaFinActividad: itinerario.fechaFinActividad,
+      fechaInicioActividad: new Date(itinerario.fechaInicioActividad),
+      fechaFinActividad: new Date(itinerario.fechaFinActividad),
       lugarEncuentro: itinerario.lugarEncuentro,
       observaciones: itinerario.observaciones,
       tipoEvento: itinerario.tipoEvento,
