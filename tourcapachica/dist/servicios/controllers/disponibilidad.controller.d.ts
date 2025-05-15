@@ -5,26 +5,26 @@ export declare class DisponibilidadController {
     private readonly disponibilidadService;
     constructor(disponibilidadService: DisponibilidadService);
     create(createDisponibilidadDto: CreateServicioDisponibilidadDto): Promise<{
+        fechaInicio: Date | null;
+        fechaFin: Date | null;
         estado: string;
+        notas: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        fechaInicio: Date | null;
-        fechaFin: Date | null;
-        notas: string | null;
         servicioId: number;
         cuposMaximos: number;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
     }>;
     createBatch(disponibilidades: CreateServicioDisponibilidadDto[]): Promise<{
+        fechaInicio: Date | null;
+        fechaFin: Date | null;
         estado: string;
+        notas: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        fechaInicio: Date | null;
-        fechaFin: Date | null;
-        notas: string | null;
         servicioId: number;
         cuposMaximos: number;
         cuposDisponibles: number;
@@ -32,27 +32,27 @@ export declare class DisponibilidadController {
     }[]>;
     findAll(): Promise<({
         servicio: {
+            moneda: string;
+            estado: string;
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
             nombre: string;
             descripcion: string | null;
             latitud: number | null;
             longitud: number | null;
-            estado: string;
-            id: number;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
-            moneda: string;
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
-            createdAt: Date;
-            updatedAt: Date;
         };
     } & {
+        fechaInicio: Date | null;
+        fechaFin: Date | null;
         estado: string;
+        notas: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        fechaInicio: Date | null;
-        fechaFin: Date | null;
-        notas: string | null;
         servicioId: number;
         cuposMaximos: number;
         cuposDisponibles: number;
@@ -60,27 +60,27 @@ export declare class DisponibilidadController {
     })[]>;
     findByServicio(servicioId: string): Promise<({
         servicio: {
+            moneda: string;
+            estado: string;
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
             nombre: string;
             descripcion: string | null;
             latitud: number | null;
             longitud: number | null;
-            estado: string;
-            id: number;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
-            moneda: string;
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
-            createdAt: Date;
-            updatedAt: Date;
         };
     } & {
+        fechaInicio: Date | null;
+        fechaFin: Date | null;
         estado: string;
+        notas: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        fechaInicio: Date | null;
-        fechaFin: Date | null;
-        notas: string | null;
         servicioId: number;
         cuposMaximos: number;
         cuposDisponibles: number;
@@ -88,27 +88,27 @@ export declare class DisponibilidadController {
     })[]>;
     findOne(id: string): Promise<{
         servicio: {
+            moneda: string;
+            estado: string;
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
             nombre: string;
             descripcion: string | null;
             latitud: number | null;
             longitud: number | null;
-            estado: string;
-            id: number;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
-            moneda: string;
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
-            createdAt: Date;
-            updatedAt: Date;
         };
     } & {
+        fechaInicio: Date | null;
+        fechaFin: Date | null;
         estado: string;
+        notas: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        fechaInicio: Date | null;
-        fechaFin: Date | null;
-        notas: string | null;
         servicioId: number;
         cuposMaximos: number;
         cuposDisponibles: number;
@@ -116,40 +116,40 @@ export declare class DisponibilidadController {
     }>;
     update(id: string, updateData: UpdateServicioDisponibilidadDto): Promise<{
         servicio: {
+            moneda: string;
+            estado: string;
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
             nombre: string;
             descripcion: string | null;
             latitud: number | null;
             longitud: number | null;
-            estado: string;
-            id: number;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
-            moneda: string;
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
-            createdAt: Date;
-            updatedAt: Date;
         };
     } & {
+        fechaInicio: Date | null;
+        fechaFin: Date | null;
         estado: string;
+        notas: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        fechaInicio: Date | null;
-        fechaFin: Date | null;
-        notas: string | null;
         servicioId: number;
         cuposMaximos: number;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
     }>;
     remove(id: string): Promise<{
+        fechaInicio: Date | null;
+        fechaFin: Date | null;
         estado: string;
+        notas: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        fechaInicio: Date | null;
-        fechaFin: Date | null;
-        notas: string | null;
         servicioId: number;
         cuposMaximos: number;
         cuposDisponibles: number;

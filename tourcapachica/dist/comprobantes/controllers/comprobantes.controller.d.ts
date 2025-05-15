@@ -1,15 +1,15 @@
 import { ComprobantesService } from '../services/comprobantes.service';
-import { CreateComprobanteDto } from '../dto/create-comprobante.dto';
 import { UpdateComprobanteDto } from '../dto/update-comprobante.dto';
+import { Comprobante } from '../entities/comprobante.entity';
 export declare class ComprobantesController {
     private readonly service;
     constructor(service: ComprobantesService);
-    create(dto: CreateComprobanteDto): Promise<{
+    create(dto: Comprobante): Promise<{
         id: number;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
-        numero: number;
+        numero: string;
         fechaEmision: Date;
         rucCliente: string | null;
         razonSocial: string | null;
@@ -33,7 +33,7 @@ export declare class ComprobantesController {
         pagoId: number;
         tipoComprobante: string;
         serie: string;
-        numero: number;
+        numero: string;
         fechaEmision: Date;
         rucCliente: string | null;
         razonSocial: string | null;
@@ -57,7 +57,7 @@ export declare class ComprobantesController {
         pagoId: number;
         tipoComprobante: string;
         serie: string;
-        numero: number;
+        numero: string;
         fechaEmision: Date;
         rucCliente: string | null;
         razonSocial: string | null;
@@ -81,7 +81,7 @@ export declare class ComprobantesController {
         pagoId: number;
         tipoComprobante: string;
         serie: string;
-        numero: number;
+        numero: string;
         fechaEmision: Date;
         rucCliente: string | null;
         razonSocial: string | null;
@@ -105,7 +105,7 @@ export declare class ComprobantesController {
         pagoId: number;
         tipoComprobante: string;
         serie: string;
-        numero: number;
+        numero: string;
         fechaEmision: Date;
         rucCliente: string | null;
         razonSocial: string | null;

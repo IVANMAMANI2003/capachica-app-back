@@ -14,8 +14,6 @@ export class ItinerarioReservaService {
         servicioId: 1, // Example service ID
         fechaInicioActividad: new Date(),
         fechaFinActividad: new Date(),
-        horaInicio: new Date(),
-        horaFin: new Date(),
         lugarEncuentro: 'Default Location',
         observaciones: 'Default Observations',
         tipoEvento: 'Default Event',

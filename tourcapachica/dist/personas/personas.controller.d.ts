@@ -28,11 +28,11 @@ export declare class PersonasController {
             countryId: number;
         };
     } & {
-        nombre: string;
-        direccion: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        direccion: string | null;
         apellidos: string;
         telefono: string | null;
         fotoPerfilUrl: string | null;
@@ -63,11 +63,11 @@ export declare class PersonasController {
             countryId: number;
         };
     } & {
-        nombre: string;
-        direccion: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        direccion: string | null;
         apellidos: string;
         telefono: string | null;
         fotoPerfilUrl: string | null;
@@ -98,11 +98,11 @@ export declare class PersonasController {
             countryId: number;
         };
     } & {
-        nombre: string;
-        direccion: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        direccion: string | null;
         apellidos: string;
         telefono: string | null;
         fotoPerfilUrl: string | null;
@@ -133,11 +133,11 @@ export declare class PersonasController {
             countryId: number;
         };
     } & {
-        nombre: string;
-        direccion: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        direccion: string | null;
         apellidos: string;
         telefono: string | null;
         fotoPerfilUrl: string | null;
@@ -145,11 +145,11 @@ export declare class PersonasController {
         subdivisionId: number;
     }>;
     remove(id: string): Promise<{
-        nombre: string;
-        direccion: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
+        direccion: string | null;
         apellidos: string;
         telefono: string | null;
         fotoPerfilUrl: string | null;

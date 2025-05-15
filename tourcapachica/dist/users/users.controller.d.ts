@@ -19,11 +19,11 @@ export declare class UsersController {
             url: string;
         }[];
         persona: {
-            nombre: string;
-            direccion: string | null;
             id: number;
             createdAt: Date;
             updatedAt: Date;
+            nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
             fotoPerfilUrl: string | null;
@@ -32,11 +32,11 @@ export declare class UsersController {
         };
         usuariosRoles: ({
             rol: {
-                nombre: string;
-                descripcion: string | null;
                 id: number;
                 createdAt: Date;
                 updatedAt: Date;
+                nombre: string;
+                descripcion: string | null;
             };
         } & {
             usuarioId: number;
@@ -78,11 +78,11 @@ export declare class UsersController {
             url: string;
         }[];
         persona: {
-            nombre: string;
-            direccion: string | null;
             id: number;
             createdAt: Date;
             updatedAt: Date;
+            nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
             fotoPerfilUrl: string | null;
@@ -91,11 +91,11 @@ export declare class UsersController {
         };
         usuariosRoles: ({
             rol: {
-                nombre: string;
-                descripcion: string | null;
                 id: number;
                 createdAt: Date;
                 updatedAt: Date;
+                nombre: string;
+                descripcion: string | null;
             };
         } & {
             usuarioId: number;
@@ -124,11 +124,11 @@ export declare class UsersController {
             url: string;
         }[];
         persona: {
-            nombre: string;
-            direccion: string | null;
             id: number;
             createdAt: Date;
             updatedAt: Date;
+            nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
             fotoPerfilUrl: string | null;
@@ -137,11 +137,11 @@ export declare class UsersController {
         };
         usuariosRoles: ({
             rol: {
-                nombre: string;
-                descripcion: string | null;
                 id: number;
                 createdAt: Date;
                 updatedAt: Date;
+                nombre: string;
+                descripcion: string | null;
             };
         } & {
             usuarioId: number;
@@ -170,11 +170,11 @@ export declare class UsersController {
             url: string;
         }[];
         persona: {
-            nombre: string;
-            direccion: string | null;
             id: number;
             createdAt: Date;
             updatedAt: Date;
+            nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
             fotoPerfilUrl: string | null;
@@ -183,11 +183,11 @@ export declare class UsersController {
         };
         usuariosRoles: ({
             rol: {
-                nombre: string;
-                descripcion: string | null;
                 id: number;
                 createdAt: Date;
                 updatedAt: Date;
+                nombre: string;
+                descripcion: string | null;
             };
         } & {
             usuarioId: number;
@@ -212,11 +212,11 @@ export declare class UsersController {
     }>;
     update(id: number, updateUserWithPersonaDto: UpdateUserWithPersonaDto): Promise<{
         persona: {
-            nombre: string;
-            direccion: string | null;
             id: number;
             createdAt: Date;
             updatedAt: Date;
+            nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
             fotoPerfilUrl: string | null;

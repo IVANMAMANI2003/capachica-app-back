@@ -13,8 +13,6 @@ export declare class ItinerarioReservaController {
         servicioId: number;
         fechaInicioActividad: Date;
         fechaFinActividad: Date;
-        horaInicio: Date | null;
-        horaFin: Date | null;
         lugarEncuentro: string;
         observaciones: string | null;
         tipoEvento: string;
@@ -28,8 +26,6 @@ export declare class ItinerarioReservaController {
         servicioId: number;
         fechaInicioActividad: Date;
         fechaFinActividad: Date;
-        horaInicio: Date | null;
-        horaFin: Date | null;
         lugarEncuentro: string;
         observaciones: string | null;
         tipoEvento: string;
@@ -43,8 +39,6 @@ export declare class ItinerarioReservaController {
         servicioId: number;
         fechaInicioActividad: Date;
         fechaFinActividad: Date;
-        horaInicio: Date | null;
-        horaFin: Date | null;
         lugarEncuentro: string;
         observaciones: string | null;
         tipoEvento: string;
@@ -58,8 +52,6 @@ export declare class ItinerarioReservaController {
         servicioId: number;
         fechaInicioActividad: Date;
         fechaFinActividad: Date;
-        horaInicio: Date | null;
-        horaFin: Date | null;
         lugarEncuentro: string;
         observaciones: string | null;
         tipoEvento: string;

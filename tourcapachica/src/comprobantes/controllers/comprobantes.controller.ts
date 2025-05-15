@@ -12,9 +12,17 @@ export class ComprobantesController {
 
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo comprobante' })
-  @ApiResponse({ status: 201, description: 'Comprobante creado exitosamente', type: Comprobante })
-  create(@Body() dto: CreateComprobanteDto) {
-    return this.service.create(dto);
+  @ApiResponse({ status: 201, description: 'Comprobante creado correctamente', type: Comprobante })
+  create(@Body() dto: Comprobante) {
+    return this.service.generateAutomaticComprobante({
+      id: dto.id,
+      montoTotal: dto.total, // Using montoTotal property from Comprobante
+      datosMetodoPago: {
+        rucCliente: dto.rucCliente,
+        razonSocial: dto.razonSocial,
+        direccion: dto.direccionCliente
+      }
+    });
   }
 
   @Get()

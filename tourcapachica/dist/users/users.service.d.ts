@@ -17,11 +17,11 @@ export declare class UsersService {
             url: string;
         }[];
         persona: {
-            nombre: string;
-            direccion: string | null;
             id: number;
             createdAt: Date;
             updatedAt: Date;
+            nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
             fotoPerfilUrl: string | null;
@@ -30,11 +30,11 @@ export declare class UsersService {
         };
         usuariosRoles: ({
             rol: {
-                nombre: string;
-                descripcion: string | null;
                 id: number;
                 createdAt: Date;
                 updatedAt: Date;
+                nombre: string;
+                descripcion: string | null;
             };
         } & {
             usuarioId: number;
@@ -59,11 +59,11 @@ export declare class UsersService {
     }[]>;
     findByEmail(email: string): Promise<{
         persona: {
-            nombre: string;
-            direccion: string | null;
             id: number;
             createdAt: Date;
             updatedAt: Date;
+            nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
             fotoPerfilUrl: string | null;
@@ -72,11 +72,11 @@ export declare class UsersService {
         };
         usuariosRoles: ({
             rol: {
-                nombre: string;
-                descripcion: string | null;
                 id: number;
                 createdAt: Date;
                 updatedAt: Date;
+                nombre: string;
+                descripcion: string | null;
             };
         } & {
             usuarioId: number;
@@ -103,11 +103,11 @@ export declare class UsersService {
     findById(id: number): Promise<{
         usuariosRoles: ({
             rol: {
-                nombre: string;
-                descripcion: string | null;
                 id: number;
                 createdAt: Date;
                 updatedAt: Date;
+                nombre: string;
+                descripcion: string | null;
             };
         } & {
             usuarioId: number;
@@ -137,11 +137,11 @@ export declare class UsersService {
             url: string;
         }[];
         persona: {
-            nombre: string;
-            direccion: string | null;
             id: number;
             createdAt: Date;
             updatedAt: Date;
+            nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
             fotoPerfilUrl: string | null;
@@ -150,11 +150,11 @@ export declare class UsersService {
         };
         usuariosRoles: ({
             rol: {
-                nombre: string;
-                descripcion: string | null;
                 id: number;
                 createdAt: Date;
                 updatedAt: Date;
+                nombre: string;
+                descripcion: string | null;
             };
         } & {
             usuarioId: number;
@@ -183,11 +183,11 @@ export declare class UsersService {
             url: string;
         }[];
         persona: {
-            nombre: string;
-            direccion: string | null;
             id: number;
             createdAt: Date;
             updatedAt: Date;
+            nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
             fotoPerfilUrl: string | null;
@@ -196,11 +196,11 @@ export declare class UsersService {
         };
         usuariosRoles: ({
             rol: {
-                nombre: string;
-                descripcion: string | null;
                 id: number;
                 createdAt: Date;
                 updatedAt: Date;
+                nombre: string;
+                descripcion: string | null;
             };
         } & {
             usuarioId: number;
@@ -229,11 +229,11 @@ export declare class UsersService {
             url: string;
         }[];
         persona: {
-            nombre: string;
-            direccion: string | null;
             id: number;
             createdAt: Date;
             updatedAt: Date;
+            nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
             fotoPerfilUrl: string | null;
@@ -242,11 +242,11 @@ export declare class UsersService {
         };
         usuariosRoles: ({
             rol: {
-                nombre: string;
-                descripcion: string | null;
                 id: number;
                 createdAt: Date;
                 updatedAt: Date;
+                nombre: string;
+                descripcion: string | null;
             };
         } & {
             usuarioId: number;
@@ -271,11 +271,11 @@ export declare class UsersService {
     }>;
     update(id: number, updateUserWithPersonaDto: UpdateUserWithPersonaDto): Promise<{
         persona: {
-            nombre: string;
-            direccion: string | null;
             id: number;
             createdAt: Date;
             updatedAt: Date;
+            nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
             fotoPerfilUrl: string | null;

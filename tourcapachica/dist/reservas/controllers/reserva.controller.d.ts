@@ -18,8 +18,6 @@ export declare class ReservaController {
         fechaFin: Date | null;
         cantidadPersonas: number;
         precioTotal: import(".prisma/client/runtime/library").Decimal;
-        metodoPago: string | null;
-        datosPago: import(".prisma/client/runtime/library").JsonValue | null;
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
@@ -38,8 +36,6 @@ export declare class ReservaController {
         fechaFin: Date | null;
         cantidadPersonas: number;
         precioTotal: import(".prisma/client/runtime/library").Decimal;
-        metodoPago: string | null;
-        datosPago: import(".prisma/client/runtime/library").JsonValue | null;
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
@@ -58,8 +54,6 @@ export declare class ReservaController {
         fechaFin: Date | null;
         cantidadPersonas: number;
         precioTotal: import(".prisma/client/runtime/library").Decimal;
-        metodoPago: string | null;
-        datosPago: import(".prisma/client/runtime/library").JsonValue | null;
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
@@ -78,8 +72,6 @@ export declare class ReservaController {
         fechaFin: Date | null;
         cantidadPersonas: number;
         precioTotal: import(".prisma/client/runtime/library").Decimal;
-        metodoPago: string | null;
-        datosPago: import(".prisma/client/runtime/library").JsonValue | null;
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
@@ -98,8 +90,6 @@ export declare class ReservaController {
         fechaFin: Date | null;
         cantidadPersonas: number;
         precioTotal: import(".prisma/client/runtime/library").Decimal;
-        metodoPago: string | null;
-        datosPago: import(".prisma/client/runtime/library").JsonValue | null;
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;

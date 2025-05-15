@@ -9,8 +9,6 @@ export declare class Reserva {
     cantidadPersonas: number;
     precioTotal: number;
     moneda: string;
-    metodoPago: string | null;
-    datosPago: object | null;
     estado: string;
     notas: string | null;
     motivoCancelacion: string | null;

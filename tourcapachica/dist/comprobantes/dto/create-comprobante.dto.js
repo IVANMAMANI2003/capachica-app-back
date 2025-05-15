@@ -28,18 +28,6 @@ __decorate([
     __metadata("design:type", String)
 ], CreateComprobanteDto.prototype, "tipoComprobante", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Serie del comprobante', example: 'F001' }),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], CreateComprobanteDto.prototype, "serie", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Número del comprobante', example: 1 }),
-    (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Number)
-], CreateComprobanteDto.prototype, "numero", void 0);
-__decorate([
     (0, swagger_1.ApiProperty)({ description: 'RUC del cliente', example: '12345678901', required: false }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),

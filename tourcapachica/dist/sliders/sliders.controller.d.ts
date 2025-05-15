@@ -10,11 +10,11 @@ export declare class SlidersController {
             url: string;
         }[];
         description: string | null;
-        nombre: string;
         estado: string;
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
     }>;
     findAll(): Promise<{
         imagenes: {
@@ -22,11 +22,11 @@ export declare class SlidersController {
             url: string;
         }[];
         description: string | null;
-        nombre: string;
         estado: string;
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
     }[]>;
     findOne(id: string): Promise<{
         imagenes: {
@@ -34,11 +34,11 @@ export declare class SlidersController {
             url: string;
         }[];
         description: string | null;
-        nombre: string;
         estado: string;
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
     }>;
     update(id: string, updateSliderDto: UpdateSliderDto): Promise<{
         imagenes: {
@@ -46,18 +46,18 @@ export declare class SlidersController {
             url: string;
         }[];
         description: string | null;
-        nombre: string;
         estado: string;
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
     }>;
     remove(id: string): Promise<{
         description: string | null;
-        nombre: string;
         estado: string;
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        nombre: string;
     }>;
 }

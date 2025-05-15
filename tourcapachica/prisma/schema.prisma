@@ -405,8 +405,6 @@ model Reserva {
   cantidadPersonas  Int                 @default(1) @map("cantidad_personas")
   precioTotal       Decimal             @map("precio_total") @db.Decimal(12, 2)
   moneda            String              @default("PEN") @db.VarChar(3)
-  metodoPago        String?             @map("metodo_pago") @db.VarChar(50)
-  datosPago         Json?               @map("datos_pago")
   estado            String              @default("pendiente") @db.VarChar(20)
   notas             String?
   motivoCancelacion String?             @map("motivo_cancelacion")
@@ -426,8 +424,6 @@ model ItinerarioReserva {
   servicioId        Int               @map("servicio_id")
   fechaInicioActividad    DateTime          @db.Date
   fechaFinActividad    DateTime          @db.Date
-  horaInicio        DateTime?         @map("hora_inicio") @db.Time
-  horaFin           DateTime?         @map("hora_fin")    @db.Time
   lugarEncuentro    String
   observaciones     String?
   tipoEvento        String            @map("tipo_evento") @db.VarChar(100)
@@ -497,7 +493,7 @@ model Comprobante {
   pagoId           Int      @unique @map("pago_id")
   tipoComprobante  String   @map("tipo_comprobante") @db.VarChar(20)
   serie            String   @db.VarChar(4)
-  numero           Int
+  numero           String
   fechaEmision     DateTime @default(now()) @map("fecha_emision") @db.Date
   rucCliente       String?  @map("ruc_cliente") @db.VarChar(11)
   razonSocial      String?  @map("razon_social") @db.VarChar(100)

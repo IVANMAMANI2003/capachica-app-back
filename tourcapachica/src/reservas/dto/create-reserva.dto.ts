@@ -46,14 +46,6 @@ export class CreateReservaDto {
   @IsNotEmpty()
   moneda: string;
 
-  @ApiProperty({ example: 'tarjeta' })
-  @IsString()
-  @IsOptional()
-  metodoPago: string | null;
-
-  @ApiProperty({ example: '{}' })
-  @IsOptional()
-  datosPago: object | null;
 
   @ApiProperty({ enum: EstadoReserva, example: EstadoReserva.PENDIENTE })
   @IsEnum(EstadoReserva, { message: 'El estado debe ser uno válido del enum EstadoReserva' })

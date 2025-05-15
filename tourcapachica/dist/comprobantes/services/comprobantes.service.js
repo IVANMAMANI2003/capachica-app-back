@@ -16,21 +16,34 @@ let ComprobantesService = class ComprobantesService {
     constructor(prisma) {
         this.prisma = prisma;
     }
+    async getNextNumeroForSerie(serie) {
+        const ultimo = await this.prisma.comprobante.findFirst({
+            where: { serie },
+            orderBy: { numero: 'desc' },
+            select: { numero: true }
+        });
+        const numero = ultimo ? parseInt(ultimo.numero, 10) + 1 : 1;
+        return numero.toString().padStart(7, '0');
+    }
+    getSeriePorTipo(tipo) {
+        return tipo === 'Factura' ? 'F00001-' : 'B00001-';
+    }
     async generateAutomaticComprobante(payment) {
         var _a, _b, _c, _d, _e, _f, _g;
         const total = Number(payment.montoTotal);
-        const isFactura = !!((_a = payment.datosMetodoPago) === null || _a === void 0 ? void 0 : _a.rucCliente);
-        const tipoComprobante = isFactura ? 'Factura' : 'Boleta';
-        const serie = isFactura ? 'F001' : 'B001';
-        const numero = await this.getNextNumero(serie);
-        const subtotal = isFactura ? +(total / 1.18).toFixed(2) : total;
-        const igv = isFactura ? +(total - subtotal).toFixed(2) : 0;
+        const tipoComprobante = ((_a = payment.datosMetodoPago) === null || _a === void 0 ? void 0 : _a.rucCliente) ? 'Factura' : 'Boleta';
+        const serie = this.getSeriePorTipo(tipoComprobante);
+        const numero = await this.getNextNumeroForSerie(serie);
+        const numeroFormateado = serie + numero;
+        const esFactura = tipoComprobante === 'Factura';
+        const subtotal = esFactura ? +(total / 1.18).toFixed(2) : total;
+        const igv = esFactura ? +(total - subtotal).toFixed(2) : 0;
         return this.prisma.comprobante.create({
             data: {
                 pagoId: payment.id,
                 tipoComprobante,
                 serie,
-                numero,
+                numero: numero,
                 rucCliente: (_c = (_b = payment.datosMetodoPago) === null || _b === void 0 ? void 0 : _b.rucCliente) !== null && _c !== void 0 ? _c : null,
                 razonSocial: (_e = (_d = payment.datosMetodoPago) === null || _d === void 0 ? void 0 : _d.razonSocial) !== null && _e !== void 0 ? _e : null,
                 direccionCliente: (_g = (_f = payment.datosMetodoPago) === null || _f === void 0 ? void 0 : _f.direccion) !== null && _g !== void 0 ? _g : null,
@@ -45,7 +58,7 @@ let ComprobantesService = class ComprobantesService {
     }
     async validateComprobanteUniqueness(serie, numero) {
         const comprobante = await this.prisma.comprobante.findUnique({
-            where: { serie_numero: { serie, numero } },
+            where: { serie_numero: { serie, numero: numero.toString() } },
         });
         if (comprobante) {
             throw new Error('La combinación de serie y número ya existe');
@@ -62,14 +75,6 @@ let ComprobantesService = class ComprobantesService {
     }
     async remove(id) {
         return this.prisma.comprobante.delete({ where: { id } });
-    }
-    async getNextNumero(serie) {
-        const ultimo = await this.prisma.comprobante.findFirst({
-            orderBy: { numero: 'desc' },
-            select: { numero: true },
-            where: { serie },
-        });
-        return ultimo ? ultimo.numero + 1 : 1;
     }
 };
 exports.ComprobantesService = ComprobantesService;

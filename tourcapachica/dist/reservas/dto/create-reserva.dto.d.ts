@@ -8,8 +8,6 @@ export declare class CreateReservaDto {
     cantidadPersonas: number;
     precioTotal: number;
     moneda: string;
-    metodoPago: string | null;
-    datosPago: object | null;
     estado: EstadoReserva;
     notas: string | null;
     motivoCancelacion: string | null;

@@ -66,17 +66,6 @@ __decorate([
     __metadata("design:type", String)
 ], CreateReservaDto.prototype, "moneda", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: 'tarjeta' }),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], CreateReservaDto.prototype, "metodoPago", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ example: '{}' }),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", Object)
-], CreateReservaDto.prototype, "datosPago", void 0);
-__decorate([
     (0, swagger_1.ApiProperty)({ enum: estado_reserva_enum_1.EstadoReserva, example: estado_reserva_enum_1.EstadoReserva.PENDIENTE }),
     (0, class_validator_1.IsEnum)(estado_reserva_enum_1.EstadoReserva, { message: 'El estado debe ser uno válido del enum EstadoReserva' }),
     __metadata("design:type", String)

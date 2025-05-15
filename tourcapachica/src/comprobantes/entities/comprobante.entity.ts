@@ -3,7 +3,7 @@ export class Comprobante {
     pagoId: number;
     tipoComprobante: string;
     serie: string;
-    numero: number;
+    numero: string;
     fechaEmision: Date;
     rucCliente?: string;
     razonSocial?: string;

@@ -55,14 +55,6 @@ __decorate([
     __metadata("design:type", String)
 ], Reserva.prototype, "moneda", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: 'tarjeta' }),
-    __metadata("design:type", String)
-], Reserva.prototype, "metodoPago", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ example: '{}' }),
-    __metadata("design:type", Object)
-], Reserva.prototype, "datosPago", void 0);
-__decorate([
     (0, swagger_1.ApiProperty)({ example: 'pendiente' }),
     __metadata("design:type", String)
 ], Reserva.prototype, "estado", void 0);

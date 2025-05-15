@@ -1,13 +1,31 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
-import { CreateComprobanteDto } from '../dto/create-comprobante.dto';
 import { UpdateComprobanteDto } from '../dto/update-comprobante.dto';
-import { Comprobante } from '@prisma/client';
+import { Comprobante, Prisma } from '@prisma/client';
+
 
 @Injectable()
 export class ComprobantesService {
   constructor(private prisma: PrismaService) {}
 
+
+  private async getNextNumeroForSerie(serie: string): Promise<string> {
+    const ultimo = await this.prisma.comprobante.findFirst({
+      where: { serie },
+      orderBy: { numero: 'desc' },
+      select: { numero: true }
+    });
+  
+    const numero = ultimo ? parseInt(ultimo.numero, 10) + 1 : 1;
+    
+    // Formatear el número con ceros a la izquierda para que tenga 7 dígitos
+    return numero.toString().padStart(7, '0'); 
+  }
+  
+  
+  private getSeriePorTipo(tipo: 'Factura' | 'Boleta'): string {
+    return tipo === 'Factura' ? 'F00001-' : 'B00001-';
+  }
   // Generar comprobante automáticamente al completar el pago
   async generateAutomaticComprobante(payment: {
     id: number;
@@ -19,20 +37,21 @@ export class ComprobantesService {
     };
   }): Promise<Comprobante> {
     const total = Number(payment.montoTotal);
-    const isFactura = !!payment.datosMetodoPago?.rucCliente;
-    const tipoComprobante = isFactura ? 'Factura' : 'Boleta';
-    const serie = isFactura ? 'F001' : 'B001';
-    const numero = await this.getNextNumero(serie);
+    const tipoComprobante = payment.datosMetodoPago?.rucCliente ? 'Factura' : 'Boleta';
+    const serie = this.getSeriePorTipo(tipoComprobante);
+    const numero = await this.getNextNumeroForSerie(serie); // Obtener el siguiente número para la serie
+    const numeroFormateado = serie + numero; // Concatenar la serie con el número formateado
 
-    const subtotal = isFactura ? +(total / 1.18).toFixed(2) : total;
-    const igv = isFactura ? +(total - subtotal).toFixed(2) : 0;
+    const esFactura = tipoComprobante === 'Factura';
+    const subtotal = esFactura ? +(total / 1.18).toFixed(2) : total;
+    const igv = esFactura ? +(total - subtotal).toFixed(2) : 0;
 
     return this.prisma.comprobante.create({
       data: {
         pagoId: payment.id,
         tipoComprobante,
         serie,
-        numero,
+        numero: numero,
         rucCliente: payment.datosMetodoPago?.rucCliente ?? null,
         razonSocial: payment.datosMetodoPago?.razonSocial ?? null,
         direccionCliente: payment.datosMetodoPago?.direccion ?? null,
@@ -44,14 +63,14 @@ export class ComprobantesService {
   }
 
   // Crear comprobante manualmente
-  async create(data: CreateComprobanteDto) {
+  async create(data: Prisma.ComprobanteCreateInput) {
     return this.prisma.comprobante.create({ data });
   }
 
   // Validar unicidad de comprobante
   async validateComprobanteUniqueness(serie: string, numero: number) {
     const comprobante = await this.prisma.comprobante.findUnique({
-      where: { serie_numero: { serie, numero } },
+      where: { serie_numero: { serie, numero: numero.toString() } },
     });
 
     if (comprobante) {
@@ -79,13 +98,4 @@ export class ComprobantesService {
     return this.prisma.comprobante.delete({ where: { id } });
   }
 
-  // Obtener el siguiente número correlativo
-  private async getNextNumero(serie: string): Promise<number> {
-    const ultimo = await this.prisma.comprobante.findFirst({
-      orderBy: { numero: 'desc' },
-      select: { numero: true },
-      where: { serie },
-    });
-    return ultimo ? ultimo.numero + 1 : 1;
-  }
 }

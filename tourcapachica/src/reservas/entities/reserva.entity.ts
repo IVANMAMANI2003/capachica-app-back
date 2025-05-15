@@ -32,12 +32,6 @@ export class Reserva {
   @ApiProperty({ example: 'PEN' })
   moneda: string;
 
-  @ApiProperty({ example: 'tarjeta' })
-  metodoPago: string | null;
-
-  @ApiProperty({ example: '{}' })
-  datosPago: object | null;
-
   @ApiProperty({ example: 'pendiente' })
   estado: string;
 

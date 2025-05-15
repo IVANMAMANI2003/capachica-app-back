@@ -24,7 +24,7 @@ export declare class PaymentController {
             pagoId: number;
             tipoComprobante: string;
             serie: string;
-            numero: number;
+            numero: string;
             fechaEmision: Date;
             rucCliente: string | null;
             razonSocial: string | null;
@@ -57,8 +57,6 @@ export declare class PaymentController {
             fechaFin: Date | null;
             cantidadPersonas: number;
             precioTotal: import(".prisma/client/runtime/library").Decimal;
-            metodoPago: string | null;
-            datosPago: import(".prisma/client/runtime/library").JsonValue | null;
             notas: string | null;
             motivoCancelacion: string | null;
             fechaCancelacion: Date | null;
@@ -95,7 +93,7 @@ export declare class PaymentController {
             pagoId: number;
             tipoComprobante: string;
             serie: string;
-            numero: number;
+            numero: string;
             fechaEmision: Date;
             rucCliente: string | null;
             razonSocial: string | null;
@@ -128,8 +126,6 @@ export declare class PaymentController {
             fechaFin: Date | null;
             cantidadPersonas: number;
             precioTotal: import(".prisma/client/runtime/library").Decimal;
-            metodoPago: string | null;
-            datosPago: import(".prisma/client/runtime/library").JsonValue | null;
             notas: string | null;
             motivoCancelacion: string | null;
             fechaCancelacion: Date | null;
@@ -166,7 +162,7 @@ export declare class PaymentController {
             pagoId: number;
             tipoComprobante: string;
             serie: string;
-            numero: number;
+            numero: string;
             fechaEmision: Date;
             rucCliente: string | null;
             razonSocial: string | null;
@@ -199,8 +195,6 @@ export declare class PaymentController {
             fechaFin: Date | null;
             cantidadPersonas: number;
             precioTotal: import(".prisma/client/runtime/library").Decimal;
-            metodoPago: string | null;
-            datosPago: import(".prisma/client/runtime/library").JsonValue | null;
             notas: string | null;
             motivoCancelacion: string | null;
             fechaCancelacion: Date | null;

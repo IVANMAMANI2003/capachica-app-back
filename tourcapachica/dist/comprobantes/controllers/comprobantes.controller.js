@@ -16,7 +16,6 @@ exports.ComprobantesController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const comprobantes_service_1 = require("../services/comprobantes.service");
-const create_comprobante_dto_1 = require("../dto/create-comprobante.dto");
 const update_comprobante_dto_1 = require("../dto/update-comprobante.dto");
 const comprobante_entity_1 = require("../entities/comprobante.entity");
 let ComprobantesController = class ComprobantesController {
@@ -24,7 +23,15 @@ let ComprobantesController = class ComprobantesController {
         this.service = service;
     }
     create(dto) {
-        return this.service.create(dto);
+        return this.service.generateAutomaticComprobante({
+            id: dto.id,
+            montoTotal: dto.total,
+            datosMetodoPago: {
+                rucCliente: dto.rucCliente,
+                razonSocial: dto.razonSocial,
+                direccion: dto.direccionCliente
+            }
+        });
     }
     findAll() {
         return this.service.findAll();
@@ -43,10 +50,10 @@ exports.ComprobantesController = ComprobantesController;
 __decorate([
     (0, common_1.Post)(),
     (0, swagger_1.ApiOperation)({ summary: 'Crear un nuevo comprobante' }),
-    (0, swagger_1.ApiResponse)({ status: 201, description: 'Comprobante creado exitosamente', type: comprobante_entity_1.Comprobante }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Comprobante creado correctamente', type: comprobante_entity_1.Comprobante }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_comprobante_dto_1.CreateComprobanteDto]),
+    __metadata("design:paramtypes", [comprobante_entity_1.Comprobante]),
     __metadata("design:returntype", void 0)
 ], ComprobantesController.prototype, "create", null);
 __decorate([

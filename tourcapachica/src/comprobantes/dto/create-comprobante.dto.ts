@@ -12,15 +12,6 @@ export class CreateComprobanteDto {
   @IsNotEmpty()
   tipoComprobante: string;
 
-  @ApiProperty({ description: 'Serie del comprobante', example: 'F001' })
-  @IsString()
-  @IsNotEmpty()
-  serie: string;
-
-  @ApiProperty({ description: 'Número del comprobante', example: 1 })
-  @IsNumber()
-  @IsNotEmpty()
-  numero: number;
 
   @ApiProperty({ description: 'RUC del cliente', example: '12345678901', required: false })
   @IsString()

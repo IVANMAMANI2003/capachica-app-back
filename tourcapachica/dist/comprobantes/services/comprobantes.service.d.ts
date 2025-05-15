@@ -1,10 +1,11 @@
 import { PrismaService } from '@/prisma/prisma.service';
-import { CreateComprobanteDto } from '../dto/create-comprobante.dto';
 import { UpdateComprobanteDto } from '../dto/update-comprobante.dto';
-import { Comprobante } from '@prisma/client';
+import { Comprobante, Prisma } from '@prisma/client';
 export declare class ComprobantesService {
     private prisma;
     constructor(prisma: PrismaService);
+    private getNextNumeroForSerie;
+    private getSeriePorTipo;
     generateAutomaticComprobante(payment: {
         id: number;
         montoTotal: number;
@@ -14,19 +15,19 @@ export declare class ComprobantesService {
             direccion?: string;
         };
     }): Promise<Comprobante>;
-    create(data: CreateComprobanteDto): Promise<{
+    create(data: Prisma.ComprobanteCreateInput): Promise<{
         id: number;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
-        numero: number;
+        numero: string;
         fechaEmision: Date;
         rucCliente: string | null;
         razonSocial: string | null;
         direccionCliente: string | null;
-        subtotal: import(".prisma/client/runtime/library").Decimal;
-        igv: import(".prisma/client/runtime/library").Decimal;
-        total: import(".prisma/client/runtime/library").Decimal;
+        subtotal: Prisma.Decimal;
+        igv: Prisma.Decimal;
+        total: Prisma.Decimal;
         moneda: string;
         estado: string;
         codigoSunat: string | null;
@@ -44,14 +45,14 @@ export declare class ComprobantesService {
         pagoId: number;
         tipoComprobante: string;
         serie: string;
-        numero: number;
+        numero: string;
         fechaEmision: Date;
         rucCliente: string | null;
         razonSocial: string | null;
         direccionCliente: string | null;
-        subtotal: import(".prisma/client/runtime/library").Decimal;
-        igv: import(".prisma/client/runtime/library").Decimal;
-        total: import(".prisma/client/runtime/library").Decimal;
+        subtotal: Prisma.Decimal;
+        igv: Prisma.Decimal;
+        total: Prisma.Decimal;
         moneda: string;
         estado: string;
         codigoSunat: string | null;
@@ -68,14 +69,14 @@ export declare class ComprobantesService {
         pagoId: number;
         tipoComprobante: string;
         serie: string;
-        numero: number;
+        numero: string;
         fechaEmision: Date;
         rucCliente: string | null;
         razonSocial: string | null;
         direccionCliente: string | null;
-        subtotal: import(".prisma/client/runtime/library").Decimal;
-        igv: import(".prisma/client/runtime/library").Decimal;
-        total: import(".prisma/client/runtime/library").Decimal;
+        subtotal: Prisma.Decimal;
+        igv: Prisma.Decimal;
+        total: Prisma.Decimal;
         moneda: string;
         estado: string;
         codigoSunat: string | null;
@@ -92,14 +93,14 @@ export declare class ComprobantesService {
         pagoId: number;
         tipoComprobante: string;
         serie: string;
-        numero: number;
+        numero: string;
         fechaEmision: Date;
         rucCliente: string | null;
         razonSocial: string | null;
         direccionCliente: string | null;
-        subtotal: import(".prisma/client/runtime/library").Decimal;
-        igv: import(".prisma/client/runtime/library").Decimal;
-        total: import(".prisma/client/runtime/library").Decimal;
+        subtotal: Prisma.Decimal;
+        igv: Prisma.Decimal;
+        total: Prisma.Decimal;
         moneda: string;
         estado: string;
         codigoSunat: string | null;
@@ -116,14 +117,14 @@ export declare class ComprobantesService {
         pagoId: number;
         tipoComprobante: string;
         serie: string;
-        numero: number;
+        numero: string;
         fechaEmision: Date;
         rucCliente: string | null;
         razonSocial: string | null;
         direccionCliente: string | null;
-        subtotal: import(".prisma/client/runtime/library").Decimal;
-        igv: import(".prisma/client/runtime/library").Decimal;
-        total: import(".prisma/client/runtime/library").Decimal;
+        subtotal: Prisma.Decimal;
+        igv: Prisma.Decimal;
+        total: Prisma.Decimal;
         moneda: string;
         estado: string;
         codigoSunat: string | null;
@@ -135,5 +136,4 @@ export declare class ComprobantesService {
         createdAt: Date;
         updatedAt: Date;
     }>;
-    private getNextNumero;
 }
