@@ -8,7 +8,11 @@ export declare class ReservaService {
     constructor(prisma: PrismaService, itinerarioReservaService: ItinerarioReservaService);
     private generarCodigoReserva;
     create(createReservaDto: CreateReservaDto): Promise<{
+        id: number;
+        createdAt: Date;
+        updatedAt: Date;
         usuarioId: number;
+        codigoReserva: string;
         tipoReserva: string;
         fechaReserva: Date;
         fechaInicio: Date;
@@ -20,13 +24,13 @@ export declare class ReservaService {
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
-        id: number;
-        codigoReserva: string;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     findAll(): import(".prisma/client").Prisma.PrismaPromise<{
+        id: number;
+        createdAt: Date;
+        updatedAt: Date;
         usuarioId: number;
+        codigoReserva: string;
         tipoReserva: string;
         fechaReserva: Date;
         fechaInicio: Date;
@@ -38,13 +42,13 @@ export declare class ReservaService {
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
-        id: number;
-        codigoReserva: string;
-        createdAt: Date;
-        updatedAt: Date;
     }[]>;
     findOne(id: number): import(".prisma/client").Prisma.Prisma__ReservaClient<{
+        id: number;
+        createdAt: Date;
+        updatedAt: Date;
         usuarioId: number;
+        codigoReserva: string;
         tipoReserva: string;
         fechaReserva: Date;
         fechaInicio: Date;
@@ -56,13 +60,13 @@ export declare class ReservaService {
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
-        id: number;
-        codigoReserva: string;
-        createdAt: Date;
-        updatedAt: Date;
     }, null, import(".prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     update(id: number, updateReservaDto: UpdateReservaDto): import(".prisma/client").Prisma.Prisma__ReservaClient<{
+        id: number;
+        createdAt: Date;
+        updatedAt: Date;
         usuarioId: number;
+        codigoReserva: string;
         tipoReserva: string;
         fechaReserva: Date;
         fechaInicio: Date;
@@ -74,13 +78,13 @@ export declare class ReservaService {
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
-        id: number;
-        codigoReserva: string;
-        createdAt: Date;
-        updatedAt: Date;
     }, never, import(".prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     remove(id: number): import(".prisma/client").Prisma.Prisma__ReservaClient<{
+        id: number;
+        createdAt: Date;
+        updatedAt: Date;
         usuarioId: number;
+        codigoReserva: string;
         tipoReserva: string;
         fechaReserva: Date;
         fechaInicio: Date;
@@ -92,9 +96,5 @@ export declare class ReservaService {
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
-        id: number;
-        codigoReserva: string;
-        createdAt: Date;
-        updatedAt: Date;
     }, never, import(".prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
 }

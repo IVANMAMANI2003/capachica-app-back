@@ -1,25 +1,26 @@
 import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
+import { CreateItinerarioReservaDto } from '../dto/create-itinerario-reserva.dto';
 
 @Injectable()
 export class ItinerarioReservaService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createForReserva(reservaId: number) {
-    // Logic to create itineraries for a given reservation
-    // This is a placeholder implementation
-    return this.prisma.itinerarioReserva.createMany({
-      data: [{
-        reservaId,
-        servicioId: 1, // Example service ID
-        fechaInicioActividad: new Date(),
-        fechaFinActividad: new Date(),
-        lugarEncuentro: 'Default Location',
-        observaciones: 'Default Observations',
-        tipoEvento: 'Default Event',
-        descripcion: 'Default Description',
+  // Crear múltiples itinerarios personalizados
+  async createMany(reservaId: number, itinerarios: CreateItinerarioReservaDto[]) {
+    const data = itinerarios.map(itinerario => ({
+      reservaId,
+      servicioId: itinerario.servicioId,
+      fechaInicioActividad: itinerario.fechaInicioActividad,
+      fechaFinActividad: itinerario.fechaFinActividad,
+      lugarEncuentro: itinerario.lugarEncuentro,
+      observaciones: itinerario.observaciones,
+      tipoEvento: itinerario.tipoEvento,
+      descripcion: itinerario.descripcion,
+    }));
 
-      }],
+    return this.prisma.itinerarioReserva.createMany({
+      data,
     });
   }
 

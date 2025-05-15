@@ -16,14 +16,15 @@ exports.ItinerarioReservaController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const itinerario_reserva_service_1 = require("../services/itinerario-reserva.service");
-const create_itinerario_reserva_dto_1 = require("../dto/create-itinerario-reserva.dto");
 const update_itinerario_reserva_dto_1 = require("../dto/update-itinerario-reserva.dto");
+class CreateItinerariosForReservaDto {
+}
 let ItinerarioReservaController = class ItinerarioReservaController {
     constructor(itinerarioReservaService) {
         this.itinerarioReservaService = itinerarioReservaService;
     }
-    create(CreateItinerarioReservaDto) {
-        return this.itinerarioReservaService.createForReserva(CreateItinerarioReservaDto.reservaId);
+    createMany(dto) {
+        return this.itinerarioReservaService.createMany(dto.reservaId, dto.itinerarios);
     }
     findAll() {
         return this.itinerarioReservaService.findAll();
@@ -41,13 +42,13 @@ let ItinerarioReservaController = class ItinerarioReservaController {
 exports.ItinerarioReservaController = ItinerarioReservaController;
 __decorate([
     (0, common_1.Post)(),
-    (0, swagger_1.ApiOperation)({ summary: 'Crear un nuevo itinerario' }),
-    (0, swagger_1.ApiResponse)({ status: 201, description: 'Itinerario creado exitosamente.' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Crear nuevos itinerarios para una reserva' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Itinerarios creados exitosamente.' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_itinerario_reserva_dto_1.CreateItinerarioReservaDto]),
+    __metadata("design:paramtypes", [CreateItinerariosForReservaDto]),
     __metadata("design:returntype", void 0)
-], ItinerarioReservaController.prototype, "create", null);
+], ItinerarioReservaController.prototype, "createMany", null);
 __decorate([
     (0, common_1.Get)(),
     (0, swagger_1.ApiOperation)({ summary: 'Obtener todos los itinerarios' }),

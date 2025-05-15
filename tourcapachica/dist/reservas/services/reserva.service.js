@@ -32,7 +32,6 @@ let ReservaService = class ReservaService {
         const reserva = await this.prisma.reserva.create({
             data: Object.assign(Object.assign({}, createReservaDto), { codigoReserva, fechaReserva: new Date(createReservaDto.fechaReserva), fechaInicio: new Date(createReservaDto.fechaInicio), fechaFin: new Date(createReservaDto.fechaFin), fechaCancelacion: new Date(createReservaDto.fechaCancelacion) }),
         });
-        await this.itinerarioReservaService.createForReserva(reserva.id);
         return reserva;
     }
     findAll() {

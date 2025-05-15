@@ -16,18 +16,19 @@ let ItinerarioReservaService = class ItinerarioReservaService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async createForReserva(reservaId) {
+    async createMany(reservaId, itinerarios) {
+        const data = itinerarios.map(itinerario => ({
+            reservaId,
+            servicioId: itinerario.servicioId,
+            fechaInicioActividad: itinerario.fechaInicioActividad,
+            fechaFinActividad: itinerario.fechaFinActividad,
+            lugarEncuentro: itinerario.lugarEncuentro,
+            observaciones: itinerario.observaciones,
+            tipoEvento: itinerario.tipoEvento,
+            descripcion: itinerario.descripcion,
+        }));
         return this.prisma.itinerarioReserva.createMany({
-            data: [{
-                    reservaId,
-                    servicioId: 1,
-                    fechaInicioActividad: new Date(),
-                    fechaFinActividad: new Date(),
-                    lugarEncuentro: 'Default Location',
-                    observaciones: 'Default Observations',
-                    tipoEvento: 'Default Event',
-                    descripcion: 'Default Description',
-                }],
+            data,
         });
     }
     findAll() {

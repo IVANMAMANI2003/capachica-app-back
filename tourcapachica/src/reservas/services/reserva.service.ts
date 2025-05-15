@@ -33,7 +33,6 @@ export class ReservaService {
         fechaCancelacion: new Date(createReservaDto.fechaCancelacion),
       } ,
     });
-    await this.itinerarioReservaService.createForReserva(reserva.id);
     return reserva;
   }
 
