@@ -41,27 +41,30 @@ export class ReservaService {
       where: { id: reservaId },
       include: { pagos: true },
     });
-
+  
     if (!reserva) {
-      throw new NotFoundException('Reserva no encontrada');
+      return null;
     }
-
+  
     const totalPagado = reserva.pagos.reduce(
       (acc, pago) => acc + Number(pago.montoTotal),
-      0,
+      0
     );
-    const restante = Number(reserva.precioTotal) - totalPagado;
-
+    const precioTotal = Number(reserva.precioTotal);
+    const restante = precioTotal - totalPagado;
+  
+    const estado = totalPagado >= precioTotal ? 'COMPLETADO' : 'PENDIENTE';
+  
     return {
       reservaId: reserva.id,
-      precioTotal: Number(reserva.precioTotal),
+      precioTotal,
       totalPagado,
       restante,
-      pagos: reserva.pagos.map((pago) => ({
+      estado,
+      pagos: reserva.pagos.map(pago => ({
         id: pago.id,
         montoTotal: Number(pago.montoTotal),
         fechaPago: pago.fechaPago,
-        estado: pago.estado,
       })),
     };
   }
