@@ -21,9 +21,9 @@ export declare class UsersService {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
-            direccion: string | null;
             apellidos: string;
             telefono: string | null;
+            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -37,8 +37,8 @@ export declare class UsersService {
                 descripcion: string | null;
             };
         } & {
-            usuarioId: number;
             id: number;
+            usuarioId: number;
             createdAt: Date;
             updatedAt: Date;
             rolId: number;
@@ -63,9 +63,9 @@ export declare class UsersService {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
-            direccion: string | null;
             apellidos: string;
             telefono: string | null;
+            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -79,8 +79,8 @@ export declare class UsersService {
                 descripcion: string | null;
             };
         } & {
-            usuarioId: number;
             id: number;
+            usuarioId: number;
             createdAt: Date;
             updatedAt: Date;
             rolId: number;
@@ -110,8 +110,8 @@ export declare class UsersService {
                 descripcion: string | null;
             };
         } & {
-            usuarioId: number;
             id: number;
+            usuarioId: number;
             createdAt: Date;
             updatedAt: Date;
             rolId: number;
@@ -141,9 +141,9 @@ export declare class UsersService {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
-            direccion: string | null;
             apellidos: string;
             telefono: string | null;
+            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -157,8 +157,8 @@ export declare class UsersService {
                 descripcion: string | null;
             };
         } & {
-            usuarioId: number;
             id: number;
+            usuarioId: number;
             createdAt: Date;
             updatedAt: Date;
             rolId: number;
@@ -187,9 +187,9 @@ export declare class UsersService {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
-            direccion: string | null;
             apellidos: string;
             telefono: string | null;
+            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -203,8 +203,8 @@ export declare class UsersService {
                 descripcion: string | null;
             };
         } & {
-            usuarioId: number;
             id: number;
+            usuarioId: number;
             createdAt: Date;
             updatedAt: Date;
             rolId: number;
@@ -233,9 +233,9 @@ export declare class UsersService {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
-            direccion: string | null;
             apellidos: string;
             telefono: string | null;
+            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -249,8 +249,8 @@ export declare class UsersService {
                 descripcion: string | null;
             };
         } & {
-            usuarioId: number;
             id: number;
+            usuarioId: number;
             createdAt: Date;
             updatedAt: Date;
             rolId: number;
@@ -275,9 +275,9 @@ export declare class UsersService {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
-            direccion: string | null;
             apellidos: string;
             telefono: string | null;
+            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -313,8 +313,8 @@ export declare class UsersService {
         preferencias: import(".prisma/client/runtime/library").JsonValue | null;
     }>;
     assignRole(userId: number, roleId: number): Promise<{
-        usuarioId: number;
         id: number;
+        usuarioId: number;
         createdAt: Date;
         updatedAt: Date;
         rolId: number;

@@ -29,8 +29,10 @@ let ReservaService = class ReservaService {
     }
     async create(createReservaDto) {
         const codigoReserva = this.generarCodigoReserva();
+        const ahora = new Date();
+        const fechaExpiracion = new Date(ahora.getTime() + 300 * 60 * 60 * 1000);
         const reserva = await this.prisma.reserva.create({
-            data: Object.assign(Object.assign({}, createReservaDto), { codigoReserva, fechaReserva: new Date(createReservaDto.fechaReserva), fechaInicio: new Date(createReservaDto.fechaInicio), fechaFin: new Date(createReservaDto.fechaFin) }),
+            data: Object.assign(Object.assign({}, createReservaDto), { codigoReserva, fechaReserva: new Date(createReservaDto.fechaReserva), fechaInicio: new Date(createReservaDto.fechaInicio), fechaFin: new Date(createReservaDto.fechaFin), fechaExpiracion }),
         });
         return reserva;
     }
@@ -76,6 +78,34 @@ let ReservaService = class ReservaService {
                 motivoCancelacion: motivo,
             },
         });
+    }
+    async expirarReservasVencidas() {
+        const ahora = new Date();
+        const reservasExpiradas = await this.prisma.reserva.findMany({
+            where: {
+                fechaExpiracion: {
+                    lte: ahora,
+                },
+                estado: {
+                    in: ['pendiente', 'en_proceso'],
+                },
+            },
+        });
+        if (reservasExpiradas.length === 0)
+            return { message: 'No hay reservas por expirar.' };
+        const ids = reservasExpiradas.map(r => r.id);
+        await this.prisma.reserva.updateMany({
+            where: {
+                id: { in: ids },
+            },
+            data: {
+                estado: 'expirada',
+            },
+        });
+        return {
+            message: `Se marcaron ${ids.length} reservas como expiradas.`,
+            reservasExpiradas: ids,
+        };
     }
     findAll() {
         return this.prisma.reserva.findMany();

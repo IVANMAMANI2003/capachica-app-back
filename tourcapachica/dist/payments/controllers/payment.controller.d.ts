@@ -36,6 +36,7 @@ export declare class PaymentController {
             notas: string | null;
             motivoCancelacion: string | null;
             fechaCancelacion: Date | null;
+            fechaExpiracion: Date | null;
         };
         comprobante: {
             id: number;
@@ -105,6 +106,7 @@ export declare class PaymentController {
             notas: string | null;
             motivoCancelacion: string | null;
             fechaCancelacion: Date | null;
+            fechaExpiracion: Date | null;
         };
         comprobante: {
             id: number;
@@ -174,6 +176,7 @@ export declare class PaymentController {
             notas: string | null;
             motivoCancelacion: string | null;
             fechaCancelacion: Date | null;
+            fechaExpiracion: Date | null;
         };
         comprobante: {
             id: number;

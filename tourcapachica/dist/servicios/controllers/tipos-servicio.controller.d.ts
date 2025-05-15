@@ -8,19 +8,19 @@ export declare class TiposServicioController {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
         descripcion: string | null;
+        nombre: string;
         requiereCupo: boolean;
     }>;
     findAll(): Promise<({
         servicios: {
+            id: number;
             moneda: string;
             estado: string;
-            id: number;
             createdAt: Date;
             updatedAt: Date;
-            nombre: string;
             descripcion: string | null;
+            nombre: string;
             latitud: number | null;
             longitud: number | null;
             tipoServicioId: number;
@@ -31,19 +31,19 @@ export declare class TiposServicioController {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
         descripcion: string | null;
+        nombre: string;
         requiereCupo: boolean;
     })[]>;
     findOne(id: string): Promise<{
         servicios: {
+            id: number;
             moneda: string;
             estado: string;
-            id: number;
             createdAt: Date;
             updatedAt: Date;
-            nombre: string;
             descripcion: string | null;
+            nombre: string;
             latitud: number | null;
             longitud: number | null;
             tipoServicioId: number;
@@ -54,24 +54,24 @@ export declare class TiposServicioController {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
         descripcion: string | null;
+        nombre: string;
         requiereCupo: boolean;
     }>;
     update(id: string, updateTipoServicioDto: UpdateTipoServicioDto): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
         descripcion: string | null;
+        nombre: string;
         requiereCupo: boolean;
     }>;
     remove(id: string): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
         descripcion: string | null;
+        nombre: string;
         requiereCupo: boolean;
     }>;
 }

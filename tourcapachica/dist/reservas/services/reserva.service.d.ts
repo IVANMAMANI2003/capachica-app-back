@@ -22,6 +22,7 @@ export declare class ReservaService {
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
+        fechaExpiracion: Date | null;
         createdAt: Date;
         updatedAt: Date;
     }>;
@@ -52,8 +53,16 @@ export declare class ReservaService {
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
+        fechaExpiracion: Date | null;
         createdAt: Date;
         updatedAt: Date;
+    }>;
+    expirarReservasVencidas(): Promise<{
+        message: string;
+        reservasExpiradas?: undefined;
+    } | {
+        message: string;
+        reservasExpiradas: number[];
     }>;
     findAll(): import(".prisma/client").Prisma.PrismaPromise<{
         id: number;
@@ -70,6 +79,7 @@ export declare class ReservaService {
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
+        fechaExpiracion: Date | null;
         createdAt: Date;
         updatedAt: Date;
     }[]>;
@@ -88,6 +98,7 @@ export declare class ReservaService {
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
+        fechaExpiracion: Date | null;
         createdAt: Date;
         updatedAt: Date;
     }, null, import(".prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
@@ -106,6 +117,7 @@ export declare class ReservaService {
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
+        fechaExpiracion: Date | null;
         createdAt: Date;
         updatedAt: Date;
     }, never, import(".prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
@@ -124,6 +136,7 @@ export declare class ReservaService {
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
+        fechaExpiracion: Date | null;
         createdAt: Date;
         updatedAt: Date;
     }, never, import(".prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;

@@ -4,6 +4,5 @@ export declare enum EstadoReserva {
     EN_PROGRESO = "en_progreso",
     CANCELADA = "cancelada",
     RECHAZADA = "rechazada",
-    COMPLETADA = "completada",
     EXPIRADA = "expirada"
 }

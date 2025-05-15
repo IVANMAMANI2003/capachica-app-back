@@ -19,6 +19,7 @@ export declare class ReservaController {
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
+        fechaExpiracion: Date | null;
         createdAt: Date;
         updatedAt: Date;
     }>;
@@ -37,6 +38,7 @@ export declare class ReservaController {
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
+        fechaExpiracion: Date | null;
         createdAt: Date;
         updatedAt: Date;
     }[]>;
@@ -55,6 +57,7 @@ export declare class ReservaController {
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
+        fechaExpiracion: Date | null;
         createdAt: Date;
         updatedAt: Date;
     }, null, import(".prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
@@ -85,6 +88,7 @@ export declare class ReservaController {
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
+        fechaExpiracion: Date | null;
         createdAt: Date;
         updatedAt: Date;
     }, never, import(".prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
@@ -106,6 +110,7 @@ export declare class ReservaController {
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
+        fechaExpiracion: Date | null;
         createdAt: Date;
         updatedAt: Date;
     }>;
@@ -124,6 +129,7 @@ export declare class ReservaController {
         notas: string | null;
         motivoCancelacion: string | null;
         fechaCancelacion: Date | null;
+        fechaExpiracion: Date | null;
         createdAt: Date;
         updatedAt: Date;
     }, never, import(".prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;

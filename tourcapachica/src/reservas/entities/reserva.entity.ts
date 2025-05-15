@@ -44,4 +44,7 @@ export class Reserva {
   @ApiProperty({ example: '2023-10-01T00:00:00Z' })
   fechaCancelacion: Date | null;
 
+  @ApiProperty({ example: '2023-10-01T00:00:00Z' })
+  fechaExpiracion: Date | null;
+
 }

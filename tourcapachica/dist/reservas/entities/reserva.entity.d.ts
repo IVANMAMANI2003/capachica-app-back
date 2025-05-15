@@ -13,4 +13,5 @@ export declare class Reserva {
     notas: string | null;
     motivoCancelacion: string | null;
     fechaCancelacion: Date | null;
+    fechaExpiracion: Date | null;
 }

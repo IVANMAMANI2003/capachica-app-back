@@ -5,26 +5,26 @@ export declare class DisponibilidadController {
     private readonly disponibilidadService;
     constructor(disponibilidadService: DisponibilidadService);
     create(createDisponibilidadDto: CreateServicioDisponibilidadDto): Promise<{
-        fechaInicio: Date | null;
-        fechaFin: Date | null;
-        estado: string;
-        notas: string | null;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        fechaInicio: Date | null;
+        fechaFin: Date | null;
+        notas: string | null;
         servicioId: number;
         cuposMaximos: number;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
     }>;
     createBatch(disponibilidades: CreateServicioDisponibilidadDto[]): Promise<{
-        fechaInicio: Date | null;
-        fechaFin: Date | null;
-        estado: string;
-        notas: string | null;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        fechaInicio: Date | null;
+        fechaFin: Date | null;
+        notas: string | null;
         servicioId: number;
         cuposMaximos: number;
         cuposDisponibles: number;
@@ -32,13 +32,13 @@ export declare class DisponibilidadController {
     }[]>;
     findAll(): Promise<({
         servicio: {
+            id: number;
             moneda: string;
             estado: string;
-            id: number;
             createdAt: Date;
             updatedAt: Date;
-            nombre: string;
             descripcion: string | null;
+            nombre: string;
             latitud: number | null;
             longitud: number | null;
             tipoServicioId: number;
@@ -46,13 +46,13 @@ export declare class DisponibilidadController {
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
         };
     } & {
-        fechaInicio: Date | null;
-        fechaFin: Date | null;
-        estado: string;
-        notas: string | null;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        fechaInicio: Date | null;
+        fechaFin: Date | null;
+        notas: string | null;
         servicioId: number;
         cuposMaximos: number;
         cuposDisponibles: number;
@@ -60,13 +60,13 @@ export declare class DisponibilidadController {
     })[]>;
     findByServicio(servicioId: string): Promise<({
         servicio: {
+            id: number;
             moneda: string;
             estado: string;
-            id: number;
             createdAt: Date;
             updatedAt: Date;
-            nombre: string;
             descripcion: string | null;
+            nombre: string;
             latitud: number | null;
             longitud: number | null;
             tipoServicioId: number;
@@ -74,13 +74,13 @@ export declare class DisponibilidadController {
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
         };
     } & {
-        fechaInicio: Date | null;
-        fechaFin: Date | null;
-        estado: string;
-        notas: string | null;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        fechaInicio: Date | null;
+        fechaFin: Date | null;
+        notas: string | null;
         servicioId: number;
         cuposMaximos: number;
         cuposDisponibles: number;
@@ -88,13 +88,13 @@ export declare class DisponibilidadController {
     })[]>;
     findOne(id: string): Promise<{
         servicio: {
+            id: number;
             moneda: string;
             estado: string;
-            id: number;
             createdAt: Date;
             updatedAt: Date;
-            nombre: string;
             descripcion: string | null;
+            nombre: string;
             latitud: number | null;
             longitud: number | null;
             tipoServicioId: number;
@@ -102,13 +102,13 @@ export declare class DisponibilidadController {
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
         };
     } & {
-        fechaInicio: Date | null;
-        fechaFin: Date | null;
-        estado: string;
-        notas: string | null;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        fechaInicio: Date | null;
+        fechaFin: Date | null;
+        notas: string | null;
         servicioId: number;
         cuposMaximos: number;
         cuposDisponibles: number;
@@ -116,13 +116,13 @@ export declare class DisponibilidadController {
     }>;
     update(id: string, updateData: UpdateServicioDisponibilidadDto): Promise<{
         servicio: {
+            id: number;
             moneda: string;
             estado: string;
-            id: number;
             createdAt: Date;
             updatedAt: Date;
-            nombre: string;
             descripcion: string | null;
+            nombre: string;
             latitud: number | null;
             longitud: number | null;
             tipoServicioId: number;
@@ -130,26 +130,26 @@ export declare class DisponibilidadController {
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
         };
     } & {
-        fechaInicio: Date | null;
-        fechaFin: Date | null;
-        estado: string;
-        notas: string | null;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        fechaInicio: Date | null;
+        fechaFin: Date | null;
+        notas: string | null;
         servicioId: number;
         cuposMaximos: number;
         cuposDisponibles: number;
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
     }>;
     remove(id: string): Promise<{
-        fechaInicio: Date | null;
-        fechaFin: Date | null;
-        estado: string;
-        notas: string | null;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        fechaInicio: Date | null;
+        fechaFin: Date | null;
+        notas: string | null;
         servicioId: number;
         cuposMaximos: number;
         cuposDisponibles: number;

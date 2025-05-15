@@ -70,4 +70,8 @@ __decorate([
     (0, swagger_1.ApiProperty)({ example: '2023-10-01T00:00:00Z' }),
     __metadata("design:type", Date)
 ], Reserva.prototype, "fechaCancelacion", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: '2023-10-01T00:00:00Z' }),
+    __metadata("design:type", Date)
+], Reserva.prototype, "fechaExpiracion", void 0);
 //# sourceMappingURL=reserva.entity.js.map

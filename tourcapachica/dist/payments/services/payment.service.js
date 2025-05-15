@@ -26,6 +26,9 @@ let PaymentService = class PaymentService {
             const reserva = await this.prisma.reserva.findUnique({
                 where: { id: createPagoDto.reservaId },
             });
+            if (reserva.estado !== 'pendiente' && reserva.estado !== 'en_proceso') {
+                throw new common_1.BadRequestException(`No se puede realizar el pago, la rserva debe estar cancelada o expirada. El estado actual de la reserva es "${reserva.estado}". Solo se permite pagar si está en "pendiente" o "en_proceso".`);
+            }
             let estado = estado_pago_enum_1.EstadoPago.PENDIENTE;
             if (Number(totalDetalles) >= Number(reserva.precioTotal)) {
                 estado = estado_pago_enum_1.EstadoPago.COMPLETADO;

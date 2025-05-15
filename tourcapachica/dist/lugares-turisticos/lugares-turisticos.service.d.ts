@@ -13,12 +13,12 @@ export declare class LugaresTuristicosService {
             id: number;
             url: string;
         }[];
-        estado: string;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
         descripcion: string;
+        nombre: string;
         direccion: string;
         latitud: number | null;
         longitud: number | null;
@@ -34,12 +34,12 @@ export declare class LugaresTuristicosService {
             id: number;
             url: string;
         }[];
-        estado: string;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
         descripcion: string;
+        nombre: string;
         direccion: string;
         latitud: number | null;
         longitud: number | null;
@@ -55,12 +55,12 @@ export declare class LugaresTuristicosService {
             id: number;
             url: string;
         }[];
-        estado: string;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
         descripcion: string;
+        nombre: string;
         direccion: string;
         latitud: number | null;
         longitud: number | null;
@@ -76,12 +76,12 @@ export declare class LugaresTuristicosService {
             id: number;
             url: string;
         }[];
-        estado: string;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
         descripcion: string;
+        nombre: string;
         direccion: string;
         latitud: number | null;
         longitud: number | null;
@@ -93,12 +93,12 @@ export declare class LugaresTuristicosService {
         restricciones: string | null;
     }>;
     remove(id: number): Promise<{
-        estado: string;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
         descripcion: string;
+        nombre: string;
         direccion: string;
         latitud: number | null;
         longitud: number | null;
@@ -110,12 +110,12 @@ export declare class LugaresTuristicosService {
         restricciones: string | null;
     }>;
     findDestacados(): Promise<{
-        estado: string;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
         descripcion: string;
+        nombre: string;
         direccion: string;
         latitud: number | null;
         longitud: number | null;
@@ -127,28 +127,28 @@ export declare class LugaresTuristicosService {
         restricciones: string | null;
     }[]>;
     markAsFavorite(usuarioId: number, lugarTuristicoId: number): Promise<{
-        usuarioId: number;
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        usuarioId: number;
         lugarTuristicoId: number;
     }>;
     unmarkAsFavorite(usuarioId: number, lugarTuristicoId: number): Promise<import(".prisma/client").Prisma.BatchPayload>;
     getTopFavoritos(): Promise<({
         favoritosLugarTuristico: {
-            usuarioId: number;
             id: number;
             createdAt: Date;
             updatedAt: Date;
+            usuarioId: number;
             lugarTuristicoId: number;
         }[];
     } & {
-        estado: string;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
         descripcion: string;
+        nombre: string;
         direccion: string;
         latitud: number | null;
         longitud: number | null;

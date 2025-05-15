@@ -23,6 +23,8 @@ export class ReservaService {
 
   async create(createReservaDto: CreateReservaDto) {
     const codigoReserva = this.generarCodigoReserva();
+    const ahora = new Date();
+    const fechaExpiracion = new Date(ahora.getTime() + 300 * 60 * 60 * 1000);
     const reserva = await this.prisma.reserva.create({
       data:{
         ...createReservaDto,
@@ -30,6 +32,7 @@ export class ReservaService {
         fechaReserva: new Date(createReservaDto.fechaReserva),
         fechaInicio: new Date(createReservaDto.fechaInicio),
         fechaFin: new Date(createReservaDto.fechaFin),
+        fechaExpiracion,
       } ,
     });
     return reserva;
@@ -87,6 +90,41 @@ export class ReservaService {
         motivoCancelacion: motivo,
       },
     });
+  }
+  
+  async expirarReservasVencidas() {
+    const ahora = new Date();
+  
+    // Buscar reservas que ya expiraron y aún están activas
+    const reservasExpiradas = await this.prisma.reserva.findMany({
+      where: {
+        fechaExpiracion: {
+          lte: ahora,
+        },
+        estado: {
+          in: ['pendiente', 'en_proceso'], // Solo si aún no están completadas o canceladas
+        },
+      },
+    });
+  
+    if (reservasExpiradas.length === 0) return { message: 'No hay reservas por expirar.' };
+  
+    const ids = reservasExpiradas.map(r => r.id);
+  
+    // Actualizar reservas vencidas a estado "expirada"
+    await this.prisma.reserva.updateMany({
+      where: {
+        id: { in: ids },
+      },
+      data: {
+        estado: 'expirada',
+      },
+    });
+  
+    return {
+      message: `Se marcaron ${ids.length} reservas como expiradas.`,
+      reservasExpiradas: ids,
+    };
   }
   
 

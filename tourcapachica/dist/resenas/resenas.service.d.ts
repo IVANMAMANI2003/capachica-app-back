@@ -5,61 +5,61 @@ export declare class ResenasService {
     private readonly prisma;
     constructor(prisma: PrismaService);
     create(createResenaDto: any): Promise<{
-        usuarioId: number | null;
-        estado: string;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        usuarioId: number | null;
         servicioId: number;
         calificacion: number;
         comentario: string | null;
     }>;
     findAll(): Promise<{
-        usuarioId: number | null;
-        estado: string;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        usuarioId: number | null;
         servicioId: number;
         calificacion: number;
         comentario: string | null;
     }[]>;
     findOne(id: number): Promise<{
-        usuarioId: number | null;
-        estado: string;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        usuarioId: number | null;
         servicioId: number;
         calificacion: number;
         comentario: string | null;
     }>;
     update(id: number, updateResenaDto: UpdateResenaDto): Promise<{
-        usuarioId: number | null;
-        estado: string;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        usuarioId: number | null;
         servicioId: number;
         calificacion: number;
         comentario: string | null;
     }>;
     updateEstado(id: number, estado: string): Promise<{
-        usuarioId: number | null;
-        estado: string;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        usuarioId: number | null;
         servicioId: number;
         calificacion: number;
         comentario: string | null;
     }>;
     remove(id: number): Promise<{
-        usuarioId: number | null;
-        estado: string;
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
+        usuarioId: number | null;
         servicioId: number;
         calificacion: number;
         comentario: string | null;

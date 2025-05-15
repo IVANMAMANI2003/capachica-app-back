@@ -7,19 +7,19 @@ export declare class TiposServicioService {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
         descripcion: string | null;
+        nombre: string;
         requiereCupo: boolean;
     }>;
     findAll(): Promise<({
         servicios: {
+            id: number;
             moneda: string;
             estado: string;
-            id: number;
             createdAt: Date;
             updatedAt: Date;
-            nombre: string;
             descripcion: string | null;
+            nombre: string;
             latitud: number | null;
             longitud: number | null;
             tipoServicioId: number;
@@ -30,19 +30,19 @@ export declare class TiposServicioService {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
         descripcion: string | null;
+        nombre: string;
         requiereCupo: boolean;
     })[]>;
     findOne(id: number): Promise<{
         servicios: {
+            id: number;
             moneda: string;
             estado: string;
-            id: number;
             createdAt: Date;
             updatedAt: Date;
-            nombre: string;
             descripcion: string | null;
+            nombre: string;
             latitud: number | null;
             longitud: number | null;
             tipoServicioId: number;
@@ -53,24 +53,24 @@ export declare class TiposServicioService {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
         descripcion: string | null;
+        nombre: string;
         requiereCupo: boolean;
     }>;
     update(id: number, updateTipoServicioDto: CreateTipoServicioDto): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
         descripcion: string | null;
+        nombre: string;
         requiereCupo: boolean;
     }>;
     remove(id: number): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
         descripcion: string | null;
+        nombre: string;
         requiereCupo: boolean;
     }>;
 }

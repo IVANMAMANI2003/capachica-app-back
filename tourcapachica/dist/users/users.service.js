@@ -107,7 +107,7 @@ let UsersService = class UsersService {
                     telefono: data.telefono,
                     direccion: data.direccion,
                     fotoPerfilUrl: data.fotoPerfilUrl,
-                    fechaNacimiento: data.fechaNacimiento,
+                    fechaNacimiento: new Date(data.fechaNacimiento),
                     subdivisionId: data.subdivisionId,
                 },
             });

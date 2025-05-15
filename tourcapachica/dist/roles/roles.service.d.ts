@@ -9,8 +9,8 @@ export declare class RolesService {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
         descripcion: string | null;
+        nombre: string;
     }>;
     findAll(): Promise<({
         rolesPermisos: ({
@@ -18,8 +18,8 @@ export declare class RolesService {
                 id: number;
                 createdAt: Date;
                 updatedAt: Date;
-                nombre: string;
                 descripcion: string | null;
+                nombre: string;
             };
         } & {
             id: number;
@@ -32,8 +32,8 @@ export declare class RolesService {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
         descripcion: string | null;
+        nombre: string;
     })[]>;
     findOne(id: number): Promise<{
         rolesPermisos: ({
@@ -41,8 +41,8 @@ export declare class RolesService {
                 id: number;
                 createdAt: Date;
                 updatedAt: Date;
-                nombre: string;
                 descripcion: string | null;
+                nombre: string;
             };
         } & {
             id: number;
@@ -55,37 +55,37 @@ export declare class RolesService {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
         descripcion: string | null;
+        nombre: string;
     }>;
     update(id: number, updateRoleDto: UpdateRoleDto): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
         descripcion: string | null;
+        nombre: string;
     }>;
     remove(id: number): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        nombre: string;
         descripcion: string | null;
+        nombre: string;
     }>;
     assignPermission(id: number, assignPermissionDto: AssignPermissionDto): Promise<{
         permiso: {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            nombre: string;
             descripcion: string | null;
+            nombre: string;
         };
         rol: {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            nombre: string;
             descripcion: string | null;
+            nombre: string;
         };
     } & {
         id: number;

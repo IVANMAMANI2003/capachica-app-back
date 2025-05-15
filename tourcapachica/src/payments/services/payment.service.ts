@@ -1,5 +1,5 @@
 import { PrismaService } from '@/prisma/prisma.service';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePaymentDto } from '../dto/create-payment.dto';
 import { UpdatePaymentDto } from '../dto/update-payment.dto';
 import { EstadoPago } from '../enums/estado-pago.enum';
@@ -16,6 +16,12 @@ export class PaymentService {
       const reserva = await this.prisma.reserva.findUnique({
         where: { id: createPagoDto.reservaId },
       });
+
+      if (reserva.estado !== 'pendiente' && reserva.estado !== 'en_proceso') {
+        throw new BadRequestException(
+          `No se puede realizar el pago, la rserva debe estar cancelada o expirada. El estado actual de la reserva es "${reserva.estado}". Solo se permite pagar si está en "pendiente" o "en_proceso".`
+        );
+      }
 
       let estado: EstadoPago = EstadoPago.PENDIENTE;
       if (Number(totalDetalles) >= Number(reserva.precioTotal)) {
