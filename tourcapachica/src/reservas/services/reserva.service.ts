@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateReservaDto } from '../dto/create-reserva.dto';
 import { UpdateReservaDto } from '../dto/update-reserva.dto';
@@ -34,6 +34,36 @@ export class ReservaService {
       } ,
     });
     return reserva;
+  }
+
+  async getEstadoPagoReserva(reservaId: number) {
+    const reserva = await this.prisma.reserva.findUnique({
+      where: { id: reservaId },
+      include: { pagos: true },
+    });
+
+    if (!reserva) {
+      throw new NotFoundException('Reserva no encontrada');
+    }
+
+    const totalPagado = reserva.pagos.reduce(
+      (acc, pago) => acc + Number(pago.montoTotal),
+      0,
+    );
+    const restante = Number(reserva.precioTotal) - totalPagado;
+
+    return {
+      reservaId: reserva.id,
+      precioTotal: Number(reserva.precioTotal),
+      totalPagado,
+      restante,
+      pagos: reserva.pagos.map((pago) => ({
+        id: pago.id,
+        montoTotal: Number(pago.montoTotal),
+        fechaPago: pago.fechaPago,
+        estado: pago.estado,
+      })),
+    };
   }
 
   findAll() {

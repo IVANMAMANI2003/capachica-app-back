@@ -34,6 +34,29 @@ let ReservaService = class ReservaService {
         });
         return reserva;
     }
+    async getEstadoPagoReserva(reservaId) {
+        const reserva = await this.prisma.reserva.findUnique({
+            where: { id: reservaId },
+            include: { pagos: true },
+        });
+        if (!reserva) {
+            throw new common_1.NotFoundException('Reserva no encontrada');
+        }
+        const totalPagado = reserva.pagos.reduce((acc, pago) => acc + Number(pago.montoTotal), 0);
+        const restante = Number(reserva.precioTotal) - totalPagado;
+        return {
+            reservaId: reserva.id,
+            precioTotal: Number(reserva.precioTotal),
+            totalPagado,
+            restante,
+            pagos: reserva.pagos.map((pago) => ({
+                id: pago.id,
+                montoTotal: Number(pago.montoTotal),
+                fechaPago: pago.fechaPago,
+                estado: pago.estado,
+            })),
+        };
+    }
     findAll() {
         return this.prisma.reserva.findMany();
     }

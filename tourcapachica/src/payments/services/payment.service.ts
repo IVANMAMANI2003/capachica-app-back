@@ -61,25 +61,51 @@ export class PaymentService {
         where: { reservaId: createPagoDto.reservaId },
         _sum: { montoTotal: true },
       });
-      
-      const montoAcumulado = Number(totalPagado._sum.montoTotal ?? 0);
-      
-      if (montoAcumulado >= Number(reserva.precioTotal)) {
-        // Actualizar todos los pagos de esa reserva a COMPLETADO
-        await prisma.pago.updateMany({
-          where: { reservaId: createPagoDto.reservaId },
-          data: { estado: EstadoPago.COMPLETADO },
-        });
-      
-        // Actualizar estado de la reserva
-        await prisma.reserva.update({
-          where: { id: createPagoDto.reservaId },
-          data: { estado: 'confirmada' },
-        });
-      }
+
+    const montoAcumulado = Number(totalPagado._sum.montoTotal ?? 0);
+
+    if (montoAcumulado >= Number(reserva.precioTotal)) {
+      // Actualizar todos los pagos de esa reserva a COMPLETADO
+      await prisma.pago.updateMany({
+        where: { reservaId: createPagoDto.reservaId },
+        data: { estado: EstadoPago.COMPLETADO },
+      });
+
+      // Actualizar estado de la reserva
+      await prisma.reserva.update({
+        where: { id: createPagoDto.reservaId },
+        data: { estado: 'confirmada' },
+      });
+    }
+
+      // Convertimos Decimal a number (profundamente si es necesario)
 
       return pago;
     });
+  }
+
+  async getEstadoPagoReserva(reservaId: number) {
+    const reserva = await this.prisma.reserva.findUnique({
+      where: { id: reservaId },
+      include: {
+        pagos: true, // incluye todos los pagos
+      },
+    });
+  
+    if (!reserva) {
+      throw new Error('Reserva no encontrada');
+    }
+  
+    const totalPagado = reserva.pagos.reduce((acc, pago) => acc + Number(pago.montoTotal), 0);
+    const restante = Number(reserva.precioTotal) - totalPagado;
+  
+    return {
+      reservaId: reserva.id,
+      precioTotal: Number(reserva.precioTotal),
+      totalPagado,
+      restante,
+      pagos: reserva.pagos, // por si quieres mostrar el detalle
+    };
   }
 
   

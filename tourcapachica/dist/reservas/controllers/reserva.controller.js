@@ -31,6 +31,9 @@ let ReservaController = class ReservaController {
     findOne(id) {
         return this.reservaService.findOne(+id);
     }
+    async getEstadoPago(reservaId) {
+        return this.reservaService.getEstadoPagoReserva(reservaId);
+    }
     update(id, updateReservaDto) {
         return this.reservaService.update(+id, updateReservaDto);
     }
@@ -65,6 +68,44 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], ReservaController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Get)(':reservaId/estado-pago'),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Obtener estado de pago de una reserva',
+        description: 'Devuelve cuánto ya se pagó, cuánto falta pagar y los pagos realizados para una reserva.',
+    }),
+    (0, swagger_1.ApiParam)({
+        name: 'reservaId',
+        type: Number,
+        description: 'ID de la reserva',
+        example: 1,
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 200,
+        description: 'Estado de pago retornado correctamente',
+        schema: {
+            example: {
+                reservaId: 1,
+                precioTotal: 200.0,
+                totalPagado: 100.0,
+                restante: 100.0,
+                pagos: [
+                    {
+                        id: 10,
+                        montoTotal: 100.0,
+                        fechaPago: '2025-05-14T12:00:00.000Z',
+                        estado: 'COMPLETADO',
+                    },
+                ],
+            },
+        },
+    }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Reserva no encontrada' }),
+    __param(0, (0, common_1.Param)('reservaId', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], ReservaController.prototype, "getEstadoPago", null);
 __decorate([
     (0, common_1.Patch)(':id'),
     (0, swagger_1.ApiOperation)({ summary: 'Actualizar una reserva' }),
