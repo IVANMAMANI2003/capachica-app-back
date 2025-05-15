@@ -91,8 +91,8 @@ __decorate([
 ], ReservaController.prototype, "getEstadoPagoReserva", null);
 __decorate([
     (0, common_1.Patch)(':id'),
-    (0, swagger_1.ApiOperation)({ summary: 'Actualizar una reserva' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Reserva actualizada exitosamente.' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Actualizar  estado de una reserva' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Estado de Reserva actualizada exitosamente.' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),

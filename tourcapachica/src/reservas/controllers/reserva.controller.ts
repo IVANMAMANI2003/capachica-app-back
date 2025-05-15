@@ -49,8 +49,8 @@ export class ReservaController {
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Actualizar una reserva' })
-  @ApiResponse({ status: 200, description: 'Reserva actualizada exitosamente.' })
+  @ApiOperation({ summary: 'Actualizar  estado de una reserva' })
+  @ApiResponse({ status: 200, description: 'Estado de Reserva actualizada exitosamente.' })
   update(@Param('id') id: string, @Body() updateReservaDto: UpdateReservaDto) {
     return this.reservaService.update(+id, updateReservaDto);
   }

@@ -10,18 +10,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateReservaDto = void 0;
+const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class UpdateReservaDto {
 }
 exports.UpdateReservaDto = UpdateReservaDto;
 __decorate([
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsString)(),
+    (0, swagger_1.ApiProperty)({ example: 'pendiente' }),
+    (0, class_validator_1.IsEnum)(['pendiente', 'confirmada', 'cancelada', 'en_proceso', 'rechazada', 'expirada']),
     __metadata("design:type", String)
-], UpdateReservaDto.prototype, "nombre", void 0);
-__decorate([
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsNumber)(),
-    __metadata("design:type", Number)
-], UpdateReservaDto.prototype, "cantidadPersonas", void 0);
+], UpdateReservaDto.prototype, "estado", void 0);
 //# sourceMappingURL=update-reserva.dto.js.map
