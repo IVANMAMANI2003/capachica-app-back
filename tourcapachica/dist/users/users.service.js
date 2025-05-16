@@ -335,7 +335,7 @@ let UsersService = class UsersService {
                 },
             });
             return {
-                message: 'Revisa tu correo, debio llegarte un codigo, utilizalo para restablecer tu contraseña',
+                message: 'Revisa tu correo. Debio llegarte un codigo de 8 digitos, utilizalo para restablecer tu contraseña',
             };
         }
         catch (error) {

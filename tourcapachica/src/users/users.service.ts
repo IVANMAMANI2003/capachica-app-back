@@ -411,9 +411,11 @@ export class UsersService {
         return { message: 'Si el email existe, se enviará un enlace de restablecimiento' };
       }
 
+      
       // Generar token de restablecimiento
       const resetToken = Math.floor(10000000 + Math.random() * 90000000).toString();
       const resetTokenExpires = new Date(Date.now() + 10 * 60 * 1000); // Token válido por 10 minutos
+      
 
       // Guardar el token en la base de datos
       await this.prisma.usuario.update({
@@ -436,7 +438,7 @@ export class UsersService {
       });
       // Por ahora, solo devolvemos el token para pruebas
       return {
-        message: 'Revisa tu correo, debio llegarte un codigo, utilizalo para restablecer tu contraseña',
+        message: 'Revisa tu correo. Debio llegarte un codigo de 8 digitos, utilizalo para restablecer tu contraseña',
       };
     } catch (error) {
       console.error('Error al solicitar restablecimiento de contraseña:', error);
