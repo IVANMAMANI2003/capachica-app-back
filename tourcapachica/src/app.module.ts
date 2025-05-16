@@ -18,6 +18,8 @@ import { AppService } from './app.service';
 import { PersonasModule } from './personas/personas.module';
 import { ResenasModule } from './resenas/resenas.module';
 import { ComprobantesModule } from './comprobantes/comprobantes.module';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 
 @Module({
   imports: [
@@ -44,5 +46,26 @@ import { ComprobantesModule } from './comprobantes/comprobantes.module';
   ],
   controllers: [AppController],
   providers: [AppService],
+  
 })
 export class AppModule {}
+
+MailerModule.forRoot({
+  transport: {
+    service: 'gmail',
+    auth: {
+      user: 'tu-correo@gmail.com',
+      pass: 'tu-contraseña-o-app-password',
+    },
+  },
+  defaults: {
+    from: '"Tu App" <tu-correo@gmail.com>',
+  },
+  template: {
+    dir: __dirname + '/templates',
+    adapter: new HandlebarsAdapter(),
+    options: {
+      strict: true,
+    },
+  },
+})

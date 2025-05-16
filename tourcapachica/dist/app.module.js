@@ -27,6 +27,8 @@ const app_service_1 = require("./app.service");
 const personas_module_1 = require("./personas/personas.module");
 const resenas_module_1 = require("./resenas/resenas.module");
 const comprobantes_module_1 = require("./comprobantes/comprobantes.module");
+const mailer_1 = require("@nestjs-modules/mailer");
+const handlebars_adapter_1 = require("@nestjs-modules/mailer/dist/adapters/handlebars.adapter");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -57,4 +59,23 @@ exports.AppModule = AppModule = __decorate([
         providers: [app_service_1.AppService],
     })
 ], AppModule);
+mailer_1.MailerModule.forRoot({
+    transport: {
+        service: 'gmail',
+        auth: {
+            user: 'tu-correo@gmail.com',
+            pass: 'tu-contraseña-o-app-password',
+        },
+    },
+    defaults: {
+        from: '"Tu App" <tu-correo@gmail.com>',
+    },
+    template: {
+        dir: __dirname + '/templates',
+        adapter: new handlebars_adapter_1.HandlebarsAdapter(),
+        options: {
+            strict: true,
+        },
+    },
+});
 //# sourceMappingURL=app.module.js.map
