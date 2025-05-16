@@ -54,6 +54,8 @@ exports.AppModule = AppModule = __decorate([
             reservas_module_1.ReservasModule,
             payments_module_1.PaymentsModule,
             comprobantes_module_1.ComprobantesModule,
+            mailer_1.MailerModule,
+            mailer_1.MailerService,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

@@ -18,7 +18,7 @@ import { AppService } from './app.service';
 import { PersonasModule } from './personas/personas.module';
 import { ResenasModule } from './resenas/resenas.module';
 import { ComprobantesModule } from './comprobantes/comprobantes.module';
-import { MailerModule } from '@nestjs-modules/mailer';
+import { MailerModule, MailerService } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 
 @Module({
@@ -42,6 +42,8 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
     ReservasModule,
     PaymentsModule,
     ComprobantesModule,
+    MailerModule,
+    MailerService,
     
   ],
   controllers: [AppController],
