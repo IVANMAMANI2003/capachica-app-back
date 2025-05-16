@@ -5,10 +5,17 @@ export declare class PersonasController {
     private readonly personasService;
     constructor(personasService: PersonasService);
     create(createPersonaDto: CreatePersonaDto): Promise<{
+        subdivision: {
+            name: string;
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
+            countryId: number;
+        };
         usuario: {
+            email: string;
             id: number;
             personaId: number;
-            email: string;
             passwordHash: string;
             recoveryToken: string | null;
             recoveryTokenExpiresAt: Date | null;
@@ -20,30 +27,30 @@ export declare class PersonasController {
             createdAt: Date;
             updatedAt: Date;
         };
-        subdivision: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            name: string;
-            countryId: number;
-        };
     } & {
         id: number;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
+        direccion: string | null;
         apellidos: string;
         telefono: string | null;
-        direccion: string | null;
         fotoPerfilUrl: string | null;
         fechaNacimiento: Date | null;
         subdivisionId: number;
     }>;
     findAll(): Promise<({
+        subdivision: {
+            name: string;
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
+            countryId: number;
+        };
         usuario: {
+            email: string;
             id: number;
             personaId: number;
-            email: string;
             passwordHash: string;
             recoveryToken: string | null;
             recoveryTokenExpiresAt: Date | null;
@@ -55,30 +62,30 @@ export declare class PersonasController {
             createdAt: Date;
             updatedAt: Date;
         };
-        subdivision: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            name: string;
-            countryId: number;
-        };
     } & {
         id: number;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
+        direccion: string | null;
         apellidos: string;
         telefono: string | null;
-        direccion: string | null;
         fotoPerfilUrl: string | null;
         fechaNacimiento: Date | null;
         subdivisionId: number;
     })[]>;
     findOne(id: string): Promise<{
+        subdivision: {
+            name: string;
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
+            countryId: number;
+        };
         usuario: {
+            email: string;
             id: number;
             personaId: number;
-            email: string;
             passwordHash: string;
             recoveryToken: string | null;
             recoveryTokenExpiresAt: Date | null;
@@ -90,30 +97,30 @@ export declare class PersonasController {
             createdAt: Date;
             updatedAt: Date;
         };
-        subdivision: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            name: string;
-            countryId: number;
-        };
     } & {
         id: number;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
+        direccion: string | null;
         apellidos: string;
         telefono: string | null;
-        direccion: string | null;
         fotoPerfilUrl: string | null;
         fechaNacimiento: Date | null;
         subdivisionId: number;
     }>;
     update(id: string, updatePersonaDto: UpdatePersonaDto): Promise<{
+        subdivision: {
+            name: string;
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
+            countryId: number;
+        };
         usuario: {
+            email: string;
             id: number;
             personaId: number;
-            email: string;
             passwordHash: string;
             recoveryToken: string | null;
             recoveryTokenExpiresAt: Date | null;
@@ -125,21 +132,14 @@ export declare class PersonasController {
             createdAt: Date;
             updatedAt: Date;
         };
-        subdivision: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            name: string;
-            countryId: number;
-        };
     } & {
         id: number;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
+        direccion: string | null;
         apellidos: string;
         telefono: string | null;
-        direccion: string | null;
         fotoPerfilUrl: string | null;
         fechaNacimiento: Date | null;
         subdivisionId: number;
@@ -149,9 +149,9 @@ export declare class PersonasController {
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
+        direccion: string | null;
         apellidos: string;
         telefono: string | null;
-        direccion: string | null;
         fotoPerfilUrl: string | null;
         fechaNacimiento: Date | null;
         subdivisionId: number;

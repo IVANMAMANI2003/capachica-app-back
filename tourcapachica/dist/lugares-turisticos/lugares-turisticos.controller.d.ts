@@ -13,8 +13,8 @@ export declare class LugaresTuristicosController {
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        direccion: string;
         descripcion: string;
+        direccion: string;
         latitud: number | null;
         longitud: number | null;
         estado: string;
@@ -34,8 +34,8 @@ export declare class LugaresTuristicosController {
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        direccion: string;
         descripcion: string;
+        direccion: string;
         latitud: number | null;
         longitud: number | null;
         estado: string;
@@ -51,8 +51,8 @@ export declare class LugaresTuristicosController {
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        direccion: string;
         descripcion: string;
+        direccion: string;
         latitud: number | null;
         longitud: number | null;
         estado: string;
@@ -72,8 +72,8 @@ export declare class LugaresTuristicosController {
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        direccion: string;
         descripcion: string;
+        direccion: string;
         latitud: number | null;
         longitud: number | null;
         estado: string;
@@ -93,8 +93,8 @@ export declare class LugaresTuristicosController {
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        direccion: string;
         descripcion: string;
+        direccion: string;
         latitud: number | null;
         longitud: number | null;
         estado: string;
@@ -110,8 +110,8 @@ export declare class LugaresTuristicosController {
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        direccion: string;
         descripcion: string;
+        direccion: string;
         latitud: number | null;
         longitud: number | null;
         estado: string;
@@ -143,8 +143,8 @@ export declare class LugaresTuristicosController {
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        direccion: string;
         descripcion: string;
+        direccion: string;
         latitud: number | null;
         longitud: number | null;
         estado: string;

@@ -179,12 +179,12 @@ export declare class ServiciosService {
                 id: number;
                 createdAt: Date;
                 updatedAt: Date;
-                nombre: string;
-                direccion: string | null;
                 usuarioId: number;
+                nombre: string;
                 descripcion: string | null;
                 lugarTuristicoId: number | null;
                 tipo: string;
+                direccion: string | null;
                 latitud: number | null;
                 longitud: number | null;
                 contactoTelefono: string | null;
