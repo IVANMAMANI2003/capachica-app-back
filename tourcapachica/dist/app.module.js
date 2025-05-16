@@ -40,11 +40,11 @@ exports.AppModule = AppModule = __decorate([
                     service: 'gmail',
                     auth: {
                         user: 'tu-correo@gmail.com',
-                        pass: 'tu-contraseña-o-app-password',
+                        pass: 'tu-app-password',
                     },
                 },
                 defaults: {
-                    from: '"Tu App" <tu-correo@gmail.com>',
+                    from: 'tu-correo@gmail.com',
                 },
                 template: {
                     dir: __dirname + '/templates',

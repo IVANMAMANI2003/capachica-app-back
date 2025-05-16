@@ -28,11 +28,11 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
         service: 'gmail',
         auth: {
           user: 'tu-correo@gmail.com',
-          pass: 'tu-contraseña-o-app-password',
+          pass: 'tu-app-password',
         },
       },
       defaults: {
-        from: '"Tu App" <tu-correo@gmail.com>',
+        from: 'tu-correo@gmail.com', // sin nombre
       },
       template: {
         dir: __dirname + '/templates',
