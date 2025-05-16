@@ -42,8 +42,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
     ReservasModule,
     PaymentsModule,
     ComprobantesModule,
-    MailerModule,
-    MailerService,
+
     
   ],
   controllers: [AppController],
@@ -52,22 +51,3 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 })
 export class AppModule {}
 
-MailerModule.forRoot({
-  transport: {
-    service: 'gmail',
-    auth: {
-      user: 'tu-correo@gmail.com',
-      pass: 'tu-contraseña-o-app-password',
-    },
-  },
-  defaults: {
-    from: '"Tu App" <tu-correo@gmail.com>',
-  },
-  template: {
-    dir: __dirname + '/templates',
-    adapter: new HandlebarsAdapter(),
-    options: {
-      strict: true,
-    },
-  },
-})
