@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { SlidersModule } from './sliders/sliders.module';
@@ -20,11 +20,16 @@ import { ResenasModule } from './resenas/resenas.module';
 import { ComprobantesModule } from './comprobantes/comprobantes.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
-import { join } from 'path';
+import * as path from 'path';
 
 @Module({
   imports: [
+    
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     MailerModule.forRoot({
+
       transport: {
         service: 'gmail',
         auth: {
@@ -36,15 +41,13 @@ import { join } from 'path';
         from: 'ivanyomm.2003@gmail.com', // sin nombre
       },
       template: {
-        dir: join(__dirname, '..', 'templates'),
+        dir: path.join(process.cwd(), 'templates'),
         adapter: new HandlebarsAdapter(),
         options: {
           strict: true,
         },
       },
-    }),
-    ConfigModule.forRoot({
-      isGlobal: true,
+
     }),
     PrismaModule,
     AuthModule,

@@ -412,9 +412,8 @@ export class UsersService {
       }
 
       // Generar token de restablecimiento
-      const resetToken = randomBytes(6).toString('hex');
-      const resetTokenExpires = new Date();
-      resetTokenExpires.setHours(resetTokenExpires.getHours() + 1); // Token válido por 1 hora
+      const resetToken = Math.floor(10000000 + Math.random() * 90000000).toString();
+      const resetTokenExpires = new Date(Date.now() + 10 * 60 * 1000); // Token válido por 10 minutos
 
       // Guardar el token en la base de datos
       await this.prisma.usuario.update({
@@ -432,12 +431,12 @@ export class UsersService {
         template: './reset-password', // nombre del archivo en /templates
         context: {
           token: resetToken,
+          year: new Date().getFullYear(),
         },
       });
       // Por ahora, solo devolvemos el token para pruebas
       return {
-        message: 'Si el email existe, se enviará un enlace de restablecimiento',
-        token: resetToken, // En producción, esto no se debe devolver
+        message: 'Revisa tu correo, debio llegarte un codigo, utilizalo para restablecer tu contraseña',
       };
     } catch (error) {
       console.error('Error al solicitar restablecimiento de contraseña:', error);

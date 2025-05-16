@@ -29,13 +29,16 @@ const resenas_module_1 = require("./resenas/resenas.module");
 const comprobantes_module_1 = require("./comprobantes/comprobantes.module");
 const mailer_1 = require("@nestjs-modules/mailer");
 const handlebars_adapter_1 = require("@nestjs-modules/mailer/dist/adapters/handlebars.adapter");
-const path_1 = require("path");
+const path = require("path");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            config_1.ConfigModule.forRoot({
+                isGlobal: true,
+            }),
             mailer_1.MailerModule.forRoot({
                 transport: {
                     service: 'gmail',
@@ -48,15 +51,12 @@ exports.AppModule = AppModule = __decorate([
                     from: 'ivanyomm.2003@gmail.com',
                 },
                 template: {
-                    dir: (0, path_1.join)(__dirname, '..', 'templates'),
+                    dir: path.join(process.cwd(), 'templates'),
                     adapter: new handlebars_adapter_1.HandlebarsAdapter(),
                     options: {
                         strict: true,
                     },
                 },
-            }),
-            config_1.ConfigModule.forRoot({
-                isGlobal: true,
             }),
             prisma_module_1.PrismaModule,
             auth_module_1.AuthModule,

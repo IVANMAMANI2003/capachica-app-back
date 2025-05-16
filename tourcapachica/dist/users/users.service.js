@@ -24,7 +24,6 @@ exports.UsersService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
 const bcrypt_1 = require("bcrypt");
-const crypto_1 = require("crypto");
 const supabase_service_1 = require("../supabase/supabase.service");
 const mailer_1 = require("@nestjs-modules/mailer");
 let UsersService = class UsersService {
@@ -317,9 +316,8 @@ let UsersService = class UsersService {
             if (!user) {
                 return { message: 'Si el email existe, se enviará un enlace de restablecimiento' };
             }
-            const resetToken = (0, crypto_1.randomBytes)(6).toString('hex');
-            const resetTokenExpires = new Date();
-            resetTokenExpires.setHours(resetTokenExpires.getHours() + 1);
+            const resetToken = Math.floor(10000000 + Math.random() * 90000000).toString();
+            const resetTokenExpires = new Date(Date.now() + 10 * 60 * 1000);
             await this.prisma.usuario.update({
                 where: { id: user.id },
                 data: {
@@ -333,11 +331,11 @@ let UsersService = class UsersService {
                 template: './reset-password',
                 context: {
                     token: resetToken,
+                    year: new Date().getFullYear(),
                 },
             });
             return {
-                message: 'Si el email existe, se enviará un enlace de restablecimiento',
-                token: resetToken,
+                message: 'Revisa tu correo, debio llegarte un codigo, utilizalo para restablecer tu contraseña',
             };
         }
         catch (error) {
