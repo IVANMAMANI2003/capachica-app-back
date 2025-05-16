@@ -26,10 +26,12 @@ const prisma_service_1 = require("../prisma/prisma.service");
 const bcrypt_1 = require("bcrypt");
 const crypto_1 = require("crypto");
 const supabase_service_1 = require("../supabase/supabase.service");
+const mailer_1 = require("@nestjs-modules/mailer");
 let UsersService = class UsersService {
-    constructor(prisma, supabaseService) {
+    constructor(prisma, supabaseService, mailerService) {
         this.prisma = prisma;
         this.supabaseService = supabaseService;
+        this.mailerService = mailerService;
         this.IMAGEABLE_TYPE = 'Usuario';
         this.BUCKET_NAME = 'usuarios';
     }
@@ -315,7 +317,7 @@ let UsersService = class UsersService {
             if (!user) {
                 return { message: 'Si el email existe, se enviará un enlace de restablecimiento' };
             }
-            const resetToken = (0, crypto_1.randomBytes)(32).toString('hex');
+            const resetToken = (0, crypto_1.randomBytes)(6).toString('hex');
             const resetTokenExpires = new Date();
             resetTokenExpires.setHours(resetTokenExpires.getHours() + 1);
             await this.prisma.usuario.update({
@@ -323,6 +325,14 @@ let UsersService = class UsersService {
                 data: {
                     recoveryToken: resetToken,
                     recoveryTokenExpiresAt: resetTokenExpires,
+                },
+            });
+            await this.mailerService.sendMail({
+                to: user.email,
+                subject: 'Restablece tu contraseña',
+                template: './reset-password',
+                context: {
+                    token: resetToken,
                 },
             });
             return {
@@ -397,6 +407,7 @@ exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
-        supabase_service_1.SupabaseService])
+        supabase_service_1.SupabaseService,
+        mailer_1.MailerService])
 ], UsersService);
 //# sourceMappingURL=users.service.js.map

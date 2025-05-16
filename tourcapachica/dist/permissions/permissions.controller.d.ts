@@ -8,8 +8,8 @@ export declare class PermissionsController {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        descripcion: string | null;
         nombre: string;
+        descripcion: string | null;
     }>;
     findAll(): Promise<({
         rolesPermisos: ({
@@ -17,8 +17,8 @@ export declare class PermissionsController {
                 id: number;
                 createdAt: Date;
                 updatedAt: Date;
-                descripcion: string | null;
                 nombre: string;
+                descripcion: string | null;
             };
         } & {
             id: number;
@@ -31,8 +31,8 @@ export declare class PermissionsController {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        descripcion: string | null;
         nombre: string;
+        descripcion: string | null;
     })[]>;
     findOne(id: string): Promise<{
         rolesPermisos: ({
@@ -40,8 +40,8 @@ export declare class PermissionsController {
                 id: number;
                 createdAt: Date;
                 updatedAt: Date;
-                descripcion: string | null;
                 nombre: string;
+                descripcion: string | null;
             };
         } & {
             id: number;
@@ -54,21 +54,21 @@ export declare class PermissionsController {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        descripcion: string | null;
         nombre: string;
+        descripcion: string | null;
     }>;
     update(id: string, updatePermissionDto: UpdatePermissionDto): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        descripcion: string | null;
         nombre: string;
+        descripcion: string | null;
     }>;
     remove(id: string): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        descripcion: string | null;
         nombre: string;
+        descripcion: string | null;
     }>;
 }

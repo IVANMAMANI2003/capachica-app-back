@@ -5,12 +5,14 @@ import { RequestPasswordResetDto } from './dto/request-password-reset.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { SupabaseService } from '../supabase/supabase.service';
 import { UpdateUserWithPersonaDto } from './dto/update-user-with-persona.dto';
+import { MailerService } from '@nestjs-modules/mailer';
 export declare class UsersService {
     private readonly prisma;
     private readonly supabaseService;
+    private readonly mailerService;
     private readonly IMAGEABLE_TYPE;
     private readonly BUCKET_NAME;
-    constructor(prisma: PrismaService, supabaseService: SupabaseService);
+    constructor(prisma: PrismaService, supabaseService: SupabaseService, mailerService: MailerService);
     findAll(): Promise<{
         imagenes: {
             id: number;
@@ -38,14 +40,12 @@ export declare class UsersService {
             };
         } & {
             id: number;
-            usuarioId: number;
             createdAt: Date;
             updatedAt: Date;
             rolId: number;
+            usuarioId: number;
         })[];
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -56,6 +56,8 @@ export declare class UsersService {
         estaActivo: boolean | null;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue | null;
+        createdAt: Date;
+        updatedAt: Date;
     }[]>;
     findByEmail(email: string): Promise<{
         persona: {
@@ -80,15 +82,13 @@ export declare class UsersService {
             };
         } & {
             id: number;
-            usuarioId: number;
             createdAt: Date;
             updatedAt: Date;
             rolId: number;
+            usuarioId: number;
         })[];
     } & {
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -99,6 +99,8 @@ export declare class UsersService {
         estaActivo: boolean | null;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     findById(id: number): Promise<{
         usuariosRoles: ({
@@ -111,15 +113,13 @@ export declare class UsersService {
             };
         } & {
             id: number;
-            usuarioId: number;
             createdAt: Date;
             updatedAt: Date;
             rolId: number;
+            usuarioId: number;
         })[];
     } & {
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -130,6 +130,8 @@ export declare class UsersService {
         estaActivo: boolean | null;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     register(data: RegisterUserDto): Promise<{
         imagenes: {
@@ -158,14 +160,12 @@ export declare class UsersService {
             };
         } & {
             id: number;
-            usuarioId: number;
             createdAt: Date;
             updatedAt: Date;
             rolId: number;
+            usuarioId: number;
         })[];
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -176,6 +176,8 @@ export declare class UsersService {
         estaActivo: boolean | null;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     create(createUserDto: CreateUserDto): Promise<{
         imagenes: {
@@ -204,14 +206,12 @@ export declare class UsersService {
             };
         } & {
             id: number;
-            usuarioId: number;
             createdAt: Date;
             updatedAt: Date;
             rolId: number;
+            usuarioId: number;
         })[];
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -222,6 +222,8 @@ export declare class UsersService {
         estaActivo: boolean | null;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     findOne(id: number): Promise<{
         imagenes: {
@@ -250,14 +252,12 @@ export declare class UsersService {
             };
         } & {
             id: number;
-            usuarioId: number;
             createdAt: Date;
             updatedAt: Date;
             rolId: number;
+            usuarioId: number;
         })[];
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -268,6 +268,8 @@ export declare class UsersService {
         estaActivo: boolean | null;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     update(id: number, updateUserWithPersonaDto: UpdateUserWithPersonaDto): Promise<{
         persona: {
@@ -284,8 +286,6 @@ export declare class UsersService {
         };
     } & {
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -296,11 +296,11 @@ export declare class UsersService {
         estaActivo: boolean | null;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     delete(id: number): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -311,13 +311,15 @@ export declare class UsersService {
         estaActivo: boolean | null;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     assignRole(userId: number, roleId: number): Promise<{
         id: number;
-        usuarioId: number;
         createdAt: Date;
         updatedAt: Date;
         rolId: number;
+        usuarioId: number;
     }>;
     removeRole(userId: number, roleId: number): Promise<import(".prisma/client").Prisma.BatchPayload>;
     requestPasswordReset(data: RequestPasswordResetDto): Promise<{

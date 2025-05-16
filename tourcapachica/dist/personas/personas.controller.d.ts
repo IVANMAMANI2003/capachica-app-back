@@ -5,17 +5,8 @@ export declare class PersonasController {
     private readonly personasService;
     constructor(personasService: PersonasService);
     create(createPersonaDto: CreatePersonaDto): Promise<{
-        subdivision: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            name: string;
-            countryId: number;
-        };
         usuario: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             personaId: number;
             email: string;
             passwordHash: string;
@@ -26,31 +17,31 @@ export declare class PersonasController {
             estaActivo: boolean | null;
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue | null;
+            createdAt: Date;
+            updatedAt: Date;
+        };
+        subdivision: {
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
+            name: string;
+            countryId: number;
         };
     } & {
         id: number;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        direccion: string | null;
         apellidos: string;
         telefono: string | null;
+        direccion: string | null;
         fotoPerfilUrl: string | null;
         fechaNacimiento: Date | null;
         subdivisionId: number;
     }>;
     findAll(): Promise<({
-        subdivision: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            name: string;
-            countryId: number;
-        };
         usuario: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             personaId: number;
             email: string;
             passwordHash: string;
@@ -61,31 +52,31 @@ export declare class PersonasController {
             estaActivo: boolean | null;
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue | null;
+            createdAt: Date;
+            updatedAt: Date;
+        };
+        subdivision: {
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
+            name: string;
+            countryId: number;
         };
     } & {
         id: number;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        direccion: string | null;
         apellidos: string;
         telefono: string | null;
+        direccion: string | null;
         fotoPerfilUrl: string | null;
         fechaNacimiento: Date | null;
         subdivisionId: number;
     })[]>;
     findOne(id: string): Promise<{
-        subdivision: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            name: string;
-            countryId: number;
-        };
         usuario: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             personaId: number;
             email: string;
             passwordHash: string;
@@ -96,31 +87,31 @@ export declare class PersonasController {
             estaActivo: boolean | null;
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue | null;
+            createdAt: Date;
+            updatedAt: Date;
+        };
+        subdivision: {
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
+            name: string;
+            countryId: number;
         };
     } & {
         id: number;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        direccion: string | null;
         apellidos: string;
         telefono: string | null;
+        direccion: string | null;
         fotoPerfilUrl: string | null;
         fechaNacimiento: Date | null;
         subdivisionId: number;
     }>;
     update(id: string, updatePersonaDto: UpdatePersonaDto): Promise<{
-        subdivision: {
-            id: number;
-            createdAt: Date;
-            updatedAt: Date;
-            name: string;
-            countryId: number;
-        };
         usuario: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             personaId: number;
             email: string;
             passwordHash: string;
@@ -131,15 +122,24 @@ export declare class PersonasController {
             estaActivo: boolean | null;
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue | null;
+            createdAt: Date;
+            updatedAt: Date;
+        };
+        subdivision: {
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
+            name: string;
+            countryId: number;
         };
     } & {
         id: number;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        direccion: string | null;
         apellidos: string;
         telefono: string | null;
+        direccion: string | null;
         fotoPerfilUrl: string | null;
         fechaNacimiento: Date | null;
         subdivisionId: number;
@@ -149,9 +149,9 @@ export declare class PersonasController {
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        direccion: string | null;
         apellidos: string;
         telefono: string | null;
+        direccion: string | null;
         fotoPerfilUrl: string | null;
         fechaNacimiento: Date | null;
         subdivisionId: number;

@@ -7,11 +7,11 @@ export declare class ItinerarioReservaController {
     createMany(dto: CreateItinerariosForReservaDto): Promise<import(".prisma/client").Prisma.BatchPayload>;
     findAll(): import(".prisma/client").Prisma.PrismaPromise<{
         id: number;
-        reservaId: number;
         createdAt: Date;
         updatedAt: Date;
         descripcion: string | null;
         servicioId: number;
+        reservaId: number;
         fechaInicioActividad: Date;
         fechaFinActividad: Date;
         lugarEncuentro: string;
@@ -20,11 +20,11 @@ export declare class ItinerarioReservaController {
     }[]>;
     findOne(id: string): import(".prisma/client").Prisma.Prisma__ItinerarioReservaClient<{
         id: number;
-        reservaId: number;
         createdAt: Date;
         updatedAt: Date;
         descripcion: string | null;
         servicioId: number;
+        reservaId: number;
         fechaInicioActividad: Date;
         fechaFinActividad: Date;
         lugarEncuentro: string;
@@ -33,11 +33,11 @@ export declare class ItinerarioReservaController {
     }, null, import(".prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     update(id: string, updateItinerarioReservaDto: UpdateItinerarioReservaDto): import(".prisma/client").Prisma.Prisma__ItinerarioReservaClient<{
         id: number;
-        reservaId: number;
         createdAt: Date;
         updatedAt: Date;
         descripcion: string | null;
         servicioId: number;
+        reservaId: number;
         fechaInicioActividad: Date;
         fechaFinActividad: Date;
         lugarEncuentro: string;
@@ -46,11 +46,11 @@ export declare class ItinerarioReservaController {
     }, never, import(".prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     remove(id: string): import(".prisma/client").Prisma.Prisma__ItinerarioReservaClient<{
         id: number;
-        reservaId: number;
         createdAt: Date;
         updatedAt: Date;
         descripcion: string | null;
         servicioId: number;
+        reservaId: number;
         fechaInicioActividad: Date;
         fechaFinActividad: Date;
         lugarEncuentro: string;

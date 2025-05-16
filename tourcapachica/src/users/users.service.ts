@@ -10,6 +10,7 @@ import { randomBytes } from 'crypto';
 import { SupabaseService } from '../supabase/supabase.service';
 import { UpdatePersonaDto } from './dto/update-persona.dto';
 import { UpdateUserWithPersonaDto } from './dto/update-user-with-persona.dto';
+import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
 export class UsersService {
@@ -18,7 +19,9 @@ export class UsersService {
 
   constructor(
     private readonly prisma: PrismaService,
-    private readonly supabaseService: SupabaseService
+    private readonly supabaseService: SupabaseService,
+    private readonly mailerService: MailerService,
+
   ) {}
 
   async findAll() {
@@ -409,7 +412,7 @@ export class UsersService {
       }
 
       // Generar token de restablecimiento
-      const resetToken = randomBytes(32).toString('hex');
+      const resetToken = randomBytes(6).toString('hex');
       const resetTokenExpires = new Date();
       resetTokenExpires.setHours(resetTokenExpires.getHours() + 1); // Token válido por 1 hora
 
@@ -423,6 +426,14 @@ export class UsersService {
       });
 
       // TODO: Enviar email con el token
+      await this.mailerService.sendMail({
+        to: user.email,
+        subject: 'Restablece tu contraseña',
+        template: './reset-password', // nombre del archivo en /templates
+        context: {
+          token: resetToken,
+        },
+      });
       // Por ahora, solo devolvemos el token para pruebas
       return {
         message: 'Si el email existe, se enviará un enlace de restablecimiento',
