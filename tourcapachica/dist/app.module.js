@@ -29,6 +29,7 @@ const resenas_module_1 = require("./resenas/resenas.module");
 const comprobantes_module_1 = require("./comprobantes/comprobantes.module");
 const mailer_1 = require("@nestjs-modules/mailer");
 const handlebars_adapter_1 = require("@nestjs-modules/mailer/dist/adapters/handlebars.adapter");
+const path_1 = require("path");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -47,7 +48,7 @@ exports.AppModule = AppModule = __decorate([
                     from: 'ivanyomm.2003@gmail.com',
                 },
                 template: {
-                    dir: __dirname + '/templates',
+                    dir: (0, path_1.join)(__dirname, '..', 'templates'),
                     adapter: new handlebars_adapter_1.HandlebarsAdapter(),
                     options: {
                         strict: true,

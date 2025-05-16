@@ -20,6 +20,7 @@ import { ResenasModule } from './resenas/resenas.module';
 import { ComprobantesModule } from './comprobantes/comprobantes.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -35,7 +36,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
         from: 'ivanyomm.2003@gmail.com', // sin nombre
       },
       template: {
-        dir: __dirname + '/templates',
+        dir: join(__dirname, '..', 'templates'),
         adapter: new HandlebarsAdapter(),
         options: {
           strict: true,
