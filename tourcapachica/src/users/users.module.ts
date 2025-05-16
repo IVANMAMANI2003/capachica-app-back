@@ -9,7 +9,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 
 
 @Module({
-  imports: [PrismaModule, SupabaseModule, MailerModule, MailerService],
+  imports: [PrismaModule, SupabaseModule, MailerService],
   controllers: [UsersController],
   providers: [UsersService],
   exports: [UsersService],
