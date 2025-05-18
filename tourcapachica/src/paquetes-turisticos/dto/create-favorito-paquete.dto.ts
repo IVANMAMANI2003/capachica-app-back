@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateFavoritoDto {
+export class CreateFavoritoDtoxx {
   @ApiProperty({ description: 'ID del usuario' })
   usuarioId: number;
 

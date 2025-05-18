@@ -537,31 +537,93 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
             where: { id },
         });
     }
-    async marcarFavorito(createFavoritoDto) {
-        const { usuarioId, paqueteTuristicoId } = createFavoritoDto;
-        const favoritoExistente = await this.prisma.favoritoPaqueteTuristico.findUnique({
-            where: { usuarioId_paqueteTuristicoId: { usuarioId, paqueteTuristicoId } },
+    async addFavorite(usuarioId, paqueteTuristicoId) {
+        const paqueteTuristico = await this.prisma.paqueteTuristico.findUnique({ where: { id: paqueteTuristicoId } });
+        if (!paqueteTuristico) {
+            throw new common_1.NotFoundException(`Paquete con ID ${paqueteTuristicoId} no encontrado`);
+        }
+        const existingFavorite = await this.prisma.favoritoPaqueteTuristico.findUnique({
+            where: {
+                usuarioId_paqueteTuristicoId: {
+                    usuarioId,
+                    paqueteTuristicoId,
+                },
+            },
         });
-        if (favoritoExistente) {
-            throw new common_1.BadRequestException('El paquete turístico ya está marcado como favorito.');
+        if (existingFavorite) {
+            throw new common_1.BadRequestException('Este Paquete Turistico, ya está marcado como favorito por este usuario');
         }
         return this.prisma.favoritoPaqueteTuristico.create({
             data: {
                 usuarioId,
                 paqueteTuristicoId,
             },
+            include: {
+                paqueteTuristico: true
+            }
         });
     }
-    async desmarcarFavorito(id) {
-        const favorito = await this.prisma.favoritoPaqueteTuristico.findUnique({
-            where: { id },
+    async removeFavorite(usuarioId, paqueteTuristicoId) {
+        const existingFavorite = await this.prisma.favoritoPaqueteTuristico.findUnique({
+            where: {
+                usuarioId_paqueteTuristicoId: {
+                    usuarioId,
+                    paqueteTuristicoId,
+                },
+            },
         });
-        if (!favorito) {
-            throw new common_1.NotFoundException('Favorito no encontrado.');
+        if (!existingFavorite) {
+            throw new common_1.NotFoundException('Este servicio no está marcado como favorito por este usuario');
+        }
+        if (!existingFavorite) {
+            return null;
         }
         await this.prisma.favoritoPaqueteTuristico.delete({
-            where: { id },
+            where: {
+                id: existingFavorite.id,
+            },
         });
+        return { message: 'Favorito eliminado exitosamente' };
+    }
+    async findFavorites(userId) {
+        console.log('✅ Servicio - Recibido userId para favoritos:', userId);
+        const favoritosPaqueteTuristico = await this.prisma.favoritoPaqueteTuristico.findMany({
+            where: { usuarioId: userId },
+            select: { paqueteTuristicoId: true },
+        });
+        const paqueteIds = favoritosPaqueteTuristico.map(fav => fav.paqueteTuristicoId);
+        console.log('📦 Servicio - IDs de paquetes turísticos favoritos obtenidos:', paqueteIds);
+        if (paqueteIds.length === 0) {
+            return [];
+        }
+        const paquetes = await this.prisma.paqueteTuristico.findMany({
+            where: { id: { in: paqueteIds } },
+            include: {
+                emprendimiento: true,
+                servicios: {
+                    include: {
+                        servicio: true
+                    }
+                },
+                disponibilidad: true
+            }
+        });
+        console.log('📦 Servicio - Paquetes turísticos favoritos obtenidos:', paquetes);
+        return Promise.all(paquetes.map(async (paquete) => {
+            const imageables = await this.prisma.imageable.findMany({
+                where: {
+                    imageable_type: this.IMAGEABLE_TYPE,
+                    imageable_id: paquete.id,
+                },
+                include: {
+                    image: true
+                }
+            });
+            return Object.assign(Object.assign({}, paquete), { imagenes: imageables.map(imageable => ({
+                    id: imageable.image.id,
+                    url: imageable.image.url
+                })) });
+        }));
     }
     async getFavoritos() {
         return this.prisma.favoritoPaqueteTuristico.findMany();
@@ -607,18 +669,24 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
         });
     }
     async getTopFavoritos() {
-        const topFavoritos = await this.prisma.paqueteTuristico.findMany({
+        return this.prisma.favoritoPaqueteTuristico.findMany({
+            take: 10,
             orderBy: {
-                favoritosPaqueteTuristico: {
-                    _count: 'desc',
+                createdAt: 'desc',
+            },
+            include: {
+                paqueteTuristico: {
+                    include: {
+                        emprendimiento: true,
+                        servicios: {
+                            include: {
+                                servicio: true,
+                            },
+                        },
+                    },
                 },
             },
-            take: 10,
-            include: {
-                favoritosPaqueteTuristico: true,
-            },
         });
-        return topFavoritos;
     }
 };
 exports.PaquetesTuristicosService = PaquetesTuristicosService;

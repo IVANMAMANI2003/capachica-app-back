@@ -105,6 +105,10 @@ export class ServiciosService {
    * Obtiene un servicio por su ID.
    */
   async findOne(id: number, emprendimientoId?: number) {
+    // Verificar si el ID es válido
+    if (id === undefined || id === null) {
+        throw new BadRequestException('El ID del servicio es requerido');
+    }
     // Buscar el servicio por ID
     const servicio = await this.prisma.servicio.findUnique({
       where: { id },
@@ -378,4 +382,134 @@ export class ServiciosService {
       })
     );
   }
+
+
+
+  async findFavorites(userId: number) {
+    console.log('✅ Servicio - Recibido userId para favoritos:', userId);
+
+    // Obtener solo los IDs de los servicios favoritos del usuario
+    const favoriteServiceIds = await this.prisma.favoritoServicio.findMany({
+      where: { usuarioId: userId },
+      select: { servicioId: true },
+    });
+
+    const servicioIds = favoriteServiceIds.map(fav => fav.servicioId);
+
+    console.log('📦 Servicio - IDs de servicios favoritos obtenidos:', servicioIds);
+
+    // Si no hay servicios favoritos, retornar un array vacío
+    if (servicioIds.length === 0) {
+      return [];
+    }
+
+    // Obtener los servicios correspondientes usando findMany con la cláusula 'in'
+    const servicios = await this.prisma.servicio.findMany({
+      where: { id: { in: servicioIds } },
+      include: {
+        tipoServicio: true,
+        serviciosEmprendedores: {
+          select: {
+            emprendimientoId: true,
+          },
+        },
+      },
+    });
+
+    console.log('📦 Servicio - Servicios favoritos obtenidos:', servicios);
+
+    // Mapear los resultados para incluir las imágenes
+    return Promise.all(
+      servicios.map(async (servicio) => {
+        const imgs = await this.prisma.imageable.findMany({
+          where: { imageable_type: this.IMAGEABLE_TYPE, imageable_id: servicio.id },
+          include: { image: true },
+        });
+
+        return {
+          ...servicio,
+          imagenes: imgs.map(i => ({ id: i.image.id, url: i.image.url })),
+        };
+      }),
+    );
+  }
+
+
+  /**
+   * Marca un servicio como favorito para un usuario.
+   */
+  async addFavorite(usuarioId: number, servicioId: number) {
+    // Verificar si el servicio existe
+    const servicio = await this.prisma.servicio.findUnique({ where: { id: servicioId } });
+    if (!servicio) {
+      throw new NotFoundException(`Servicio con ID ${servicioId} no encontrado`);
+    }
+
+    // Verificar si el usuario ya tiene este servicio como favorito
+    const existingFavorite = await this.prisma.favoritoServicio.findUnique({
+      where: {
+        usuarioId_servicioId: {
+          usuarioId,
+          servicioId,
+        },
+      },
+    });
+
+    if (existingFavorite) {
+      throw new BadRequestException('Este servicio ya está marcado como favorito por este usuario');
+    }
+
+    // Crear la entrada en la tabla FavoritoServicio
+    return this.prisma.favoritoServicio.create({
+      data: {
+        usuarioId,
+        servicioId,
+      },
+      include: {
+        servicio: true
+      }
+    });
+  }
+
+
+
+  /**
+   * Elimina un servicio de los favoritos de un usuario.
+   */
+  async removeFavorite(usuarioId: number, servicioId: number) {
+    // Verificar si el favorito existe
+    const existingFavorite = await this.prisma.favoritoServicio.findUnique({
+      where: {
+        usuarioId_servicioId: {
+          usuarioId,
+          servicioId,
+        },
+      },
+    });
+
+    if (!existingFavorite) {
+      throw new NotFoundException('Este servicio no está marcado como favorito por este usuario');
+    }
+
+    // Si no se encuentra el favorito, retornar null o lanzar una excepción
+    if (!existingFavorite) {
+      console.log('ServiciosService - removeFavorite: Favorite not found for user and service ID');
+      return null; // O lanzar new NotFoundException('Favorito no encontrado');
+    }
+
+    // Eliminar la entrada de la tabla FavoritoServicio
+    await this.prisma.favoritoServicio.delete({
+      where: {
+        id: existingFavorite.id,
+      },
+    });
+    return { message: 'Favorito eliminado exitosamente' };
+  }
+
+  /**
+   * Obtiene los servicios favoritos de un usuario.
+   */
+
+
 }
+

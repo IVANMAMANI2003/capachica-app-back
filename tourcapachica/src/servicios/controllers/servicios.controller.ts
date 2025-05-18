@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseIntPipe, Req, HttpException, HttpStatus, BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
+
 import { ServiciosService } from '../services/servicios.service';
 import { CreateServicioDto, CreateServicioPayloadDto } from '../dto/create-servicio.dto';
 import { UpdateServicioDto, UpdateServicioPayloadDto } from '../dto/update-servicio.dto';
@@ -213,4 +214,44 @@ export class ServiciosController {
     async findByTipoServicio(@Param('tipoServicioId') tipoServicioId: string) {
       return this.serviciosService.findByTipoServicio(+tipoServicioId);
     }
+  
+
+
+  @Post(':id/favoriteServicio')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Marcar un servicio como favorito' })
+  @ApiResponse({ status: 201, description: 'Servicio marcado como favorito exitosamente' })
+  @ApiResponse({ status: 400, description: 'Solicitud inválida' })
+  @ApiResponse({ status: 404, description: 'Servicio no encontrado' })
+  @ApiResponse({ status: 409, description: 'El servicio ya está marcado como favorito' })
+  async addFavorite(@Param('id') id: string, @Req() req) {
+    return this.serviciosService.addFavorite(req.user.id, +id);
   }
+  
+
+  @Delete(':id/favoriteServicio')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Eliminar un servicio de favoritos' })
+  @ApiResponse({ status: 200, description: 'Servicio eliminado de favoritos exitosamente' })
+  @ApiResponse({ status: 404, description: 'Servicio no encontrado en favoritos' })
+  async removeFavorite(@Param('id') id: string, @Req() req) {
+    return this.serviciosService.removeFavorite(req.user.id, +id);
+  }
+
+
+  @Get('favoritesServicio:/id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Obtener servicios favoritos del usuario autenticado' })
+  @ApiResponse({ status: 200, description: 'Lista de servicios favoritos', type: [ServicioEntity] })
+  @ApiResponse({ status: 401, description: 'No autorizado' })
+  async findFavorites(@Req() req) {
+    const userId = req.user.sub; // Asumiendo que el ID del usuario está en req.user.sub
+    console.log('✅ Controlador - Recibido userId para favoritos:', userId);
+    return this.serviciosService.findFavorites(userId);
+  }
+  
+}
+

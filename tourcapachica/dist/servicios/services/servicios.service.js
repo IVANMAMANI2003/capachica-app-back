@@ -83,6 +83,9 @@ let ServiciosService = class ServiciosService {
         }));
     }
     async findOne(id, emprendimientoId) {
+        if (id === undefined || id === null) {
+            throw new common_1.BadRequestException('El ID del servicio es requerido');
+        }
         const servicio = await this.prisma.servicio.findUnique({
             where: { id },
             include: {
@@ -277,6 +280,86 @@ let ServiciosService = class ServiciosService {
             });
             return Object.assign(Object.assign({}, s), { imagenes: imgs.map(i => ({ id: i.image.id, url: i.image.url })) });
         }));
+    }
+    async findFavorites(userId) {
+        console.log('✅ Servicio - Recibido userId para favoritos:', userId);
+        const favoriteServiceIds = await this.prisma.favoritoServicio.findMany({
+            where: { usuarioId: userId },
+            select: { servicioId: true },
+        });
+        const servicioIds = favoriteServiceIds.map(fav => fav.servicioId);
+        console.log('📦 Servicio - IDs de servicios favoritos obtenidos:', servicioIds);
+        if (servicioIds.length === 0) {
+            return [];
+        }
+        const servicios = await this.prisma.servicio.findMany({
+            where: { id: { in: servicioIds } },
+            include: {
+                tipoServicio: true,
+                serviciosEmprendedores: {
+                    select: {
+                        emprendimientoId: true,
+                    },
+                },
+            },
+        });
+        console.log('📦 Servicio - Servicios favoritos obtenidos:', servicios);
+        return Promise.all(servicios.map(async (servicio) => {
+            const imgs = await this.prisma.imageable.findMany({
+                where: { imageable_type: this.IMAGEABLE_TYPE, imageable_id: servicio.id },
+                include: { image: true },
+            });
+            return Object.assign(Object.assign({}, servicio), { imagenes: imgs.map(i => ({ id: i.image.id, url: i.image.url })) });
+        }));
+    }
+    async addFavorite(usuarioId, servicioId) {
+        const servicio = await this.prisma.servicio.findUnique({ where: { id: servicioId } });
+        if (!servicio) {
+            throw new common_1.NotFoundException(`Servicio con ID ${servicioId} no encontrado`);
+        }
+        const existingFavorite = await this.prisma.favoritoServicio.findUnique({
+            where: {
+                usuarioId_servicioId: {
+                    usuarioId,
+                    servicioId,
+                },
+            },
+        });
+        if (existingFavorite) {
+            throw new common_1.BadRequestException('Este servicio ya está marcado como favorito por este usuario');
+        }
+        return this.prisma.favoritoServicio.create({
+            data: {
+                usuarioId,
+                servicioId,
+            },
+            include: {
+                servicio: true
+            }
+        });
+    }
+    async removeFavorite(usuarioId, servicioId) {
+        const existingFavorite = await this.prisma.favoritoServicio.findUnique({
+            where: {
+                usuarioId_servicioId: {
+                    usuarioId,
+                    servicioId,
+                },
+            },
+        });
+        if (!existingFavorite) {
+            throw new common_1.NotFoundException('Este servicio no está marcado como favorito por este usuario');
+        }
+        if (!existingFavorite) {
+            console.log('ServiciosService - removeFavorite: Favorite not found for user and service ID');
+            return null;
+        }
+        await this.prisma.favoritoServicio.delete({
+            where: {
+                id: existingFavorite.id,
+            },
+        });
+        return { message: 'Favorito eliminado exitosamente' };
     }
 };
 exports.ServiciosService = ServiciosService;

@@ -9,17 +9,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateFavoritoDtoxx = void 0;
+exports.FindFavoritesDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
-class CreateFavoritoDtoxx {
+const class_validator_1 = require("class-validator");
+class FindFavoritesDto {
 }
-exports.CreateFavoritoDtoxx = CreateFavoritoDtoxx;
+exports.FindFavoritesDto = FindFavoritesDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'ID del usuario' }),
+    (0, swagger_1.ApiProperty)({ description: 'ID del usuario para obtener los servicios favoritos' }),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
-], CreateFavoritoDtoxx.prototype, "usuarioId", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)({ description: 'ID del paquete turístico' }),
-    __metadata("design:type", Number)
-], CreateFavoritoDtoxx.prototype, "paqueteTuristicoId", void 0);
-//# sourceMappingURL=create-favorito-paquete.dto.js.map
+], FindFavoritesDto.prototype, "userId", void 0);
+//# sourceMappingURL=find-favorites.dto.js.map

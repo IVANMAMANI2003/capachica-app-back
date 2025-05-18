@@ -264,25 +264,101 @@ export class LugaresTuristicosService {
     });
   }
 
-
-
-async markAsFavorite(usuarioId: number, lugarTuristicoId: number) {
-    return this.prisma.favoritoLugarTuristico.create({
-      data: {
-        usuarioId,
-        lugarTuristicoId,
-      },
+  async findFavorites(usuarioId: number) {
+    const favoriteLugarTuristicoIds = await this.prisma.favoritoLugarTuristico.findMany({
+      where: { usuarioId },
+      include: {
+        lugarTuristico: true
+      }
     });
+    const lugarturisticoIds = favoriteLugarTuristicoIds.map(favorite => favorite.lugarTuristico.id);
+    if (lugarturisticoIds.length === 0) {
+      return [];
+    }
+    const LugaresTuristicos = await this.prisma.lugarTuristico.findMany({
+      where: { id: 
+        { in: lugarturisticoIds } 
+      },
+
+    });
+
+    // Mapear los resultados para incluir las imágenes
+    return Promise.all(
+      LugaresTuristicos.map(async (lugar) => {
+        const imageables = await this.prisma.imageable.findMany({
+          where: {
+            imageable_type: this.IMAGEABLE_TYPE,
+            imageable_id: lugar.id,
+          },
+          include: {
+            image: true
+          }
+        });
+        return {
+          ...lugar,
+          imagenes: imageables.map(imageable => ({
+            id: imageable.image.id,
+            url: imageable.image.url
+          }))
+        }
+      })
+    )
+
   }
 
-  async unmarkAsFavorite(usuarioId: number, lugarTuristicoId: number) {
-    return this.prisma.favoritoLugarTuristico.deleteMany({
+
+
+async AddFavorite(usuarioId: number, lugarTuristicoId: number) {
+    // Verificar si el lugar turístico existe
+    const lugarTuristico = await this.prisma.lugarTuristico.findUnique({
+      where: { id: lugarTuristicoId },
+    });
+    if (!lugarTuristico) {
+      throw new NotFoundException('Lugar turístico no encontrado');
+    }
+
+    // Verificar si el usuario ya tiene marcado el lugar turístico como favorito
+    const favoritoExistente = await this.prisma.favoritoLugarTuristico.findFirst({
       where: {
         usuarioId,
         lugarTuristicoId,
       },
     });
+    if (favoritoExistente) {
+      throw new BadRequestException('El lugar turístico ya está marcado como favorito');
+    }
+
+    return this.prisma.favoritoLugarTuristico.create({
+      data: {
+        usuarioId,
+        lugarTuristicoId,
+      },
+      include: {
+        lugarTuristico: true
+      }
+    });
   }
+
+  async removeFavorite(usuarioId: number, lugarTuristicoId: number) {
+    // Verificar si el lugar turístico existe
+    const lugarTuristico = await this.prisma.lugarTuristico.findUnique({
+      where: { id: lugarTuristicoId },
+    });
+    if (!lugarTuristico) {
+      throw new NotFoundException('Lugar turístico no encontrado');
+    }
+
+    await this.prisma.favoritoLugarTuristico.deleteMany({
+      where: {
+        usuarioId,
+        lugarTuristicoId,
+      },
+    });
+    return {
+      message: 'Lugar turístico eliminado de favoritos'
+    };
+  }
+
 
   async getTopFavoritos() {
     return this.prisma.lugarTuristico.findMany({

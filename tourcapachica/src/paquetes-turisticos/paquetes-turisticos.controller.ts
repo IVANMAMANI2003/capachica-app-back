@@ -11,7 +11,9 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { EstadoPaquete } from './enums/estado-paquete.enum';
 import { IsEnum } from 'class-validator';
-import { CreateFavoritoDto } from './dto/create-favorito-paquete.dto';
+
+@ApiTags('paquetes-turisticos')
+@Controller('paquetes-turisticos')
 class UpdateEstadoDto {
   @ApiProperty({ description: 'Estado de la paquete turistico', enum: EstadoPaquete })
   @IsEnum(EstadoPaquete, { message: 'El estado Debe ser "activo" o "inactivo"' })
@@ -231,82 +233,44 @@ export class PaquetesTuristicosController {
     return this.paquetesTuristicosService.deleteDisponibilidad(id);
   }
   
-  @Post('favorito')
+  @Post(':id/favoritosPaquetes')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Marcar paquete turístico como favorito' })
   @ApiResponse({ status: 201, description: 'Paquete turístico marcado como favorito' })
   @ApiResponse({ status: 400, description: 'Datos inválidos' })
-  marcarFavorito(@Body() createFavoritoDto: CreateFavoritoDto) {
-    return this.paquetesTuristicosService.marcarFavorito(createFavoritoDto);
+  async addFavorite(@Param('id') id: string, @Req() req) {
+    return this.paquetesTuristicosService.addFavorite(req.user.id, +id);
+
   }
 
-  @Delete('favorito/:id')
+  
+
+  @Delete(':id/favoritosPaquetes')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Desmarcar paquete turístico como favorito' })
   @ApiResponse({ status: 200, description: 'Paquete turístico desmarcado como favorito' })
   @ApiResponse({ status: 404, description: 'Favorito no encontrado' })
-  desmarcarFavorito(@Param('id', ParseIntPipe) id: number) {
-    return this.paquetesTuristicosService.desmarcarFavorito(id);
+  async removeFavorite(@Param('id') id: string, @Req() req) {
+    return this.paquetesTuristicosService.removeFavorite(req.user.id, +id);
   }
 
-  @Get('favoritos/top')
-  @ApiOperation({ summary: 'Obtener los 10 paquetes turísticos más marcados como favoritos' })
-  @ApiResponse({ status: 200, description: 'Lista de los 10 paquetes turísticos más favoritos' })
-  async getTopFavoritos() {
-    return this.paquetesTuristicosService.getTopFavoritos();
-  }
+  // @Get('favoritos/top')
+  // @ApiOperation({ summary: 'Obtener los 10 paquetes turísticos más marcados como favoritos' })
+  // @ApiResponse({ status: 200, description: 'Lista de los 10 paquetes turísticos más favoritos' })
+  // async getTopFavoritos() {
+  //   return this.paquetesTuristicosService.getTopFavoritos();
+  // }
 
 
-@Get('favoritos')
-@ApiOperation({ summary: 'Obtener todos los favoritos' })
-@ApiResponse({ status: 200, description: 'Lista de favoritos' })
-getFavoritos() {
-  return this.paquetesTuristicosService.getFavoritos();
+@Get('favoritosPaquetes:/id')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
+@ApiOperation({ summary: 'Obtener los paquetes turísticos favoritos del usuario autenticado' })
+@ApiResponse({ status: 200, description: 'Lista de favoritos del usuario' })
+async findFavorites(@Req() req: any) {
+  const userId = req.user.id;
+  return this.paquetesTuristicosService.findFavorites(userId);
 }
-
-// @Get('favoritos/paquete/:paqueteTuristicoId')
-// @ApiOperation({ summary: 'Obtener favoritos por paquete turístico' })
-// @ApiResponse({ status: 200, description: 'Lista de favoritos del paquete turístico' })
-// getFavoritosPaqueteTuristico(@Param('paqueteTuristicoId', ParseIntPipe) paqueteTuristicoId: number) {
-//   return this.paquetesTuristicosService.getFavoritosPaqueteTuristico(paqueteTuristicoId);
-// }
-
-// @Get('favoritos/usuario/:usuarioId')
-// @ApiOperation({ summary: 'Obtener favoritos por usuario' })
-// @ApiResponse({ status: 200, description: 'Lista de favoritos del usuario' })
-// getFavoritosUsuario(@Param('usuarioId', ParseIntPipe) usuarioId: number) {
-//   return this.paquetesTuristicosService.getFavoritosUsuario(usuarioId);
-// }
-
-// @Get('favoritos/usuario/:usuarioId/paquete/:paqueteTuristicoId')
-// @ApiOperation({ summary: 'Obtener favorito por usuario y paquete turístico' })
-// @ApiResponse({ status: 200, description: 'Favorito encontrado' })
-// @ApiResponse({ status: 404, description: 'Favorito no encontrado' })
-// getFavoritosPaqueteTuristicoPorUsuario(@Param('usuarioId', ParseIntPipe) usuarioId: number, @Param('paqueteTuristicoId', ParseIntPipe) paqueteTuristicoId: number) {
-//   return this.paquetesTuristicosService.getFavoritosPaqueteTuristicoPorUsuario(usuarioId, paqueteTuristicoId);
-// }
-
-// @Get('favoritos/usuario/:usuarioId/paquete/:paqueteTuristicoId')
-// @ApiOperation({ summary: 'Obtener favorito por usuario y paquete turístico' })
-// @ApiResponse({ status: 200, description: 'Favorito encontrado' })
-// @ApiResponse({ status: 404, description: 'Favorito no encontrado' })
-// getFavoritosPaqueteTuristicoPorUsuarioIdYPaqueteTuristicoId(@Param('usuarioId', ParseIntPipe) usuarioId: number, @Param('paqueteTuristicoId', ParseIntPipe) paqueteTuristicoId: number) {
-//   return this.paquetesTuristicosService.getFavoritosPaqueteTuristicoPorUsuarioIdYPaqueteTuristicoId(usuarioId, paqueteTuristicoId);
-// }
-
-// @Get('favoritos/usuario/:usuarioId')
-// @ApiOperation({ summary: 'Obtener favoritos por usuario' })
-// @ApiResponse({ status: 200, description: 'Lista de favoritos del usuario' })
-// getFavoritosPaqueteTuristicoPorUsuarioId(@Param('usuarioId', ParseIntPipe) usuarioId: number) {
-//   return this.paquetesTuristicosService.getFavoritosPaqueteTuristicoPorUsuarioId(usuarioId);
-// }
-
-// @Get('favoritos/paquete/:paqueteTuristicoId')
-// @ApiOperation({ summary: 'Obtener favoritos por paquete turístico' })
-// @ApiResponse({ status: 200, description: 'Lista de favoritos del paquete turístico' })
-// getFavoritosPaqueteTuristicoPorPaqueteTuristicoId(@Param('paqueteTuristicoId', ParseIntPipe) paqueteTuristicoId: number) {
-//   return this.paquetesTuristicosService.getFavoritosPaqueteTuristicoPorPaqueteTuristicoId(paqueteTuristicoId);
-// }
 }

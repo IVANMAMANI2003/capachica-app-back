@@ -1,6 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, Req } from '@nestjs/common';
 import { Request as ExpressRequest } from 'express';
-import { EmprendimientosService } from './emprendimientos.service';
 import { CreateEmprendimientoDto } from './dto/create-emprendimiento.dto';
 import { UpdateEmprendimientoDto } from './dto/update-emprendimiento.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -10,6 +9,7 @@ import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiBody } from '@nes
 import { EmprendimientoEntity } from './entities/emprendimiento.entity';
 import { CreateFavoritoDto } from './dto/create-favorito-emprendimiento.dto';
 import { FavoritoEntity } from './entities/favorito.entity';
+import { EmprendimientosService } from './emprendimientos.service';
 
 interface RequestWithUser extends ExpressRequest {
   user: {
@@ -94,38 +94,34 @@ export class EmprendimientosController {
 
 
   // Endpoints para favoritos
-  @Post('favoritos')
+  @Post(':id/favoritosEmprendimiento')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('Emprendedor', 'SuperAdmin', 'User')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Marcar un emprendimiento como favorito' })
-  @ApiResponse({ status: 201, description: 'Emprendimiento marcado como favorito', type: FavoritoEntity })
+  @ApiResponse({ status: 201, description: 'Emprendimiento marcado como favorito'})
   @ApiResponse({ status: 400, description: 'Datos inválidos o emprendimiento ya marcado como favorito' })
   @ApiResponse({ status: 404, description: 'Emprendimiento no encontrado' })
-  @ApiBody({ type: CreateFavoritoDto })
-  addFavorito(@Request() req: RequestWithUser, @Body() createFavoritoDto: CreateFavoritoDto) {
-    return this.emprendimientosService.addFavorito(req.user.id, createFavoritoDto);
+  async addFavorito(@Param('id') id: string, @Req() req) {
+    return this.emprendimientosService.addFavorito(req.user.id, +id);
   }
 
-  @Delete('favoritos/:id')
+  @Delete(':id/favoritosEmprendimiento')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Eliminar un emprendimiento de favoritos' })
   @ApiResponse({ status: 200, description: 'Emprendimiento eliminado de favoritos' })
   @ApiResponse({ status: 404, description: 'Favorito no encontrado' })
-  removeFavorito(@Request() req: RequestWithUser, @Param('id') id: string) {
+  removeFavorito(@Param('id') id: string, @Req() req) {
     return this.emprendimientosService.removeFavorito(req.user.id, +id);
   }
 
-  @Get('favoritos')
-  @ApiOperation({ summary: 'Obtener los emprendimientos favoritos del usuario' })
+  @Get('favoritosEmprendimiento:id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Obtener los emprendimientos favoritos del usuario autenticado' })
   @ApiResponse({ status: 200, description: 'Lista de emprendimientos favoritos', type: [FavoritoEntity] })
   getFavoritos(@Request() req: RequestWithUser) {
     return this.emprendimientosService.getFavoritos(req.user.id);
   }
 
-  @Get('favoritos/:id/check')
-  @ApiOperation({ summary: 'Verificar si un emprendimiento está marcado como favorito' })
-  @ApiResponse({ status: 200, description: 'Estado del favorito', type: Boolean })
-  isFavorito(@Request() req: RequestWithUser, @Param('id') id: string) {
-    return this.emprendimientosService.isFavorito(req.user.id, +id);
-  }
 }

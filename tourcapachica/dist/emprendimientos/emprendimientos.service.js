@@ -261,13 +261,10 @@ let EmprendimientosService = class EmprendimientosService {
         }
         return emprendimiento;
     }
-    async addFavorito(usuarioId, createFavoritoDto) {
-        const { emprendimientoId } = createFavoritoDto;
-        const emprendimiento = await this.prisma.emprendimiento.findUnique({
-            where: { id: emprendimientoId }
-        });
+    async addFavorito(usuarioId, emprendimientoId) {
+        const emprendimiento = await this.prisma.emprendimiento.findUnique({ where: { id: emprendimientoId } });
         if (!emprendimiento) {
-            throw new common_1.NotFoundException(`Emprendimiento con ID ${emprendimientoId} no encontrado`);
+            throw new common_1.NotFoundException(`Servicio con ID ${emprendimientoId} no encontrado`);
         }
         const favoritoExistente = await this.prisma.favoritoEmprendimiento.findFirst({
             where: {
@@ -290,17 +287,22 @@ let EmprendimientosService = class EmprendimientosService {
         return favorito;
     }
     async removeFavorito(usuarioId, emprendimientoId) {
-        const favorito = await this.prisma.favoritoEmprendimiento.findFirst({
+        const existingFavorite = await this.prisma.favoritoEmprendimiento.findUnique({
             where: {
-                usuarioId,
-                emprendimientoId
-            }
+                usuarioId_emprendimientoId: {
+                    usuarioId,
+                    emprendimientoId,
+                },
+            },
         });
-        if (!favorito) {
+        if (!existingFavorite) {
+            throw new common_1.NotFoundException('Este emprendimiento no está marcado como favorito por este usuario');
+        }
+        if (!existingFavorite) {
             throw new common_1.NotFoundException('Favorito no encontrado');
         }
         await this.prisma.favoritoEmprendimiento.delete({
-            where: { id: favorito.id }
+            where: { id: existingFavorite.id }
         });
         return { message: 'Favorito eliminado exitosamente' };
     }

@@ -1,7 +1,6 @@
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateEmprendimientoDto } from './dto/create-emprendimiento.dto';
 import { UpdateEmprendimientoDto } from './dto/update-emprendimiento.dto';
-import { CreateFavoritoDto } from './dto/create-favorito-emprendimiento.dto';
 import { SupabaseService } from '../supabase/supabase.service';
 export declare class EmprendimientosService {
     private prisma;
@@ -17,10 +16,10 @@ export declare class EmprendimientosService {
         usuario: {
             persona: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
                 direccion: string | null;
+                createdAt: Date;
+                updatedAt: Date;
                 apellidos: string;
                 telefono: string | null;
                 fotoPerfilUrl: string | null;
@@ -28,9 +27,11 @@ export declare class EmprendimientosService {
                 subdivisionId: number;
             };
         } & {
-            email: string;
             id: number;
+            createdAt: Date;
+            updatedAt: Date;
             personaId: number;
+            email: string;
             passwordHash: string;
             recoveryToken: string | null;
             recoveryTokenExpiresAt: Date | null;
@@ -39,16 +40,12 @@ export declare class EmprendimientosService {
             estaActivo: boolean | null;
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue | null;
-            createdAt: Date;
-            updatedAt: Date;
         };
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         usuarioId: number;
+        lugarTuristicoId: number | null;
         nombre: string;
         descripcion: string | null;
-        lugarTuristicoId: number | null;
         tipo: string;
         direccion: string | null;
         latitud: number | null;
@@ -59,6 +56,8 @@ export declare class EmprendimientosService {
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
         estado: string;
         fechaAprobacion: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     findAll(): Promise<{
         imagenes: {
@@ -68,10 +67,10 @@ export declare class EmprendimientosService {
         usuario: {
             persona: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
                 direccion: string | null;
+                createdAt: Date;
+                updatedAt: Date;
                 apellidos: string;
                 telefono: string | null;
                 fotoPerfilUrl: string | null;
@@ -79,9 +78,11 @@ export declare class EmprendimientosService {
                 subdivisionId: number;
             };
         } & {
-            email: string;
             id: number;
+            createdAt: Date;
+            updatedAt: Date;
             personaId: number;
+            email: string;
             passwordHash: string;
             recoveryToken: string | null;
             recoveryTokenExpiresAt: Date | null;
@@ -90,16 +91,12 @@ export declare class EmprendimientosService {
             estaActivo: boolean | null;
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue | null;
-            createdAt: Date;
-            updatedAt: Date;
         };
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         usuarioId: number;
+        lugarTuristicoId: number | null;
         nombre: string;
         descripcion: string | null;
-        lugarTuristicoId: number | null;
         tipo: string;
         direccion: string | null;
         latitud: number | null;
@@ -110,6 +107,8 @@ export declare class EmprendimientosService {
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
         estado: string;
         fechaAprobacion: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
     }[]>;
     findOne(id: number): Promise<{
         imagenes: {
@@ -119,10 +118,10 @@ export declare class EmprendimientosService {
         usuario: {
             persona: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
                 direccion: string | null;
+                createdAt: Date;
+                updatedAt: Date;
                 apellidos: string;
                 telefono: string | null;
                 fotoPerfilUrl: string | null;
@@ -130,9 +129,11 @@ export declare class EmprendimientosService {
                 subdivisionId: number;
             };
         } & {
-            email: string;
             id: number;
+            createdAt: Date;
+            updatedAt: Date;
             personaId: number;
+            email: string;
             passwordHash: string;
             recoveryToken: string | null;
             recoveryTokenExpiresAt: Date | null;
@@ -141,16 +142,12 @@ export declare class EmprendimientosService {
             estaActivo: boolean | null;
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue | null;
-            createdAt: Date;
-            updatedAt: Date;
         };
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         usuarioId: number;
+        lugarTuristicoId: number | null;
         nombre: string;
         descripcion: string | null;
-        lugarTuristicoId: number | null;
         tipo: string;
         direccion: string | null;
         latitud: number | null;
@@ -161,6 +158,8 @@ export declare class EmprendimientosService {
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
         estado: string;
         fechaAprobacion: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     findByUsuario(usuarioId: number): Promise<{
         imagenes: {
@@ -170,10 +169,10 @@ export declare class EmprendimientosService {
         usuario: {
             persona: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
                 direccion: string | null;
+                createdAt: Date;
+                updatedAt: Date;
                 apellidos: string;
                 telefono: string | null;
                 fotoPerfilUrl: string | null;
@@ -181,9 +180,11 @@ export declare class EmprendimientosService {
                 subdivisionId: number;
             };
         } & {
-            email: string;
             id: number;
+            createdAt: Date;
+            updatedAt: Date;
             personaId: number;
+            email: string;
             passwordHash: string;
             recoveryToken: string | null;
             recoveryTokenExpiresAt: Date | null;
@@ -192,16 +193,12 @@ export declare class EmprendimientosService {
             estaActivo: boolean | null;
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue | null;
-            createdAt: Date;
-            updatedAt: Date;
         };
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         usuarioId: number;
+        lugarTuristicoId: number | null;
         nombre: string;
         descripcion: string | null;
-        lugarTuristicoId: number | null;
         tipo: string;
         direccion: string | null;
         latitud: number | null;
@@ -212,6 +209,8 @@ export declare class EmprendimientosService {
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
         estado: string;
         fechaAprobacion: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
     }[]>;
     update(id: number, updateEmprendimientoDto: UpdateEmprendimientoDto): Promise<{
         imagenes: {
@@ -221,10 +220,10 @@ export declare class EmprendimientosService {
         usuario: {
             persona: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
                 direccion: string | null;
+                createdAt: Date;
+                updatedAt: Date;
                 apellidos: string;
                 telefono: string | null;
                 fotoPerfilUrl: string | null;
@@ -232,9 +231,11 @@ export declare class EmprendimientosService {
                 subdivisionId: number;
             };
         } & {
-            email: string;
             id: number;
+            createdAt: Date;
+            updatedAt: Date;
             personaId: number;
+            email: string;
             passwordHash: string;
             recoveryToken: string | null;
             recoveryTokenExpiresAt: Date | null;
@@ -243,16 +244,12 @@ export declare class EmprendimientosService {
             estaActivo: boolean | null;
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue | null;
-            createdAt: Date;
-            updatedAt: Date;
         };
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         usuarioId: number;
+        lugarTuristicoId: number | null;
         nombre: string;
         descripcion: string | null;
-        lugarTuristicoId: number | null;
         tipo: string;
         direccion: string | null;
         latitud: number | null;
@@ -263,18 +260,18 @@ export declare class EmprendimientosService {
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
         estado: string;
         fechaAprobacion: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     remove(id: number): Promise<{
         message: string;
     }>;
     updateEstado(id: number, estado: string): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         usuarioId: number;
+        lugarTuristicoId: number | null;
         nombre: string;
         descripcion: string | null;
-        lugarTuristicoId: number | null;
         tipo: string;
         direccion: string | null;
         latitud: number | null;
@@ -285,16 +282,16 @@ export declare class EmprendimientosService {
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
         estado: string;
         fechaAprobacion: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
-    addFavorito(usuarioId: number, createFavoritoDto: CreateFavoritoDto): Promise<{
+    addFavorito(usuarioId: number, emprendimientoId: number): Promise<{
         emprendimiento: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             usuarioId: number;
+            lugarTuristicoId: number | null;
             nombre: string;
             descripcion: string | null;
-            lugarTuristicoId: number | null;
             tipo: string;
             direccion: string | null;
             latitud: number | null;
@@ -305,12 +302,14 @@ export declare class EmprendimientosService {
             redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
             estado: string;
             fechaAprobacion: Date | null;
+            createdAt: Date;
+            updatedAt: Date;
         };
     } & {
         id: number;
+        usuarioId: number;
         createdAt: Date;
         updatedAt: Date;
-        usuarioId: number;
         emprendimientoId: number;
     }>;
     removeFavorito(usuarioId: number, emprendimientoId: number): Promise<{
@@ -324,10 +323,10 @@ export declare class EmprendimientosService {
         usuario: {
             persona: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
                 direccion: string | null;
+                createdAt: Date;
+                updatedAt: Date;
                 apellidos: string;
                 telefono: string | null;
                 fotoPerfilUrl: string | null;
@@ -335,9 +334,11 @@ export declare class EmprendimientosService {
                 subdivisionId: number;
             };
         } & {
-            email: string;
             id: number;
+            createdAt: Date;
+            updatedAt: Date;
             personaId: number;
+            email: string;
             passwordHash: string;
             recoveryToken: string | null;
             recoveryTokenExpiresAt: Date | null;
@@ -346,16 +347,12 @@ export declare class EmprendimientosService {
             estaActivo: boolean | null;
             ultimoAcceso: Date | null;
             preferencias: import(".prisma/client/runtime/library").JsonValue | null;
-            createdAt: Date;
-            updatedAt: Date;
         };
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         usuarioId: number;
+        lugarTuristicoId: number | null;
         nombre: string;
         descripcion: string | null;
-        lugarTuristicoId: number | null;
         tipo: string;
         direccion: string | null;
         latitud: number | null;
@@ -366,6 +363,8 @@ export declare class EmprendimientosService {
         redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
         estado: string;
         fechaAprobacion: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
     }[]>;
     isFavorito(usuarioId: number, emprendimientoId: number): Promise<boolean>;
 }

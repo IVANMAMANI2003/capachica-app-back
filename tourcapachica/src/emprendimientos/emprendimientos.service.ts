@@ -331,16 +331,11 @@ export class EmprendimientosService {
     return emprendimiento;
   }
 
-  async addFavorito(usuarioId: number, createFavoritoDto: CreateFavoritoDto) {
-    const { emprendimientoId } = createFavoritoDto;
-
+  async addFavorito(usuarioId: number, emprendimientoId: number) {
     // Verificar si el emprendimiento existe
-    const emprendimiento = await this.prisma.emprendimiento.findUnique({
-      where: { id: emprendimientoId }
-    });
-
+    const emprendimiento = await this.prisma.emprendimiento.findUnique({ where: { id: emprendimientoId } });
     if (!emprendimiento) {
-      throw new NotFoundException(`Emprendimiento con ID ${emprendimientoId} no encontrado`);
+      throw new NotFoundException(`Servicio con ID ${emprendimientoId} no encontrado`);
     }
 
     // Verificar si ya existe el favorito
@@ -370,19 +365,29 @@ export class EmprendimientosService {
   }
 
   async removeFavorito(usuarioId: number, emprendimientoId: number) {
-    const favorito = await this.prisma.favoritoEmprendimiento.findFirst({
+
+    // Verificar si el emprendimiento existe
+    const existingFavorite = await this.prisma.favoritoEmprendimiento.findUnique({
       where: {
-        usuarioId,
-        emprendimientoId
-      }
+        usuarioId_emprendimientoId: {
+          usuarioId,
+          emprendimientoId,
+        },
+      },
     });
 
-    if (!favorito) {
+    if (!existingFavorite) {
+      throw new NotFoundException('Este emprendimiento no está marcado como favorito por este usuario');
+    }
+
+    // Si no se encuentra el favorito, retornar null o lanzar una excepción
+    if (!existingFavorite) {
       throw new NotFoundException('Favorito no encontrado');
     }
 
+    // Eliminar el favorito
     await this.prisma.favoritoEmprendimiento.delete({
-      where: { id: favorito.id }
+      where: { id: existingFavorite.id }
     });
 
     return { message: 'Favorito eliminado exitosamente' };

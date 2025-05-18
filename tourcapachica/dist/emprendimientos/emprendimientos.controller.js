@@ -14,7 +14,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EmprendimientosController = void 0;
 const common_1 = require("@nestjs/common");
-const emprendimientos_service_1 = require("./emprendimientos.service");
 const create_emprendimiento_dto_1 = require("./dto/create-emprendimiento.dto");
 const update_emprendimiento_dto_1 = require("./dto/update-emprendimiento.dto");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
@@ -22,8 +21,8 @@ const roles_guard_1 = require("../auth/guards/roles.guard");
 const roles_decorator_1 = require("../auth/decorators/roles.decorator");
 const swagger_1 = require("@nestjs/swagger");
 const emprendimiento_entity_1 = require("./entities/emprendimiento.entity");
-const create_favorito_emprendimiento_dto_1 = require("./dto/create-favorito-emprendimiento.dto");
 const favorito_entity_1 = require("./entities/favorito.entity");
+const emprendimientos_service_1 = require("./emprendimientos.service");
 let EmprendimientosController = class EmprendimientosController {
     constructor(emprendimientosService) {
         this.emprendimientosService = emprendimientosService;
@@ -49,17 +48,14 @@ let EmprendimientosController = class EmprendimientosController {
     remove(id) {
         return this.emprendimientosService.remove(+id);
     }
-    addFavorito(req, createFavoritoDto) {
-        return this.emprendimientosService.addFavorito(req.user.id, createFavoritoDto);
+    async addFavorito(id, req) {
+        return this.emprendimientosService.addFavorito(req.user.id, +id);
     }
-    removeFavorito(req, id) {
+    removeFavorito(id, req) {
         return this.emprendimientosService.removeFavorito(req.user.id, +id);
     }
     getFavoritos(req) {
         return this.emprendimientosService.getFavoritos(req.user.id);
-    }
-    isFavorito(req, id) {
-        return this.emprendimientosService.isFavorito(req.user.id, +id);
     }
 };
 exports.EmprendimientosController = EmprendimientosController;
@@ -146,51 +142,43 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], EmprendimientosController.prototype, "remove", null);
 __decorate([
-    (0, common_1.Post)('favoritos'),
+    (0, common_1.Post)(':id/favoritosEmprendimiento'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin', 'User'),
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Marcar un emprendimiento como favorito' }),
-    (0, swagger_1.ApiResponse)({ status: 201, description: 'Emprendimiento marcado como favorito', type: favorito_entity_1.FavoritoEntity }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Emprendimiento marcado como favorito' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos o emprendimiento ya marcado como favorito' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Emprendimiento no encontrado' }),
-    (0, swagger_1.ApiBody)({ type: create_favorito_emprendimiento_dto_1.CreateFavoritoDto }),
-    __param(0, (0, common_1.Request)()),
-    __param(1, (0, common_1.Body)()),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, create_favorito_emprendimiento_dto_1.CreateFavoritoDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
 ], EmprendimientosController.prototype, "addFavorito", null);
 __decorate([
-    (0, common_1.Delete)('favoritos/:id'),
+    (0, common_1.Delete)(':id/favoritosEmprendimiento'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Eliminar un emprendimiento de favoritos' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Emprendimiento eliminado de favoritos' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Favorito no encontrado' }),
-    __param(0, (0, common_1.Request)()),
-    __param(1, (0, common_1.Param)('id')),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
 ], EmprendimientosController.prototype, "removeFavorito", null);
 __decorate([
-    (0, common_1.Get)('favoritos'),
-    (0, swagger_1.ApiOperation)({ summary: 'Obtener los emprendimientos favoritos del usuario' }),
+    (0, common_1.Get)('favoritosEmprendimiento:id'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener los emprendimientos favoritos del usuario autenticado' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Lista de emprendimientos favoritos', type: [favorito_entity_1.FavoritoEntity] }),
     __param(0, (0, common_1.Request)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], EmprendimientosController.prototype, "getFavoritos", null);
-__decorate([
-    (0, common_1.Get)('favoritos/:id/check'),
-    (0, swagger_1.ApiOperation)({ summary: 'Verificar si un emprendimiento está marcado como favorito' }),
-    (0, swagger_1.ApiResponse)({ status: 200, description: 'Estado del favorito', type: Boolean }),
-    __param(0, (0, common_1.Request)()),
-    __param(1, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String]),
-    __metadata("design:returntype", void 0)
-], EmprendimientosController.prototype, "isFavorito", null);
 exports.EmprendimientosController = EmprendimientosController = __decorate([
     (0, swagger_1.ApiTags)('emprendimientos'),
     (0, common_1.Controller)('emprendimientos'),

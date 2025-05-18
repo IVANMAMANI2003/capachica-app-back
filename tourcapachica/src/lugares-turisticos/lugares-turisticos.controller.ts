@@ -84,38 +84,50 @@ export class LugaresTuristicosController {
   }
 
 
-@Post('favorito/:lugarTuristicoId')
+@Post(':id/favoriteLugar')
 @UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
 @ApiOperation({ summary: 'Marcar un lugar turístico como favorito' })
 @ApiResponse({ status: 201, description: 'Lugar turístico marcado como favorito' })
-async markAsFavorite(@Param('lugarTuristicoId') lugarTuristicoId: number, @Req() req: any) {
-  const userId = req.user.id;
-  return this.lugaresTuristicosService.markAsFavorite(userId, lugarTuristicoId);
+@ApiResponse({ status: 400, description: 'Solicitud inválida' })
+@ApiResponse({ status: 404, description: 'Lugar Turistico no encontrado' })
+@ApiResponse({ status: 409, description: 'El Lugar Turistico ya está marcado como favorito' })
+async AddFavorite(@Param('id') id: string, @Req() req) {
+  return this.lugaresTuristicosService.AddFavorite(req.user.id, +id);
 }
 
-@Delete('favorito/:lugarTuristicoId')
+@Delete(':id/favoriteLugar')
 @UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
 @ApiOperation({ summary: 'Desmarcar un lugar turístico como favorito' })
 @ApiResponse({ status: 200, description: 'Lugar turístico desmarcado como favorito' })
-async unmarkAsFavorite(@Param('lugarTuristicoId') lugarTuristicoId: number, @Req() req: any) {
-  const userId = req.user.id;
-  return this.lugaresTuristicosService.unmarkAsFavorite(userId, lugarTuristicoId);
+async removeFavorite(@Param('id') id: string, @Req() req) {
+  return this.lugaresTuristicosService.removeFavorite(req.user.id, +id);
 }
 
-@Get('favoritos/top')
-@ApiOperation({ summary: 'Obtener los 10 lugares turísticos más marcados como favoritos' })
-@ApiResponse({ status: 200, description: 'Lista de los 10 lugares turísticos más favoritos' })
-async getTopFavoritos() {
-  return this.lugaresTuristicosService.getTopFavoritos();
+@Get('favoritelugar:/id')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
+@ApiOperation({ summary: 'Obtener lugares Turisticos favoritos del usuario autenticado' })
+@ApiResponse({ status: 200, description: 'Lista de lugares turísticos favoritos' })
+async findFavorites(@Req() req) {
+  const userId = req.user.sub; 
+  return this.lugaresTuristicosService.findFavorites(userId);
 }
 
-@Get('favoritos/count')
-@ApiOperation({ summary: 'Contar el total de favoritos' })
-@ApiResponse({ status: 200, description: 'Total de favoritos contados' })
-async countTotalFavoritos() {
-  return this.lugaresTuristicosService.countTotalFavoritos();
-}
+
+// @Get('favoritos/top')
+// @ApiOperation({ summary: 'Obtener los 10 lugares turísticos más marcados como favoritos' })
+// @ApiResponse({ status: 200, description: 'Lista de los 10 lugares turísticos más favoritos' })
+// async getTopFavoritos() {
+//   return this.lugaresTuristicosService.getTopFavoritos();
+// }
+
+// @Get('favoritos/count')
+// @ApiOperation({ summary: 'Contar el total de favoritos' })
+// @ApiResponse({ status: 200, description: 'Total de favoritos contados' })
+// async countTotalFavoritos() {
+//   return this.lugaresTuristicosService.countTotalFavoritos();
+// }
 
 }

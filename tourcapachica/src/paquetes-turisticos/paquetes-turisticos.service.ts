@@ -7,7 +7,6 @@ import { CreatePaqueteTuristicoDto } from './dto/create-paquete-turistico.dto';
 import { UpdatePaqueteTuristicoDto } from './dto/update-paquete-turistico.dto';
 import { AddServiciosDto } from './dto/add-servicios.dto';
 import { EstadisticasPaqueteDto } from './dto/estadisticas.dto';
-import { CreateFavoritoDto } from './dto/create-favorito-paquete.dto';
 import { FavoritoPaqueteTuristico } from '@prisma/client';
 
 @Injectable()
@@ -652,16 +651,27 @@ export class PaquetesTuristicosService {
     });
   }
 
-  async marcarFavorito(createFavoritoDto: CreateFavoritoDto): Promise<FavoritoPaqueteTuristico> {
-    const { usuarioId, paqueteTuristicoId } = createFavoritoDto;
+  async addFavorite(usuarioId: number, paqueteTuristicoId: number ) {
 
     // Verificar si el favorito ya existe
-    const favoritoExistente = await this.prisma.favoritoPaqueteTuristico.findUnique({
-      where: { usuarioId_paqueteTuristicoId: { usuarioId, paqueteTuristicoId } },
+
+    const paqueteTuristico = await this.prisma.paqueteTuristico.findUnique({ where: { id: paqueteTuristicoId } });
+    if (!paqueteTuristico) {
+      throw new NotFoundException(`Paquete con ID ${paqueteTuristicoId} no encontrado`);
+    }
+
+    // Verificar si el usuario ya tiene este Paquete turistico como favorito
+    const existingFavorite = await this.prisma.favoritoPaqueteTuristico.findUnique({
+      where: {
+        usuarioId_paqueteTuristicoId: {
+          usuarioId,
+          paqueteTuristicoId,
+        },
+      },
     });
 
-    if (favoritoExistente) {
-      throw new BadRequestException('El paquete turístico ya está marcado como favorito.');
+    if (existingFavorite) {
+      throw new BadRequestException('Este Paquete Turistico, ya está marcado como favorito por este usuario');
     }
 
     // Crear el nuevo favorito
@@ -670,24 +680,99 @@ export class PaquetesTuristicosService {
         usuarioId,
         paqueteTuristicoId,
       },
+      include: {
+        paqueteTuristico: true
+      }
     });
   }
 
-  async desmarcarFavorito(id: number): Promise<void> {
-    const favorito = await this.prisma.favoritoPaqueteTuristico.findUnique({
-      where: { id },
+   
+  async removeFavorite(usuarioId: number, paqueteTuristicoId: number) {
+
+    // Verificar si el favorito existe
+    const existingFavorite = await this.prisma.favoritoPaqueteTuristico.findUnique({
+      where: {
+        usuarioId_paqueteTuristicoId: {
+          usuarioId,
+          paqueteTuristicoId,
+        },
+      },
     });
 
-    if (!favorito) {
-      throw new NotFoundException('Favorito no encontrado.');
+    if (!existingFavorite) {
+      throw new NotFoundException('Este servicio no está marcado como favorito por este usuario');
+    }
+       // Si no se encuentra el favorito, retornar null o lanzar una excepción
+       if (!existingFavorite) {
+        return null; // O lanzar new NotFoundException('Favorito no encontrado');
+      }
+  
+      // Eliminar la entrada de la tabla FavoritoServicio
+      await this.prisma.favoritoPaqueteTuristico.delete({
+        where: {
+          id: existingFavorite.id,
+        },
+      });
+      return { message: 'Favorito eliminado exitosamente' };
+  }
+
+  async findFavorites(userId: number) {
+    console.log('✅ Servicio - Recibido userId para favoritos:', userId);
+
+    // Obtener solo los IDs de los paquetes turísticos favoritos del usuario
+    const favoritosPaqueteTuristico = await this.prisma.favoritoPaqueteTuristico.findMany({
+      where: { usuarioId: userId },
+      select: { paqueteTuristicoId: true },
+    });
+
+    const paqueteIds = favoritosPaqueteTuristico.map(fav => fav.paqueteTuristicoId);
+
+    console.log('📦 Servicio - IDs de paquetes turísticos favoritos obtenidos:', paqueteIds);
+
+    // Si no hay paquetes turísticos favoritos, retornar un array vacío
+    if (paqueteIds.length === 0) {
+      return [];
     }
 
-    await this.prisma.favoritoPaqueteTuristico.delete({
-      where: { id },
+    // Obtener los paquetes turísticos correspondientes usando findMany con la cláusula 'in'
+    const paquetes = await this.prisma.paqueteTuristico.findMany({
+      where: { id: { in: paqueteIds } },
+      include: {
+        emprendimiento: true,
+        servicios: {
+          include: {
+            servicio: true
+          }
+        },
+        disponibilidad: true
+      }
     });
+
+    console.log('📦 Servicio - Paquetes turísticos favoritos obtenidos:', paquetes);
+
+    // Mapear los resultados para incluir las imágenes
+    return Promise.all(
+      paquetes.map(async (paquete) => {
+        const imageables = await this.prisma.imageable.findMany({
+          where: {
+            imageable_type: this.IMAGEABLE_TYPE,
+            imageable_id: paquete.id,
+          },
+          include: {
+            image: true
+          }
+        });
+        return { 
+          ...paquete, 
+          imagenes: imageables.map(imageable => ({
+            id: imageable.image.id,
+            url: imageable.image.url
+          }))
+        };
+      })
+    );
   }
 
-  
   async getFavoritos() {
     return this.prisma.favoritoPaqueteTuristico.findMany();
   }
@@ -736,18 +821,62 @@ export class PaquetesTuristicosService {
     });
   }
   async getTopFavoritos() {
-    const topFavoritos = await this.prisma.paqueteTuristico.findMany({
+    return this.prisma.favoritoPaqueteTuristico.findMany({
+      take: 10,
       orderBy: {
-        favoritosPaqueteTuristico: {
-          _count: 'desc',
+        createdAt: 'desc',
+      },
+      include: {
+        paqueteTuristico: {
+          include: {
+            emprendimiento: true,
+            servicios: {
+              include: {
+                servicio: true,
+              },
+            },
+          },
         },
       },
-      take: 10,
-      include: {
-        favoritosPaqueteTuristico: true,
-      },
     });
-    return topFavoritos;
   }
+
+
+
+
+  // /**
+  //  * Elimina un servicio de los favoritos de un usuario.
+  //  */
+  // async removeFavorite(usuarioId: number, servicioId: number) {
+  //   // Verificar si el favorito existe
+  //   const existingFavorite = await this.prisma.favoritoServicio.findUnique({
+  //     where: {
+  //       usuarioId_servicioId: {
+  //         usuarioId,
+  //         servicioId,
+  //       },
+  //     },
+  //   });
+
+  //   if (!existingFavorite) {
+  //     throw new NotFoundException('Este servicio no está marcado como favorito por este usuario');
+  //   }
+
+  //   // Si no se encuentra el favorito, retornar null o lanzar una excepción
+  //   if (!existingFavorite) {
+  //     console.log('ServiciosService - removeFavorite: Favorite not found for user and service ID');
+  //     return null; // O lanzar new NotFoundException('Favorito no encontrado');
+  //   }
+
+  //   // Eliminar la entrada de la tabla FavoritoServicio
+  //   return this.prisma.favoritoServicio.delete({
+  //     where: {
+  //       id: existingFavorite.id,
+  //     },
+  //   });
+  // }
+
+
+
 }
 

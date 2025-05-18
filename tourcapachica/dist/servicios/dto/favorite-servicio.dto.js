@@ -9,17 +9,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateFavoritoDtoxx = void 0;
+exports.FavoriteServicioDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
-class CreateFavoritoDtoxx {
+const class_validator_1 = require("class-validator");
+class FavoriteServicioDto {
 }
-exports.CreateFavoritoDtoxx = CreateFavoritoDtoxx;
+exports.FavoriteServicioDto = FavoriteServicioDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'ID del usuario' }),
+    (0, swagger_1.ApiProperty)({ description: 'ID del favorito', example: 1 }),
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
-], CreateFavoritoDtoxx.prototype, "usuarioId", void 0);
+], FavoriteServicioDto.prototype, "id", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'ID del paquete turístico' }),
+    (0, swagger_1.ApiProperty)({ description: 'ID del usuario que marcó como favorito', example: 1 }),
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
-], CreateFavoritoDtoxx.prototype, "paqueteTuristicoId", void 0);
-//# sourceMappingURL=create-favorito-paquete.dto.js.map
+], FavoriteServicioDto.prototype, "usuarioId", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ description: 'ID del servicio marcado como favorito', example: 1 }),
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Number)
+], FavoriteServicioDto.prototype, "servicioId", void 0);
+//# sourceMappingURL=favorite-servicio.dto.js.map

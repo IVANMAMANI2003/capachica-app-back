@@ -1,4 +1,4 @@
-export declare class CreateFavoritoDto {
+export declare class CreateFavoritoDtoxx {
     usuarioId: number;
     paqueteTuristicoId: number;
 }

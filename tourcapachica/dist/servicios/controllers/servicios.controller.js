@@ -131,6 +131,17 @@ let ServiciosController = class ServiciosController {
     async findByTipoServicio(tipoServicioId) {
         return this.serviciosService.findByTipoServicio(+tipoServicioId);
     }
+    async addFavorite(id, req) {
+        return this.serviciosService.addFavorite(req.user.id, +id);
+    }
+    async removeFavorite(id, req) {
+        return this.serviciosService.removeFavorite(req.user.id, +id);
+    }
+    async findFavorites(req) {
+        const userId = req.user.sub;
+        console.log('✅ Controlador - Recibido userId para favoritos:', userId);
+        return this.serviciosService.findFavorites(userId);
+    }
 };
 exports.ServiciosController = ServiciosController;
 __decorate([
@@ -223,6 +234,46 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], ServiciosController.prototype, "findByTipoServicio", null);
+__decorate([
+    (0, common_1.Post)(':id/favoriteServicio'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Marcar un servicio como favorito' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Servicio marcado como favorito exitosamente' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Solicitud inválida' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Servicio no encontrado' }),
+    (0, swagger_1.ApiResponse)({ status: 409, description: 'El servicio ya está marcado como favorito' }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], ServiciosController.prototype, "addFavorite", null);
+__decorate([
+    (0, common_1.Delete)(':id/favoriteServicio'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Eliminar un servicio de favoritos' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Servicio eliminado de favoritos exitosamente' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Servicio no encontrado en favoritos' }),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], ServiciosController.prototype, "removeFavorite", null);
+__decorate([
+    (0, common_1.Get)('favoritesServicio:/id'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtener servicios favoritos del usuario autenticado' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Lista de servicios favoritos', type: [servicio_entity_1.ServicioEntity] }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'No autorizado' }),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ServiciosController.prototype, "findFavorites", null);
 exports.ServiciosController = ServiciosController = __decorate([
     (0, swagger_1.ApiTags)('servicios'),
     (0, common_1.Controller)('servicios'),
