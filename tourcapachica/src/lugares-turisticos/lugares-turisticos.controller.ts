@@ -105,7 +105,7 @@ async removeFavorite(@Param('id') id: string, @Req() req) {
   return this.lugaresTuristicosService.removeFavorite(req.user.id, +id);
 }
 
-@Get('favoritelugar:/id')
+@Get('favoritelugar/:id')
 @UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
 @ApiOperation({ summary: 'Obtener lugares Turisticos favoritos del usuario autenticado' })

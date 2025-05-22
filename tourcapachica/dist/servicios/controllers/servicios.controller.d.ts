@@ -22,17 +22,17 @@ export declare class ServiciosController {
             emprendimientoId: number;
         }[];
         id: number;
+        tipoServicioId: number;
         nombre: string;
         descripcion: string | null;
         latitud: number | null;
         longitud: number | null;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
-        tipoServicioId: number;
         precioBase: import(".prisma/client/runtime/library").Decimal;
         moneda: string;
+        estado: string;
         detallesServicio: import(".prisma/client/runtime/library").JsonValue;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     findAll(): Promise<{
         imagenes: {
@@ -51,17 +51,17 @@ export declare class ServiciosController {
             emprendimientoId: number;
         }[];
         id: number;
+        tipoServicioId: number;
         nombre: string;
         descripcion: string | null;
         latitud: number | null;
         longitud: number | null;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
-        tipoServicioId: number;
         precioBase: import(".prisma/client/runtime/library").Decimal;
         moneda: string;
+        estado: string;
         detallesServicio: import(".prisma/client/runtime/library").JsonValue;
+        createdAt: Date;
+        updatedAt: Date;
     }[]>;
     findOne(id: string): Promise<{
         imagenes: {
@@ -80,17 +80,17 @@ export declare class ServiciosController {
             emprendimientoId: number;
         }[];
         id: number;
+        tipoServicioId: number;
         nombre: string;
         descripcion: string | null;
         latitud: number | null;
         longitud: number | null;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
-        tipoServicioId: number;
         precioBase: import(".prisma/client/runtime/library").Decimal;
         moneda: string;
+        estado: string;
         detallesServicio: import(".prisma/client/runtime/library").JsonValue;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     update(id: string, dto: UpdateServicioPayloadDto, req: any): Promise<{
         imagenes: {
@@ -109,31 +109,31 @@ export declare class ServiciosController {
             emprendimientoId: number;
         }[];
         id: number;
+        tipoServicioId: number;
         nombre: string;
         descripcion: string | null;
         latitud: number | null;
         longitud: number | null;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
-        tipoServicioId: number;
         precioBase: import(".prisma/client/runtime/library").Decimal;
         moneda: string;
+        estado: string;
         detallesServicio: import(".prisma/client/runtime/library").JsonValue;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     remove(id: string, req: any): Promise<{
         id: number;
+        tipoServicioId: number;
         nombre: string;
         descripcion: string | null;
         latitud: number | null;
         longitud: number | null;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
-        tipoServicioId: number;
         precioBase: import(".prisma/client/runtime/library").Decimal;
         moneda: string;
+        estado: string;
         detallesServicio: import(".prisma/client/runtime/library").JsonValue;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     updateEstado(id: string, updateEstadoDto: UpdateEstadoDto, req: any): Promise<{
         tipoServicio: {
@@ -147,22 +147,22 @@ export declare class ServiciosController {
         serviciosEmprendedores: ({
             emprendimiento: {
                 id: number;
-                usuarioId: number;
-                lugarTuristicoId: number | null;
                 nombre: string;
                 descripcion: string | null;
-                tipo: string;
-                direccion: string | null;
                 latitud: number | null;
                 longitud: number | null;
+                estado: string;
+                createdAt: Date;
+                updatedAt: Date;
+                usuarioId: number;
+                lugarTuristicoId: number | null;
+                tipo: string;
+                direccion: string | null;
                 contactoTelefono: string | null;
                 contactoEmail: string | null;
                 sitioWeb: string | null;
                 redesSociales: import(".prisma/client/runtime/library").JsonValue | null;
-                estado: string;
                 fechaAprobacion: Date | null;
-                createdAt: Date;
-                updatedAt: Date;
             };
         } & {
             id: number;
@@ -173,17 +173,17 @@ export declare class ServiciosController {
         })[];
     } & {
         id: number;
+        tipoServicioId: number;
         nombre: string;
         descripcion: string | null;
         latitud: number | null;
         longitud: number | null;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
-        tipoServicioId: number;
         precioBase: import(".prisma/client/runtime/library").Decimal;
         moneda: string;
+        estado: string;
         detallesServicio: import(".prisma/client/runtime/library").JsonValue;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     findByTipoServicio(tipoServicioId: string): Promise<{
         imagenes: {
@@ -199,39 +199,39 @@ export declare class ServiciosController {
             requiereCupo: boolean;
         };
         id: number;
+        tipoServicioId: number;
         nombre: string;
         descripcion: string | null;
         latitud: number | null;
         longitud: number | null;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
-        tipoServicioId: number;
         precioBase: import(".prisma/client/runtime/library").Decimal;
         moneda: string;
+        estado: string;
         detallesServicio: import(".prisma/client/runtime/library").JsonValue;
+        createdAt: Date;
+        updatedAt: Date;
     }[]>;
     addFavorite(id: string, req: any): Promise<{
         servicio: {
             id: number;
+            tipoServicioId: number;
             nombre: string;
             descripcion: string | null;
             latitud: number | null;
             longitud: number | null;
-            estado: string;
-            createdAt: Date;
-            updatedAt: Date;
-            tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
+            estado: string;
             detallesServicio: import(".prisma/client/runtime/library").JsonValue;
+            createdAt: Date;
+            updatedAt: Date;
         };
     } & {
         id: number;
-        usuarioId: number;
         createdAt: Date;
         updatedAt: Date;
         servicioId: number;
+        usuarioId: number;
     }>;
     removeFavorite(id: string, req: any): Promise<{
         message: string;
@@ -253,16 +253,16 @@ export declare class ServiciosController {
             emprendimientoId: number;
         }[];
         id: number;
+        tipoServicioId: number;
         nombre: string;
         descripcion: string | null;
         latitud: number | null;
         longitud: number | null;
-        estado: string;
-        createdAt: Date;
-        updatedAt: Date;
-        tipoServicioId: number;
         precioBase: import(".prisma/client/runtime/library").Decimal;
         moneda: string;
+        estado: string;
         detallesServicio: import(".prisma/client/runtime/library").JsonValue;
+        createdAt: Date;
+        updatedAt: Date;
     }[]>;
 }

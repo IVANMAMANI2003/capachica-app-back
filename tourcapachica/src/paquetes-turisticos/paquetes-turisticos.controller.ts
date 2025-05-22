@@ -264,7 +264,7 @@ export class PaquetesTuristicosController {
   // }
 
 
-@Get('favoritosPaquetes:/id')
+@Get('favoritosPaquetes/:id')
 @UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
 @ApiOperation({ summary: 'Obtener los paquetes turísticos favoritos del usuario autenticado' })

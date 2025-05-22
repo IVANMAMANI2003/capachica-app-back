@@ -241,7 +241,7 @@ export class ServiciosController {
   }
 
 
-  @Get('favoritesServicio:/id')
+  @Get('favoritesServicio/:id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Obtener servicios favoritos del usuario autenticado' })

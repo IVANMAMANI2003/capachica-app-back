@@ -115,7 +115,7 @@ export class EmprendimientosController {
     return this.emprendimientosService.removeFavorito(req.user.id, +id);
   }
 
-  @Get('favoritosEmprendimiento:id')
+  @Get('favoritosEmprendimiento/:id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Obtener los emprendimientos favoritos del usuario autenticado' })
