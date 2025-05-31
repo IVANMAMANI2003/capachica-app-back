@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsOptional, IsBoolean, IsNumber, IsUrl, IsEnum, IsArray, MaxLength, IsTimeZone, Matches, Min, IsDate } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsBoolean, IsNumber, IsUrl, IsEnum, IsArray, MaxLength, IsTimeZone, Matches, Min, IsDate, IsNumberString } from 'class-validator';
 import { Type } from 'class-transformer';
+import { Prisma } from '@prisma/client';
 
 export class ImageDto {
   @ApiProperty({
@@ -114,16 +115,18 @@ export class CreateLugarTuristicoDto {
   @Type(() => Date)
   horarioCierre?: Date;
 
+
+
   @ApiProperty({
     description: 'Costo de entrada',
-    example: 20.00,
+    example: '20.00',
     required: false,
-    type: Number
+    type: String,
   })
-  @IsNumber()
   @IsOptional()
-  @Min(0)
-  costoEntrada?: number;
+  @Matches(/^\d+(\.\d{1,2})?$/, { message: 'El costo debe ser un número decimal con hasta 2 decimales.' })
+  costoEntrada: Prisma.Decimal;
+
 
   @ApiProperty({
     description: 'Recomendaciones para visitar el lugar',

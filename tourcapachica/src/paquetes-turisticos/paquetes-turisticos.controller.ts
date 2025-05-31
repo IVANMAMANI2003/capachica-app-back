@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, UseGuards, Req, ForbiddenException, BadRequestException, NotFoundException } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiParam, ApiBody, ApiProperty } from '@nestjs/swagger';
 import { PaquetesTuristicosService } from './paquetes-turisticos.service';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -11,6 +11,8 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { EstadoPaquete } from './enums/estado-paquete.enum';
 import { IsEnum } from 'class-validator';
+import { RequestWithUser } from '../auth/interfaces/request-with-user.interface';
+import { PrismaService } from '../prisma/prisma.service';
 
 @ApiTags('paquetes-turisticos')
 @Controller('paquetes-turisticos')
@@ -23,7 +25,10 @@ class UpdateEstadoDto {
 @ApiTags('paquetes-turisticos')
 @Controller('paquetes-turisticos')
 export class PaquetesTuristicosController {
-  constructor(private readonly paquetesTuristicosService: PaquetesTuristicosService) {}
+  constructor(
+    private readonly paquetesTuristicosService: PaquetesTuristicosService,
+    private readonly prisma: PrismaService
+  ) {}
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -32,30 +37,66 @@ export class PaquetesTuristicosController {
   @ApiOperation({ summary: 'Crear un nuevo paquete turístico' })
   @ApiResponse({ status: 201, description: 'Paquete turístico creado exitosamente' })
   @ApiResponse({ status: 400, description: 'Datos inválidos' })
-  create(@Body() createPaqueteTuristicoDto: CreatePaqueteTuristicoDto) {
-    return this.paquetesTuristicosService.create(createPaqueteTuristicoDto);
+  async create(
+    @Body() createPaqueteTuristicoDto: CreatePaqueteTuristicoDto,
+    @Req() req: RequestWithUser
+  ) {
+    try {
+      // If user is Emprendedor, ensure they can only create for their emprendimiento
+      if (req.user.roles.includes('Emprendedor')) {
+        const emprendimiento = await this.prisma.emprendimiento.findFirst({
+          where: { usuarioId: req.user.id }
+        });
+        if (!emprendimiento) {
+          throw new ForbiddenException('No tienes un emprendimiento asociado');
+        }
+        createPaqueteTuristicoDto.emprendimientoId = emprendimiento.id;
+      }
+
+      return this.paquetesTuristicosService.create(createPaqueteTuristicoDto);
+    } catch (error) {
+      if (error instanceof ForbiddenException) {
+        throw error;
+      }
+      throw new BadRequestException('Error al crear el paquete turístico');
+    }
   }
 
   @Get()
   @ApiOperation({ summary: 'Obtener todos los paquetes turísticos' })
   @ApiResponse({ status: 200, description: 'Lista de paquetes turísticos' })
-  findAll() {
-    return this.paquetesTuristicosService.findAll();
+  async findAll() {
+    try {
+      return this.paquetesTuristicosService.findAll();
+    } catch (error) {
+      throw new BadRequestException('Error al obtener los paquetes turísticos');
+    }
   }
 
   @Get('emprendimiento/:emprendimientoId')
   @ApiOperation({ summary: 'Obtener paquetes turísticos por emprendimiento' })
   @ApiResponse({ status: 200, description: 'Lista de paquetes turísticos del emprendimiento' })
-  findByEmprendimiento(@Param('emprendimientoId') emprendimientoId: string) {
-    return this.paquetesTuristicosService.findByEmprendimiento(+emprendimientoId);
+  async findByEmprendimiento(@Param('emprendimientoId') emprendimientoId: string) {
+    try {
+      return this.paquetesTuristicosService.findByEmprendimiento(Number(emprendimientoId));
+    } catch (error) {
+      throw new BadRequestException('Error al obtener los paquetes turísticos del emprendimiento');
+    }
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Obtener un paquete turístico por ID' })
   @ApiResponse({ status: 200, description: 'Paquete turístico encontrado' })
   @ApiResponse({ status: 404, description: 'Paquete turístico no encontrado' })
-  findOne(@Param('id') id: string) {
-    return this.paquetesTuristicosService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    try {
+      return this.paquetesTuristicosService.findOne(Number(id));
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new BadRequestException('Error al obtener el paquete turístico');
+    }
   }
 
   @Patch(':id')
@@ -66,11 +107,30 @@ export class PaquetesTuristicosController {
   @ApiResponse({ status: 200, description: 'Paquete turístico actualizado exitosamente' })
   @ApiResponse({ status: 400, description: 'Datos inválidos' })
   @ApiResponse({ status: 404, description: 'Paquete turístico no encontrado' })
-  update(
+  async update(
     @Param('id') id: string,
-    @Body() updatePaqueteTuristicoDto: UpdatePaqueteTuristicoDto
+    @Body() updatePaqueteTuristicoDto: UpdatePaqueteTuristicoDto,
+    @Req() req: RequestWithUser
   ) {
-    return this.paquetesTuristicosService.update(+id, updatePaqueteTuristicoDto);
+    try {
+      // If user is Emprendedor, ensure they can only update their own paquetes
+      if (req.user.roles.includes('Emprendedor')) {
+        const paquete = await this.paquetesTuristicosService.findOne(Number(id));
+        const emprendimiento = await this.prisma.emprendimiento.findFirst({
+          where: { usuarioId: req.user.id }
+        });
+        if (!emprendimiento || paquete.emprendimientoId !== emprendimiento.id) {
+          throw new ForbiddenException('No tienes permiso para actualizar este paquete turístico');
+        }
+      }
+
+      return this.paquetesTuristicosService.update(Number(id), updatePaqueteTuristicoDto);
+    } catch (error) {
+      if (error instanceof ForbiddenException || error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new BadRequestException('Error al actualizar el paquete turístico');
+    }
   }
 
   @Delete(':id')
@@ -80,12 +140,31 @@ export class PaquetesTuristicosController {
   @ApiOperation({ summary: 'Eliminar un paquete turístico por ID' })
   @ApiResponse({ status: 200, description: 'Paquete turístico eliminado exitosamente' })
   @ApiResponse({ status: 404, description: 'Paquete turístico no encontrado' })
-  remove(@Param('id') id: string) {
-    return this.paquetesTuristicosService.remove(+id);
+  async remove(
+    @Param('id') id: string,
+    @Req() req: RequestWithUser
+  ) {
+    try {
+      // If user is Emprendedor, ensure they can only delete their own paquetes
+      if (req.user.roles.includes('Emprendedor')) {
+        const paquete = await this.paquetesTuristicosService.findOne(Number(id));
+        const emprendimiento = await this.prisma.emprendimiento.findFirst({
+          where: { usuarioId: req.user.id }
+        });
+        if (!emprendimiento || paquete.emprendimientoId !== emprendimiento.id) {
+          throw new ForbiddenException('No tienes permiso para eliminar este paquete turístico');
+        }
+      }
+
+      return this.paquetesTuristicosService.remove(Number(id));
+    } catch (error) {
+      if (error instanceof ForbiddenException || error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new BadRequestException('Error al eliminar el paquete turístico');
+    }
   }
 
-
-  
   @Patch(':id/estado')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('Emprendedor', 'SuperAdmin')
@@ -239,12 +318,19 @@ export class PaquetesTuristicosController {
   @ApiOperation({ summary: 'Marcar paquete turístico como favorito' })
   @ApiResponse({ status: 201, description: 'Paquete turístico marcado como favorito' })
   @ApiResponse({ status: 400, description: 'Datos inválidos' })
-  async addFavorite(@Param('id') id: string, @Req() req) {
-    return this.paquetesTuristicosService.addFavorite(req.user.id, +id);
-
+  async addFavorite(
+    @Param('id') id: string,
+    @Req() req: RequestWithUser
+  ) {
+    try {
+      return this.paquetesTuristicosService.addFavorite(Number(id), req.user.id);
+    } catch (error) {
+      if (error instanceof BadRequestException || error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new BadRequestException('Error al agregar el paquete a favoritos');
+    }
   }
-
-  
 
   @Delete(':id/favoritosPaquetes')
   @UseGuards(JwtAuthGuard)
@@ -252,25 +338,26 @@ export class PaquetesTuristicosController {
   @ApiOperation({ summary: 'Desmarcar paquete turístico como favorito' })
   @ApiResponse({ status: 200, description: 'Paquete turístico desmarcado como favorito' })
   @ApiResponse({ status: 404, description: 'Favorito no encontrado' })
-  async removeFavorite(@Param('id') id: string, @Req() req) {
-    return this.paquetesTuristicosService.removeFavorite(req.user.id, +id);
+  async removeFavorite(
+    @Param('id') id: string,
+    @Req() req: RequestWithUser
+  ) {
+    try {
+      return this.paquetesTuristicosService.removeFavorite(Number(id), req.user.id);
+    } catch (error) {
+      if (error instanceof BadRequestException || error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new BadRequestException('Error al eliminar el paquete de favoritos');
+    }
   }
 
-  // @Get('favoritos/top')
-  // @ApiOperation({ summary: 'Obtener los 10 paquetes turísticos más marcados como favoritos' })
-  // @ApiResponse({ status: 200, description: 'Lista de los 10 paquetes turísticos más favoritos' })
-  // async getTopFavoritos() {
-  //   return this.paquetesTuristicosService.getTopFavoritos();
-  // }
-
-
-@Get('favoritosPaquetes/:id')
-@UseGuards(JwtAuthGuard)
-@ApiBearerAuth()
-@ApiOperation({ summary: 'Obtener los paquetes turísticos favoritos del usuario autenticado' })
-@ApiResponse({ status: 200, description: 'Lista de favoritos del usuario' })
-async findFavorites(@Req() req: any) {
-  const userId = req.user.id;
-  return this.paquetesTuristicosService.findFavorites(userId);
-}
+  @Get('favoritosPaquetes/:id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Obtener los paquetes turísticos favoritos del usuario autenticado' })
+  @ApiResponse({ status: 200, description: 'Lista de favoritos del usuario' })
+  async findFavorites(@Req() req: any) {
+    return this.paquetesTuristicosService.findFavorites(Number(req.user.id));
+  }
 }

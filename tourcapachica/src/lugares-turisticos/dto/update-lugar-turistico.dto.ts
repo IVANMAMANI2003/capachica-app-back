@@ -1,6 +1,7 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { CreateLugarTuristicoDto } from './create-lugar-turistico.dto';
 import { ImageDto } from './create-lugar-turistico.dto';
+import { Prisma } from '@prisma/client';
 
 export class UpdateLugarTuristicoDto extends PartialType(CreateLugarTuristicoDto) {
   @ApiProperty({
@@ -77,13 +78,15 @@ export class UpdateLugarTuristicoDto extends PartialType(CreateLugarTuristicoDto
   })
   horarioCierre?: Date;
 
+
+
   @ApiProperty({
     description: 'Costo de entrada',
-    example: 20.00,
+    example: '20.00',
     required: false,
-    type: Number
+    type: String,
   })
-  costoEntrada?: number;
+  costoEntrada?: Prisma.Decimal;
 
   @ApiProperty({
     description: 'Recomendaciones para visitar el lugar',

@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateLugarTuristicoDto, ImageDto } from './dto/create-lugar-turistico.dto';
 import { UpdateLugarTuristicoDto } from './dto/update-lugar-turistico.dto';
 import { SupabaseService } from '../supabase/supabase.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class LugaresTuristicosService {
@@ -27,7 +28,9 @@ export class LugaresTuristicosService {
         longitud: lugarData.longitud,
         horarioApertura: lugarData.horarioApertura,
         horarioCierre: lugarData.horarioCierre,
-        costoEntrada: lugarData.costoEntrada,
+        costoEntrada: lugarData.costoEntrada
+        ? new Prisma.Decimal(lugarData.costoEntrada)
+        : undefined,
         recomendaciones: lugarData.recomendaciones,
         restricciones: lugarData.restricciones,
         esDestacado: lugarData.esDestacado,

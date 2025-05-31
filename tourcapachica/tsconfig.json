@@ -20,8 +20,11 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "rootDir": "src"
+    "rootDir": "."
   },
-  "include": ["src/**/*"],
+  "include": [
+    "src/**/*",
+    "tests/unit/**/*"
+  ],
   "exclude": ["node_modules", "dist"]
 } 

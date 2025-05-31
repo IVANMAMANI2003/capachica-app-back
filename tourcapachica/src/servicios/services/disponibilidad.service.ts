@@ -47,24 +47,16 @@ export class DisponibilidadService {
       );
     }
 
-    // Crear todas las disponibilidades en una transacción
-    return this.prisma.$transaction(
-      disponibilidades.map(disponibilidad =>
-        this.prisma.servicioDisponibilidad.create({
-          data: {
-            servicioId: disponibilidad.servicioId,
-            fechaInicio: new Date(disponibilidad.fechaInicio),
-            fechaFin: new Date(disponibilidad.fechaFin),
-            cuposMaximos: disponibilidad.cuposMaximos,
-            cuposDisponibles: disponibilidad.cuposDisponibles,
-            precioEspecial: disponibilidad.precioEspecial,
-            estado: disponibilidad.estado,
-            notas: disponibilidad.notas,
-            
-          },
-        })
-      )
-    );
+    // Crear todas las disponibilidades usando createMany
+    return this.prisma.servicioDisponibilidad.createMany({
+      data: disponibilidades.map(disponibilidad => ({
+        servicioId: disponibilidad.servicioId,
+        fechaInicio: new Date(disponibilidad.fechaInicio),
+        fechaFin: new Date(disponibilidad.fechaFin),
+        cuposDisponibles: disponibilidad.cuposDisponibles,
+        precioEspecial: disponibilidad.precioEspecial,
+      })),
+    });
   }
 
   async getDisponibilidad(servicioId: number) {

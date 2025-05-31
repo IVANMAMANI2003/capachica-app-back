@@ -1,0 +1,573 @@
+// This is your test database configuration
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("TEST_SUPABASE_DATABASE_URL")
+  directUrl = env("TEST_SUPABASE_DIRECT_URL")
+}
+
+model Role {
+  id            Int             @id @default(autoincrement())
+  nombre        String          @unique @db.VarChar(50)
+  descripcion   String?
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @default(now()) @map("updated_at")
+  rolesPermisos RolesPermisos[]
+  usuariosRoles UsuariosRoles[]
+
+  @@map("roles")
+}
+
+model Permiso {
+  id            Int             @id @default(autoincrement())
+  nombre        String          @unique @db.VarChar(100)
+  descripcion   String?
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @default(now()) @map("updated_at")
+  rolesPermisos RolesPermisos[]
+
+  @@map("permisos")
+}
+
+model RolesPermisos {
+  id        Int      @id @default(autoincrement())
+  rolId     Int      @map("rol_id")
+  permisoId Int      @map("permiso_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+  permiso   Permiso  @relation(fields: [permisoId], references: [id], onDelete: Cascade)
+  rol       Role     @relation(fields: [rolId], references: [id], onDelete: Cascade)
+
+  @@unique([rolId, permisoId])
+  @@map("roles_permisos")
+}
+
+model Country {
+  id           Int           @id @default(autoincrement())
+  name         String        @unique @db.VarChar(100)
+  codeIso      String        @unique @map("code_iso") @db.VarChar(3)
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @default(now()) @map("updated_at")
+  subdivisions Subdivision[]
+
+  @@map("countries")
+}
+
+model Subdivision {
+  id        Int       @id @default(autoincrement())
+  countryId Int       @map("country_id")
+  name      String    @db.VarChar(255)
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @map("updated_at")
+  personas  Persona[]
+  country   Country   @relation(fields: [countryId], references: [id], onDelete: Cascade)
+
+  @@unique([countryId, name])
+  @@map("subdivisions")
+}
+
+model Persona {
+  id              Int         @id @default(autoincrement())
+  nombre          String      @db.VarChar(100)
+  apellidos       String      @db.VarChar(100)
+  telefono        String?     @db.VarChar(20)
+  direccion       String?
+  fotoPerfilUrl   String?     @map("foto_perfil_url")
+  fechaNacimiento DateTime?   @map("fecha_nacimiento") @db.Date
+  subdivisionId   Int         @map("subdivision_id")
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime    @default(now()) @map("updated_at")
+  subdivision     Subdivision @relation(fields: [subdivisionId], references: [id])
+  usuario         Usuario?
+
+  @@map("personas")
+}
+
+model Usuario {
+  id                     Int               @id @default(autoincrement())
+  personaId              Int               @unique @map("persona_id")
+  email                  String            @unique @db.VarChar(255)
+  passwordHash           String            @map("password_hash") @db.VarChar(255)
+  recoveryToken          String?           @map("recovery_token") @db.VarChar(255)
+  recoveryTokenExpiresAt DateTime?         @map("recovery_token_expires_at")
+  emailVerificationToken String?           @map("email_verification_token") @db.VarChar(255)
+  emailVerified          Boolean?          @default(false) @map("email_verified")
+  estaActivo             Boolean?          @default(true) @map("esta_activo")
+  ultimoAcceso           DateTime?         @map("ultimo_acceso")
+  preferencias           Json?             @default("{}")
+  createdAt              DateTime          @default(now()) @map("created_at")
+  updatedAt              DateTime          @default(now()) @map("updated_at")
+  emprendimientos        Emprendimiento[]
+  registroAccesos        RegistroAcceso[]
+  resenas                Resena[]
+  tokensInvalidados      TokenInvalidado[]
+  guia                   Tour[]
+  persona                Persona           @relation(fields: [personaId], references: [id])
+  usuariosRoles          UsuariosRoles[]
+  favoritosEmprendimiento FavoritoEmprendimiento[]
+  favoritosServicio      FavoritoServicio[]
+  favoritosLugarTuristico FavoritoLugarTuristico[]
+  favoritosPaquete       FavoritoPaqueteTuristico[]
+  reservas Reserva[]
+  
+
+  @@map("usuarios")
+}
+
+model UsuariosRoles {
+  id        Int      @id @default(autoincrement())
+  rolId     Int      @map("rol_id")
+  usuarioId Int      @map("usuario_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+  rol       Role     @relation(fields: [rolId], references: [id], onDelete: Cascade)
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@unique([usuarioId, rolId])
+  @@map("usuarios_roles")
+}
+
+model Emprendimiento {
+  id                 Int                   @id @default(autoincrement())
+  usuarioId          Int                   @map("usuario_id")
+  lugarTuristicoId   Int?               
+  nombre             String                @db.VarChar(200)
+  descripcion        String?
+  tipo               String                @db.VarChar(50)
+  direccion          String?
+  latitud            Float? @map("latitud")
+  longitud           Float? @map("longitud")
+  contactoTelefono   String?               @map("contacto_telefono") @db.VarChar(20)
+  contactoEmail      String?               @map("contacto_email") @db.VarChar(100)
+  sitioWeb           String?               @map("sitio_web") @db.VarChar(200)
+  redesSociales      Json?                 @map("redes_sociales")
+  estado             String                @default("pendiente") @db.VarChar(20)
+  fechaAprobacion    DateTime?             @map("fecha_aprobacion") @db.Date
+  createdAt          DateTime              @default(now()) @map("created_at")
+  updatedAt          DateTime              @default(now()) @map("updated_at")
+  usuario            Usuario               @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  lugarTuristico     LugarTuristico?    @relation(fields: [lugarTuristicoId], references: [id], onDelete: Restrict)
+  paquetesTuristicos PaqueteTuristico[]
+  servicios          ServicioEmprendedor[]
+  favoritosEmprendimiento FavoritoEmprendimiento[]
+
+  @@map("emprendimientos")
+}
+
+model FavoritoEmprendimiento {
+  id               Int            @id @default(autoincrement())
+  usuarioId        Int            @map("usuario_id")
+  emprendimientoId Int            @map("emprendimiento_id")
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @default(now()) @map("updated_at")
+
+  usuario          Usuario        @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  emprendimiento   Emprendimiento @relation(fields: [emprendimientoId], references: [id], onDelete: Cascade)
+
+  @@unique([usuarioId, emprendimientoId])
+  @@map("favoritos_emprendimientos")
+}
+
+model RegistroAcceso {
+  id         Int      @id @default(autoincrement())
+  usuarioId  Int      @map("usuario_id")
+  ipAddress  String   @map("ip_address") @db.VarChar(50)
+  userAgent  String   @map("user_agent")
+  tipoEvento String   @map("tipo_evento") @db.VarChar(50)
+  detalles   Json?
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @default(now()) @map("updated_at")
+  usuario    Usuario  @relation(fields: [usuarioId], references: [id], onDelete: SetNull)
+
+  @@map("registro_accesos")
+}
+
+model TokenInvalidado {
+  id           Int      @id @default(autoincrement())
+  tokenHash    String   @unique @map("token_hash") @db.VarChar(64)
+  usuarioId    Int      @map("usuario_id")
+  invalidadoEn DateTime @map("invalidado_en")
+  expiraEn     DateTime @map("expira_en")
+  metadata     Json     @default("{}")
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @default(now()) @map("updated_at")
+  usuario      Usuario  @relation(fields: [usuarioId], references: [id])
+
+  @@map("tokens_invalidados")
+}
+
+
+model LugarTuristico {
+  id                Int               @id @default(autoincrement())
+  nombre            String            @unique @db.VarChar(200)
+  descripcion       String
+  direccion         String
+  latitud           Float? @map("latitud")
+  longitud          Float? @map("longitud")
+  horarioApertura   DateTime?  @map("horario_apertura") @db.Time
+  horarioCierre     DateTime?  @map("horario_cierre")   @db.Time
+  costoEntrada      Decimal?          @map("costo_entrada") @db.Decimal(10, 2)
+  recomendaciones   String?
+  restricciones     String?
+  esDestacado       Boolean           @default(false) @map("es_destacado")
+  estado            String            @default("activo") @db.VarChar(20)
+  createdAt         DateTime          @default(now()) @map("created_at")
+  updatedAt         DateTime          @default(now()) @map("updated_at")
+  favoritosLugarTuristico FavoritoLugarTuristico[]
+  emprendimientos Emprendimiento[]
+
+  @@map("lugares_turisticos")
+}
+
+model FavoritoLugarTuristico {
+  id               Int             @id @default(autoincrement())
+  usuarioId        Int             @map("usuario_id")
+  lugarTuristicoId Int             @map("lugar_turistico_id")
+  createdAt        DateTime        @default(now()) @map("created_at")
+  updatedAt        DateTime        @default(now()) @map("updated_at")
+
+  usuario          Usuario         @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  lugarTuristico   LugarTuristico  @relation(fields: [lugarTuristicoId], references: [id], onDelete: Cascade)
+
+  @@unique([usuarioId, lugarTuristicoId])
+  @@map("favoritos_lugares_turisticos")
+}
+
+model ServicioEmprendedor {
+  id               Int            @id @default(autoincrement())
+  servicioId       Int            @map("servicios_id")
+  emprendimientoId Int            @map("emprendimiento_id")
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @default(now()) @map("updated_at")
+  emprendimiento   Emprendimiento @relation(fields: [emprendimientoId], references: [id], onDelete: Cascade)
+  servicio         Servicio       @relation(fields: [servicioId], references: [id], onDelete: Cascade)
+
+  @@map("servicios_emprendedores")
+}
+
+model Servicio {
+  id                     Int                      @id @default(autoincrement())
+  tipoServicioId         Int                      @map("tipo_servicio_id")
+  nombre                 String
+  descripcion            String?
+  latitud                Float?                   @map("latitud")
+  longitud               Float?                   @map("longitud")
+  precioBase             Decimal                  @map("precio_base") @db.Decimal(10, 2)
+  moneda                 String                   @default("PEN") @db.VarChar(3)
+  estado                 String                   @default("activo") @db.VarChar(20)
+  detallesServicio       Json                     @default("{}") @map("detalles_servicio")
+  createdAt              DateTime                 @default(now()) @map("created_at")
+  updatedAt              DateTime                 @default(now()) @map("updated_at")
+  itinerariosReserva     ItinerarioReserva[]
+  tipoServicio           TipoServicio             @relation(fields: [tipoServicioId], references: [id])
+  disponibilidad         ServicioDisponibilidad[]
+  serviciosEmprendedores ServicioEmprendedor[]
+  serviciosPaquetes      ServicioPaquete[]
+  resenas                Resena[]
+  favoritosServicio FavoritoServicio[]
+
+  @@map("servicios")
+}
+
+model PaqueteTuristico {
+  id               Int                     @id @default(autoincrement())
+  nombre           String
+  descripcion      String
+  precio           Decimal?                @db.Decimal(10, 2)
+  estado           String                  @default("activo") @db.VarChar(20)
+  createdAt        DateTime                @default(now()) @map("created_at")
+  updatedAt        DateTime                @default(now()) @map("updated_at")
+  emprendimientoId Int                     @map("emprendimiento_id")
+  disponibilidad   DisponibilidadPaquete[]
+  emprendimiento   Emprendimiento          @relation(fields: [emprendimientoId], references: [id])
+  servicios        ServicioPaquete[]
+  favoritosPaqueteTuristico FavoritoPaqueteTuristico[]
+
+  @@map("paquetes_turisticos")
+}
+
+model FavoritoPaqueteTuristico {
+  id                Int               @id @default(autoincrement())
+  usuarioId         Int               @map("usuario_id")
+  paqueteTuristicoId Int              @map("paquete_turistico_id")
+  createdAt         DateTime          @default(now()) @map("created_at")
+  updatedAt         DateTime          @default(now()) @map("updated_at")
+
+  usuario           Usuario           @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  paqueteTuristico  PaqueteTuristico  @relation(fields: [paqueteTuristicoId], references: [id], onDelete: Cascade)
+
+  @@unique([usuarioId, paqueteTuristicoId])
+  @@map("favoritos_paquetes_turisticos")
+}
+
+
+model ServicioPaquete {
+  id                 Int              @id @default(autoincrement())
+  paqueteTuristicoId Int
+  servicioId         Int
+  orden              Int              @default(1)
+  paqueteTuristico   PaqueteTuristico @relation(fields: [paqueteTuristicoId], references: [id])
+  servicio           Servicio         @relation(fields: [servicioId], references: [id])
+  createdAt          DateTime        @default(now()) @map("created_at")
+  updatedAt          DateTime        @default(now()) @map("updated_at")
+  @@unique([paqueteTuristicoId, servicioId])
+  @@map("servicios_paquetes")
+}
+
+model DisponibilidadPaquete {
+  id               Int              @id @default(autoincrement())
+  paqueteId        Int              @map("paquete_id")
+  fechaInicio      DateTime         @map("fecha_inicio") @db.Date
+  fechaFin         DateTime         @map("fecha_fin") @db.Date
+  cuposDisponibles Int              @map("cupos_disponibles")
+  cuposMaximos     Int              @map("cupos_maximos")
+  precioEspecial   Decimal?         @map("precio_especial") @db.Decimal(10, 2)
+  notas            String?
+  estado           String           @default("activo") @db.VarChar(20)
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @default(now()) @map("updated_at")
+  paquete          PaqueteTuristico @relation(fields: [paqueteId], references: [id], onDelete: Cascade)
+
+  @@unique([paqueteId, fechaInicio, fechaFin])
+  @@map("disponibilidad_paquetes")
+}
+
+model TipoServicio {
+  id           Int        @id @default(autoincrement())
+  nombre       String     @unique @db.VarChar(100)
+  descripcion  String?
+  requiereCupo Boolean    @default(false) @map("requiere_cupo")
+  createdAt    DateTime        @default(now()) @map("created_at")
+  updatedAt    DateTime        @default(now()) @map("updated_at")
+  servicios    Servicio[]
+
+  @@map("tipos_servicio")
+}
+
+model ServicioDisponibilidad {
+  id               Int      @id @default(autoincrement())
+  servicioId       Int      @map("servicio_id")
+  fechaInicio      DateTime?    @db.Date
+  fechaFin         DateTime?    @db.Date
+  cuposMaximos     Int @default(0) @map("cupos_maximos")
+  cuposDisponibles Int      @map("cupos_disponibles")
+  precioEspecial   Decimal? @map("precio_especial") @db.Decimal(10, 2)
+  notas            String?
+  estado           String           @default("activo") @db.VarChar(20)
+  servicio         Servicio @relation(fields: [servicioId], references: [id], onDelete: Cascade)
+  createdAt        DateTime        @default(now()) @map("created_at")
+  updatedAt        DateTime        @default(now()) @map("updated_at")
+  @@unique([servicioId, fechaInicio, fechaFin])
+  @@map("servicios_disponibilidad")
+}
+
+model Resena {
+  id               Int       @id @default(autoincrement())
+  servicioId       Int       @map("servicio_id")
+  usuarioId        Int?       @map("usuario_id")
+  calificacion     Int
+  comentario       String?
+  estado           String    @default("visible") @db.VarChar(20)
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @default(now()) @map("updated_at")
+  servicio         Servicio  @relation(fields: [servicioId], references: [id], onDelete: Restrict)
+  usuario       Usuario?   @relation(fields: [usuarioId], references: [id], onDelete: SetNull)
+
+  @@map("resenas")
+}
+
+model FavoritoServicio {
+  id          Int      @id @default(autoincrement())
+  usuarioId   Int      @map("usuario_id")
+  servicioId  Int      @map("servicio_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @default(now()) @map("updated_at")
+
+  usuario     Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  servicio    Servicio @relation(fields: [servicioId], references: [id], onDelete: Cascade)
+
+  @@unique([usuarioId, servicioId])
+  @@map("favoritos_servicios")
+}
+
+
+model Reserva {
+  id                Int                 @id @default(autoincrement())
+  usuarioId         Int                 @map("usuario_id")
+  codigoReserva     String              @unique @map("codigo_reserva")
+  tipoReserva       String              @map("tipo_reserva")
+  fechaReserva      DateTime            @map("fecha_reserva")
+  fechaInicio       DateTime            @map("fecha_inicio")
+  fechaFin          DateTime?           @map("fecha_fin")
+  cantidadPersonas  Int                 @default(1) @map("cantidad_personas")
+  precioTotal       Decimal             @map("precio_total") @db.Decimal(12, 2)
+  moneda            String              @default("PEN") @db.VarChar(3)
+  estado            String              @default("pendiente") @db.VarChar(20)
+  notas             String?
+  motivoCancelacion String?             @map("motivo_cancelacion")
+  fechaCancelacion  DateTime?           @map("fecha_cancelacion")
+  fechaExpiracion  DateTime?           @map("fecha_expiracion")
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime            @default(now()) @map("updated_at")
+  itinerarios       ItinerarioReserva[]
+  pagos             Pago[]
+  usuario           Usuario             @relation(fields: [usuarioId], references: [id])
+
+  @@map("reservas")
+}
+
+model ItinerarioReserva {
+  id                Int               @id @default(autoincrement())
+  reservaId         Int               @map("reserva_id")
+  servicioId        Int               @map("servicio_id")
+  fechaInicioActividad    DateTime          @db.Date
+  fechaFinActividad    DateTime          @db.Date
+  lugarEncuentro    String
+  observaciones     String?
+  tipoEvento        String            @map("tipo_evento") @db.VarChar(100)
+  descripcion       String?
+  createdAt         DateTime          @default(now()) @map("created_at")
+  updatedAt         DateTime          @default(now()) @map("updated_at")
+  reserva           Reserva           @relation(fields: [reservaId], references: [id], onDelete: Restrict)
+  servicio          Servicio?         @relation(fields: [servicioId], references: [id])
+
+  @@map("itinerarios_reserva")
+}
+
+
+model Pago {
+  id              Int           @id @default(autoincrement())
+  reservaId       Int           @map("reserva_id")
+  paymentGateway  String        @db.VarChar(50)
+  transactionId   String        @unique @db.VarChar(100) 
+  montoTotal      Decimal       @map("monto_total") @db.Decimal(12, 2)
+  moneda          String        @default("PEN") @db.VarChar(3)
+  estado          String        @default("pendiente") @db.VarChar(20)
+  fechaPago       DateTime?     @map("fecha_pago") @db.Date
+  datosMetodoPago Json?         @map("datos_metodo_pago")
+  metadata        Json?
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @default(now()) @map("updated_at")
+  comprobante     Comprobante?
+  detalles        PagoDetalle[]
+  reserva         Reserva       @relation(fields: [reservaId], references: [id], onDelete: Restrict)
+
+  @@map("pagos")
+}
+
+model PagoDetalle {
+  id                 Int      @id @default(autoincrement())
+  pagoId             Int      @map("pago_id")
+  tipoPagoId         Int      @map("tipo_pago_id")
+  concepto           String   @db.VarChar(100)
+  monto              Decimal  @db.Decimal(12, 2)
+  porcentajeImpuesto Decimal  @default(0) @map("porcentaje_impuesto") @db.Decimal(5, 2)
+  cantidad           Int      @default(1)
+  descripcion        String?
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @default(now()) @map("updated_at")
+  pago               Pago     @relation(fields: [pagoId], references: [id])
+  tipoPago           TipoPago @relation(fields: [tipoPagoId], references: [id])
+
+  @@map("pago_detalle")
+}
+
+model TipoPago {
+  id                   Int           @id @default(autoincrement())
+  nombre               String        @unique @db.VarChar(50)
+  descripcion          String?
+  requiereVerificacion Boolean       @default(false) @map("requiere_verificacion")
+  comisionPorcentaje   Decimal       @default(0) @map("comision_porcentaje") @db.Decimal(5, 2)
+  activo               Boolean       @default(true)
+  createdAt            DateTime      @default(now()) @map("created_at")
+  updatedAt            DateTime      @default(now()) @map("updated_at")
+  pagoDetalles         PagoDetalle[]
+
+  @@map("tipo_pago")
+}
+
+model Comprobante {
+  id               Int      @id @default(autoincrement())
+  pagoId           Int      @unique @map("pago_id")
+  tipoComprobante  String   @map("tipo_comprobante") @db.VarChar(20)
+  serie            String   @db.VarChar(4)
+  numero           String
+  fechaEmision     DateTime @default(now()) @map("fecha_emision") @db.Date
+  rucCliente       String?  @map("ruc_cliente") @db.VarChar(11)
+  razonSocial      String?  @map("razon_social") @db.VarChar(100)
+  direccionCliente String?  @map("direccion_cliente")
+  subtotal         Decimal  @db.Decimal(12, 2)
+  igv              Decimal  @default(0) @db.Decimal(12, 2)
+  total            Decimal  @db.Decimal(12, 2)
+  moneda           String   @default("PEN") @db.VarChar(3)
+  estado           String   @default("emitido") @db.VarChar(20)
+  codigoSunat      String?  @map("codigo_sunat") @db.VarChar(100)
+  codigoHash       String?  @map("codigo_hash") @db.VarChar(100)
+  xmlUrl           String?  @map("xml_url")
+  pdfUrl           String?  @map("pdf_url")
+  qrCodeUrl        String?  @map("qr_code_url")
+  tokenSunat       String?  @map("token_sunat") @db.VarChar(255)
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @default(now()) @map("updated_at")
+  pago             Pago     @relation(fields: [pagoId], references: [id])
+
+  @@unique([serie, numero])
+  @@map("comprobantes")
+}
+
+model Tour {
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(255)
+  description String
+  price       Float
+  fechaInicio DateTime  @map("fecha_inicio") @db.Date
+  fechaFin    DateTime  @map("fecha_fin") @db.Date
+  guideId     Int       @map("guide_id")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @default(now()) @map("updated_at")
+  guide       Usuario   @relation(fields: [guideId], references: [id])
+
+  @@map("tours")
+}
+
+
+model Image {
+  id           Int           @id @default(autoincrement())
+  url          String
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
+  imageables   Imageable[]
+
+  @@map("images")
+}
+
+model Imageable {
+  id              Int      @id @default(autoincrement())
+  image_id        Int
+  imageable_id    Int
+  imageable_type  String
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  image Image @relation(fields: [image_id], references: [id], onDelete: Cascade)
+
+  @@index([imageable_id, imageable_type])
+  @@map("imageables")
+}
+
+
+model Slider {
+  id          Int      @id @default(autoincrement())
+  nombre      String   @db.VarChar(100)
+  description String?
+  estado      String   @default("activo") @db.VarChar(20)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("sliders")
+}
+

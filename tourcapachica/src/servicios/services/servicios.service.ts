@@ -63,6 +63,10 @@ export class ServiciosService {
       return creado;
     });
   
+    if (!servicio) {
+      throw new BadRequestException('No se pudo crear el servicio');
+    }
+  
     return this.findOne(servicio.id);
   }
   

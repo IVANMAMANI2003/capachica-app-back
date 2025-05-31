@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, Req, NotFoundException } from '@nestjs/common';
 import { Request as ExpressRequest } from 'express';
 import { CreateEmprendimientoDto } from './dto/create-emprendimiento.dto';
 import { UpdateEmprendimientoDto } from './dto/update-emprendimiento.dto';
@@ -62,8 +62,12 @@ export class EmprendimientosController {
   @ApiOperation({ summary: 'Obtener un emprendimiento por ID' })
   @ApiResponse({ status: 200, description: 'Emprendimiento encontrado' })
   @ApiResponse({ status: 404, description: 'Emprendimiento no encontrado' })
-  findOne(@Param('id') id: string) {
-    return this.emprendimientosService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const result = await this.emprendimientosService.findOne(+id);
+    if (!result) {
+      throw new NotFoundException('Emprendimiento no encontrado');
+    }
+    return result;
   }
 
   @Patch(':id')
