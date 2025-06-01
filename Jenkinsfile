@@ -1,60 +1,86 @@
 pipeline {
     agent any
 
+    environment {
+        NODE_ENV = 'development'
+    }
+
     tools {
-        // Install the Maven version configured as "M3" and add it to the path.
-        maven "MAVEN_HOME"
+        nodejs "NODEJS_HOME" // Asegúrate de tener este NodeJS instalado en Jenkins
     }
 
     stages {
         stage('Clone') {
             steps {
-                timeout(time: 2, unit: 'MINUTES'){
+                timeout(time: 2, unit: 'MINUTES') {
                     git branch: 'main', credentialsId: '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', url: 'https://github.com/IVANMAMANI2003/capachica-app-back.git'
                 }
             }
         }
-        stage('Build') {
+
+        stage('Install Dependencies') {
             steps {
-                timeout(time: 8, unit: 'MINUTES'){
-                    sh "mvn -DskipTests clean package -f SysAlmacen/pom.xml"
+                timeout(time: 5, unit: 'MINUTES') {
+                    sh 'npm install'
                 }
             }
         }
+
+        stage('Lint') {
+            steps {
+                timeout(time: 2, unit: 'MINUTES') {
+                    sh 'npm run lint'
+                }
+            }
+        }
+
         stage('Test') {
             steps {
-                timeout(time: 10, unit: 'MINUTES'){
-                    // Se cambia <test> por <install> para que se genere el reporte de jacoco
-                    sh "mvn clean install -f SysAlmacen/pom.xml"
+                timeout(time: 5, unit: 'MINUTES') {
+                    sh 'npm run test:cov' // genera cobertura con Jest
                 }
             }
         }
-        stage('Sonar') {
+
+        stage('SonarQube Analysis') {
             steps {
-                timeout(time: 4, unit: 'MINUTES'){
-                    withSonarQubeEnv('sonarqube'){
-                        sh "mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar -Pcoverage -f SysAlmacen/pom.xml"
+                timeout(time: 4, unit: 'MINUTES') {
+                    withSonarQubeEnv('sonarqube') {
+                        sh "sonar-scanner \
+                            -Dsonar.projectKey=capachica-app-back \
+                            -Dsonar.sources=src \
+                            -Dsonar.tests=src \
+                            -Dsonar.inclusions=src/**/*.ts \
+                            -Dsonar.test.inclusions=**/*.spec.ts \
+                            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info"
                     }
                 }
             }
         }
-        stage('Quality gate') {
+
+        stage('Quality Gate') {
             steps {
-
-                sleep(10) //seconds
-
-                timeout(time: 4, unit: 'MINUTES'){
+                timeout(time: 4, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
             }
         }
+
+        stage('Build') {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    sh 'npm run build'
+                }
+            }
+        }
+
         stage('Deploy') {
             steps {
-			    timeout(time: 8, unit: 'MINUTES'){
-					// Ejecutar mvn spring-boot:run
-					echo "mvn spring-boot:run -f SysAlmacen/pom.xml"
-                }			
-                //echo "mvn spring-boot:run -f SysAlmacen/pom.xml"
+                timeout(time: 5, unit: 'MINUTES') {
+                    // Aquí puedes hacer el deploy (ej. PM2, Docker, etc.)
+                    echo 'Desplegando aplicación NestJS...'
+                    // sh 'npm run start:prod'
+                }
             }
         }
     }
