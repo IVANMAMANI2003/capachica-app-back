@@ -3,6 +3,6 @@ node_modules
 .env
 # Testing
 #/tests
-#/coverage
+/coverage
 #.nyc_output
 #jest.config.js

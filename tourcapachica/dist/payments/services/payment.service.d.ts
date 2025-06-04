@@ -8,10 +8,10 @@ export declare class PaymentService {
     constructor(prisma: PrismaService, comprobantesService: ComprobantesService);
     create(createPagoDto: CreatePaymentDto): Promise<{
         id: number;
-        moneda: string;
         estado: string;
         createdAt: Date;
         updatedAt: Date;
+        moneda: string;
         reservaId: number;
         paymentGateway: string;
         transactionId: string;
@@ -21,8 +21,31 @@ export declare class PaymentService {
         metadata: import(".prisma/client/runtime/library").JsonValue | null;
     }>;
     findAll(): Promise<({
+        reserva: {
+            id: number;
+            usuarioId: number;
+            estado: string;
+            createdAt: Date;
+            updatedAt: Date;
+            moneda: string;
+            fechaInicio: Date;
+            fechaFin: Date | null;
+            notas: string | null;
+            codigoReserva: string;
+            tipoReserva: string;
+            fechaReserva: Date;
+            cantidadPersonas: number;
+            precioTotal: import(".prisma/client/runtime/library").Decimal;
+            motivoCancelacion: string | null;
+            fechaCancelacion: Date | null;
+            fechaExpiracion: Date | null;
+        };
         comprobante: {
             id: number;
+            estado: string;
+            createdAt: Date;
+            updatedAt: Date;
+            moneda: string;
             pagoId: number;
             tipoComprobante: string;
             serie: string;
@@ -34,54 +57,31 @@ export declare class PaymentService {
             subtotal: import(".prisma/client/runtime/library").Decimal;
             igv: import(".prisma/client/runtime/library").Decimal;
             total: import(".prisma/client/runtime/library").Decimal;
-            moneda: string;
-            estado: string;
             codigoSunat: string | null;
             codigoHash: string | null;
             xmlUrl: string | null;
             pdfUrl: string | null;
             qrCodeUrl: string | null;
             tokenSunat: string | null;
-            createdAt: Date;
-            updatedAt: Date;
-        };
-        reserva: {
-            id: number;
-            moneda: string;
-            estado: string;
-            createdAt: Date;
-            updatedAt: Date;
-            usuarioId: number;
-            codigoReserva: string;
-            tipoReserva: string;
-            fechaReserva: Date;
-            fechaInicio: Date;
-            fechaFin: Date | null;
-            cantidadPersonas: number;
-            precioTotal: import(".prisma/client/runtime/library").Decimal;
-            notas: string | null;
-            motivoCancelacion: string | null;
-            fechaCancelacion: Date | null;
-            fechaExpiracion: Date | null;
         };
         detalles: {
             id: number;
-            pagoId: number;
+            descripcion: string | null;
             createdAt: Date;
             updatedAt: Date;
+            pagoId: number;
             tipoPagoId: number;
             concepto: string;
             monto: import(".prisma/client/runtime/library").Decimal;
             porcentajeImpuesto: import(".prisma/client/runtime/library").Decimal;
             cantidad: number;
-            descripcion: string | null;
         }[];
     } & {
         id: number;
-        moneda: string;
         estado: string;
         createdAt: Date;
         updatedAt: Date;
+        moneda: string;
         reservaId: number;
         paymentGateway: string;
         transactionId: string;
@@ -91,8 +91,31 @@ export declare class PaymentService {
         metadata: import(".prisma/client/runtime/library").JsonValue | null;
     })[]>;
     findOne(id: number): Promise<{
+        reserva: {
+            id: number;
+            usuarioId: number;
+            estado: string;
+            createdAt: Date;
+            updatedAt: Date;
+            moneda: string;
+            fechaInicio: Date;
+            fechaFin: Date | null;
+            notas: string | null;
+            codigoReserva: string;
+            tipoReserva: string;
+            fechaReserva: Date;
+            cantidadPersonas: number;
+            precioTotal: import(".prisma/client/runtime/library").Decimal;
+            motivoCancelacion: string | null;
+            fechaCancelacion: Date | null;
+            fechaExpiracion: Date | null;
+        };
         comprobante: {
             id: number;
+            estado: string;
+            createdAt: Date;
+            updatedAt: Date;
+            moneda: string;
             pagoId: number;
             tipoComprobante: string;
             serie: string;
@@ -104,54 +127,31 @@ export declare class PaymentService {
             subtotal: import(".prisma/client/runtime/library").Decimal;
             igv: import(".prisma/client/runtime/library").Decimal;
             total: import(".prisma/client/runtime/library").Decimal;
-            moneda: string;
-            estado: string;
             codigoSunat: string | null;
             codigoHash: string | null;
             xmlUrl: string | null;
             pdfUrl: string | null;
             qrCodeUrl: string | null;
             tokenSunat: string | null;
-            createdAt: Date;
-            updatedAt: Date;
-        };
-        reserva: {
-            id: number;
-            moneda: string;
-            estado: string;
-            createdAt: Date;
-            updatedAt: Date;
-            usuarioId: number;
-            codigoReserva: string;
-            tipoReserva: string;
-            fechaReserva: Date;
-            fechaInicio: Date;
-            fechaFin: Date | null;
-            cantidadPersonas: number;
-            precioTotal: import(".prisma/client/runtime/library").Decimal;
-            notas: string | null;
-            motivoCancelacion: string | null;
-            fechaCancelacion: Date | null;
-            fechaExpiracion: Date | null;
         };
         detalles: {
             id: number;
-            pagoId: number;
+            descripcion: string | null;
             createdAt: Date;
             updatedAt: Date;
+            pagoId: number;
             tipoPagoId: number;
             concepto: string;
             monto: import(".prisma/client/runtime/library").Decimal;
             porcentajeImpuesto: import(".prisma/client/runtime/library").Decimal;
             cantidad: number;
-            descripcion: string | null;
         }[];
     } & {
         id: number;
-        moneda: string;
         estado: string;
         createdAt: Date;
         updatedAt: Date;
+        moneda: string;
         reservaId: number;
         paymentGateway: string;
         transactionId: string;
@@ -161,8 +161,31 @@ export declare class PaymentService {
         metadata: import(".prisma/client/runtime/library").JsonValue | null;
     }>;
     update(id: number, updatePaymentDto: UpdatePaymentDto): Promise<{
+        reserva: {
+            id: number;
+            usuarioId: number;
+            estado: string;
+            createdAt: Date;
+            updatedAt: Date;
+            moneda: string;
+            fechaInicio: Date;
+            fechaFin: Date | null;
+            notas: string | null;
+            codigoReserva: string;
+            tipoReserva: string;
+            fechaReserva: Date;
+            cantidadPersonas: number;
+            precioTotal: import(".prisma/client/runtime/library").Decimal;
+            motivoCancelacion: string | null;
+            fechaCancelacion: Date | null;
+            fechaExpiracion: Date | null;
+        };
         comprobante: {
             id: number;
+            estado: string;
+            createdAt: Date;
+            updatedAt: Date;
+            moneda: string;
             pagoId: number;
             tipoComprobante: string;
             serie: string;
@@ -174,54 +197,31 @@ export declare class PaymentService {
             subtotal: import(".prisma/client/runtime/library").Decimal;
             igv: import(".prisma/client/runtime/library").Decimal;
             total: import(".prisma/client/runtime/library").Decimal;
-            moneda: string;
-            estado: string;
             codigoSunat: string | null;
             codigoHash: string | null;
             xmlUrl: string | null;
             pdfUrl: string | null;
             qrCodeUrl: string | null;
             tokenSunat: string | null;
-            createdAt: Date;
-            updatedAt: Date;
-        };
-        reserva: {
-            id: number;
-            moneda: string;
-            estado: string;
-            createdAt: Date;
-            updatedAt: Date;
-            usuarioId: number;
-            codigoReserva: string;
-            tipoReserva: string;
-            fechaReserva: Date;
-            fechaInicio: Date;
-            fechaFin: Date | null;
-            cantidadPersonas: number;
-            precioTotal: import(".prisma/client/runtime/library").Decimal;
-            notas: string | null;
-            motivoCancelacion: string | null;
-            fechaCancelacion: Date | null;
-            fechaExpiracion: Date | null;
         };
         detalles: {
             id: number;
-            pagoId: number;
+            descripcion: string | null;
             createdAt: Date;
             updatedAt: Date;
+            pagoId: number;
             tipoPagoId: number;
             concepto: string;
             monto: import(".prisma/client/runtime/library").Decimal;
             porcentajeImpuesto: import(".prisma/client/runtime/library").Decimal;
             cantidad: number;
-            descripcion: string | null;
         }[];
     } & {
         id: number;
-        moneda: string;
         estado: string;
         createdAt: Date;
         updatedAt: Date;
+        moneda: string;
         reservaId: number;
         paymentGateway: string;
         transactionId: string;
@@ -232,10 +232,10 @@ export declare class PaymentService {
     }>;
     remove(id: number): Promise<{
         id: number;
-        moneda: string;
         estado: string;
         createdAt: Date;
         updatedAt: Date;
+        moneda: string;
         reservaId: number;
         paymentGateway: string;
         transactionId: string;
@@ -248,6 +248,10 @@ export declare class PaymentService {
     getPaymentDetails(paymentId: number): Promise<void>;
     captureCompletedPayment(paymentId: number): Promise<{
         id: number;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -259,15 +263,11 @@ export declare class PaymentService {
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
-        estado: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
         pdfUrl: string | null;
         qrCodeUrl: string | null;
         tokenSunat: string | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
 }

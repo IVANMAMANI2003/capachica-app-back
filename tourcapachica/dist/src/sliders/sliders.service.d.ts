@@ -13,55 +13,55 @@ export declare class SlidersService {
             id: number;
             url: string;
         }[];
-        description: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
         estado: string;
+        description: string | null;
     }>;
     findAll(): Promise<{
         imagenes: {
             id: number;
             url: string;
         }[];
-        description: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
         estado: string;
+        description: string | null;
     }[]>;
     findOne(id: number): Promise<{
         imagenes: {
             id: number;
             url: string;
         }[];
-        description: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
         estado: string;
+        description: string | null;
     }>;
     update(id: number, updateSliderDto: UpdateSliderDto): Promise<{
         imagenes: {
             id: number;
             url: string;
         }[];
-        description: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
         estado: string;
+        description: string | null;
     }>;
     remove(id: number): Promise<{
-        description: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
         estado: string;
+        description: string | null;
     }>;
 }

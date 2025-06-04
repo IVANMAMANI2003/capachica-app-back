@@ -26,6 +26,7 @@ const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 const roles_guard_1 = require("../auth/guards/roles.guard");
 const estado_paquete_enum_1 = require("./enums/estado-paquete.enum");
 const class_validator_1 = require("class-validator");
+const prisma_service_1 = require("../prisma/prisma.service");
 let UpdateEstadoDto = class UpdateEstadoDto {
 };
 __decorate([
@@ -38,26 +39,96 @@ UpdateEstadoDto = __decorate([
     (0, common_1.Controller)('paquetes-turisticos')
 ], UpdateEstadoDto);
 let PaquetesTuristicosController = class PaquetesTuristicosController {
-    constructor(paquetesTuristicosService) {
+    constructor(paquetesTuristicosService, prisma) {
         this.paquetesTuristicosService = paquetesTuristicosService;
+        this.prisma = prisma;
     }
-    create(createPaqueteTuristicoDto) {
-        return this.paquetesTuristicosService.create(createPaqueteTuristicoDto);
+    async create(createPaqueteTuristicoDto, req) {
+        try {
+            if (req.user.roles.includes('Emprendedor')) {
+                const emprendimiento = await this.prisma.emprendimiento.findFirst({
+                    where: { usuarioId: req.user.id }
+                });
+                if (!emprendimiento) {
+                    throw new common_1.ForbiddenException('No tienes un emprendimiento asociado');
+                }
+                createPaqueteTuristicoDto.emprendimientoId = emprendimiento.id;
+            }
+            return this.paquetesTuristicosService.create(createPaqueteTuristicoDto);
+        }
+        catch (error) {
+            if (error instanceof common_1.ForbiddenException) {
+                throw error;
+            }
+            throw new common_1.BadRequestException('Error al crear el paquete turístico');
+        }
     }
-    findAll() {
-        return this.paquetesTuristicosService.findAll();
+    async findAll() {
+        try {
+            return this.paquetesTuristicosService.findAll();
+        }
+        catch (error) {
+            throw new common_1.BadRequestException('Error al obtener los paquetes turísticos');
+        }
     }
-    findByEmprendimiento(emprendimientoId) {
-        return this.paquetesTuristicosService.findByEmprendimiento(+emprendimientoId);
+    async findByEmprendimiento(emprendimientoId) {
+        try {
+            return this.paquetesTuristicosService.findByEmprendimiento(Number(emprendimientoId));
+        }
+        catch (error) {
+            throw new common_1.BadRequestException('Error al obtener los paquetes turísticos del emprendimiento');
+        }
     }
-    findOne(id) {
-        return this.paquetesTuristicosService.findOne(+id);
+    async findOne(id) {
+        try {
+            return this.paquetesTuristicosService.findOne(Number(id));
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            throw new common_1.BadRequestException('Error al obtener el paquete turístico');
+        }
     }
-    update(id, updatePaqueteTuristicoDto) {
-        return this.paquetesTuristicosService.update(+id, updatePaqueteTuristicoDto);
+    async update(id, updatePaqueteTuristicoDto, req) {
+        try {
+            if (req.user.roles.includes('Emprendedor')) {
+                const paquete = await this.paquetesTuristicosService.findOne(Number(id));
+                const emprendimiento = await this.prisma.emprendimiento.findFirst({
+                    where: { usuarioId: req.user.id }
+                });
+                if (!emprendimiento || paquete.emprendimientoId !== emprendimiento.id) {
+                    throw new common_1.ForbiddenException('No tienes permiso para actualizar este paquete turístico');
+                }
+            }
+            return this.paquetesTuristicosService.update(Number(id), updatePaqueteTuristicoDto);
+        }
+        catch (error) {
+            if (error instanceof common_1.ForbiddenException || error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            throw new common_1.BadRequestException('Error al actualizar el paquete turístico');
+        }
     }
-    remove(id) {
-        return this.paquetesTuristicosService.remove(+id);
+    async remove(id, req) {
+        try {
+            if (req.user.roles.includes('Emprendedor')) {
+                const paquete = await this.paquetesTuristicosService.findOne(Number(id));
+                const emprendimiento = await this.prisma.emprendimiento.findFirst({
+                    where: { usuarioId: req.user.id }
+                });
+                if (!emprendimiento || paquete.emprendimientoId !== emprendimiento.id) {
+                    throw new common_1.ForbiddenException('No tienes permiso para eliminar este paquete turístico');
+                }
+            }
+            return this.paquetesTuristicosService.remove(Number(id));
+        }
+        catch (error) {
+            if (error instanceof common_1.ForbiddenException || error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            throw new common_1.BadRequestException('Error al eliminar el paquete turístico');
+        }
     }
     updateEstado(id, body) {
         return this.paquetesTuristicosService.updateEstado(+id, body.estado);
@@ -92,14 +163,29 @@ let PaquetesTuristicosController = class PaquetesTuristicosController {
         return this.paquetesTuristicosService.deleteDisponibilidad(id);
     }
     async addFavorite(id, req) {
-        return this.paquetesTuristicosService.addFavorite(req.user.id, +id);
+        try {
+            return this.paquetesTuristicosService.addFavorite(Number(id), req.user.id);
+        }
+        catch (error) {
+            if (error instanceof common_1.BadRequestException || error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            throw new common_1.BadRequestException('Error al agregar el paquete a favoritos');
+        }
     }
     async removeFavorite(id, req) {
-        return this.paquetesTuristicosService.removeFavorite(req.user.id, +id);
+        try {
+            return this.paquetesTuristicosService.removeFavorite(Number(id), req.user.id);
+        }
+        catch (error) {
+            if (error instanceof common_1.BadRequestException || error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            throw new common_1.BadRequestException('Error al eliminar el paquete de favoritos');
+        }
     }
     async findFavorites(req) {
-        const userId = req.user.id;
-        return this.paquetesTuristicosService.findFavorites(userId);
+        return this.paquetesTuristicosService.findFavorites(Number(req.user.id));
     }
 };
 exports.PaquetesTuristicosController = PaquetesTuristicosController;
@@ -112,9 +198,10 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Paquete turístico creado exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_paquete_turistico_dto_1.CreatePaqueteTuristicoDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [create_paquete_turistico_dto_1.CreatePaqueteTuristicoDto, Object]),
+    __metadata("design:returntype", Promise)
 ], PaquetesTuristicosController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
@@ -122,7 +209,7 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Lista de paquetes turísticos' }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], PaquetesTuristicosController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)('emprendimiento/:emprendimientoId'),
@@ -131,7 +218,7 @@ __decorate([
     __param(0, (0, common_1.Param)('emprendimientoId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], PaquetesTuristicosController.prototype, "findByEmprendimiento", null);
 __decorate([
     (0, common_1.Get)(':id'),
@@ -141,7 +228,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], PaquetesTuristicosController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Patch)(':id'),
@@ -154,9 +241,10 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Paquete turístico no encontrado' }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_paquete_turistico_dto_1.UpdatePaqueteTuristicoDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [String, update_paquete_turistico_dto_1.UpdatePaqueteTuristicoDto, Object]),
+    __metadata("design:returntype", Promise)
 ], PaquetesTuristicosController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
@@ -167,9 +255,10 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Paquete turístico eliminado exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Paquete turístico no encontrado' }),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
 ], PaquetesTuristicosController.prototype, "remove", null);
 __decorate([
     (0, common_1.Patch)(':id/estado'),
@@ -358,6 +447,7 @@ __decorate([
 exports.PaquetesTuristicosController = PaquetesTuristicosController = __decorate([
     (0, swagger_1.ApiTags)('paquetes-turisticos'),
     (0, common_1.Controller)('paquetes-turisticos'),
-    __metadata("design:paramtypes", [paquetes_turisticos_service_1.PaquetesTuristicosService])
+    __metadata("design:paramtypes", [paquetes_turisticos_service_1.PaquetesTuristicosService,
+        prisma_service_1.PrismaService])
 ], PaquetesTuristicosController);
 //# sourceMappingURL=paquetes-turisticos.controller.js.map

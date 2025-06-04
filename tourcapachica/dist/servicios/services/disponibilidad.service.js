@@ -45,18 +45,15 @@ let DisponibilidadService = class DisponibilidadService {
             const serviciosNoEncontrados = servicioIds.filter(id => !servicios.some(s => s.id === id));
             throw new common_1.NotFoundException(`Los siguientes servicios no fueron encontrados: ${serviciosNoEncontrados.join(', ')}`);
         }
-        return this.prisma.$transaction(disponibilidades.map(disponibilidad => this.prisma.servicioDisponibilidad.create({
-            data: {
+        return this.prisma.servicioDisponibilidad.createMany({
+            data: disponibilidades.map(disponibilidad => ({
                 servicioId: disponibilidad.servicioId,
                 fechaInicio: new Date(disponibilidad.fechaInicio),
                 fechaFin: new Date(disponibilidad.fechaFin),
-                cuposMaximos: disponibilidad.cuposMaximos,
                 cuposDisponibles: disponibilidad.cuposDisponibles,
                 precioEspecial: disponibilidad.precioEspecial,
-                estado: disponibilidad.estado,
-                notas: disponibilidad.notas,
-            },
-        })));
+            })),
+        });
     }
     async getDisponibilidad(servicioId) {
         const servicio = await this.prisma.servicio.findUnique({

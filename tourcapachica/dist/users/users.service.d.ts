@@ -20,12 +20,12 @@ export declare class UsersService {
         }[];
         persona: {
             id: number;
+            nombre: string;
+            direccion: string | null;
             createdAt: Date;
             updatedAt: Date;
-            nombre: string;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -33,19 +33,21 @@ export declare class UsersService {
         usuariosRoles: ({
             rol: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
                 descripcion: string | null;
+                createdAt: Date;
+                updatedAt: Date;
             };
         } & {
             id: number;
+            usuarioId: number;
             createdAt: Date;
             updatedAt: Date;
             rolId: number;
-            usuarioId: number;
         })[];
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -56,18 +58,16 @@ export declare class UsersService {
         estaActivo: boolean | null;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue | null;
-        createdAt: Date;
-        updatedAt: Date;
     }[]>;
     findByEmail(email: string): Promise<{
         persona: {
             id: number;
+            nombre: string;
+            direccion: string | null;
             createdAt: Date;
             updatedAt: Date;
-            nombre: string;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -75,20 +75,22 @@ export declare class UsersService {
         usuariosRoles: ({
             rol: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
                 descripcion: string | null;
+                createdAt: Date;
+                updatedAt: Date;
             };
         } & {
             id: number;
+            usuarioId: number;
             createdAt: Date;
             updatedAt: Date;
             rolId: number;
-            usuarioId: number;
         })[];
     } & {
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -99,27 +101,27 @@ export declare class UsersService {
         estaActivo: boolean | null;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     findById(id: number): Promise<{
         usuariosRoles: ({
             rol: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
                 descripcion: string | null;
+                createdAt: Date;
+                updatedAt: Date;
             };
         } & {
             id: number;
+            usuarioId: number;
             createdAt: Date;
             updatedAt: Date;
             rolId: number;
-            usuarioId: number;
         })[];
     } & {
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -130,8 +132,6 @@ export declare class UsersService {
         estaActivo: boolean | null;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     register(data: RegisterUserDto): Promise<{
         imagenes: {
@@ -140,12 +140,12 @@ export declare class UsersService {
         }[];
         persona: {
             id: number;
+            nombre: string;
+            direccion: string | null;
             createdAt: Date;
             updatedAt: Date;
-            nombre: string;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -153,19 +153,21 @@ export declare class UsersService {
         usuariosRoles: ({
             rol: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
                 descripcion: string | null;
+                createdAt: Date;
+                updatedAt: Date;
             };
         } & {
             id: number;
+            usuarioId: number;
             createdAt: Date;
             updatedAt: Date;
             rolId: number;
-            usuarioId: number;
         })[];
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -176,8 +178,6 @@ export declare class UsersService {
         estaActivo: boolean | null;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     create(createUserDto: CreateUserDto): Promise<{
         imagenes: {
@@ -186,12 +186,12 @@ export declare class UsersService {
         }[];
         persona: {
             id: number;
+            nombre: string;
+            direccion: string | null;
             createdAt: Date;
             updatedAt: Date;
-            nombre: string;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -199,19 +199,21 @@ export declare class UsersService {
         usuariosRoles: ({
             rol: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
                 descripcion: string | null;
+                createdAt: Date;
+                updatedAt: Date;
             };
         } & {
             id: number;
+            usuarioId: number;
             createdAt: Date;
             updatedAt: Date;
             rolId: number;
-            usuarioId: number;
         })[];
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -222,8 +224,6 @@ export declare class UsersService {
         estaActivo: boolean | null;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     findOne(id: number): Promise<{
         imagenes: {
@@ -232,12 +232,12 @@ export declare class UsersService {
         }[];
         persona: {
             id: number;
+            nombre: string;
+            direccion: string | null;
             createdAt: Date;
             updatedAt: Date;
-            nombre: string;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -245,19 +245,21 @@ export declare class UsersService {
         usuariosRoles: ({
             rol: {
                 id: number;
-                createdAt: Date;
-                updatedAt: Date;
                 nombre: string;
                 descripcion: string | null;
+                createdAt: Date;
+                updatedAt: Date;
             };
         } & {
             id: number;
+            usuarioId: number;
             createdAt: Date;
             updatedAt: Date;
             rolId: number;
-            usuarioId: number;
         })[];
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -268,24 +270,24 @@ export declare class UsersService {
         estaActivo: boolean | null;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     update(id: number, updateUserWithPersonaDto: UpdateUserWithPersonaDto): Promise<{
         persona: {
             id: number;
+            nombre: string;
+            direccion: string | null;
             createdAt: Date;
             updatedAt: Date;
-            nombre: string;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
         };
     } & {
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -296,11 +298,11 @@ export declare class UsersService {
         estaActivo: boolean | null;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     delete(id: number): Promise<{
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         personaId: number;
         email: string;
         passwordHash: string;
@@ -311,15 +313,13 @@ export declare class UsersService {
         estaActivo: boolean | null;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     assignRole(userId: number, roleId: number): Promise<{
         id: number;
+        usuarioId: number;
         createdAt: Date;
         updatedAt: Date;
         rolId: number;
-        usuarioId: number;
     }>;
     removeRole(userId: number, roleId: number): Promise<import(".prisma/client").Prisma.BatchPayload>;
     requestPasswordReset(data: RequestPasswordResetDto): Promise<{

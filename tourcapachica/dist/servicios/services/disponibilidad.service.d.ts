@@ -6,9 +6,9 @@ export declare class DisponibilidadService {
     constructor(prisma: PrismaService);
     createDisponibilidad(createDisponibilidadDto: CreateServicioDisponibilidadDto): Promise<{
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        estado: string;
         servicioId: number;
         fechaInicio: Date | null;
         fechaFin: Date | null;
@@ -17,24 +17,12 @@ export declare class DisponibilidadService {
         precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
         notas: string | null;
     }>;
-    createDisponibilidades(disponibilidades: CreateServicioDisponibilidadDto[]): Promise<{
-        id: number;
-        createdAt: Date;
-        updatedAt: Date;
-        estado: string;
-        servicioId: number;
-        fechaInicio: Date | null;
-        fechaFin: Date | null;
-        cuposMaximos: number;
-        cuposDisponibles: number;
-        precioEspecial: import(".prisma/client/runtime/library").Decimal | null;
-        notas: string | null;
-    }[]>;
+    createDisponibilidades(disponibilidades: CreateServicioDisponibilidadDto[]): Promise<import(".prisma/client").Prisma.BatchPayload>;
     getDisponibilidad(servicioId: number): Promise<{
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        estado: string;
         servicioId: number;
         fechaInicio: Date | null;
         fechaFin: Date | null;
@@ -45,9 +33,9 @@ export declare class DisponibilidadService {
     }[]>;
     getDisponibilidadByFecha(servicioId: number, fecha: string): Promise<{
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        estado: string;
         servicioId: number;
         fechaInicio: Date | null;
         fechaFin: Date | null;
@@ -59,13 +47,13 @@ export declare class DisponibilidadService {
     findAll(): Promise<({
         servicio: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             nombre: string;
             descripcion: string | null;
             latitud: number | null;
             longitud: number | null;
             estado: string;
+            createdAt: Date;
+            updatedAt: Date;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
@@ -73,9 +61,9 @@ export declare class DisponibilidadService {
         };
     } & {
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        estado: string;
         servicioId: number;
         fechaInicio: Date | null;
         fechaFin: Date | null;
@@ -87,13 +75,13 @@ export declare class DisponibilidadService {
     findByServicio(servicioId: number): Promise<({
         servicio: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             nombre: string;
             descripcion: string | null;
             latitud: number | null;
             longitud: number | null;
             estado: string;
+            createdAt: Date;
+            updatedAt: Date;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
@@ -101,9 +89,9 @@ export declare class DisponibilidadService {
         };
     } & {
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        estado: string;
         servicioId: number;
         fechaInicio: Date | null;
         fechaFin: Date | null;
@@ -115,13 +103,13 @@ export declare class DisponibilidadService {
     findOne(id: number): Promise<{
         servicio: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             nombre: string;
             descripcion: string | null;
             latitud: number | null;
             longitud: number | null;
             estado: string;
+            createdAt: Date;
+            updatedAt: Date;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
@@ -129,9 +117,9 @@ export declare class DisponibilidadService {
         };
     } & {
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        estado: string;
         servicioId: number;
         fechaInicio: Date | null;
         fechaFin: Date | null;
@@ -143,13 +131,13 @@ export declare class DisponibilidadService {
     update(id: number, updateData: UpdateServicioDisponibilidadDto): Promise<{
         servicio: {
             id: number;
-            createdAt: Date;
-            updatedAt: Date;
             nombre: string;
             descripcion: string | null;
             latitud: number | null;
             longitud: number | null;
             estado: string;
+            createdAt: Date;
+            updatedAt: Date;
             tipoServicioId: number;
             precioBase: import(".prisma/client/runtime/library").Decimal;
             moneda: string;
@@ -157,9 +145,9 @@ export declare class DisponibilidadService {
         };
     } & {
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        estado: string;
         servicioId: number;
         fechaInicio: Date | null;
         fechaFin: Date | null;
@@ -170,9 +158,9 @@ export declare class DisponibilidadService {
     }>;
     remove(id: number): Promise<{
         id: number;
+        estado: string;
         createdAt: Date;
         updatedAt: Date;
-        estado: string;
         servicioId: number;
         fechaInicio: Date | null;
         fechaFin: Date | null;

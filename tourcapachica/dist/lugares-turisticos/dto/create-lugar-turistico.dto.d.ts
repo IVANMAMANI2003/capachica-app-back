@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 export declare class ImageDto {
     url: string;
 }
@@ -11,7 +12,7 @@ export declare class CreateLugarTuristicoDto {
     esDestacado?: boolean;
     horarioApertura?: Date;
     horarioCierre?: Date;
-    costoEntrada?: number;
+    costoEntrada: Prisma.Decimal;
     recomendaciones?: string;
     restricciones?: string;
     imagenes?: ImageDto[];

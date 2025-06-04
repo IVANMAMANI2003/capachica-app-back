@@ -17,6 +17,10 @@ export declare class ComprobantesService {
     }): Promise<Comprobante>;
     create(data: Prisma.ComprobanteCreateInput): Promise<{
         id: number;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -28,20 +32,20 @@ export declare class ComprobantesService {
         subtotal: Prisma.Decimal;
         igv: Prisma.Decimal;
         total: Prisma.Decimal;
-        moneda: string;
-        estado: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
         pdfUrl: string | null;
         qrCodeUrl: string | null;
         tokenSunat: string | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     validateComprobanteUniqueness(serie: string, numero: number): Promise<void>;
     findAll(): Promise<{
         id: number;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -53,19 +57,19 @@ export declare class ComprobantesService {
         subtotal: Prisma.Decimal;
         igv: Prisma.Decimal;
         total: Prisma.Decimal;
-        moneda: string;
-        estado: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
         pdfUrl: string | null;
         qrCodeUrl: string | null;
         tokenSunat: string | null;
-        createdAt: Date;
-        updatedAt: Date;
     }[]>;
     findOne(id: number): Promise<{
         id: number;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -77,19 +81,19 @@ export declare class ComprobantesService {
         subtotal: Prisma.Decimal;
         igv: Prisma.Decimal;
         total: Prisma.Decimal;
-        moneda: string;
-        estado: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
         pdfUrl: string | null;
         qrCodeUrl: string | null;
         tokenSunat: string | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     update(id: number, data: UpdateComprobanteDto): Promise<{
         id: number;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -101,19 +105,19 @@ export declare class ComprobantesService {
         subtotal: Prisma.Decimal;
         igv: Prisma.Decimal;
         total: Prisma.Decimal;
-        moneda: string;
-        estado: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
         pdfUrl: string | null;
         qrCodeUrl: string | null;
         tokenSunat: string | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     remove(id: number): Promise<{
         id: number;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -125,15 +129,11 @@ export declare class ComprobantesService {
         subtotal: Prisma.Decimal;
         igv: Prisma.Decimal;
         total: Prisma.Decimal;
-        moneda: string;
-        estado: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
         pdfUrl: string | null;
         qrCodeUrl: string | null;
         tokenSunat: string | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
 }

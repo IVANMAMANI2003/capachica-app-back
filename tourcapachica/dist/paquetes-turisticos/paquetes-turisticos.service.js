@@ -32,47 +32,52 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
         this.BUCKET_NAME = 'paquetes-turisticos';
     }
     async create(createPaqueteTuristicoDto) {
-        const { imagenes, servicios } = createPaqueteTuristicoDto, paqueteData = __rest(createPaqueteTuristicoDto, ["imagenes", "servicios"]);
-        const paquete = await this.prisma.paqueteTuristico.create({
-            data: {
-                nombre: paqueteData.nombre,
-                descripcion: paqueteData.descripcion,
-                precio: paqueteData.precio,
-                estado: paqueteData.estado || 'activo',
-                emprendimientoId: paqueteData.emprendimientoId,
-            },
-        });
-        if (servicios && servicios.length > 0) {
-            await this.prisma.servicioPaquete.createMany({
-                data: servicios.map((servicioId, index) => ({
-                    paqueteTuristicoId: paquete.id,
-                    servicioId,
-                    orden: index + 1,
-                })),
+        try {
+            const { emprendimientoId, servicios, imagenes } = createPaqueteTuristicoDto, data = __rest(createPaqueteTuristicoDto, ["emprendimientoId", "servicios", "imagenes"]);
+            const emprendimiento = await this.prisma.emprendimiento.findUnique({
+                where: { id: emprendimientoId }
             });
-        }
-        if (imagenes && imagenes.length > 0) {
-            for (const imageUrl of imagenes) {
-                const filePath = `${paquete.id}/${Date.now()}-${imageUrl.split('/').pop()}`;
-                const { data, error } = await this.supabaseService.uploadFile(this.BUCKET_NAME, filePath, imageUrl);
-                if (error) {
-                    throw new common_1.BadRequestException(`Error al subir la imagen: ${error.message}`);
-                }
-                const imagenDb = await this.prisma.image.create({
-                    data: {
-                        url: data.path
-                    }
-                });
-                await this.prisma.imageable.create({
-                    data: {
-                        image_id: imagenDb.id,
-                        imageable_id: paquete.id,
-                        imageable_type: this.IMAGEABLE_TYPE
-                    }
-                });
+            if (!emprendimiento) {
+                throw new common_1.BadRequestException(`Emprendimiento con ID ${emprendimientoId} no encontrado`);
             }
+            const paquete = await this.prisma.paqueteTuristico.create({
+                data: Object.assign(Object.assign({}, data), { emprendimientoId, servicios: {
+                        create: (servicios === null || servicios === void 0 ? void 0 : servicios.map((servicioId, index) => ({
+                            servicioId,
+                            orden: index + 1
+                        }))) || []
+                    } }),
+                include: {
+                    emprendimiento: true,
+                    servicios: {
+                        include: {
+                            servicio: true
+                        }
+                    }
+                }
+            });
+            if (imagenes && imagenes.length > 0) {
+                await Promise.all(imagenes.map(async (url) => {
+                    const image = await this.prisma.image.create({
+                        data: { url }
+                    });
+                    await this.prisma.imageable.create({
+                        data: {
+                            imageable_type: this.IMAGEABLE_TYPE,
+                            imageable_id: paquete.id,
+                            image_id: image.id
+                        }
+                    });
+                }));
+            }
+            return this.findOne(paquete.id);
         }
-        return this.findOne(paquete.id);
+        catch (error) {
+            if (error instanceof common_1.BadRequestException) {
+                throw error;
+            }
+            throw new common_1.BadRequestException('Error al crear el paquete turístico');
+        }
     }
     async findAll() {
         const paquetes = await this.prisma.paqueteTuristico.findMany({
@@ -95,7 +100,7 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
                     image: true
                 }
             });
-            return Object.assign(Object.assign({}, paquete), { imagenes: imageables.map(imageable => ({
+            return Object.assign(Object.assign({}, paquete), { precio: Number(paquete.precio), imagenes: imageables.map(imageable => ({
                     id: imageable.image.id,
                     url: imageable.image.url
                 })) });
@@ -103,8 +108,11 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
         return paquetesWithImages;
     }
     async findOne(id) {
+        if (!id || isNaN(Number(id))) {
+            throw new common_1.BadRequestException('ID inválido');
+        }
         const paquete = await this.prisma.paqueteTuristico.findUnique({
-            where: { id },
+            where: { id: Number(id) },
             include: {
                 emprendimiento: true,
                 servicios: {
@@ -116,18 +124,18 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
             }
         });
         if (!paquete) {
-            return null;
+            throw new common_1.NotFoundException(`Paquete turístico con ID ${id} no encontrado`);
         }
         const imageables = await this.prisma.imageable.findMany({
             where: {
                 imageable_type: this.IMAGEABLE_TYPE,
-                imageable_id: paquete.id,
+                imageable_id: Number(id),
             },
             include: {
                 image: true
             }
         });
-        return Object.assign(Object.assign({}, paquete), { imagenes: imageables.map(imageable => ({
+        return Object.assign(Object.assign({}, paquete), { precio: Number(paquete.precio), imagenes: imageables.map(imageable => ({
                 id: imageable.image.id,
                 url: imageable.image.url
             })) });
@@ -155,7 +163,7 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
                     image: true
                 }
             });
-            return Object.assign(Object.assign({}, paquete), { imagenes: imageables.map(imageable => ({
+            return Object.assign(Object.assign({}, paquete), { precio: Number(paquete.precio), imagenes: imageables.map(imageable => ({
                     id: imageable.image.id,
                     url: imageable.image.url
                 })) });
@@ -163,99 +171,109 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
         return paquetesWithImages;
     }
     async update(id, updatePaqueteTuristicoDto) {
-        const { imagenes, servicios } = updatePaqueteTuristicoDto, paqueteData = __rest(updatePaqueteTuristicoDto, ["imagenes", "servicios"]);
-        await this.prisma.paqueteTuristico.update({
-            where: { id },
-            data: {
-                nombre: paqueteData.nombre,
-                descripcion: paqueteData.descripcion,
-                precio: paqueteData.precio,
-                estado: paqueteData.estado,
-            },
-        });
-        if (servicios) {
-            await this.prisma.servicioPaquete.deleteMany({
-                where: { paqueteTuristicoId: id },
-            });
-            if (servicios.length > 0) {
-                await this.prisma.servicioPaquete.createMany({
-                    data: servicios.map((servicioId, index) => ({
-                        paqueteTuristicoId: id,
-                        servicioId,
-                        orden: index + 1,
-                    })),
-                });
+        try {
+            if (!id || isNaN(Number(id))) {
+                throw new common_1.BadRequestException('ID inválido');
             }
+            const paquete = await this.findOne(id);
+            if (!paquete) {
+                throw new common_1.NotFoundException(`Paquete turístico con ID ${id} no encontrado`);
+            }
+            const { servicios, imagenes } = updatePaqueteTuristicoDto, data = __rest(updatePaqueteTuristicoDto, ["servicios", "imagenes"]);
+            const updatedPaquete = await this.prisma.paqueteTuristico.update({
+                where: { id: Number(id) },
+                data: Object.assign(Object.assign({}, data), { servicios: servicios ? {
+                        deleteMany: {},
+                        create: servicios.map((servicioId, index) => ({
+                            servicioId,
+                            orden: index + 1
+                        }))
+                    } : undefined }),
+                include: {
+                    emprendimiento: true,
+                    servicios: {
+                        include: {
+                            servicio: true
+                        }
+                    }
+                }
+            });
+            if (imagenes && imagenes.length > 0) {
+                const existingImageables = await this.prisma.imageable.findMany({
+                    where: {
+                        imageable_type: this.IMAGEABLE_TYPE,
+                        imageable_id: Number(id)
+                    }
+                });
+                await Promise.all(existingImageables.map(async (imageable) => {
+                    await this.prisma.imageable.delete({
+                        where: { id: imageable.id }
+                    });
+                    await this.prisma.image.delete({
+                        where: { id: imageable.image_id }
+                    });
+                }));
+                await Promise.all(imagenes.map(async (url) => {
+                    const image = await this.prisma.image.create({
+                        data: { url }
+                    });
+                    await this.prisma.imageable.create({
+                        data: {
+                            imageable_type: this.IMAGEABLE_TYPE,
+                            imageable_id: updatedPaquete.id,
+                            image_id: image.id
+                        }
+                    });
+                }));
+            }
+            return this.findOne(updatedPaquete.id);
         }
-        if (imagenes) {
+        catch (error) {
+            if (error instanceof common_1.BadRequestException || error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            throw new common_1.BadRequestException('Error al actualizar el paquete turístico');
+        }
+    }
+    async remove(id) {
+        try {
+            if (!id || isNaN(Number(id))) {
+                throw new common_1.BadRequestException('ID inválido');
+            }
+            const paquete = await this.findOne(id);
+            if (!paquete) {
+                throw new common_1.NotFoundException(`Paquete turístico con ID ${id} no encontrado`);
+            }
+            await this.prisma.servicioPaquete.deleteMany({
+                where: { paqueteTuristicoId: Number(id) }
+            });
+            await this.prisma.favoritoPaqueteTuristico.deleteMany({
+                where: { paqueteTuristicoId: Number(id) }
+            });
             const imageables = await this.prisma.imageable.findMany({
                 where: {
                     imageable_type: this.IMAGEABLE_TYPE,
-                    imageable_id: id,
-                },
-                include: {
-                    image: true
+                    imageable_id: Number(id)
                 }
             });
-            for (const imageable of imageables) {
-                const { error } = await this.supabaseService.deleteFile(this.BUCKET_NAME, imageable.image.url);
-                if (error) {
-                    console.error(`Error al eliminar la imagen de Supabase: ${error.message}`);
-                }
+            await Promise.all(imageables.map(async (imageable) => {
                 await this.prisma.imageable.delete({
                     where: { id: imageable.id }
                 });
                 await this.prisma.image.delete({
-                    where: { id: imageable.image.id }
+                    where: { id: imageable.image_id }
                 });
-            }
-            for (const imageUrl of imagenes) {
-                const filePath = `${id}/${Date.now()}-${imageUrl.split('/').pop()}`;
-                const { data, error } = await this.supabaseService.uploadFile(this.BUCKET_NAME, filePath, imageUrl);
-                if (error) {
-                    throw new common_1.BadRequestException(`Error al subir la imagen: ${error.message}`);
-                }
-                const imagenDb = await this.prisma.image.create({
-                    data: {
-                        url: data.path
-                    }
-                });
-                await this.prisma.imageable.create({
-                    data: {
-                        image_id: imagenDb.id,
-                        imageable_id: id,
-                        imageable_type: this.IMAGEABLE_TYPE
-                    }
-                });
-            }
-        }
-        return this.findOne(id);
-    }
-    async remove(id) {
-        const imageables = await this.prisma.imageable.findMany({
-            where: {
-                imageable_type: this.IMAGEABLE_TYPE,
-                imageable_id: id,
-            },
-            include: {
-                image: true
-            }
-        });
-        for (const imageable of imageables) {
-            const { error } = await this.supabaseService.deleteFile(this.BUCKET_NAME, imageable.image.url);
-            if (error) {
-                console.error(`Error al eliminar la imagen de Supabase: ${error.message}`);
-            }
-            await this.prisma.imageable.delete({
-                where: { id: imageable.id }
-            });
-            await this.prisma.image.delete({
-                where: { id: imageable.image.id }
+            }));
+            return this.prisma.paqueteTuristico.delete({
+                where: { id: Number(id) }
             });
         }
-        return this.prisma.paqueteTuristico.delete({
-            where: { id },
-        });
+        catch (error) {
+            if (error instanceof common_1.BadRequestException || error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            throw new common_1.BadRequestException('Error al eliminar el paquete turístico');
+        }
     }
     async updateEstado(id, estado) {
         if (!['activo', 'inactivo'].includes(estado)) {
@@ -263,7 +281,7 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
         }
         try {
             return await this.prisma.paqueteTuristico.update({
-                where: { id },
+                where: { id: Number(id) },
                 data: { estado },
                 include: {
                     emprendimiento: true,
@@ -295,7 +313,7 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
             throw new common_1.BadRequestException('Uno o más servicios no existen');
         }
         return this.prisma.paqueteTuristico.update({
-            where: { id },
+            where: { id: Number(id) },
             data: {
                 servicios: {
                     create: addServiciosDto.servicioIds.map((servicioId, index) => ({
@@ -320,7 +338,7 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
         }
         const servicioPaquete = await this.prisma.servicioPaquete.findFirst({
             where: {
-                paqueteTuristicoId: id,
+                paqueteTuristicoId: Number(id),
                 servicioId,
             },
         });
@@ -346,7 +364,7 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
                         servicio: {
                             serviciosPaquetes: {
                                 some: {
-                                    paqueteTuristicoId: id,
+                                    paqueteTuristicoId: Number(id),
                                 },
                             },
                         },
@@ -380,7 +398,7 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
         const serviciosPopulares = await this.prisma.servicioPaquete.groupBy({
             by: ['servicioId'],
             where: {
-                paqueteTuristicoId: id,
+                paqueteTuristicoId: Number(id),
             },
             _count: {
                 servicioId: true,
@@ -400,7 +418,7 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
                         servicio: {
                             serviciosPaquetes: {
                                 some: {
-                                    paqueteTuristicoId: id,
+                                    paqueteTuristicoId: Number(id),
                                 },
                             },
                         },
@@ -449,7 +467,7 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
                         servicio: {
                             serviciosPaquetes: {
                                 some: {
-                                    paqueteTuristicoId: id,
+                                    paqueteTuristicoId: Number(id),
                                 },
                             },
                         },
@@ -537,53 +555,66 @@ let PaquetesTuristicosService = class PaquetesTuristicosService {
             where: { id },
         });
     }
-    async addFavorite(usuarioId, paqueteTuristicoId) {
-        const paqueteTuristico = await this.prisma.paqueteTuristico.findUnique({ where: { id: paqueteTuristicoId } });
-        if (!paqueteTuristico) {
-            throw new common_1.NotFoundException(`Paquete con ID ${paqueteTuristicoId} no encontrado`);
-        }
-        const existingFavorite = await this.prisma.favoritoPaqueteTuristico.findUnique({
-            where: {
-                usuarioId_paqueteTuristicoId: {
-                    usuarioId,
-                    paqueteTuristicoId,
-                },
-            },
-        });
-        if (existingFavorite) {
-            throw new common_1.BadRequestException('Este Paquete Turistico, ya está marcado como favorito por este usuario');
-        }
-        return this.prisma.favoritoPaqueteTuristico.create({
-            data: {
-                usuarioId,
-                paqueteTuristicoId,
-            },
-            include: {
-                paqueteTuristico: true
+    async addFavorite(paqueteId, userId) {
+        try {
+            if (!paqueteId || isNaN(Number(paqueteId))) {
+                throw new common_1.BadRequestException('ID de paquete inválido');
             }
-        });
+            const paquete = await this.findOne(paqueteId);
+            if (!paquete) {
+                throw new common_1.NotFoundException(`Paquete turístico con ID ${paqueteId} no encontrado`);
+            }
+            const existingFavorite = await this.prisma.favoritoPaqueteTuristico.findFirst({
+                where: {
+                    paqueteTuristicoId: Number(paqueteId),
+                    usuarioId: userId
+                }
+            });
+            if (existingFavorite) {
+                throw new common_1.BadRequestException('El paquete ya está en favoritos');
+            }
+            return this.prisma.favoritoPaqueteTuristico.create({
+                data: {
+                    paqueteTuristicoId: Number(paqueteId),
+                    usuarioId: userId
+                }
+            });
+        }
+        catch (error) {
+            if (error instanceof common_1.BadRequestException || error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            throw new common_1.BadRequestException('Error al agregar el paquete a favoritos');
+        }
     }
-    async removeFavorite(usuarioId, paqueteTuristicoId) {
-        const existingFavorite = await this.prisma.favoritoPaqueteTuristico.findUnique({
-            where: {
-                usuarioId_paqueteTuristicoId: {
-                    usuarioId,
-                    paqueteTuristicoId,
-                },
-            },
-        });
-        if (!existingFavorite) {
-            throw new common_1.NotFoundException('Este servicio no está marcado como favorito por este usuario');
+    async removeFavorite(paqueteId, userId) {
+        try {
+            if (!paqueteId || isNaN(Number(paqueteId))) {
+                throw new common_1.BadRequestException('ID de paquete inválido');
+            }
+            const paquete = await this.findOne(paqueteId);
+            if (!paquete) {
+                throw new common_1.NotFoundException(`Paquete turístico con ID ${paqueteId} no encontrado`);
+            }
+            const favorite = await this.prisma.favoritoPaqueteTuristico.findFirst({
+                where: {
+                    paqueteTuristicoId: Number(paqueteId),
+                    usuarioId: userId
+                }
+            });
+            if (!favorite) {
+                throw new common_1.BadRequestException('El paquete no está en favoritos');
+            }
+            return this.prisma.favoritoPaqueteTuristico.delete({
+                where: { id: favorite.id }
+            });
         }
-        if (!existingFavorite) {
-            return null;
+        catch (error) {
+            if (error instanceof common_1.BadRequestException || error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            throw new common_1.BadRequestException('Error al eliminar el paquete de favoritos');
         }
-        await this.prisma.favoritoPaqueteTuristico.delete({
-            where: {
-                id: existingFavorite.id,
-            },
-        });
-        return { message: 'Favorito eliminado exitosamente' };
     }
     async findFavorites(userId) {
         console.log('✅ Servicio - Recibido userId para favoritos:', userId);

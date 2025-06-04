@@ -61,6 +61,9 @@ let ServiciosService = class ServiciosService {
             }
             return creado;
         });
+        if (!servicio) {
+            throw new common_1.BadRequestException('No se pudo crear el servicio');
+        }
         return this.findOne(servicio.id);
     }
     async findAll() {

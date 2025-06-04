@@ -6,6 +6,10 @@ export declare class ComprobantesController {
     constructor(service: ComprobantesService);
     create(dto: Comprobante): Promise<{
         id: number;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -17,19 +21,19 @@ export declare class ComprobantesController {
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
-        estado: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
         pdfUrl: string | null;
         qrCodeUrl: string | null;
         tokenSunat: string | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     findAll(): Promise<{
         id: number;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -41,19 +45,19 @@ export declare class ComprobantesController {
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
-        estado: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
         pdfUrl: string | null;
         qrCodeUrl: string | null;
         tokenSunat: string | null;
-        createdAt: Date;
-        updatedAt: Date;
     }[]>;
     findOne(id: string): Promise<{
         id: number;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -65,19 +69,19 @@ export declare class ComprobantesController {
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
-        estado: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
         pdfUrl: string | null;
         qrCodeUrl: string | null;
         tokenSunat: string | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     update(id: string, dto: UpdateComprobanteDto): Promise<{
         id: number;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -89,19 +93,19 @@ export declare class ComprobantesController {
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
-        estado: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
         pdfUrl: string | null;
         qrCodeUrl: string | null;
         tokenSunat: string | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     remove(id: string): Promise<{
         id: number;
+        estado: string;
+        createdAt: Date;
+        updatedAt: Date;
+        moneda: string;
         pagoId: number;
         tipoComprobante: string;
         serie: string;
@@ -113,15 +117,11 @@ export declare class ComprobantesController {
         subtotal: import(".prisma/client/runtime/library").Decimal;
         igv: import(".prisma/client/runtime/library").Decimal;
         total: import(".prisma/client/runtime/library").Decimal;
-        moneda: string;
-        estado: string;
         codigoSunat: string | null;
         codigoHash: string | null;
         xmlUrl: string | null;
         pdfUrl: string | null;
         qrCodeUrl: string | null;
         tokenSunat: string | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
 }

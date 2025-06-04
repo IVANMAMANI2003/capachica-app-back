@@ -24,6 +24,7 @@ exports.LugaresTuristicosService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
 const supabase_service_1 = require("../supabase/supabase.service");
+const client_1 = require("@prisma/client");
 let LugaresTuristicosService = class LugaresTuristicosService {
     constructor(prisma, supabaseService) {
         this.prisma = prisma;
@@ -42,7 +43,9 @@ let LugaresTuristicosService = class LugaresTuristicosService {
                 longitud: lugarData.longitud,
                 horarioApertura: lugarData.horarioApertura,
                 horarioCierre: lugarData.horarioCierre,
-                costoEntrada: lugarData.costoEntrada,
+                costoEntrada: lugarData.costoEntrada
+                    ? new client_1.Prisma.Decimal(lugarData.costoEntrada)
+                    : undefined,
                 recomendaciones: lugarData.recomendaciones,
                 restricciones: lugarData.restricciones,
                 esDestacado: lugarData.esDestacado,

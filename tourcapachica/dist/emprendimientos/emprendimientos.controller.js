@@ -39,8 +39,12 @@ let EmprendimientosController = class EmprendimientosController {
     findByUsuario(usuarioId) {
         return this.emprendimientosService.findByUsuario(+usuarioId);
     }
-    findOne(id) {
-        return this.emprendimientosService.findOne(+id);
+    async findOne(id) {
+        const result = await this.emprendimientosService.findOne(+id);
+        if (!result) {
+            throw new common_1.NotFoundException('Emprendimiento no encontrado');
+        }
+        return result;
     }
     update(id, updateEmprendimientoDto) {
         return this.emprendimientosService.update(+id, updateEmprendimientoDto);
@@ -111,7 +115,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], EmprendimientosController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Patch)(':id'),

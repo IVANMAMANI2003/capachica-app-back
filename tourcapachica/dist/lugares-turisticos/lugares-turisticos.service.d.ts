@@ -2,6 +2,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateLugarTuristicoDto } from './dto/create-lugar-turistico.dto';
 import { UpdateLugarTuristicoDto } from './dto/update-lugar-turistico.dto';
 import { SupabaseService } from '../supabase/supabase.service';
+import { Prisma } from '@prisma/client';
 export declare class LugaresTuristicosService {
     private prisma;
     private supabaseService;
@@ -24,7 +25,7 @@ export declare class LugaresTuristicosService {
         updatedAt: Date;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
-        costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
+        costoEntrada: Prisma.Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
         esDestacado: boolean;
@@ -45,7 +46,7 @@ export declare class LugaresTuristicosService {
         updatedAt: Date;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
-        costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
+        costoEntrada: Prisma.Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
         esDestacado: boolean;
@@ -66,7 +67,7 @@ export declare class LugaresTuristicosService {
         updatedAt: Date;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
-        costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
+        costoEntrada: Prisma.Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
         esDestacado: boolean;
@@ -87,7 +88,7 @@ export declare class LugaresTuristicosService {
         updatedAt: Date;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
-        costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
+        costoEntrada: Prisma.Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
         esDestacado: boolean;
@@ -104,7 +105,7 @@ export declare class LugaresTuristicosService {
         updatedAt: Date;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
-        costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
+        costoEntrada: Prisma.Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
         esDestacado: boolean;
@@ -121,7 +122,7 @@ export declare class LugaresTuristicosService {
         updatedAt: Date;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
-        costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
+        costoEntrada: Prisma.Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
         esDestacado: boolean;
@@ -142,7 +143,7 @@ export declare class LugaresTuristicosService {
         updatedAt: Date;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
-        costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
+        costoEntrada: Prisma.Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
         esDestacado: boolean;
@@ -160,7 +161,7 @@ export declare class LugaresTuristicosService {
             updatedAt: Date;
             horarioApertura: Date | null;
             horarioCierre: Date | null;
-            costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
+            costoEntrada: Prisma.Decimal | null;
             recomendaciones: string | null;
             restricciones: string | null;
             esDestacado: boolean;
@@ -195,7 +196,7 @@ export declare class LugaresTuristicosService {
         updatedAt: Date;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
-        costoEntrada: import(".prisma/client/runtime/library").Decimal | null;
+        costoEntrada: Prisma.Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
         esDestacado: boolean;

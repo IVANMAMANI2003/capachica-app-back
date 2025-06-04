@@ -13,6 +13,7 @@ exports.CreateLugarTuristicoDto = exports.ImageDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
+const client_1 = require("@prisma/client");
 class ImageDto {
 }
 exports.ImageDto = ImageDto;
@@ -145,14 +146,13 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Costo de entrada',
-        example: 20.00,
+        example: '20.00',
         required: false,
-        type: Number
+        type: String,
     }),
-    (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.Min)(0),
-    __metadata("design:type", Number)
+    (0, class_validator_1.Matches)(/^\d+(\.\d{1,2})?$/, { message: 'El costo debe ser un número decimal con hasta 2 decimales.' }),
+    __metadata("design:type", client_1.Prisma.Decimal)
 ], CreateLugarTuristicoDto.prototype, "costoEntrada", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({

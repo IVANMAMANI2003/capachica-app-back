@@ -1,5 +1,6 @@
 import { CreateLugarTuristicoDto } from './create-lugar-turistico.dto';
 import { ImageDto } from './create-lugar-turistico.dto';
+import { Prisma } from '@prisma/client';
 declare const UpdateLugarTuristicoDto_base: import("@nestjs/common").Type<Partial<CreateLugarTuristicoDto>>;
 export declare class UpdateLugarTuristicoDto extends UpdateLugarTuristicoDto_base {
     nombre?: string;
@@ -11,7 +12,7 @@ export declare class UpdateLugarTuristicoDto extends UpdateLugarTuristicoDto_bas
     esDestacado?: boolean;
     horarioApertura?: Date;
     horarioCierre?: Date;
-    costoEntrada?: number;
+    costoEntrada?: Prisma.Decimal;
     recomendaciones?: string;
     restricciones?: string;
     imagenes?: ImageDto[];

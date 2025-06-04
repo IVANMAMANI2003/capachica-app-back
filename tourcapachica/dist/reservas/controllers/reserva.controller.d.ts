@@ -6,10 +6,10 @@ export declare class ReservaController {
     constructor(reservaService: ReservaService);
     create(createReservaDto: CreateReservaDto): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         usuarioId: number;
         estado: string;
+        createdAt: Date;
+        updatedAt: Date;
         moneda: string;
         fechaInicio: Date;
         fechaFin: Date | null;
@@ -25,10 +25,10 @@ export declare class ReservaController {
     }>;
     findAll(): import(".prisma/client").Prisma.PrismaPromise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         usuarioId: number;
         estado: string;
+        createdAt: Date;
+        updatedAt: Date;
         moneda: string;
         fechaInicio: Date;
         fechaFin: Date | null;
@@ -44,10 +44,10 @@ export declare class ReservaController {
     }[]>;
     findOne(id: string): import(".prisma/client").Prisma.Prisma__ReservaClient<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         usuarioId: number;
         estado: string;
+        createdAt: Date;
+        updatedAt: Date;
         moneda: string;
         fechaInicio: Date;
         fechaFin: Date | null;
@@ -75,10 +75,10 @@ export declare class ReservaController {
     }>;
     update(id: string, updateReservaDto: UpdateReservaDto): import(".prisma/client").Prisma.Prisma__ReservaClient<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         usuarioId: number;
         estado: string;
+        createdAt: Date;
+        updatedAt: Date;
         moneda: string;
         fechaInicio: Date;
         fechaFin: Date | null;
@@ -97,10 +97,10 @@ export declare class ReservaController {
         userId: number;
     }): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         usuarioId: number;
         estado: string;
+        createdAt: Date;
+        updatedAt: Date;
         moneda: string;
         fechaInicio: Date;
         fechaFin: Date | null;
@@ -116,10 +116,10 @@ export declare class ReservaController {
     }>;
     remove(id: string): import(".prisma/client").Prisma.Prisma__ReservaClient<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         usuarioId: number;
         estado: string;
+        createdAt: Date;
+        updatedAt: Date;
         moneda: string;
         fechaInicio: Date;
         fechaFin: Date | null;

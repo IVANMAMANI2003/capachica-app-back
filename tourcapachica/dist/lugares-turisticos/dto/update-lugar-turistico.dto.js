@@ -13,6 +13,7 @@ exports.UpdateLugarTuristicoDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const create_lugar_turistico_dto_1 = require("./create-lugar-turistico.dto");
 const create_lugar_turistico_dto_2 = require("./create-lugar-turistico.dto");
+const client_1 = require("@prisma/client");
 class UpdateLugarTuristicoDto extends (0, swagger_1.PartialType)(create_lugar_turistico_dto_1.CreateLugarTuristicoDto) {
 }
 exports.UpdateLugarTuristicoDto = UpdateLugarTuristicoDto;
@@ -102,11 +103,11 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Costo de entrada',
-        example: 20.00,
+        example: '20.00',
         required: false,
-        type: Number
+        type: String,
     }),
-    __metadata("design:type", Number)
+    __metadata("design:type", client_1.Prisma.Decimal)
 ], UpdateLugarTuristicoDto.prototype, "costoEntrada", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({

@@ -9,10 +9,10 @@ export declare class ReservaService {
     private generarCodigoReserva;
     create(createReservaDto: CreateReservaDto): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         usuarioId: number;
         estado: string;
+        createdAt: Date;
+        updatedAt: Date;
         moneda: string;
         fechaInicio: Date;
         fechaFin: Date | null;
@@ -40,10 +40,10 @@ export declare class ReservaService {
     }>;
     cancelarReserva(reservaId: number, motivo: string): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         usuarioId: number;
         estado: string;
+        createdAt: Date;
+        updatedAt: Date;
         moneda: string;
         fechaInicio: Date;
         fechaFin: Date | null;
@@ -66,10 +66,10 @@ export declare class ReservaService {
     }>;
     findAll(): import(".prisma/client").Prisma.PrismaPromise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         usuarioId: number;
         estado: string;
+        createdAt: Date;
+        updatedAt: Date;
         moneda: string;
         fechaInicio: Date;
         fechaFin: Date | null;
@@ -85,10 +85,10 @@ export declare class ReservaService {
     }[]>;
     findOne(id: number): import(".prisma/client").Prisma.Prisma__ReservaClient<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         usuarioId: number;
         estado: string;
+        createdAt: Date;
+        updatedAt: Date;
         moneda: string;
         fechaInicio: Date;
         fechaFin: Date | null;
@@ -104,10 +104,10 @@ export declare class ReservaService {
     }, null, import(".prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     update(id: number, updateReservaDto: UpdateReservaDto): import(".prisma/client").Prisma.Prisma__ReservaClient<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         usuarioId: number;
         estado: string;
+        createdAt: Date;
+        updatedAt: Date;
         moneda: string;
         fechaInicio: Date;
         fechaFin: Date | null;
@@ -123,10 +123,10 @@ export declare class ReservaService {
     }, never, import(".prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     remove(id: number): import(".prisma/client").Prisma.Prisma__ReservaClient<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         usuarioId: number;
         estado: string;
+        createdAt: Date;
+        updatedAt: Date;
         moneda: string;
         fechaInicio: Date;
         fechaFin: Date | null;
