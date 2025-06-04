@@ -23,9 +23,9 @@ export declare class UsersController {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -42,12 +42,12 @@ export declare class UsersController {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            rolId: number;
             usuarioId: number;
+            rolId: number;
         })[];
+        email: string;
         id: number;
         personaId: number;
-        email: string;
         passwordHash: string;
         recoveryToken: string | null;
         recoveryTokenExpiresAt: Date | null;
@@ -78,9 +78,9 @@ export declare class UsersController {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -97,12 +97,12 @@ export declare class UsersController {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            rolId: number;
             usuarioId: number;
+            rolId: number;
         })[];
+        email: string;
         id: number;
         personaId: number;
-        email: string;
         passwordHash: string;
         recoveryToken: string | null;
         recoveryTokenExpiresAt: Date | null;
@@ -124,9 +124,9 @@ export declare class UsersController {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -143,12 +143,12 @@ export declare class UsersController {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            rolId: number;
             usuarioId: number;
+            rolId: number;
         })[];
+        email: string;
         id: number;
         personaId: number;
-        email: string;
         passwordHash: string;
         recoveryToken: string | null;
         recoveryTokenExpiresAt: Date | null;
@@ -170,9 +170,9 @@ export declare class UsersController {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
@@ -189,12 +189,12 @@ export declare class UsersController {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            rolId: number;
             usuarioId: number;
+            rolId: number;
         })[];
+        email: string;
         id: number;
         personaId: number;
-        email: string;
         passwordHash: string;
         recoveryToken: string | null;
         recoveryTokenExpiresAt: Date | null;
@@ -212,17 +212,17 @@ export declare class UsersController {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
+            direccion: string | null;
             apellidos: string;
             telefono: string | null;
-            direccion: string | null;
             fotoPerfilUrl: string | null;
             fechaNacimiento: Date | null;
             subdivisionId: number;
         };
     } & {
+        email: string;
         id: number;
         personaId: number;
-        email: string;
         passwordHash: string;
         recoveryToken: string | null;
         recoveryTokenExpiresAt: Date | null;
@@ -235,9 +235,9 @@ export declare class UsersController {
         updatedAt: Date;
     }>;
     remove(id: string): Promise<{
+        email: string;
         id: number;
         personaId: number;
-        email: string;
         passwordHash: string;
         recoveryToken: string | null;
         recoveryTokenExpiresAt: Date | null;
@@ -253,8 +253,8 @@ export declare class UsersController {
         id: number;
         createdAt: Date;
         updatedAt: Date;
-        rolId: number;
         usuarioId: number;
+        rolId: number;
     }>;
     removeRole(userId: string, roleId: string): Promise<import(".prisma/client").Prisma.BatchPayload>;
 }

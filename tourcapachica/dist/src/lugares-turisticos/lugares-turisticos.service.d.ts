@@ -18,17 +18,17 @@ export declare class LugaresTuristicosService {
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        direccion: string;
         descripcion: string;
-        estado: string;
+        direccion: string;
         latitud: number | null;
         longitud: number | null;
+        estado: string;
+        esDestacado: boolean;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: Prisma.Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
-        esDestacado: boolean;
     }>;
     findAll(): Promise<{
         imagenes: {
@@ -39,17 +39,17 @@ export declare class LugaresTuristicosService {
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        direccion: string;
         descripcion: string;
-        estado: string;
+        direccion: string;
         latitud: number | null;
         longitud: number | null;
+        estado: string;
+        esDestacado: boolean;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: Prisma.Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
-        esDestacado: boolean;
     }[]>;
     findOne(id: number): Promise<{
         imagenes: {
@@ -60,17 +60,17 @@ export declare class LugaresTuristicosService {
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        direccion: string;
         descripcion: string;
-        estado: string;
+        direccion: string;
         latitud: number | null;
         longitud: number | null;
+        estado: string;
+        esDestacado: boolean;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: Prisma.Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
-        esDestacado: boolean;
     }>;
     update(id: number, updateLugarTuristicoDto: UpdateLugarTuristicoDto): Promise<{
         imagenes: {
@@ -81,51 +81,51 @@ export declare class LugaresTuristicosService {
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        direccion: string;
         descripcion: string;
-        estado: string;
+        direccion: string;
         latitud: number | null;
         longitud: number | null;
+        estado: string;
+        esDestacado: boolean;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: Prisma.Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
-        esDestacado: boolean;
     }>;
     remove(id: number): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        direccion: string;
         descripcion: string;
-        estado: string;
+        direccion: string;
         latitud: number | null;
         longitud: number | null;
+        estado: string;
+        esDestacado: boolean;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: Prisma.Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
-        esDestacado: boolean;
     }>;
     findDestacados(): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        direccion: string;
         descripcion: string;
-        estado: string;
+        direccion: string;
         latitud: number | null;
         longitud: number | null;
+        estado: string;
+        esDestacado: boolean;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: Prisma.Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
-        esDestacado: boolean;
     }[]>;
     findFavorites(usuarioId: number): Promise<{
         imagenes: {
@@ -136,17 +136,17 @@ export declare class LugaresTuristicosService {
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        direccion: string;
         descripcion: string;
-        estado: string;
+        direccion: string;
         latitud: number | null;
         longitud: number | null;
+        estado: string;
+        esDestacado: boolean;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: Prisma.Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
-        esDestacado: boolean;
     }[]>;
     AddFavorite(usuarioId: number, lugarTuristicoId: number): Promise<{
         lugarTuristico: {
@@ -154,17 +154,17 @@ export declare class LugaresTuristicosService {
             createdAt: Date;
             updatedAt: Date;
             nombre: string;
-            direccion: string;
             descripcion: string;
-            estado: string;
+            direccion: string;
             latitud: number | null;
             longitud: number | null;
+            estado: string;
+            esDestacado: boolean;
             horarioApertura: Date | null;
             horarioCierre: Date | null;
             costoEntrada: Prisma.Decimal | null;
             recomendaciones: string | null;
             restricciones: string | null;
-            esDestacado: boolean;
         };
     } & {
         id: number;
@@ -189,17 +189,17 @@ export declare class LugaresTuristicosService {
         createdAt: Date;
         updatedAt: Date;
         nombre: string;
-        direccion: string;
         descripcion: string;
-        estado: string;
+        direccion: string;
         latitud: number | null;
         longitud: number | null;
+        estado: string;
+        esDestacado: boolean;
         horarioApertura: Date | null;
         horarioCierre: Date | null;
         costoEntrada: Prisma.Decimal | null;
         recomendaciones: string | null;
         restricciones: string | null;
-        esDestacado: boolean;
     })[]>;
     countTotalFavoritos(): Promise<number>;
 }
