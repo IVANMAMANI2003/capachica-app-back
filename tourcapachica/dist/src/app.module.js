@@ -38,7 +38,6 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
-                envFilePath: '.env',
             }),
             mailer_1.MailerModule.forRoot({
                 transport: {
