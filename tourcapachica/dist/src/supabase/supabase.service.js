@@ -8,15 +8,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var SupabaseService_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SupabaseService = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const supabase_config_1 = require("../config/supabase.config");
-let SupabaseService = class SupabaseService {
+let SupabaseService = SupabaseService_1 = class SupabaseService {
     constructor(configService) {
         this.configService = configService;
         this.BUCKET_NAME = 'images';
+        this.logger = new common_1.Logger(SupabaseService_1.name);
+        this.logger.debug(`SUPABASE_URL: ${this.configService.get('SUPABASE_URL')}`);
+        this.logger.debug(`SUPABASE_ANON_KEY exists: ${!!this.configService.get('SUPABASE_ANON_KEY')}`);
         this.supabase = (0, supabase_config_1.createSupabaseClient)(this.configService);
     }
     async uploadFile(bucketName, filePath, fileUrl) {
@@ -58,7 +62,7 @@ let SupabaseService = class SupabaseService {
     }
 };
 exports.SupabaseService = SupabaseService;
-exports.SupabaseService = SupabaseService = __decorate([
+exports.SupabaseService = SupabaseService = SupabaseService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [config_1.ConfigService])
 ], SupabaseService);
