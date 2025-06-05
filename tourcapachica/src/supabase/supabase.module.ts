@@ -3,11 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { SupabaseService } from './supabase.service';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-    })
-  ],
+  imports: [ConfigModule],
   providers: [SupabaseService],
   exports: [SupabaseService],
 })
