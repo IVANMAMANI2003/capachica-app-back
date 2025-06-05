@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createSupabaseClient } from '../config/supabase.config';
 
@@ -6,11 +6,8 @@ import { createSupabaseClient } from '../config/supabase.config';
 export class SupabaseService {
   private supabase;
   private readonly BUCKET_NAME = 'images';
-  private readonly logger = new Logger(SupabaseService.name);
 
   constructor(private configService: ConfigService) {
-    this.logger.debug(`SUPABASE_URL: ${this.configService.get('SUPABASE_URL')}`);
-    this.logger.debug(`SUPABASE_ANON_KEY exists: ${!!this.configService.get('SUPABASE_ANON_KEY')}`);
     this.supabase = createSupabaseClient(this.configService);
   }
 
