@@ -27,6 +27,7 @@ import * as path from 'path';
     
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: '.env',
     }),
     MailerModule.forRoot({
 
