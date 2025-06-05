@@ -38,6 +38,13 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
+                load: [() => {
+                        console.log('=== Application Starting ===');
+                        console.log('Environment:', process.env.NODE_ENV);
+                        console.log('SUPABASE_URL:', process.env.SUPABASE_URL);
+                        console.log('SUPABASE_ANON_KEY exists:', !!process.env.SUPABASE_ANON_KEY);
+                        return {};
+                    }],
             }),
             mailer_1.MailerModule.forRoot({
                 transport: {

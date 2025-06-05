@@ -2,24 +2,24 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createSupabaseClient = void 0;
 const supabase_js_1 = require("@supabase/supabase-js");
-const common_1 = require("@nestjs/common");
 const createSupabaseClient = (configService) => {
-    const logger = new common_1.Logger('SupabaseConfig');
     const envVars = process.env;
-    logger.debug('Available environment variables:');
+    console.log('=== Environment Variables Debug ===');
+    console.log('All environment variables:');
     Object.keys(envVars).forEach(key => {
-        if (key.includes('SUPABASE')) {
-            logger.debug(`${key}: ${key === 'SUPABASE_ANON_KEY' ? '***' : envVars[key]}`);
-        }
+        console.log(`${key}: ${key.includes('KEY') ? '***' : envVars[key]}`);
     });
     const supabaseUrl = configService.get('SUPABASE_URL');
     const supabaseKey = configService.get('SUPABASE_ANON_KEY');
-    logger.debug(`SUPABASE_URL: ${supabaseUrl}`);
-    logger.debug(`SUPABASE_ANON_KEY exists: ${!!supabaseKey}`);
+    console.log('=== Supabase Configuration ===');
+    console.log(`SUPABASE_URL: ${supabaseUrl || 'NOT FOUND'}`);
+    console.log(`SUPABASE_ANON_KEY exists: ${!!supabaseKey}`);
+    console.log(`SUPABASE_ANON_KEY length: ${supabaseKey ? supabaseKey.length : 0}`);
     if (!supabaseUrl || !supabaseKey) {
-        logger.error('Missing Supabase environment variables');
-        logger.error(`SUPABASE_URL: ${supabaseUrl}`);
-        logger.error(`SUPABASE_ANON_KEY exists: ${!!supabaseKey}`);
+        console.error('=== Missing Supabase Variables ===');
+        console.error(`SUPABASE_URL: ${supabaseUrl || 'NOT FOUND'}`);
+        console.error(`SUPABASE_ANON_KEY exists: ${!!supabaseKey}`);
+        console.error(`SUPABASE_ANON_KEY length: ${supabaseKey ? supabaseKey.length : 0}`);
         throw new Error('Missing Supabase environment variables');
     }
     return (0, supabase_js_1.createClient)(supabaseUrl, supabaseKey);
