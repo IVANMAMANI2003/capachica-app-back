@@ -15,7 +15,11 @@ let SupabaseModule = class SupabaseModule {
 exports.SupabaseModule = SupabaseModule;
 exports.SupabaseModule = SupabaseModule = __decorate([
     (0, common_1.Module)({
-        imports: [config_1.ConfigModule],
+        imports: [
+            config_1.ConfigModule.forRoot({
+                isGlobal: true,
+            })
+        ],
         providers: [supabase_service_1.SupabaseService],
         exports: [supabase_service_1.SupabaseService],
     })
