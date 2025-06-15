@@ -30,6 +30,7 @@ const comprobantes_module_1 = require("./comprobantes/comprobantes.module");
 const mailer_1 = require("@nestjs-modules/mailer");
 const handlebars_adapter_1 = require("@nestjs-modules/mailer/dist/adapters/handlebars.adapter");
 const path = require("path");
+const country_module_1 = require("./country/country.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -81,6 +82,7 @@ exports.AppModule = AppModule = __decorate([
             reservas_module_1.ReservasModule,
             payments_module_1.PaymentsModule,
             comprobantes_module_1.ComprobantesModule,
+            country_module_1.CountryModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

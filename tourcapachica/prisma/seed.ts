@@ -1,7 +1,15 @@
 import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import * as fs from 'fs';
+import * as path from 'path';
 
 const prisma = new PrismaClient();
+
+interface CountryData {
+  name: string;
+  codeIso: string;
+  subdivisions: string[];
+}
 
 async function main() {
   try {
@@ -42,6 +50,18 @@ async function main() {
       prisma.role.deleteMany(),
       prisma.permiso.deleteMany(),
     ]);
+
+    // Reiniciar todas las secuencias a 1
+    await prisma.$executeRawUnsafe(`
+      DO $$ 
+      DECLARE 
+          r RECORD;
+      BEGIN
+          FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = 'public') LOOP
+              EXECUTE 'TRUNCATE TABLE ' || quote_ident(r.tablename) || ' RESTART IDENTITY CASCADE';
+          END LOOP;
+      END $$;
+    `);
 
     // 1. Crear roles
     const superAdminRole = await prisma.role.create({
@@ -125,55 +145,40 @@ async function main() {
       ],
     });
 
+    
+
+
     // 4. Crear países y subdivisiones
-    const peru = await prisma.country.create({
-      data: {
-        name: 'Perú',
-        codeIso: 'PER',
-        subdivisions: {
-          create: [
-            { name: 'Lima' },
-            { name: 'Arequipa' },
-            { name: 'Cusco' },
-            { name: 'Puno' },
-            { name: 'Tacna' },
-            { name: 'Moquegua' },
-          ],
-        },
-      },
-    });
+    // Read the JSON file for countries and subdivisions
+    const jsonPath = path.join(__dirname, 'countries_subdivisions.json');
+    const jsonData = fs.readFileSync(jsonPath, 'utf-8');
+    const countries: CountryData[] = JSON.parse(jsonData);
 
-    const bolivia = await prisma.country.create({
-      data: {
-        name: 'Bolivia',
-        codeIso: 'BOL',
-        subdivisions: {
-          create: [
-            { name: 'La Paz' },
-            { name: 'Santa Cruz' },
-            { name: 'Cochabamba' },
-            { name: 'Oruro' },
-            { name: 'Potosí' },
-          ],
-        },
-      },
-    });
+    console.log('Starting to seed countries and subdivisions...');
 
-    const chile = await prisma.country.create({
-      data: {
-        name: 'Chile',
-        codeIso: 'CHL',
-        subdivisions: {
-          create: [
-            { name: 'Santiago' },
-            { name: 'Valparaíso' },
-            { name: 'Concepción' },
-            { name: 'La Serena' },
-            { name: 'Antofagasta' },
-          ],
+    // Crear países y subdivisiones
+    for (const countryData of countries) {
+      // Create country
+      const country = await prisma.country.create({
+        data: {
+          name: countryData.name,
+          codeIso: countryData.codeIso,
         },
-      },
-    });
+      });
+
+      console.log(`Created country: ${country.name}`);
+
+      // Create subdivisions for the country
+      for (const subdivisionName of countryData.subdivisions) {
+        await prisma.subdivision.create({
+          data: {
+            name: subdivisionName,
+            countryId: country.id,
+          },
+        });
+        console.log(`Created subdivision: ${subdivisionName} for ${country.name}`);
+      }
+    }
 
     // 5. Obtener subdivisiones necesarias
     const puno = await prisma.subdivision.findFirst({
