@@ -112,6 +112,7 @@ model Usuario {
   favoritosLugarTuristico FavoritoLugarTuristico[]
   favoritosPaquete       FavoritoPaqueteTuristico[]
   reservas Reserva[]
+  chatMessages           ChatMessage[]
   
 
   @@map("usuarios")
@@ -568,5 +569,17 @@ model Slider {
   updatedAt   DateTime @updatedAt
 
   @@map("sliders")
+}
+
+model ChatMessage {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @map("user_id")
+  userMessage String   @map("user_message") @db.Text
+  botResponse String   @map("bot_response") @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @default(now()) @map("updated_at")
+  usuario     Usuario  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("chat_messages")
 }
 

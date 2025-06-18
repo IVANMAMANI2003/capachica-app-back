@@ -12,11 +12,11 @@ export declare class PaymentController {
         moneda: string;
         reservaId: number;
         paymentGateway: string;
-        datosMetodoPago: import(".prisma/client/runtime/library").JsonValue | null;
-        metadata: import(".prisma/client/runtime/library").JsonValue | null;
         transactionId: string;
         montoTotal: import(".prisma/client/runtime/library").Decimal;
         fechaPago: Date | null;
+        datosMetodoPago: import(".prisma/client/runtime/library").JsonValue | null;
+        metadata: import(".prisma/client/runtime/library").JsonValue | null;
     }>;
     update(id: string, updatePaymentDto: UpdatePaymentDto): Promise<{
         reserva: {
@@ -46,15 +46,15 @@ export declare class PaymentController {
             moneda: string;
             pagoId: number;
             tipoComprobante: string;
+            serie: string;
+            numero: string;
+            fechaEmision: Date;
             rucCliente: string | null;
             razonSocial: string | null;
+            direccionCliente: string | null;
             subtotal: import(".prisma/client/runtime/library").Decimal;
             igv: import(".prisma/client/runtime/library").Decimal;
             total: import(".prisma/client/runtime/library").Decimal;
-            fechaEmision: Date;
-            serie: string;
-            numero: string;
-            direccionCliente: string | null;
             codigoSunat: string | null;
             codigoHash: string | null;
             xmlUrl: string | null;
@@ -82,11 +82,11 @@ export declare class PaymentController {
         moneda: string;
         reservaId: number;
         paymentGateway: string;
-        datosMetodoPago: import(".prisma/client/runtime/library").JsonValue | null;
-        metadata: import(".prisma/client/runtime/library").JsonValue | null;
         transactionId: string;
         montoTotal: import(".prisma/client/runtime/library").Decimal;
         fechaPago: Date | null;
+        datosMetodoPago: import(".prisma/client/runtime/library").JsonValue | null;
+        metadata: import(".prisma/client/runtime/library").JsonValue | null;
     }>;
     findAll(): Promise<({
         reserva: {
@@ -116,15 +116,15 @@ export declare class PaymentController {
             moneda: string;
             pagoId: number;
             tipoComprobante: string;
+            serie: string;
+            numero: string;
+            fechaEmision: Date;
             rucCliente: string | null;
             razonSocial: string | null;
+            direccionCliente: string | null;
             subtotal: import(".prisma/client/runtime/library").Decimal;
             igv: import(".prisma/client/runtime/library").Decimal;
             total: import(".prisma/client/runtime/library").Decimal;
-            fechaEmision: Date;
-            serie: string;
-            numero: string;
-            direccionCliente: string | null;
             codigoSunat: string | null;
             codigoHash: string | null;
             xmlUrl: string | null;
@@ -152,11 +152,11 @@ export declare class PaymentController {
         moneda: string;
         reservaId: number;
         paymentGateway: string;
-        datosMetodoPago: import(".prisma/client/runtime/library").JsonValue | null;
-        metadata: import(".prisma/client/runtime/library").JsonValue | null;
         transactionId: string;
         montoTotal: import(".prisma/client/runtime/library").Decimal;
         fechaPago: Date | null;
+        datosMetodoPago: import(".prisma/client/runtime/library").JsonValue | null;
+        metadata: import(".prisma/client/runtime/library").JsonValue | null;
     })[]>;
     findOne(id: string): Promise<{
         reserva: {
@@ -186,15 +186,15 @@ export declare class PaymentController {
             moneda: string;
             pagoId: number;
             tipoComprobante: string;
+            serie: string;
+            numero: string;
+            fechaEmision: Date;
             rucCliente: string | null;
             razonSocial: string | null;
+            direccionCliente: string | null;
             subtotal: import(".prisma/client/runtime/library").Decimal;
             igv: import(".prisma/client/runtime/library").Decimal;
             total: import(".prisma/client/runtime/library").Decimal;
-            fechaEmision: Date;
-            serie: string;
-            numero: string;
-            direccionCliente: string | null;
             codigoSunat: string | null;
             codigoHash: string | null;
             xmlUrl: string | null;
@@ -222,11 +222,11 @@ export declare class PaymentController {
         moneda: string;
         reservaId: number;
         paymentGateway: string;
-        datosMetodoPago: import(".prisma/client/runtime/library").JsonValue | null;
-        metadata: import(".prisma/client/runtime/library").JsonValue | null;
         transactionId: string;
         montoTotal: import(".prisma/client/runtime/library").Decimal;
         fechaPago: Date | null;
+        datosMetodoPago: import(".prisma/client/runtime/library").JsonValue | null;
+        metadata: import(".prisma/client/runtime/library").JsonValue | null;
     }>;
     remove(id: string): Promise<{
         id: number;
@@ -236,10 +236,10 @@ export declare class PaymentController {
         moneda: string;
         reservaId: number;
         paymentGateway: string;
-        datosMetodoPago: import(".prisma/client/runtime/library").JsonValue | null;
-        metadata: import(".prisma/client/runtime/library").JsonValue | null;
         transactionId: string;
         montoTotal: import(".prisma/client/runtime/library").Decimal;
         fechaPago: Date | null;
+        datosMetodoPago: import(".prisma/client/runtime/library").JsonValue | null;
+        metadata: import(".prisma/client/runtime/library").JsonValue | null;
     }>;
 }

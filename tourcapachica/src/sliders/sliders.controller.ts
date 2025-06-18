@@ -14,7 +14,7 @@ export class SlidersController {
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('emprendedor', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Crear un nuevo slider' })
   @ApiResponse({ status: 201, description: 'Slider creado exitosamente' })
@@ -45,7 +45,7 @@ export class SlidersController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('emprendedor', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Actualizar un slider por ID' })
   @ApiResponse({ status: 200, description: 'Slider actualizado exitosamente' })
@@ -63,7 +63,7 @@ export class SlidersController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('emprendedor', 'SuperAdmin')
+  @Roles('Emprendedor', 'SuperAdmin')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Eliminar un slider por ID' })
   @ApiResponse({ status: 200, description: 'Slider eliminado exitosamente' })

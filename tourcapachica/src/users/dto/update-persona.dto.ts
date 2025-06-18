@@ -25,7 +25,7 @@ export class UpdatePersonaDto {
 
   @ApiPropertyOptional({ description: 'URL de la foto de perfil' })
   @IsOptional()
-  @IsUrl()
+  @IsString()
   fotoPerfilUrl?: string;
 
   @ApiPropertyOptional({ description: 'Fecha de nacimiento (formato: YYYY-MM-DD', example: '1990-01-15' })

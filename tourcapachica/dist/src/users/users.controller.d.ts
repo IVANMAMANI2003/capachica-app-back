@@ -45,9 +45,11 @@ export declare class UsersController {
             usuarioId: number;
             rolId: number;
         })[];
-        email: string;
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         personaId: number;
+        email: string;
         passwordHash: string;
         recoveryToken: string | null;
         recoveryTokenExpiresAt: Date | null;
@@ -56,8 +58,6 @@ export declare class UsersController {
         estaActivo: boolean | null;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     requestPasswordReset(requestPasswordResetDto: RequestPasswordResetDto): Promise<{
         message: string;
@@ -100,9 +100,11 @@ export declare class UsersController {
             usuarioId: number;
             rolId: number;
         })[];
-        email: string;
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         personaId: number;
+        email: string;
         passwordHash: string;
         recoveryToken: string | null;
         recoveryTokenExpiresAt: Date | null;
@@ -111,8 +113,6 @@ export declare class UsersController {
         estaActivo: boolean | null;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     findAll(): Promise<{
         imagenes: {
@@ -146,9 +146,11 @@ export declare class UsersController {
             usuarioId: number;
             rolId: number;
         })[];
-        email: string;
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         personaId: number;
+        email: string;
         passwordHash: string;
         recoveryToken: string | null;
         recoveryTokenExpiresAt: Date | null;
@@ -157,8 +159,6 @@ export declare class UsersController {
         estaActivo: boolean | null;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue | null;
-        createdAt: Date;
-        updatedAt: Date;
     }[]>;
     findOne(id: string, req: RequestWithUser): Promise<{
         imagenes: {
@@ -192,9 +192,11 @@ export declare class UsersController {
             usuarioId: number;
             rolId: number;
         })[];
-        email: string;
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         personaId: number;
+        email: string;
         passwordHash: string;
         recoveryToken: string | null;
         recoveryTokenExpiresAt: Date | null;
@@ -203,10 +205,12 @@ export declare class UsersController {
         estaActivo: boolean | null;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
-    update(id: number, updateUserWithPersonaDto: UpdateUserWithPersonaDto): Promise<{
+    update(id: number, updateUserWithPersonaDto: UpdateUserWithPersonaDto, req: RequestWithUser): Promise<{
+        imagenes: {
+            id: number;
+            url: string;
+        }[];
         persona: {
             id: number;
             createdAt: Date;
@@ -219,10 +223,26 @@ export declare class UsersController {
             fechaNacimiento: Date | null;
             subdivisionId: number;
         };
-    } & {
-        email: string;
+        usuariosRoles: ({
+            rol: {
+                id: number;
+                createdAt: Date;
+                updatedAt: Date;
+                nombre: string;
+                descripcion: string | null;
+            };
+        } & {
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
+            usuarioId: number;
+            rolId: number;
+        })[];
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         personaId: number;
+        email: string;
         passwordHash: string;
         recoveryToken: string | null;
         recoveryTokenExpiresAt: Date | null;
@@ -231,13 +251,13 @@ export declare class UsersController {
         estaActivo: boolean | null;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     remove(id: string): Promise<{
-        email: string;
         id: number;
+        createdAt: Date;
+        updatedAt: Date;
         personaId: number;
+        email: string;
         passwordHash: string;
         recoveryToken: string | null;
         recoveryTokenExpiresAt: Date | null;
@@ -246,8 +266,6 @@ export declare class UsersController {
         estaActivo: boolean | null;
         ultimoAcceso: Date | null;
         preferencias: import(".prisma/client/runtime/library").JsonValue | null;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     assignRole(userId: string, roleId: string): Promise<{
         id: number;

@@ -93,9 +93,32 @@ let UsersController = class UsersController {
         }
         return this.usersService.findOne(+id);
     }
-    update(id, updateUserWithPersonaDto) {
-        console.log('Solicitud de actualización recibida para ID:', id);
-        return this.usersService.update(id, updateUserWithPersonaDto);
+    async update(id, updateUserWithPersonaDto, req) {
+        try {
+            console.log('=== DEBUG UPDATE USER ===');
+            console.log('ID del usuario a actualizar:', id);
+            console.log('ID del usuario autenticado:', req.user.id);
+            console.log('DTO recibido:', JSON.stringify(updateUserWithPersonaDto, null, 2));
+            console.log('Tipo de DTO:', typeof updateUserWithPersonaDto);
+            console.log('Tipo de persona:', typeof updateUserWithPersonaDto.persona);
+            console.log('========================');
+            if (req.user.id === id) {
+                return await this.usersService.update(id, updateUserWithPersonaDto);
+            }
+            const user = await this.usersService.findById(req.user.id);
+            const isSuperAdmin = user.usuariosRoles.some(ur => ur.rol.nombre === 'SuperAdmin');
+            if (!isSuperAdmin) {
+                throw new common_1.HttpException('No tiene permisos para actualizar este perfil', common_1.HttpStatus.FORBIDDEN);
+            }
+            return await this.usersService.update(id, updateUserWithPersonaDto);
+        }
+        catch (error) {
+            if (error instanceof common_1.HttpException) {
+                throw error;
+            }
+            console.error('Error en el controlador al actualizar usuario:', error);
+            throw new common_1.HttpException('Error al actualizar el usuario', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     remove(id) {
         return this.usersService.delete(+id);
@@ -187,7 +210,7 @@ __decorate([
 __decorate([
     (0, common_1.Get)(':id'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('SuperAdmin', 'User', 'emprendedor'),
+    (0, roles_decorator_1.Roles)('SuperAdmin', 'User', 'Emprendedor'),
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({ summary: 'Obtener un usuario por ID  o el propio perfil' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Usuario obtenido exitosamente' }),
@@ -213,9 +236,10 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Usuario no encontrado' }),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, update_user_with_persona_dto_1.UpdateUserWithPersonaDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [Number, update_user_with_persona_dto_1.UpdateUserWithPersonaDto, Object]),
+    __metadata("design:returntype", Promise)
 ], UsersController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
@@ -237,6 +261,11 @@ __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('SuperAdmin'),
     (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Asignar un rol a un usuario' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Rol asignado exitosamente' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'No autorizado' }),
+    (0, swagger_1.ApiResponse)({ status: 403, description: 'No tiene permisos' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Usuario o rol no encontrado' }),
     __param(0, (0, common_1.Param)('userId')),
     __param(1, (0, common_1.Param)('roleId')),
     __metadata("design:type", Function),
@@ -248,6 +277,11 @@ __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, roles_decorator_1.Roles)('SuperAdmin'),
     (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Eliminar un rol de un usuario' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Rol eliminado exitosamente' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'No autorizado' }),
+    (0, swagger_1.ApiResponse)({ status: 403, description: 'No tiene permisos' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Usuario o rol no encontrado' }),
     __param(0, (0, common_1.Param)('userId')),
     __param(1, (0, common_1.Param)('roleId')),
     __metadata("design:type", Function),

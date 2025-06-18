@@ -31,6 +31,7 @@ const mailer_1 = require("@nestjs-modules/mailer");
 const handlebars_adapter_1 = require("@nestjs-modules/mailer/dist/adapters/handlebars.adapter");
 const path = require("path");
 const country_module_1 = require("./country/country.module");
+const chatbot_module_1 = require("./chatbot/chatbot.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -83,6 +84,7 @@ exports.AppModule = AppModule = __decorate([
             payments_module_1.PaymentsModule,
             comprobantes_module_1.ComprobantesModule,
             country_module_1.CountryModule,
+            chatbot_module_1.ChatbotModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

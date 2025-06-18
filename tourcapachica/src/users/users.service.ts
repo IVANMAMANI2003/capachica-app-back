@@ -268,41 +268,83 @@ export class UsersService {
     console.log('ID del usuario:', id);
     console.log('DTO recibido:', updateUserWithPersonaDto);
 
-    const { email, persona } = updateUserWithPersonaDto;
-
-    // Actualizar datos del usuario (solo email si se proporciona)
-    let usuarioActualizado = await this.prisma.usuario.update({
-      where: { id },
-      data: {
-        ...(email ? { email } : {}),
-      },
-      include: {
-        persona: true
-      }
-    });
-
-    // Actualizar datos de la persona
-    if (persona) {
-      await this.prisma.persona.update({
-        where: { id: usuarioActualizado.personaId },
-        data: {
-          ...(persona.nombre && { nombre: persona.nombre }),
-          ...(persona.apellidos && { apellidos: persona.apellidos }),
-          ...(persona.telefono && { telefono: persona.telefono }),
-          ...(persona.direccion && { direccion: persona.direccion }),
-          ...(persona.fotoPerfilUrl && { fotoPerfilUrl: persona.fotoPerfilUrl }),
-          ...(persona.fechaNacimiento && { fechaNacimiento: persona.fechaNacimiento }),
-          ...(persona.subdivisionId && { subdivisionId: persona.subdivisionId })
+    try {
+      // Verificar si el usuario existe
+      const existingUser = await this.prisma.usuario.findUnique({
+        where: { id },
+        include: {
+          persona: true
         }
       });
-    }
 
-    // Si hay foto de perfil nueva, actualizar imagen (opcional, según lógica previa)
-    if (persona?.fotoPerfilUrl) {
-      // Aquí podrías agregar la lógica de actualización de imagen si es necesario
-    }
+      if (!existingUser) {
+        throw new NotFoundException(`Usuario con ID ${id} no encontrado`);
+      }
 
-    return usuarioActualizado;
+      const { email, persona } = updateUserWithPersonaDto;
+
+      // Si se proporciona email, verificar que no esté en uso por otro usuario
+      if (email) {
+        const existingUserWithEmail = await this.prisma.usuario.findFirst({
+          where: {
+            email: email,
+            id: { not: id } // Excluir el usuario actual
+          }
+        });
+
+        if (existingUserWithEmail) {
+          throw new BadRequestException(`Ya existe un usuario con el email ${email}`);
+        }
+      }
+
+      // Actualizar datos del usuario (solo email si se proporciona)
+      let usuarioActualizado = await this.prisma.usuario.update({
+        where: { id },
+        data: {
+          ...(email ? { email } : {}),
+        },
+        include: {
+          persona: true
+        }
+      });
+
+      // Actualizar datos de la persona
+      if (persona) {
+        // Si se proporciona subdivisionId, verificar que existe
+        if (persona.subdivisionId) {
+          const subdivision = await this.prisma.subdivision.findUnique({
+            where: { id: persona.subdivisionId },
+          });
+
+          if (!subdivision) {
+            throw new NotFoundException(`Subdivisión con ID ${persona.subdivisionId} no encontrada`);
+          }
+        }
+
+        await this.prisma.persona.update({
+          where: { id: usuarioActualizado.personaId },
+          data: {
+            ...(persona.nombre && { nombre: persona.nombre }),
+            ...(persona.apellidos && { apellidos: persona.apellidos }),
+            ...(persona.telefono && { telefono: persona.telefono }),
+            ...(persona.direccion && { direccion: persona.direccion }),
+            ...(persona.fotoPerfilUrl && { fotoPerfilUrl: persona.fotoPerfilUrl }),
+            ...(persona.fechaNacimiento && { fechaNacimiento: new Date(persona.fechaNacimiento) }),
+            ...(persona.subdivisionId && { subdivisionId: persona.subdivisionId })
+          }
+        });
+      }
+
+      // Retornar el usuario completo con roles e imágenes usando el método findOne
+      return this.findOne(id);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      
+      console.error('Error al actualizar usuario:', error);
+      throw new InternalServerErrorException('Error al actualizar el usuario. Por favor, intente nuevamente.');
+    }
   }
   
 

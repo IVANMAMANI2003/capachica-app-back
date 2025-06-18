@@ -22,6 +22,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import * as path from 'path';
 import { CountryModule } from './country/country.module';
+import { ChatbotModule } from './chatbot/chatbot.module';
 
 @Module({
   imports: [
@@ -73,6 +74,7 @@ import { CountryModule } from './country/country.module';
     PaymentsModule,
     ComprobantesModule,
     CountryModule,
+    ChatbotModule,
 
     
   ],

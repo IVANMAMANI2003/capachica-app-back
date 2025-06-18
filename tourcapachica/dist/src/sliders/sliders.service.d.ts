@@ -13,10 +13,10 @@ export declare class SlidersService {
             id: number;
             url: string;
         }[];
-        description: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        description: string | null;
         nombre: string;
         estado: string;
     }>;
@@ -25,10 +25,10 @@ export declare class SlidersService {
             id: number;
             url: string;
         }[];
-        description: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        description: string | null;
         nombre: string;
         estado: string;
     }[]>;
@@ -37,10 +37,10 @@ export declare class SlidersService {
             id: number;
             url: string;
         }[];
-        description: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        description: string | null;
         nombre: string;
         estado: string;
     }>;
@@ -49,18 +49,18 @@ export declare class SlidersService {
             id: number;
             url: string;
         }[];
-        description: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        description: string | null;
         nombre: string;
         estado: string;
     }>;
     remove(id: number): Promise<{
-        description: string | null;
         id: number;
         createdAt: Date;
         updatedAt: Date;
+        description: string | null;
         nombre: string;
         estado: string;
     }>;

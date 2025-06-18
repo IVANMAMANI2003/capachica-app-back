@@ -218,23 +218,58 @@ let UsersService = class UsersService {
         console.log('--- Iniciando actualización de usuario ---');
         console.log('ID del usuario:', id);
         console.log('DTO recibido:', updateUserWithPersonaDto);
-        const { email, persona } = updateUserWithPersonaDto;
-        let usuarioActualizado = await this.prisma.usuario.update({
-            where: { id },
-            data: Object.assign({}, (email ? { email } : {})),
-            include: {
-                persona: true
-            }
-        });
-        if (persona) {
-            await this.prisma.persona.update({
-                where: { id: usuarioActualizado.personaId },
-                data: Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({}, (persona.nombre && { nombre: persona.nombre })), (persona.apellidos && { apellidos: persona.apellidos })), (persona.telefono && { telefono: persona.telefono })), (persona.direccion && { direccion: persona.direccion })), (persona.fotoPerfilUrl && { fotoPerfilUrl: persona.fotoPerfilUrl })), (persona.fechaNacimiento && { fechaNacimiento: persona.fechaNacimiento })), (persona.subdivisionId && { subdivisionId: persona.subdivisionId }))
+        try {
+            const existingUser = await this.prisma.usuario.findUnique({
+                where: { id },
+                include: {
+                    persona: true
+                }
             });
+            if (!existingUser) {
+                throw new common_1.NotFoundException(`Usuario con ID ${id} no encontrado`);
+            }
+            const { email, persona } = updateUserWithPersonaDto;
+            if (email) {
+                const existingUserWithEmail = await this.prisma.usuario.findFirst({
+                    where: {
+                        email: email,
+                        id: { not: id }
+                    }
+                });
+                if (existingUserWithEmail) {
+                    throw new common_1.BadRequestException(`Ya existe un usuario con el email ${email}`);
+                }
+            }
+            let usuarioActualizado = await this.prisma.usuario.update({
+                where: { id },
+                data: Object.assign({}, (email ? { email } : {})),
+                include: {
+                    persona: true
+                }
+            });
+            if (persona) {
+                if (persona.subdivisionId) {
+                    const subdivision = await this.prisma.subdivision.findUnique({
+                        where: { id: persona.subdivisionId },
+                    });
+                    if (!subdivision) {
+                        throw new common_1.NotFoundException(`Subdivisión con ID ${persona.subdivisionId} no encontrada`);
+                    }
+                }
+                await this.prisma.persona.update({
+                    where: { id: usuarioActualizado.personaId },
+                    data: Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({}, (persona.nombre && { nombre: persona.nombre })), (persona.apellidos && { apellidos: persona.apellidos })), (persona.telefono && { telefono: persona.telefono })), (persona.direccion && { direccion: persona.direccion })), (persona.fotoPerfilUrl && { fotoPerfilUrl: persona.fotoPerfilUrl })), (persona.fechaNacimiento && { fechaNacimiento: new Date(persona.fechaNacimiento) })), (persona.subdivisionId && { subdivisionId: persona.subdivisionId }))
+                });
+            }
+            return this.findOne(id);
         }
-        if (persona === null || persona === void 0 ? void 0 : persona.fotoPerfilUrl) {
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            console.error('Error al actualizar usuario:', error);
+            throw new common_1.InternalServerErrorException('Error al actualizar el usuario. Por favor, intente nuevamente.');
         }
-        return usuarioActualizado;
     }
     async delete(id) {
         const imageables = await this.prisma.imageable.findMany({

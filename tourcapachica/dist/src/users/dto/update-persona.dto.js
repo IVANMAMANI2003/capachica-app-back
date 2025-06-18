@@ -42,7 +42,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiPropertyOptional)({ description: 'URL de la foto de perfil' }),
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsUrl)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], UpdatePersonaDto.prototype, "fotoPerfilUrl", void 0);
 __decorate([

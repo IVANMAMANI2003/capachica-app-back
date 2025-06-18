@@ -51,7 +51,7 @@ exports.DisponibilidadController = DisponibilidadController;
 __decorate([
     (0, common_1.Post)(),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiOperation)({ summary: 'Crear disponibilidad para un servicio' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Disponibilidad creada exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos o fecha ya registrada' }),
@@ -65,7 +65,7 @@ __decorate([
 __decorate([
     (0, common_1.Post)('batch'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiOperation)({ summary: 'Crear múltiples disponibilidades para un servicio' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Disponibilidades creadas exitosamente' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Datos inválidos' }),
@@ -106,7 +106,7 @@ __decorate([
 __decorate([
     (0, common_1.Patch)(':id'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiOperation)({ summary: 'Actualizar una disponibilidad' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Disponibilidad actualizada' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Disponibilidad no encontrada' }),
@@ -119,7 +119,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('emprendedor', 'SuperAdmin'),
+    (0, roles_decorator_1.Roles)('Emprendedor', 'SuperAdmin'),
     (0, swagger_1.ApiOperation)({ summary: 'Eliminar una disponibilidad' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Disponibilidad eliminada' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Disponibilidad no encontrada' }),

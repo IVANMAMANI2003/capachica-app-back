@@ -122,11 +122,9 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-
-
   @Get(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('SuperAdmin', 'User', 'emprendedor')
+  @Roles('SuperAdmin', 'User', 'Emprendedor')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Obtener un usuario por ID  o el propio perfil' })
   @ApiResponse({ status: 200, description: 'Usuario obtenido exitosamente' })
@@ -160,16 +158,43 @@ export class UsersController {
   @ApiResponse({ status: 401, description: 'No autorizado' })
   @ApiResponse({ status: 403, description: 'No tiene permisos' })
   @ApiResponse({ status: 404, description: 'Usuario no encontrado' })
-  update(
+  async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserWithPersonaDto: UpdateUserWithPersonaDto,
+    @Request() req: RequestWithUser,
   ) {
-    console.log('Solicitud de actualización recibida para ID:', id);
-    return this.usersService.update(id, updateUserWithPersonaDto);
+    try {
+      console.log('=== DEBUG UPDATE USER ===');
+      console.log('ID del usuario a actualizar:', id);
+      console.log('ID del usuario autenticado:', req.user.id);
+      console.log('DTO recibido:', JSON.stringify(updateUserWithPersonaDto, null, 2));
+      console.log('Tipo de DTO:', typeof updateUserWithPersonaDto);
+      console.log('Tipo de persona:', typeof updateUserWithPersonaDto.persona);
+      console.log('========================');
+      
+      // Si el usuario está intentando actualizar su propio perfil, permitirlo
+      if (req.user.id === id) {
+        return await this.usersService.update(id, updateUserWithPersonaDto);
+      }
+      
+      // Si no es su propio perfil, verificar que sea SuperAdmin
+      const user = await this.usersService.findById(req.user.id);
+      const isSuperAdmin = user.usuariosRoles.some(ur => ur.rol.nombre === 'SuperAdmin');
+      
+      if (!isSuperAdmin) {
+        throw new HttpException('No tiene permisos para actualizar este perfil', HttpStatus.FORBIDDEN);
+      }
+      
+      return await this.usersService.update(id, updateUserWithPersonaDto);
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      console.error('Error en el controlador al actualizar usuario:', error);
+      throw new HttpException('Error al actualizar el usuario', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
   
-
-
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('SuperAdmin') 
@@ -187,6 +212,11 @@ export class UsersController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('SuperAdmin')
   @ApiBearerAuth()
+  @ApiOperation({ summary: 'Asignar un rol a un usuario' })
+  @ApiResponse({ status: 200, description: 'Rol asignado exitosamente' })
+  @ApiResponse({ status: 401, description: 'No autorizado' })
+  @ApiResponse({ status: 403, description: 'No tiene permisos' })
+  @ApiResponse({ status: 404, description: 'Usuario o rol no encontrado' })
   assignRole(@Param('userId') userId: string, @Param('roleId') roleId: string) {
     return this.usersService.assignRole(+userId, +roleId);
   }
@@ -195,6 +225,11 @@ export class UsersController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('SuperAdmin')
   @ApiBearerAuth()
+  @ApiOperation({ summary: 'Eliminar un rol de un usuario' })
+  @ApiResponse({ status: 200, description: 'Rol eliminado exitosamente' })
+  @ApiResponse({ status: 401, description: 'No autorizado' })
+  @ApiResponse({ status: 403, description: 'No tiene permisos' })
+  @ApiResponse({ status: 404, description: 'Usuario o rol no encontrado' })
   removeRole(@Param('userId') userId: string, @Param('roleId') roleId: string) {
     return this.usersService.removeRole(+userId, +roleId);
   }

@@ -1,4 +1,40 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreatePersonaDto } from './create-persona.dto';
+import { IsOptional, IsString, IsDate, IsInt } from 'class-validator';
+import { ApiPropertyOptional } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 
-export class UpdatePersonaDto extends PartialType(CreatePersonaDto) {}
+export class UpdatePersonaDto {
+  @ApiPropertyOptional({ description: 'Nombre de la persona' })
+  @IsOptional()
+  @IsString()
+  nombre?: string;
+
+  @ApiPropertyOptional({ description: 'Apellidos de la persona' })
+  @IsOptional()
+  @IsString()
+  apellidos?: string;
+
+  @ApiPropertyOptional({ description: 'Teléfono de la persona' })
+  @IsOptional()
+  @IsString()
+  telefono?: string;
+
+  @ApiPropertyOptional({ description: 'Dirección de la persona' })
+  @IsOptional()
+  @IsString()
+  direccion?: string;
+
+  @ApiPropertyOptional({ description: 'URL de la foto de perfil' })
+  @IsOptional()
+  @IsString()
+  fotoPerfilUrl?: string;
+
+  @ApiPropertyOptional({ description: 'Fecha de nacimiento (formato: YYYY-MM-DD)', example: '1990-01-15' })
+  @IsOptional()
+  @IsString()
+  fechaNacimiento?: string;
+
+  @ApiPropertyOptional({ description: 'ID de la subdivisión' })
+  @IsOptional()
+  @IsInt()
+  subdivisionId?: number;
+}
